@@ -1,0 +1,7 @@
+{
+  "editor.snippetSuggestions": "top",
+  // "editor.suggestSelection": "first",
+  "workbench.colorCustomizations": {
+    "editorLineNumber.activeForeground": "#23ff13"
+  }
+}

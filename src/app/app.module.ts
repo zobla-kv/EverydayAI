@@ -8,14 +8,21 @@ import {
   AppComponent,
   HeaderComponent,
   FooterComponent
-} from "@app/components";
+} from '@app/components';
+
+import {
+  HighlightDirective
+} from '@app/directives';
 
 @NgModule({
   declarations: [
     // Components
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+
+    // Directives
+    HighlightDirective
   ],
   imports: [
     BrowserModule,

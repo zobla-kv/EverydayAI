@@ -5,7 +5,8 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@app/components": ["./src/app/components/index.ts"]
+      "@app/components": ["./src/app/components/index.ts"],
+      "@app/directives": ["./src/app/directives/index.ts"]
     },
     "forceConsistentCasingInFileNames": true,
     "strict": true,
