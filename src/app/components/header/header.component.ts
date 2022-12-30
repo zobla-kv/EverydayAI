@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { SpinnerService } from '@app/services';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +10,15 @@ import { Component, Input } from '@angular/core';
 export class HeaderComponent {
 
   @Input() currentText: string = 'nothing yet';
+  @Output() updateGridItemsEvent = new EventEmitter<string>();
+
+  constructor(private SpinnerService: SpinnerService) {}
+
+  updateGridItems() {
+    this.updateGridItemsEvent.emit('update initiated');
+  }
+
+  startSpinner() {
+    this.SpinnerService.spinner$.next(true);
+  }
 }
