@@ -11,7 +11,9 @@ import {
   AppComponent,
   HeaderComponent,
   FooterComponent,
-  SpinnerComponent
+  SpinnerComponent,
+  HomePageComponent,
+  NavigationComponent
 } from '@app/components';
 
 import {
@@ -25,17 +27,19 @@ import {
     HeaderComponent,
     FooterComponent,
     SpinnerComponent,
+    HomePageComponent,
+    NavigationComponent,
 
     // Directives
     HighlightDirective
-
-    // Services
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
+
+    // material
     MatGridListModule
   ],
   providers: [],

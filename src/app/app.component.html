@@ -1,26 +1,7 @@
-<app-header
-  [currentText]="headerText"
-  (updateGridItemsEvent)="handleGridItemsUpdate($event)"
-  >
-</app-header>
+<app-header></app-header>
 
-<!-- <input
-  #InputForHeader
-  type="text"
-  [(ngModel)]="headerText"
-  (keypress)="handleInputChange()"
-> -->
-
-<mat-grid-list cols="4" rowHeight="100px">
-  <mat-grid-tile
-      *ngFor="let item of gridItems"
-      [colspan]="item.cols"
-      [rowspan]="item.rows"
-      [style.background]="item.color">
-    <p *ngIf="item.isLoading"><app-spinner></app-spinner></p>
-    <p *ngIf="!item.isLoading">{{ item.text }}</p>
-  </mat-grid-tile>
-</mat-grid-list>
+<main class="page-wrapper">
+  <router-outlet></router-outlet>
+</main>
 
 <app-footer></app-footer>
-<router-outlet></router-outlet>

@@ -7,7 +7,11 @@ import { Subject } from 'rxjs';
 })
 export class SpinnerService {
 
-  spinner$ = new Subject<boolean>();
+  spinner$ = new Subject<null>();
 
   constructor() { }
+
+  startSpinner() {
+    this.spinner$.next(null);
+  }
 }

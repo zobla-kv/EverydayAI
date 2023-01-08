@@ -1,3 +1,25 @@
+@import '../../styles/variables';
+
 .header-wrapper {
-  height: 60px;
+  height: 120px;
+  position: fixed;
+  top: 0;
+
+  .header-top-section {
+
+  }
+  .header-bottom-section {
+    // background-color: black;
+  }
+
+  .header-item {
+    border: 1px solid black;
+    // width: 100%;
+    // flex-basis: 35%;
+  }
+
+  .logo-wrapper {
+    width: 250px;
+    background-color: blue;
+  }
 }
