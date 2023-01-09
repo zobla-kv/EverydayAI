@@ -2,7 +2,7 @@
 
 .top-section-wrapper {
   background-color: $light-orange-bg-color;
-  padding: 2rem 2rem 4rem 2rem;
+  padding: 2rem;
 
   .container-fluid {
     position: relative;
@@ -28,19 +28,22 @@
 
   .categories-heading-wrapper {
     color: black;
-    width: fit-content;
+    // width: fit-content;
+    // padding: 0 4rem;
+    width: 250px;
+    text-align: center;
     height: 40px;
-    padding: 0 4rem;
     position: absolute;
     top: -20px;
     left: 0;
     right: 0;
     margin: auto;
   }
-
-  .categories-heading {
-    // padding: 0 2rem;
-    // line-height: 2rem;
+  
+  .categories-content {
+    width: 80%;
+    justify-content: space-between;
+    border: 1px solid red;
   }
 }
 

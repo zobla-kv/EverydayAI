@@ -13,7 +13,8 @@ import {
   FooterComponent,
   SpinnerComponent,
   HomePageComponent,
-  NavigationComponent
+  NavigationComponent,
+  CategorySelectorComponent
 } from '@app/components';
 
 import {
@@ -29,6 +30,7 @@ import {
     SpinnerComponent,
     HomePageComponent,
     NavigationComponent,
+    CategorySelectorComponent,
 
     // Directives
     HighlightDirective

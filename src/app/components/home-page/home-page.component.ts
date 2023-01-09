@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import {
+  ProductCategory
+} from '@app/models';
+
+import {
   SpinnerService
 } from '@app/services';
 
@@ -11,6 +15,13 @@ import {
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
+
+  productCategories: ProductCategory[] = [
+    { name: 'Food' },
+    { name: 'Toys' },
+    { name: 'Medicine' },
+    { name: 'Training' }
+  ];
 
   isLoading: boolean = false;
 

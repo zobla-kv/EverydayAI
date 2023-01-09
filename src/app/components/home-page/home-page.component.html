@@ -10,9 +10,15 @@
     <div class="gradient-bg h-100"></div>
   </div>
 </div>
-<div class="categories-section-wrapper container-fluid">
-  <div class="categories-heading-wrapper custom-border">
-    <h3 class="categories-heading">Categories</h3>
+<div class="categories-section-wrapper container-fluid d-flex align-items-center justify-content-center">
+  <div class="categories-heading-wrapper light-orange-bg rounded">
+    <h2>Categories</h2>
+  </div>
+  <div class="categories-content d-flex">
+    <app-category-selector 
+      *ngFor="let product of productCategories"
+      [text]="product.name"
+    ></app-category-selector>
   </div>
 </div>
 <div class="container-fluid">
