@@ -3,8 +3,9 @@
 @import './variables';
 
 body {
-  background-color: $main-body-bg-color;
+  background-color: $main-dark-bg-color;
   color: $white-text;
+  box-sizing: border-box;
 }
 
 // # overrides bootstrap
@@ -32,6 +33,7 @@ body {
 .h-90 { height: 90% !important; }
 .h-100 { height: 100% !important; }
 
+.main-orange-bg { background-color: $main-orange-bg-color; }
 .light-orange-bg { background-color: $light-orange-bg-color; }
 
 img {
@@ -39,15 +41,22 @@ img {
   height: 100%;
 }
 
+.container-fluid {
+  border: 1px solid;
+  height: 300px;
+}
+
 .header-wrapper,
 .footer-wrapper {
   background-color: $dark-blue-bg-color;
-  background-color: $header-footer-bg-color;
+  background-color: $main-dark-bg-color;
   width: 100%;
   color: black;
   text-align: center;
   z-index: 999;
 }
+
+.header-wrapper { border-bottom: 1px solid white; }
 
 .page-wrapper {
   min-height: 100vh;
@@ -75,4 +84,3 @@ img {
     content: '';
   }
 }
-

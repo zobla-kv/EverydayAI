@@ -1,6 +1,45 @@
+@import '../../../styles/variables.scss';
+
 .category-selector-wrapper {
-  border: 1px solid;
-  width: 150px;
-  height: 150px;
-  flex-direction: column;
+  border: 1px solid rgb(87, 87, 87);
+  width: 160px;
+  height: 130px;
+  cursor: pointer;
+
+  .mat-icon {
+    width: 60px;
+    height: 60px;
+
+    svg path {
+      fill: white; 
+    }
+  }
+
+  &:hover {
+    animation: hoverCategory 0.8s forwards;
+    // .mat-icon { animation: pulse-svg 0.3s; }
+    span { animation: pulse 0.3s; }
+  }
+
+}
+
+@keyframes hoverCategory {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: $main-orange-bg-color;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

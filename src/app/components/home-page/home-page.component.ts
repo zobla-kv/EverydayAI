@@ -17,10 +17,10 @@ import {
 export class HomePageComponent {
 
   productCategories: ProductCategory[] = [
-    { name: 'Food' },
-    { name: 'Toys' },
-    { name: 'Medicine' },
-    { name: 'Training' }
+    { name: 'Food', icon: 'dog-category-food-icon' },
+    { name: 'Toys', icon: 'home-page-category-food' },
+    { name: 'Medicine', icon: 'dog-category-food-icon' },
+    { name: 'Training', icon: 'home-page-category-food' }
   ];
 
   isLoading: boolean = false;
