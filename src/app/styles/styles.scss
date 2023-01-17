@@ -95,10 +95,19 @@ img {
   font-weight: bold;
   transition: all .3s ease;
 }
-
 .btn:hover {
   background-color: $main-dark-bg-color;
   color: #fff;
+}
+
+.btn-reverse {
+  @extend .btn;
+  background-color: $main-dark-bg-color;
+  color: white;
+}
+.btn-reverse:hover {
+  background-color: $main-orange-bg-color;
+  color: black;
 }
 
 /* images */
