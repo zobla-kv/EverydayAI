@@ -5,26 +5,39 @@
   position: fixed;
   top: 0;
   color: white;
-
-  .header-top-section {
-
-  }
-  .header-bottom-section {
-    // background-color: black;
-  }
+  justify-content: space-between;
+  width: fit-content;
 
   .header-item {
-    border: 1px solid black;
+    // border: 1px solid white;
+    // TODO: double check and remove
     // width: 100%;
     // flex-basis: 35%;
   }
 
+  .header-item.navigation-wrapper {
+    order: 1;
+    align-self: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: -1;
+  }
+
   .header-item.logo-wrapper {
-    width: 250px;
-    background-color: blue;
+    order: 0;
+    cursor: pointer;
+
+    img {
+      content: $main-logo;
+      max-height: 100%;
+    }
   }
 
   .header-item.profile {
+    order: 2;
+    align-self: center;
+    margin-right: 0.66rem;
 
     .btn {
       padding: 0.25rem;
@@ -32,8 +45,9 @@
       width: auto;
       min-width: 100px;
     }
-    .btn:hover { border: 1px solid rgb(87,87,87); } 
-    // .btn:hover { border: 1px solid white; } 
+    .btn:hover { border: 1px solid rgb(87,87,87); }
+    // TODO: double check and remove
+    // .btn:hover { border: 1px solid white; }
   }
 
 }

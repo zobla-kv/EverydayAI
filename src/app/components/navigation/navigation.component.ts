@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class NavigationComponent {
 
+  // TODO: unused component, remove
+
 }

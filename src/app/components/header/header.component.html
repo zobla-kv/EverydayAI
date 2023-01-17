@@ -1,18 +1,20 @@
-<header class="header-wrapper" role="heading">
-  <div class="header-top-section d-flex flex-row w-100 h-60">
-    <div class="header-item w-50">SEARCH</div>
-    <div class="header-item logo-wrapper">LOGO</div>
-    <div class="header-item w-50" *ngIf="isLogged">ACCOUNT</div>
-    <div class="header-item profile w-50" *ngIf="!isLogged">
-      <button type="button" class="btn">
-        <span>Login</span>
-      </button>
-      <button type="button" class="btn me-2">
-        <span>Register</span>
-      </button>
-    </div>
+<header class="header-wrapper d-flex w-100 px-3" role="heading">
+  <div class="header-item navigation-wrapper">
+    <a routerLink="/">Home</a> /
+    <a routerLink="/test">Test</a>
   </div>
-  <div class="header-bottom-section w-100 h-40">
-    <app-navigation></app-navigation>
+  <div class="header-item logo-wrapper">
+    <a routerLink="/">
+      <img alt="house of dogs logo" role="img">
+    </a>
+  </div>
+  <div class="header-item profile" *ngIf="isLogged">ACCOUNT</div>
+  <div class="header-item profile" *ngIf="!isLogged">
+    <button type="button" class="btn">
+      <span>Login</span>
+    </button>
+    <button type="button" class="btn me-2">
+      <span>Register</span>
+    </button>
   </div>
 </header>

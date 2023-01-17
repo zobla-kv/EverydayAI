@@ -1,4 +1,4 @@
-<div class="top-section-wrapper dog-paw-bg">
+<div class="top-section-wrapper dog-paw">
   <div class="container-fluid flex-center g-0">
     <div class="image-section w-40">
       <img src="../../../assets/images/landing-page-image.jpg" class="img-fluid rounded-circle" alt="dog-bark-banner">
@@ -21,7 +21,7 @@
     <h2>Categories</h2>
   </div>
   <div class="categories-content d-flex">
-    <app-category-selector 
+    <app-category-selector
       *ngFor="let product of productCategories"
       [icon]="product.icon"
       [text]="product.name"

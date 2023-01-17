@@ -47,7 +47,6 @@ img {
   height: 300px;
 }
 
-
 /* header footer */
 .header-wrapper,
 .footer-wrapper {
@@ -103,8 +102,7 @@ img {
 }
 
 /* images */
-.dog-paw-bg {
-  background-size: 100px;
-  background-repeat: no-repeat;
-  background-image: top;
-}
+.main-logo { background-image: $main-logo; }
+.dog-paw { background-image: $dog-paw; }
+
+

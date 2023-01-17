@@ -17,7 +17,7 @@
       z-index: 3;
       img { max-height: 450px; }
     }
-    
+
     .text-section {
       // border: 1px solid;
       z-index: 2;
@@ -65,10 +65,15 @@
       position: absolute;
       width: 80%;
       right: 0;
-      background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, rgba(244,118,80,1) 100%);
+      background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%);
       z-index: 1;
     }
   }
+}
+
+.top-section-wrapper.dog-paw {
+  background-size: 100px;
+  background-repeat: no-repeat;
 }
 
 .categories-section-wrapper {
@@ -85,7 +90,7 @@
     right: 0;
     margin: auto;
   }
-  
+
   .categories-content {
     width: 80%;
     justify-content: space-between;
