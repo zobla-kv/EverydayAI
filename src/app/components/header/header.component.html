@@ -1,7 +1,9 @@
-<header class="header-wrapper d-flex w-100 px-3" role="heading">
+<header class="header-wrapper d-flex w-100 px-4" role="heading">
   <div class="header-item navigation-wrapper">
-    <a routerLink="/">Home</a> /
-    <a routerLink="/test">Test</a>
+    <a routerLink="/">{{ 'Home' | uppercase }}</a> /
+    <a routerLink="/products">{{ 'Products' | uppercase }}</a> /
+    <a routerLink="/about">{{ 'About' | uppercase }}</a> /
+    <a routerLink="/contact-us">{{ 'Contact' | uppercase }}</a>
   </div>
   <div class="header-item logo-wrapper">
     <a routerLink="/">

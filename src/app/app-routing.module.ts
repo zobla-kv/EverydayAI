@@ -13,7 +13,15 @@ const routes: Routes = [
     // pathMatch: 'full'
   },
   {
-    path: 'test',
+    path: 'products',
+    component: FooterComponent
+  },
+  {
+    path: 'about',
+    component: FooterComponent
+  },
+  {
+    path: 'contact-us',
     component: FooterComponent
   },
 ];
