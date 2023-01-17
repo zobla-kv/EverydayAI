@@ -4,4 +4,3 @@ export * from './footer/footer.component';
 export * from './spinner/spinner.component';
 export * from './home-page/home-page.component';
 export * from './home-page/category-selector/category-selector.component';
-export * from './navigation/navigation.component';

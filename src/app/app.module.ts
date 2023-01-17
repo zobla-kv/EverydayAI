@@ -15,7 +15,6 @@ import {
   FooterComponent,
   SpinnerComponent,
   HomePageComponent,
-  NavigationComponent,
   CategorySelectorComponent
 } from '@app/components';
 
@@ -31,7 +30,6 @@ import {
     FooterComponent,
     SpinnerComponent,
     HomePageComponent,
-    NavigationComponent,
     CategorySelectorComponent,
 
     // Directives
