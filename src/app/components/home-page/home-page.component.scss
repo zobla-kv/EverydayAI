@@ -25,13 +25,8 @@
 
       .btn {
         display: flex;
-        background-color: $main-orange-bg-color;
         padding: 0.5rem 1rem;
-        border-radius: 20px;
-        transition: all .3s ease;
-        font-weight: bold;
-        align-items: center;
-        font-size: 14px;
+        font-size: 16px;
       }
       .btn > .mat-icon {
           width: 9px;
@@ -64,10 +59,6 @@
           opacity: 1;
           width: 20px;
       }
-      .btn:hover {
-          background-color: $main-dark-bg-color;
-          color: #fff;
-      }
     }
 
     .gradient-bg {
@@ -85,8 +76,6 @@
 
   .categories-heading-wrapper {
     color: black;
-    // width: fit-content;
-    // padding: 0 4rem;
     width: 250px;
     text-align: center;
     height: 40px;
@@ -106,5 +95,3 @@
 .testimonials-section-wrapper {
   height: 500px;
 }
-
-

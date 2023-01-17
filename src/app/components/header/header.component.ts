@@ -11,6 +11,8 @@ import {
 })
 export class HeaderComponent {
 
+  isLogged = false;
+
   constructor() {}
 
 }

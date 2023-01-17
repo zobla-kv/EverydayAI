@@ -8,9 +8,15 @@ body {
   box-sizing: border-box;
 }
 
+img {
+  width: 100%;
+  height: 100%;
+}
+
 // # overrides bootstrap
 // p { margin: 0; }
 
+/* general */
 .w-10 { width: 10% !important; }
 .w-20 { width: 20% !important; }
 .w-30 { width: 30% !important; }
@@ -36,16 +42,13 @@ body {
 .main-orange-bg { background-color: $main-orange-bg-color; }
 .light-orange-bg { background-color: $light-orange-bg-color; }
 
-img {
-  width: 100%;
-  height: 100%;
-}
-
 .container-fluid {
   border: 1px solid;
   height: 300px;
 }
 
+
+/* header footer */
 .header-wrapper,
 .footer-wrapper {
   background-color: $dark-blue-bg-color;
@@ -83,4 +86,25 @@ img {
     mix-blend-mode: difference;
     content: '';
   }
+}
+
+/* buttons */
+.btn {
+  background-color: $main-orange-bg-color;
+  border-radius: 20px;
+  align-items: center;
+  font-weight: bold;
+  transition: all .3s ease;
+}
+
+.btn:hover {
+  background-color: $main-dark-bg-color;
+  color: #fff;
+}
+
+/* images */
+.dog-paw-bg {
+  background-size: 100px;
+  background-repeat: no-repeat;
+  background-image: top;
 }

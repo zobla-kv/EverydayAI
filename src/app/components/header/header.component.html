@@ -2,7 +2,15 @@
   <div class="header-top-section d-flex flex-row w-100 h-60">
     <div class="header-item w-50">SEARCH</div>
     <div class="header-item logo-wrapper">LOGO</div>
-    <div class="header-item w-50">ACCOUNT</div>
+    <div class="header-item w-50" *ngIf="isLogged">ACCOUNT</div>
+    <div class="header-item profile w-50" *ngIf="!isLogged">
+      <button type="button" class="btn">
+        <span>Login</span>
+      </button>
+      <button type="button" class="btn me-2">
+        <span>Register</span>
+      </button>
+    </div>
   </div>
   <div class="header-bottom-section w-100 h-40">
     <app-navigation></app-navigation>
