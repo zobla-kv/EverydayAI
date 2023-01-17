@@ -1,7 +1,7 @@
 @import '../../../styles/variables.scss';
 
 .category-selector-wrapper {
-  border: 1px solid rgb(87, 87, 87);
+  border: 1px solid $gray-border-color;
   width: 160px;
   height: 130px;
   cursor: pointer;
@@ -11,7 +11,7 @@
     height: 60px;
 
     svg path {
-      fill: white; 
+      fill: white;
     }
   }
 
