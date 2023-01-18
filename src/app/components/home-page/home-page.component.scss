@@ -98,16 +98,27 @@
 }
 
 .about-us-section-wrapper {
-  height: 500px;
-  color: black;
-  padding: 0.5rem 1rem 0.5rem 4rem;
+  color: white;
+  padding: 1.125rem 1rem 0.5rem 4rem;
 
-  .about-us-section-header {
-    font-family: "DM Serif Display", Sans-serif;
-    font-size: 45px;
-    font-weight: 600;
-    line-height: 1.5em;
+  .about-us-top-section {
+    .about-us-section-header {
+      font-family: "DM Serif Display", Sans-serif;
+      font-size: 45px;
+      font-weight: 600;
+      line-height: 1.5em;
+    }
   }
+
+  .about-us-bottom-section {
+    .qoute-section {
+      height: 500px;
+      position: relative;
+      border: 1px solid $main-orange-bg-color;
+      box-shadow: $main-orange-bg-color 0px 16px 0px -8px;
+    }
+  }
+
 
 
   div {

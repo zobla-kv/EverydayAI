@@ -2,6 +2,9 @@
 @import '../../../node_modules/bootstrap/scss/bootstrap';
 @import './variables';
 
+// TODO: check responsiveness of <h> tags
+// not good for now
+
 body {
   background-color: $main-dark-bg-color;
   color: $white-text;
@@ -62,9 +65,11 @@ img {
 /* backgrounds */
 .main-orange-bg { background-color: $main-orange-bg-color; }
 .light-orange-bg { background-color: $light-orange-bg-color; }
+.main-dark-bg { background-color: $main-dark-bg-color; }
 
 /* text */
-.gray-text { color: $gray-border-color; }
+.dark-text { color: $dark-text; }
+.orange-text { color: $orange-text; }
 
 /* header footer */
 .header-wrapper,
