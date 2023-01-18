@@ -1,9 +1,13 @@
 <header class="header-wrapper d-flex w-100 px-4" role="heading">
   <div class="header-item navigation-wrapper">
-    <a routerLink="/">{{ 'Home' | uppercase }}</a> |
-    <a routerLink="/products">{{ 'Products' | uppercase }}</a> |
-    <a routerLink="/about">{{ 'About' | uppercase }}</a> |
-    <a routerLink="/contact-us">{{ 'Contact' | uppercase }}</a>
+    <a
+      routerLink="/"
+      routerLinkActive="nav-active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >{{ 'Home' | uppercase }}</a> |
+    <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a> |
+    <a routerLink="/about" routerLinkActive="nav-active">{{ 'About' | uppercase }}</a> |
+    <a routerLink="/contact-us" routerLinkActive="nav-active">{{ 'Contact' | uppercase }}</a>
   </div>
   <div class="header-item logo-wrapper">
     <a routerLink="/">

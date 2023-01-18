@@ -6,15 +6,29 @@ body {
   background-color: $main-dark-bg-color;
   color: $white-text;
   box-sizing: border-box;
+
+  .header-wrapper, .page-wrapper, .footer-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  margin-top: $header-height;
+  position: relative;
+}
+
+// TODO: remove later
+.container-fluid {
+  border: 1px solid;
+  height: 300px;
 }
 
 img {
   width: 100%;
   height: 100%;
 }
-
-// # overrides bootstrap
-// p { margin: 0; }
 
 /* general */
 .w-10 { width: 10% !important; }
@@ -46,28 +60,18 @@ img {
 /* text */
 .gray-text { color: $gray-border-color; }
 
-.container-fluid {
-  border: 1px solid;
-  height: 300px;
-}
-
 /* header footer */
 .header-wrapper,
 .footer-wrapper {
-  background-color: $dark-blue-bg-color;
   background-color: $main-dark-bg-color;
   width: 100%;
-  color: black;
-  text-align: center;
   z-index: 999;
+  position: sticky;
 }
 
-.header-wrapper { border-bottom: 1px solid white; }
-
-.page-wrapper {
-  min-height: 100vh;
-  margin-top: $header-height;
-  position: relative;
+.header-wrapper {
+  top: 0;
+  border-bottom: 1px solid white;
 }
 
 .flex-center {
