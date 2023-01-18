@@ -97,6 +97,20 @@
   }
 }
 
-.testimonials-section-wrapper {
+.about-us-section-wrapper {
   height: 500px;
+  color: black;
+  padding: 0.5rem 1rem 0.5rem 4rem;
+
+  .about-us-section-header {
+    font-family: "DM Serif Display", Sans-serif;
+    font-size: 45px;
+    font-weight: 600;
+    line-height: 1.5em;
+  }
+
+
+  div {
+    border: 1px solid black;
+  }
 }

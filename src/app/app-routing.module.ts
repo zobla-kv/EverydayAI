@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import {
   HomePageComponent,
-  FooterComponent
+  FooterComponent,
+  CategorySelectorComponent
 } from '@app/components';
 
 const routes: Routes = [
@@ -14,15 +15,15 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    component: FooterComponent
+    component: CategorySelectorComponent
   },
   {
     path: 'about',
-    component: FooterComponent
+    component: CategorySelectorComponent
   },
   {
     path: 'contact-us',
-    component: FooterComponent
+    component: CategorySelectorComponent
   },
 ];
 
