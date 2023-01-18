@@ -99,6 +99,7 @@ img {
   background-color: $main-dark-bg-color;
   color: #fff;
 }
+.btn:active { border: 0; }
 
 .btn-reverse {
   @extend .btn;
