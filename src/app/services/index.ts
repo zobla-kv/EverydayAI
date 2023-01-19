@@ -1,1 +1,2 @@
-export * from './spinner/spinner-service.service';
+export * from './spinner.service';
+export * from './icon.service'
