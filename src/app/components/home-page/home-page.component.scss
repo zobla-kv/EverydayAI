@@ -99,14 +99,32 @@
 
 .about-us-section-wrapper {
   color: white;
-  padding: 1.125rem 1rem 0.5rem 4rem;
+  padding: 1.125rem 2rem;
 
   .about-us-top-section {
+
+    hr { 
+      background-color: white; 
+      color: white;
+      border-color: white;
+    }
+
     .about-us-section-header {
       font-family: "DM Serif Display", Sans-serif;
       font-size: 45px;
       font-weight: 600;
       line-height: 1.5em;
+    }
+
+    .about-us-mission {
+      span { display: block; }
+      .mat-icon.custom-icon {
+        width: 24px;
+        height: 26px;
+        position: relative;
+        right: 2px;
+        & ~ .fw-bold { margin-top: -0.2rem; }
+      }
     }
   }
 
@@ -119,9 +137,7 @@
     }
   }
 
-
-
-  div {
-    border: 1px solid black;
-  }
+  // div {
+  //   border: 1px solid black;
+  // }
 }

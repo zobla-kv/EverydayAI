@@ -17,9 +17,9 @@ import {
 export class HomePageComponent {
 
   productCategories: ProductCategory[] = [
-    { name: 'Food', icon: 'dog-category-food-icon' },
+    { name: 'Food', icon: 'home-page-category-food' },
     { name: 'Toys', icon: 'home-page-category-food' },
-    { name: 'Medicine', icon: 'dog-category-food-icon' },
+    { name: 'Medicine', icon: 'home-page-category-food' },
     { name: 'Training', icon: 'home-page-category-food' }
   ];
 

@@ -62,6 +62,20 @@ img {
 .h-90 { height: 90% !important; }
 .h-100 { height: 100% !important; }
 
+/* alignment */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-filler { flex: 1 1 auto; }
+// TODO: maybe this is not only for <hr> 
+// it might work for everything 
+// removes other margins!!
+.hr-center { margin: 0 auto; }
+.hr-right { margin: 0 0 0 auto; }
+.hr-left { margin: 0 auto 0 0; }
+
 /* backgrounds */
 .main-orange-bg { background-color: $main-orange-bg-color; }
 .light-orange-bg { background-color: $light-orange-bg-color; }
@@ -70,6 +84,7 @@ img {
 /* text */
 .dark-text { color: $dark-text; }
 .orange-text { color: $orange-text; }
+.gray-text { color: $gray-text; }
 
 /* header footer */
 .header-wrapper,
@@ -84,14 +99,6 @@ img {
   top: 0;
   border-bottom: 1px solid white;
 }
-
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-filler { flex: 1 1 auto; }
 
 .custom-border {
   &::before {
@@ -134,4 +141,6 @@ img {
 .main-logo { background-image: $main-logo; }
 .dog-paw { background-image: $dog-paw; }
 
-
+/* material */
+.mat-icon { color: $orange-text; }
+.mat-icon svg path { fill: $orange-text; }
