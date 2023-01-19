@@ -2,6 +2,7 @@
 
 .top-section-wrapper {
   background-color: $light-orange-bg-color;
+  background-color: $main-dark-bg-color;
   padding: 2rem;
 
   .container-fluid {
@@ -10,7 +11,7 @@
     color: black;
     padding: 1rem 0;
 
-    // remove later
+    // TODO: remove later
     border: 0;
 
     .image-section {
@@ -19,7 +20,6 @@
     }
 
     .text-section {
-      // border: 1px solid;
       z-index: 2;
       padding: 1rem 1rem 0 2rem;
 
@@ -65,7 +65,10 @@
       position: absolute;
       width: 80%;
       right: 0;
-      background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%);
+      // TODO: here
+      background: $main-orange-bg-color;
+      // background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%);
+      // background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-dark-bg-color 100%);
       z-index: 1;
     }
   }
@@ -98,6 +101,8 @@
   padding: 1.125rem 2rem;
 
   .about-us-top-section {
+
+    hr { width: 300px; }
 
     .about-us-section-header {
       font-family: "DM Serif Display", Sans-serif;
