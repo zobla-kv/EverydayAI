@@ -29,6 +29,10 @@ export class AppComponent implements OnInit {
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/book.svg')
     );
     this.matIconRegistry.addSvgIcon(
+      'qoute', 
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/qoute.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
       'dog-head', 
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/dog-head.svg')
     );

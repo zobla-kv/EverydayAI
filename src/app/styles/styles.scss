@@ -63,6 +63,12 @@ img {
 .h-100 { height: 100% !important; }
 
 /* alignment */
+.absolute-center {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
 .flex-center {
   display: flex;
   align-items: center;

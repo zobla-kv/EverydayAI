@@ -14,12 +14,8 @@
   .header-item.navigation-wrapper {
     order: 1;
     align-self: center;
-    position: absolute;
-    left: 0;
-    right: 0;
     z-index: -1;
     width: fit-content;
-    margin: auto;
     color: $gray-border-color;
 
     a {
