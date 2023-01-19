@@ -1,8 +1,10 @@
 @import '../../styles/variables';
 
 .top-section-wrapper {
+  // TODO: choose one
   background-color: $light-orange-bg-color;
   background-color: $main-dark-bg-color;
+  // background-color: $main-orange-bg-color;
   padding: 2rem;
 
   .container-fluid {
@@ -23,21 +25,21 @@
       z-index: 2;
       padding: 1rem 1rem 0 2rem;
 
-      .btn {
+      .btn-reverse {
         display: flex;
         padding: 0.5rem 1rem;
         font-size: 16px;
       }
-      .btn > .mat-icon {
+      .btn-reverse > .mat-icon {
           width: 9px;
           height: 9px;
-          border-right: 2px solid black;
-          border-bottom: 2px solid black;
+          border-right: 2px solid white;
+          border-bottom: 2px solid white;
           transform: rotate(-45deg);
           margin: 0 0.5rem;
           transition: all .3s ease;
       }
-      .btn > .mat-icon::before {
+      .btn-reverse > .mat-icon::before {
           display: block;
           background-color: white;
           width: 10px;
@@ -51,32 +53,28 @@
           content: "";
           right: 0;
       }
-      .btn:hover > .mat-icon {
-          transform: rotate(-45deg) translate(4px, 4px);
-          border-color: white;
+      .btn-reverse:hover {
+        background-color: $main-dark-bg-color;
+        color: white;
       }
-      .btn:hover > .mat-icon::before {
+      .btn-reverse:hover > .mat-icon {
+          transform: rotate(-45deg) translate(4px, 4px);
+          // TODO: remove later
+          // border-color: black;
+      }
+      .btn-reverse:hover > .mat-icon::before {
           opacity: 1;
           width: 20px;
       }
     }
 
-    .gradient-bg {
+    .square {
       position: absolute;
       width: 80%;
       right: 0;
-      // TODO: here
-      background: $main-orange-bg-color;
-      // background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%);
-      // background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-dark-bg-color 100%);
       z-index: 1;
     }
   }
-}
-
-.top-section-wrapper.dog-paw {
-  background-size: 100px;
-  background-repeat: no-repeat;
 }
 
 .categories-section-wrapper {
@@ -98,14 +96,13 @@
 
 .about-us-section-wrapper {
   color: white;
-  padding: 1.125rem 2rem;
+  padding: 1.125rem 6rem;
 
   .about-us-top-section {
 
     hr { width: 300px; }
 
     .about-us-section-header {
-      font-family: "DM Serif Display", Sans-serif;
       font-size: 45px;
       font-weight: 600;
       line-height: 1.5em;

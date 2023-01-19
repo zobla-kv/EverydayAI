@@ -59,6 +59,8 @@
   .header-item.logo-wrapper {
     order: 0;
     cursor: pointer;
+    position: relative;
+    left: 8px;
 
     img {
       content: $main-logo;
