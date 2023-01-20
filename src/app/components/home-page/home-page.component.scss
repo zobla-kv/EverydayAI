@@ -96,11 +96,11 @@
 
 .about-us-section-wrapper {
   color: white;
-  padding: 1.125rem 6rem;
+
+  hr { width: 300px; }
 
   .about-us-top-section {
-
-    hr { width: 300px; }
+    padding: 1.125rem 6rem;
 
     .about-us-section-header {
       font-size: 45px;
@@ -120,20 +120,29 @@
     }
   }
 
-  .about-us-bottom-section {
-    .about-us-qoute-section {
-      height: 500px;
-      position: relative;
-      border: 1px solid $main-orange-bg-color;
-      box-shadow: $main-orange-bg-color 0px 16px 0px -8px;
+  .about-us-qoute-section {
+    margin: auto;
+    height: 500px;
+    border: 1px solid $main-orange-bg-color;
+    box-shadow: $main-orange-bg-color 0px 16px 0px -8px;
+    margin-bottom: 40px;
+    position: relative;
 
-      .mat-icon {
-        top: -20px;
-        width: 60px;
-        height: 40px;
-        background-color: $main-dark-bg-color;
-        border-radius: 8px;
-      }
+    .mat-icon {
+      top: -20px;
+      width: 60px;
+      height: 40px;
+      background-color: $main-dark-bg-color;
+      border-radius: 8px;
+    }
+    p {
+      font-size: 28px;
+      line-height: 1.6em;
+      font-weight: 100;
+    }
+    div {
+      border: 1px solid;
+      height: 200px;
     }
   }
 }
