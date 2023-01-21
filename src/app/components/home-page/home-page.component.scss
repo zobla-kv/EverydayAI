@@ -97,6 +97,7 @@
 .about-us-section-wrapper {
   color: white;
 
+  // TODO: overflows on small screen
   hr { width: 300px; }
 
   .about-us-top-section {
@@ -121,7 +122,7 @@
   }
 
   .about-us-qoute-section {
-    padding: 3rem 2rem 3rem 2rem;
+    padding: 2rem 8rem 2rem 8rem;
     border: 1px solid $main-orange-bg-color;
     box-shadow: $main-orange-bg-color 0px 16px 0px -8px;
     margin-bottom: 40px;
@@ -135,7 +136,7 @@
       border-radius: 8px;
     }
     p {
-      font-size: 3vw;
+      font-size: 24px;
       line-height: 1.6em;
       font-weight: 100;
     }
@@ -143,5 +144,28 @@
       border: 1px solid;
       height: 200px;
     }
+  }
+}
+
+/* MEDIA QUERIES */
+// smaller than 976px
+@media only screen and (max-width: 976px) {
+  .about-us-top-section {
+    flex-direction: column;
+    .w-60, .w-40 { width: 100% !important; }
+    .about-us-section-header,
+    .about-us-mission { text-align: center; }
+    hr { margin: auto; }
+  }
+  .about-us-section-wrapper .about-us-qoute-section {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  .about-us-section-wrapper .about-us-qoute-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }

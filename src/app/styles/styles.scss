@@ -64,11 +64,6 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .h-90 { height: 90% !important; }
 .h-100 { height: 100% !important; }
 
-.px-6 {
-  padding-left: 6rem !important;
-  padding-right: 6rem !important;
-}
-
 /* alignment */
 .absolute-center {
   position: absolute;
@@ -156,3 +151,17 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 /* material */
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
+
+/* MEDIA QUERIES */
+// bigger than 976px
+@media only screen and (min-width: 976px) {
+  // TODO: is this default? no need?
+}
+// smaller than 976px
+@media only screen and (max-width: 976px) {
+  p { font-size: 20px !important; }
+}
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  p { font-size: 16px !important; }
+}
