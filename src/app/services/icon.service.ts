@@ -18,12 +18,13 @@ export class IconService {
     { name: 'qoute' },
     { name: 'dog-happy' },
     { name: 'dog-head' },
-    { name: 'home-page-category-food' }
+    { name: 'home-page-category-food' },
+    { name: 'next-step' }
   ]
 
   addCustomIcons() {
     this.Icons.forEach(icon => this.matIconRegistry.addSvgIcon(
-      icon.name, 
+      icon.name,
       this.domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon.name}.svg`)
     ))
   }

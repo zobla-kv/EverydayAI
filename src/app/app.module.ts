@@ -15,7 +15,8 @@ import {
   FooterComponent,
   SpinnerComponent,
   HomePageComponent,
-  CategorySelectorComponent
+  CategorySelectorComponent,
+  ProductPageComponent
 } from '@app/components';
 
 import {
@@ -31,6 +32,7 @@ import {
     SpinnerComponent,
     HomePageComponent,
     CategorySelectorComponent,
+    ProductPageComponent,
 
     // Directives
     HighlightDirective

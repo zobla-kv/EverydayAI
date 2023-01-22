@@ -1,0 +1,13 @@
+<div class="product-buying-steps d-flex flex-center mt-4">
+  <ng-container *ngFor="let step of buyingSteps; let i = index">
+    <div class="buying-step flex-center flex-column position-relative main-orange-bg rounded h-100">
+      <mat-icon>{{ step.icon }}</mat-icon>
+      <span class="fw-bold">{{ step.name }}</span>
+    </div>
+    <mat-icon
+      *ngIf="i < buyingSteps.length - 1"
+      svgIcon="next-step"
+      class="next-step-icon"
+    ></mat-icon>
+  </ng-container>
+</div>

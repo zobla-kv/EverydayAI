@@ -1,0 +1,37 @@
+@import '../../styles/variables';
+
+.product-buying-steps {
+  height: 100px;
+  color: $main-dark-bg-color;
+
+  .mat-icon { color: $main-dark-bg-color; }
+  .mat-icon:not(.next-step-icon) { transform: scale(2.5); }
+  .mat-icon.next-step-icon { transform: scale(3, 3); }
+
+  svg { vertical-align: baseline; }
+
+  .buying-step {
+    margin: 0 3rem;
+    width: 150px;
+  }
+
+  span {
+    position: relative;
+    top: 13px;
+  }
+}
+
+/* MEDIA QUERIES */
+// bigger than 976px
+@media only screen and (min-width: 976px) {
+  // TODO: is this default? no need?
+}
+// smaller than 976px
+@media only screen and (max-width: 976px) {
+  .product-buying-steps .buying-step { margin: 0 2rem; }
+}
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  p { font-size: 16px !important; }
+}
+
