@@ -91,9 +91,9 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .gradient-bg { background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%); }
 
 /* text */
-.dark-text { color: $dark-text; }
-.orange-text { color: $orange-text; }
-.gray-text { color: $gray-text; }
+.dark-text { color: $dark-text !important; }
+.orange-text { color: $orange-text !important; }
+.gray-text { color: $gray-text !important; }
 
 /* header footer */
 .header-wrapper,
