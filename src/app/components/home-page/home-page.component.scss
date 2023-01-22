@@ -79,6 +79,12 @@
 
 .categories-section-wrapper {
   position: relative;
+  top: 40px;
+
+  // TODO: remove later
+  border: 1px solid $main-orange-bg-color !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
 
   .categories-heading-wrapper {
     color: black;
@@ -86,6 +92,9 @@
     text-align: center;
     height: 40px;
     top: -20px;
+
+    background-color: $main-dark-bg-color !important;
+    color: white;
   }
 
   .categories-content {
@@ -122,9 +131,9 @@
   }
 
   .about-us-qoute-section {
-    padding: 2rem 8rem 2rem 8rem;
+    padding: 2rem 6rem 2rem 6rem;
     border: 1px solid $main-orange-bg-color;
-    box-shadow: $main-orange-bg-color 0px 16px 0px -8px;
+    box-shadow: $main-orange-bg-color 0px 16px 0px -6px;
     margin-bottom: 40px;
     position: relative;
 
@@ -140,9 +149,14 @@
       line-height: 1.6em;
       font-weight: 100;
     }
-    div {
-      border: 1px solid;
-      height: 200px;
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    & :last-child {
+      position: relative;
+      top: -4px;
     }
   }
 }
@@ -167,5 +181,6 @@
   .about-us-section-wrapper .about-us-qoute-section {
     padding-left: 1rem;
     padding-right: 1rem;
+    img { width: 48px; height: 48px; }
   }
 }
