@@ -1,5 +1,22 @@
 @import '../../styles/variables';
 
+.product-page-top-section-wrapper {
+  width: 80%;
+  height: 500px;
+  // TODO: choose one
+  border: 1px solid $gray-border-color;
+  border: 1px solid $main-orange-bg-color;
+  border: 1px solid white;
+
+  .text-section {
+    background-color: $main-dark-bg-color;
+  }
+  .img-section {
+    background-color: $main-orange-bg-color;
+    min-width: 400px;
+  }
+}
+
 .product-buying-steps {
   height: 100px;
   color: $main-dark-bg-color;
