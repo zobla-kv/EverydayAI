@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {
   HomePageComponent,
   ProductPageComponent,
-  CategorySelectorComponent
+  CategorySelectorComponent,
+  FormComponent
 } from '@app/components';
 
 const routes: Routes = [
@@ -24,6 +25,14 @@ const routes: Routes = [
   {
     path: 'contact-us',
     component: CategorySelectorComponent
+  },
+  {
+    path: 'login',
+    component: FormComponent
+  },
+  {
+    path: 'register',
+    component: FormComponent
   },
 ];
 

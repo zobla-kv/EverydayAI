@@ -16,7 +16,8 @@ import {
   SpinnerComponent,
   HomePageComponent,
   CategorySelectorComponent,
-  ProductPageComponent
+  ProductPageComponent,
+  FormComponent
 } from '@app/components';
 
 import {
@@ -33,6 +34,7 @@ import {
     HomePageComponent,
     CategorySelectorComponent,
     ProductPageComponent,
+    FormComponent,
 
     // Directives
     HighlightDirective
