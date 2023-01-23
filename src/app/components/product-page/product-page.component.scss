@@ -1,19 +1,68 @@
 @import '../../styles/variables';
 
+// TODO: use for showcase and remove later??
+// create common component if want to reuse
+.top-section-wrapper-showcase {
+  // TODO: choose one
+  background-color: $light-orange-bg-color;
+  background-color: $main-dark-bg-color;
+  // background-color: $main-orange-bg-color;
+  padding: 2rem;
+
+  width: 80%;
+  margin: auto;
+
+  .container-fluid {
+    position: relative;
+    height: auto;
+    color: black;
+    padding: 1rem 0;
+
+    // TODO: remove later
+    border: 0;
+
+    .image-section {
+      z-index: 1;
+      img { max-height: 450px; }
+    }
+
+    .text-section {
+      z-index: 2;
+      padding: 1rem 2rem;
+      color: white;
+      position: relative;
+      left: -15%;
+    }
+
+    .square {
+      position: absolute;
+      width: 76%;
+      right: 0;
+      z-index: 1;
+      background-color: $main-dark-bg-color;
+      border: 1px solid $main-orange-bg-color;
+      height: 50%;
+      // border-radius: 0px 8px 8px 0px;
+    }
+  }
+}
+
 .product-page-top-section-wrapper {
   width: 80%;
-  height: 500px;
   // TODO: choose one
   border: 1px solid $gray-border-color;
-  border: 1px solid $main-orange-bg-color;
-  border: 1px solid white;
+  // border: 1px solid $main-orange-bg-color;
+  // border: 1px solid white;
 
-  .text-section {
-    background-color: $main-dark-bg-color;
+  background: $main-dark-bg-color;
+  // background: $main-orange-bg-color;
+  // background: white;
+
+  .text-section { color: white;
   }
-  .img-section {
+  .image-section {
     background-color: $main-orange-bg-color;
-    min-width: 400px;
+    img { max-height: 250px; }
   }
 }
 

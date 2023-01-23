@@ -89,6 +89,7 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .light-orange-bg { background-color: $light-orange-bg-color; }
 .main-dark-bg { background-color: $main-dark-bg-color; }
 .gradient-bg { background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%); }
+.hr-color-orange { border: 1px solid $main-orange-bg-color; }
 
 /* text */
 .dark-text { color: $dark-text !important; }
