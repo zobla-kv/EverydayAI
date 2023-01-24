@@ -1,5 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, DetachedRouteHandle, Router, RouteReuseStrategy } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { FormType } from '@app/models';
 
@@ -8,65 +11,56 @@ import { FormType } from '@app/models';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent extends RouteReuseStrategy implements OnInit, AfterViewInit {
+export class FormComponent implements AfterViewInit, OnDestroy {
 
   // slider ref
   @ViewChild('slider') slider: ElementRef;
-  
-  // form type
-  type = FormType.LOGIN;
+  // update slider
+  @ViewChild('updateSlider') updateSlider: ElementRef;
 
-  // current route that will determin slider value and form displayed
-  currentRoute: string = this.router.url;
+  // form type
+  type = this.router.url.split('/').pop();
+
+  // routing subscription
+  routingSub$: Subscription;
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private location: Location
   ) {
-    super();
-    console.log('rerender')
+    this.routingSub$ = this.router.events
+    .pipe(filter(event => event instanceof NavigationStart))
+    .subscribe((event: any) => this.handleRouteChange(event));
   }
 
-  shouldDetach(route: ActivatedRouteSnapshot): boolean {
-    console.log('route isnide: ', route);
-    // const keepOnRoutes = ['/login', '/register'];
-    return false;
-  }
-  store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
-    throw new Error('Method not implemented.');
-  }
-  shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    throw new Error('Method not implemented.');
-  }
-  retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
-    throw new Error('Method not implemented.');
-  }
-  shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    return true;
+  ngAfterViewInit(): void {
+    // display right form when coming from outside route (w/o animation)
+    const isLoginForm = this.type === FormType.LOGIN ? 0 : 1
+    this.slider.nativeElement.checked = isLoginForm;
   }
 
-  ngOnInit(): void {
-    // set slider value
-    // this.slider.nativeElement.checked = this.currentRoute === '/' + FormType.LOGIN ? 0 : 1;
+  // display right form and route on slide
+  handleSlider() {
+    const isLoginForm = !this.slider.nativeElement.checked;
+    this.type = isLoginForm ? FormType.REGISTER : FormType.LOGIN;
+    // buggy because of fake route
+    this.location.go('auth/' + this.type);
+    // slow
+    // this.router.navigate(['auth', this.type], { state: { avoidRecursion: true }});
   }
 
-  ngAfterViewInit() {
-    // if route matches current form
-    if (this.currentRoute === '/' + this.type) {
-    } else {
-      this.slider.nativeElement.click();
+  // split between log/reg button functionality and leaving the page
+  handleRouteChange(route: NavigationStart) {
+    // TODO: careful if want to add auth/reset-password
+    const isAuthRoute = route.url.includes('auth');
+    if (isAuthRoute) {
+      // log/reg func
+      this.updateSlider.nativeElement.click(); 
     }
-    // this.slider.nativeElement.checked = this.currentRoute === '/' + FormType.LOGIN ? 0 : 1;
+    // leave page
   }
 
-  // switch between forms
-  handleFormChange(ev: any) {
-    const isChecked = ev.target.checked;
-    const currentForm = this.type;
-    const futureForm = currentForm === FormType.LOGIN ? FormType.REGISTER : FormType.LOGIN;
-  }
-
-  ngOnDestroy() {
-    // this.shouldDetach(new ActivatedRouteSnapshot());
+  ngOnDestroy(): void {
+    this.routingSub$.unsubscribe();
   }
 }
