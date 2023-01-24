@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   SpinnerService
@@ -13,6 +14,16 @@ export class HeaderComponent {
 
   isLogged = false;
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
+
+  handleLoginButton() {
+    this.router.navigate(['auth', 'login']);
+  }
+
+  handleRegisterButton() {
+    this.router.navigate(['auth', 'register']);
+  }
 
 }

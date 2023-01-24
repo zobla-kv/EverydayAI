@@ -16,10 +16,10 @@
   </div>
   <div class="header-item profile" *ngIf="isLogged">ACCOUNT</div>
   <div class="header-item profile" *ngIf="!isLogged">
-    <button type="button" class="btn" routerLink="/login">
+    <button type="button" class="btn" (click)="handleLoginButton()">
       <span>Login</span>
     </button>
-    <button type="button" class="btn me-2" routerLink="/register">
+    <button type="button" class="btn me-2" (click)="handleRegisterButton()">
       <span>Register</span>
     </button>
   </div>

@@ -27,13 +27,14 @@ const routes: Routes = [
     component: CategorySelectorComponent
   },
   {
-    path: 'login',
-    component: FormComponent
-  },
-  {
-    path: 'register',
-    component: FormComponent
-  },
+    path: 'auth',
+    component: FormComponent,
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'login' },
+      { path: 'login', component: FormComponent },
+      { path: 'register', component: FormComponent }
+    ]
+  }
 ];
 
 @NgModule({
