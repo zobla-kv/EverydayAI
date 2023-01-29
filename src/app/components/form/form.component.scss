@@ -24,13 +24,13 @@ h6 span {
   display: block;
 }
 .full-height { min-height: 100vh; }
-[type="checkbox"]:checked,
-[type="checkbox"]:not(:checked) {
+.slider-checkbox:checked,
+.slider-checkbox:not(:checked) {
   position: absolute;
   left: -9999px;
 }
-.checkbox:checked + label,
-.checkbox:not(:checked) + label {
+.slider-checkbox:checked + label,
+.slider-checkbox:not(:checked) + label {
   position: relative;
   display: block;
   width: 60px;
@@ -40,8 +40,8 @@ h6 span {
   cursor: pointer;
   background-color: $main-orange-bg-color;
 }
-.checkbox:checked + label:before,
-.checkbox:not(:checked) + label:before {
+.slider-checkbox:checked + label:before,
+.slider-checkbox:not(:checked) + label:before {
   position: absolute;
   display: block;
   width: 24px;
@@ -55,7 +55,7 @@ h6 span {
   left: -4px;
   transition: all 0.5s ease;
 }
-.checkbox:checked + label:before {
+.slider-checkbox:checked + label:before {
   transform: translateX(44px);
 }
 
@@ -63,7 +63,7 @@ h6 span {
   position: relative;
   width: 440px;
   max-width: 100%;
-  height: 400px;
+  height: 420px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   perspective: 800px;
@@ -95,7 +95,7 @@ h6 span {
   backface-visibility: hidden;
 }
 .card-back { transform: rotateY(180deg); }
-.checkbox:checked ~ .card-3d-wrap .card-3d-wrapper {
+.slider-checkbox:checked ~ .card-3d-wrap .card-3d-wrapper {
   transform: rotateY(180deg);
 }
 .center-wrap {
@@ -114,6 +114,85 @@ h6 span {
   display: block;
   margin: 0;
   padding: 0;
+}
+.form-group.gender {
+  @extend .form-style;
+  background-color: $main-dark-bg-color;
+
+  // TODO: delete commented line if funcionality works
+  label {
+    // border: 1px solid;
+  }
+
+  input[type="radio"] {
+    display: none;
+    visibility: hidden;
+  }
+
+  label {
+    // display: inline-block;
+  }
+
+  .check {
+    cursor: pointer;
+    position: relative;
+    // margin: auto;
+    // width: 18px;
+    // height: 18px;
+    // -webkit-tap-highlight-color: transparent;
+    // transform: translate3d(0, 0, 0);
+  }
+  .check:before {
+    // content: "";
+    // position: absolute;
+    // top: -15px;
+    // left: -15px;
+    // width: 48px;
+    // height: 48px;
+    // width: 100%;
+    // height: 100%;
+    // border-radius: 50%;
+    // background: rgba(34,50,84,0.03);
+    // opacity: 0;
+    // transition: opacity 0.2s ease;
+  }
+  .check svg {
+    position: relative;
+    top: -2px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: $main-orange-bg-color;
+    stroke-width: 1.5;
+    transform: translate3d(0, 0, 0);
+    transition: all 0.2s ease;
+  }
+  .check svg path {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 0;
+  }
+  .check svg polyline {
+    stroke-dasharray: 22;
+    stroke-dashoffset: 66;
+  }
+  .check:hover:before {
+    // opacity: 1;
+  }
+  .check:hover svg {
+    stroke: $main-orange-bg-color;
+  }
+  input[type="radio"]:checked + .check svg {
+    stroke: $main-orange-bg-color;
+  }
+  input[type="radio"]:checked + .check svg path {
+    stroke-dashoffset: 60;
+    transition: all 0.3s linear;
+  }
+  input[type="radio"]:checked + .check svg polyline {
+    stroke-dashoffset: 42;
+    transition: all 0.2s linear;
+    transition-delay: 0.15s;
+  }
 }
 .form-style {
   padding: 13px 20px;

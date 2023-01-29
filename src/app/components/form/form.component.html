@@ -5,7 +5,7 @@
       <div class="col-12 text-center py-4">
         <div class="section pb-5 pt-5 pt-sm-2 text-center">
           <h6 class="mb-0 pb-3"><span>Login</span><span>Register</span></h6>
-          <input #slider class="checkbox" type="checkbox" id="reg-log" name="reg-log" (change)="handleSliderUpdate($event)"/>
+          <input #slider class="slider-checkbox" type="checkbox" id="reg-log" name="reg-log" (change)="handleSliderUpdate($event)"/>
           <label #updateSlider for="reg-log"></label>
           <div class="card-3d-wrap mx-auto">
             <div class="card-3d-wrapper">
@@ -31,16 +31,39 @@
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Register</h4>
                     <div class="form-group">
-                      <input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
-                      <i class="input-icon uil uil-user"></i>
+                      <input type="text" name="regname" class="form-style" placeholder="Your Name" id="regname" autocomplete="off">
+                      <mat-icon>perm_identity</mat-icon>
                     </div>
                     <div class="form-group mt-2">
-                      <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-                      <i class="input-icon uil uil-at"></i>
+                      <input type="email" name="regemail" class="form-style" placeholder="Your Email" id="regemail" autocomplete="off">
+                      <mat-icon>alternate_email</mat-icon>
                     </div>
                     <div class="form-group mt-2">
-                      <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-                      <i class="input-icon uil uil-lock-alt"></i>
+                      <input type="password" name="regpass" class="form-style" placeholder="Your Password" id="regpass" autocomplete="off">
+                      <mat-icon>lock</mat-icon>
+                    </div>
+                    <!-- <div class="form-group mt-2">
+                      <input type="password" name="regpass" class="form-style" placeholder="Your Password" id="regpass" autocomplete="off">
+                      <mat-icon>lock</mat-icon>
+                    </div> -->
+                    <div class="form-group gender mt-2 d-flex">
+                      <mat-icon>wc</mat-icon>
+                      <input type="radio" id="male" name="gender">
+                      <label for="male" class="check" value="male">
+                        <svg width="18px" height="18px" viewBox="0 0 18 18">
+                          <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                          <polyline points="1 9 7 14 15 4"></polyline>
+                        </svg>
+                      </label>
+                      <span class="ms-1 me-4">Male</span>
+                      <input type="radio" id="female" name="gender">
+                      <label for="female" class="check" value="female">
+                        <svg width="18px" height="18px" viewBox="0 0 18 18">
+                          <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                          <polyline points="1 9 7 14 15 4"></polyline>
+                        </svg>
+                      </label>
+                      <span class="ms-1">Female</span>
                     </div>
                     <a href="#" class="btn-reverse mt-4">submit</a>
                       </div>
