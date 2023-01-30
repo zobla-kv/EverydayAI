@@ -9,7 +9,7 @@
           <label for="reg-log"></label>
           <div class="card-3d-wrap mx-auto">
             <div class="card-3d-wrapper">
-              <div class="card-front">
+              <form class="card-front">
                 <div class="center-wrap">
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Login</h4>
@@ -25,22 +25,58 @@
                     <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
                   </div>
                 </div>
-              </div>
-              <div class="card-back">
+              </form>
+              <form [formGroup]="registerForm" (ngSubmit)="handleRegisterSubmit()" class="card-back">
                 <div class="center-wrap">
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Register</h4>
                     <div class="form-group">
-                      <input type="text" name="regname" class="form-style" placeholder="Your Name" id="regname" autocomplete="off">
+                      <input 
+                        type="text" 
+                        class="form-style" 
+                        id="regname" 
+                        name="regname" 
+                        formControlName="name" 
+                        [placeholder]="getPlaceholder('name')" 
+                        autocomplete="off"
+                      >
                       <mat-icon>perm_identity</mat-icon>
+                      <!-- <span 
+                        *ngIf="!registerForm.get('name')?.valid && registerForm.get('name')?.touched"
+                        class="form-text dark-text fw-bold">Please enter valid name
+                      </span> -->
                     </div>
                     <div class="form-group mt-2">
-                      <input type="email" name="regemail" class="form-style" placeholder="Your Email" id="regemail" autocomplete="off">
+                      <input 
+                        type="email" 
+                        class="form-style" 
+                        id="regemail" 
+                        name="regemail" 
+                        formControlName="email" 
+                        placeholder="Your Email" 
+                        autocomplete="off"
+                      >
                       <mat-icon>alternate_email</mat-icon>
+                      <!-- <span 
+                        *ngIf="!registerForm.get('email')?.valid && registerForm.get('email')?.touched"
+                        class="form-text dark-text fw-bold">Please enter valid email
+                      </span> -->
                     </div>
                     <div class="form-group mt-2">
-                      <input type="password" name="regpass" class="form-style" placeholder="Your Password" id="regpass" autocomplete="off">
+                      <input 
+                        type="password" 
+                        class="form-style" 
+                        id="regpass" 
+                        name="regpass" 
+                        formControlName="password" 
+                        placeholder="Your Password" 
+                        autocomplete="off"
+                      >
                       <mat-icon>lock</mat-icon>
+                      <!-- <span 
+                        *ngIf="!registerForm.get('password')?.valid && registerForm.get('password')?.touched"
+                        class="form-text dark-text fw-bold">Please enter valid password
+                      </span> -->
                     </div>
                     <!-- <div class="form-group mt-2">
                       <input type="password" name="regpass" class="form-style" placeholder="Your Password" id="regpass" autocomplete="off">
@@ -48,27 +84,27 @@
                     </div> -->
                     <div class="form-group gender mt-2 d-flex">
                       <mat-icon>wc</mat-icon>
-                      <input type="radio" id="male" name="gender">
-                      <label for="male" class="check" value="male">
-                        <svg width="18px" height="18px" viewBox="0 0 18 18">
-                          <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
-                          <polyline points="1 9 7 14 15 4"></polyline>
-                        </svg>
-                      </label>
-                      <span class="ms-1 me-4">Male</span>
-                      <input type="radio" id="female" name="gender">
-                      <label for="female" class="check" value="female">
-                        <svg width="18px" height="18px" viewBox="0 0 18 18">
-                          <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
-                          <polyline points="1 9 7 14 15 4"></polyline>
-                        </svg>
-                      </label>
-                      <span class="ms-1">Female</span>
+                      <ng-container *ngFor="let gender of ['male', 'female']">
+                        <input 
+                          type="radio" 
+                          [id]="gender" 
+                          name="gender" 
+                          formControlName="gender" 
+                          [value]="gender"
+                        >
+                        <label [for]="gender" class="check">
+                          <svg width="18px" height="18px" viewBox="0 0 18 18">
+                            <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                            <polyline points="1 9 7 14 15 4"></polyline>
+                          </svg>
+                        </label>
+                        <span class="ms-1 me-4">{{ gender | titlecase }}</span>
+                      </ng-container>
                     </div>
-                    <a href="#" class="btn-reverse mt-4">submit</a>
+                    <button type="submit" class="btn-reverse mt-4">submit</button>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>

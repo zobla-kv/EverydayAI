@@ -63,10 +63,12 @@ h6 span {
   position: relative;
   width: 440px;
   max-width: 100%;
-  height: 420px;
+  min-height: 420px;
+  height: auto;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  perspective: 800px;
+  // TODO: remove for sharp letters check it out!
+  // perspective: 800px;
   margin-top: 40px;
 }
 .card-3d-wrapper {

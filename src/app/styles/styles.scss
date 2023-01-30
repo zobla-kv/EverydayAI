@@ -153,6 +153,15 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
 
+/* forms */
+// failed validation
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+  
+  & ~ .mat-icon { color: red; }
+  & ~ .mat-icon svg path { fill: red; }
+}
+
 /* MEDIA QUERIES */
 // bigger than 976px
 @media only screen and (min-width: 976px) {
