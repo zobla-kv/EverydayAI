@@ -9,6 +9,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+/* firebase */
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import * as firebaseConfig from '../../firebase.json';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import {
@@ -49,7 +53,10 @@ import {
     // material
     MatGridListModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+
+    // firebase
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
   ],
   providers: [],
   bootstrap: [AppComponent]
