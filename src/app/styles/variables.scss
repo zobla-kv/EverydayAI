@@ -15,6 +15,10 @@ $dark-text: $main-dark-bg-color;
 $orange-text: $main-orange-bg-color;
 $gray-text: rgb(87, 87, 87);
 
+/* states */
+$error-color: red;
+$error-inset: inset 0px 0px 10px 5px rgba(255, 0, 0, 0.6);
+
 /* header */
 $header-height: 120px;
 

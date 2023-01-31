@@ -12,15 +12,6 @@ import { HeaderEventsService } from '@app/services';
 const VALID = 'VALID';
 const INVALID = 'INVALID';
 
-// by failed validator controls.name.errors
-const registerFormPlaceholders = {
-  name: {
-    default: 'Your name',
-    required: 'Name is required',
-    maxLength: 'Name can have up to 10 characters'
-  }
-}
-
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -55,20 +46,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
-      'name': new FormControl(null, [Validators.maxLength(5)]),
+      'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
       'email': new FormControl(null, [Validators.required, Validators.email]),
-      'password': new FormControl(null, Validators.required),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
       'gender': new FormControl(null, Validators.required),
-    })
+    });
 
-    // consider deleting because nothing can be done inside handler
-    Object.keys(this.registerForm.controls)
-      .filter(field => field !== 'gender')
-      .forEach(field => {
-        this.registerForm.get(field)?.statusChanges
-        .pipe(distinctUntilChanged())
-        .subscribe(status => this.handleStatusChange(field, status));
-      });
+    console.log('form start: ', this.registerForm);
 
   }
 
@@ -96,28 +80,30 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handleTypeChange(typeFromEvent);
   }
 
-  getPlaceholder(field: string) {
-    const currentField = this.registerForm.get(field);
-    if (!currentField?.valid && currentField?.touched) {
-      const errors: any = currentField?.errors;
-      const key = Object.keys(errors)[0];
-      console.log('key: ', key);
-      this.registerForm.patchValue({ name: '' });
-      return (registerFormPlaceholders as any)[field][key];
-    }
-    return (registerFormPlaceholders as any)[field].default;
-  }
-
-  // handle status change of form field (valid <=> invalid)
-  handleStatusChange(field: string, status: string) {
-    if (status === INVALID) {
-      console.log('fired');
-      // this.registerForm.patchValue({ name: 'invalid kek' });
-    }
-  }
-
   handleRegisterSubmit() {
-    console.log('cl: ', this.registerForm);
+    if (this.registerForm.valid) {
+      console.log('form submitted: ', this.registerForm);
+    } else {
+      this.validateAllFormFields(this.registerForm);
+    }
+  }
+
+  // is field valid
+  isFieldValid(field: string) {
+    return !this.registerForm.get(field)?.valid && this.registerForm.get(field)?.touched;
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {
+    console.log('form: ', formGroup);
+    Object.keys(formGroup.controls).forEach(field => {
+      // console.log(field);
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
   }
 
   ngOnDestroy(): void {
