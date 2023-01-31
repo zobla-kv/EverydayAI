@@ -34,6 +34,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // register form
   registerForm: FormGroup;
 
+  // show spinner on submit button
+  showSpinner = false;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -51,8 +54,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
       'gender': new FormControl(null, Validators.required),
     });
-
-    console.log('form start: ', this.registerForm);
 
   }
 
@@ -72,6 +73,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.type = type;
     this.router.navigate([type], { relativeTo: this.activatedRoute });
     this.displayProperForm();
+    // setTimeout(() => this[`${type}form`].reset(), 200);
   }
 
   // handle slider value change
@@ -81,6 +83,8 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleRegisterSubmit() {
+    this.showSpinner = true;
+    setTimeout(() => this.showSpinner = false, 2000);
     if (this.registerForm.valid) {
       console.log('form submitted: ', this.registerForm);
     } else {
@@ -88,15 +92,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // is field valid
-  isFieldValid(field: string) {
-    return !this.registerForm.get(field)?.valid && this.registerForm.get(field)?.touched;
-  }
-
   validateAllFormFields(formGroup: FormGroup) {
     console.log('form: ', formGroup);
     Object.keys(formGroup.controls).forEach(field => {
-      // console.log(field);
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
         control.markAsTouched({ onlySelf: true });

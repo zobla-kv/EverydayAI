@@ -30,61 +30,61 @@
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Register</h4>
                     <div class="form-group">
-                      <input 
-                        type="text" 
-                        class="form-style" 
-                        id="regname" 
-                        name="regname" 
-                        formControlName="name" 
-                        placeholder="Your Name" 
+                      <input
+                        type="text"
+                        class="form-style"
+                        id="regname"
+                        name="regname"
+                        formControlName="name"
+                        placeholder="Your Name"
                         autocomplete="off"
                       >
                       <mat-icon>perm_identity</mat-icon>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Name is required
                       </span>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('name')?.hasError('minlength') && registerForm.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Minimum name length is 6 characters
                       </span>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('name')?.hasError('maxlength') && registerForm.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Maximum name length is 16 characters
                       </span>
                     </div>
                     <div class="form-group mt-2">
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         class="form-style"
-                        id="regemail" 
-                        name="regemail" 
-                        formControlName="email" 
-                        placeholder="Your Email" 
+                        id="regemail"
+                        name="regemail"
+                        formControlName="email"
+                        placeholder="Your Email"
                         autocomplete="off"
                       >
                       <mat-icon>alternate_email</mat-icon>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Email is required
                       </span>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Please enter valid email address
                       </span>
                     </div>
                     <div class="form-group mt-2">
-                      <input 
-                        type="password" 
-                        class="form-style" 
-                        id="regpass" 
-                        name="regpass" 
-                        formControlName="password" 
-                        placeholder="Your Password" 
+                      <input
+                        type="password"
+                        class="form-style"
+                        id="regpass"
+                        name="regpass"
+                        formControlName="password"
+                        placeholder="Your Password"
                         autocomplete="off"
                       >
                       <mat-icon>lock</mat-icon>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Password is required
                       </span>
@@ -92,7 +92,7 @@
                         *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Password must have at least 6 characters
                       </span>
-                      <span 
+                      <span
                         *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold">Password can have up to 16 characters
                       </span>
@@ -100,11 +100,11 @@
                     <div class="form-group gender mt-2">
                       <div class="form-style">
                         <ng-container *ngFor="let gender of ['male', 'female']">
-                          <input 
-                            type="radio" 
-                            [id]="gender" 
-                            name="gender" 
-                            formControlName="gender" 
+                          <input
+                            type="radio"
+                            [id]="gender"
+                            name="gender"
+                            formControlName="gender"
                             [value]="gender"
                           >
                           <label [for]="gender" class="check">
@@ -118,11 +118,18 @@
                       </div>
                       <mat-icon>wc</mat-icon>
                     </div>
-                    <span 
+                    <span
                       *ngIf="registerForm.get('gender')?.hasError('required') && registerForm.get('gender')?.touched"
                       class="form-text ms-1 dark-text fw-bold d-block text-start">Please select a gender
                     </span>
-                    <button type="submit" class="btn-reverse mt-4">submit</button>
+                    <button type="submit" class="btn-reverse mt-4">
+                      <mat-spinner
+                        *ngIf="showSpinner; else noSpinner"
+                        diameter="25"
+                        strokeWidth="4"
+                      ></mat-spinner>
+                      <ng-template #noSpinner>Submit</ng-template>
+                    </button>
                   </div>
                 </div>
               </form>

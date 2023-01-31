@@ -146,12 +146,25 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
   color: black;
 }
 
+// reset bootstrap
+.btn:active {
+  background-color: $main-orange-bg-color !important;
+  color: $dark-text !important;
+}
+.btn-reverse:active {
+  background-color: $main-dark-bg-color !important;
+  color: $white-text !important;
+}
+
+
 /* images */
 .main-logo { background-image: $main-logo; }
 
 /* material */
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
+
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic { stroke: $main-orange-bg-color !important; }
 
 /* forms */
 // failed validation
@@ -162,7 +175,7 @@ input.ng-invalid.ng-touched,
   box-shadow: $error-inset;
   -webkit-box-shadow: $error-inset;
   -moz-box-shadow: $error-inset;
-  
+
   .mat-icon { color: $error-color; }
   .mat-icon svg path { fill: $error-color; }
   & ~ .mat-icon { color: $error-color; }
