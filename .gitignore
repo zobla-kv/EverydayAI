@@ -42,4 +42,7 @@ testem.log
 Thumbs.db
 
 # Firebase
-firebase.json
+public
+
+# Salesforce
+.sfdx
