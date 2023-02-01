@@ -6,7 +6,10 @@ import { distinctUntilChanged, Subscription } from 'rxjs';
 
 import { FormType } from '@app/models';
 
-import { HeaderEventsService } from '@app/services';
+import {
+  AuthService,
+  HeaderEventsService 
+} from '@app/services';
 
 
 const VALID = 'VALID';
@@ -37,10 +40,15 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // show spinner on submit button
   showSpinner = false;
 
+  // register form server side error
+  registerFormServerSideError = false;
+  registerFormServerSideErrorMsg = '';
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private headerEventsService: HeaderEventsService
+    private headerEventsService: HeaderEventsService,
+    private authService: AuthService
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
@@ -48,6 +56,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // TODO: add regex validator for non alphabetic characters
     this.registerForm = new FormGroup({
       'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
       'email': new FormControl(null, [Validators.required, Validators.email]),
@@ -82,18 +91,28 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handleTypeChange(typeFromEvent);
   }
 
-  handleRegisterSubmit() {
+  // submit form
+  submitForm() {
     this.showSpinner = true;
-    setTimeout(() => this.showSpinner = false, 2000);
+    this.authService.register(this.registerForm.getRawValue())
+    .catch(err => {
+      console.log('err: ', err);
+      this.registerFormServerSideError;
+      this.registerFormServerSideErrorMsg = err;
+    })
+    .finally(() => this.showSpinner = false);
+  }
+
+  // validate form before submitting
+  validateForm() {
     if (this.registerForm.valid) {
-      console.log('form submitted: ', this.registerForm);
+      this.submitForm();
     } else {
       this.validateAllFormFields(this.registerForm);
     }
   }
 
   validateAllFormFields(formGroup: FormGroup) {
-    console.log('form: ', formGroup);
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
