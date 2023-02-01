@@ -1,4 +1,4 @@
 export interface ProductCategory {
-    name: string;
-    icon: string;
+  name: string;
+  icon: string;
 }
