@@ -47,5 +47,4 @@ export class FirebaseService {
     return message.split(':')[1].split('.')[0].trim();
   }
 
-
 }

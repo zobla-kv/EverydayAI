@@ -102,11 +102,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // validate form before submitting
   validateForm() {
-    if (this.registerForm.valid) {
-      this.submitForm();
-    } else {
-      this.validateAllFormFields(this.registerForm);
-    }
+    console.log('fired');
+    this.authService.login();
+    // if (this.registerForm.valid) {
+    //   this.submitForm();
+    // } else {
+    //   this.validateAllFormFields(this.registerForm);
+    // }
   }
 
   validateAllFormFields(formGroup: FormGroup) {

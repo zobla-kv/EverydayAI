@@ -29,7 +29,7 @@ export class HeaderComponent implements OnDestroy {
   ) {
 
     this.userSub$ = this.authService.user.subscribe(user => {
-      this.isAuthenticated = user.token;
+      this.isAuthenticated = user.token ? true : false;
     })
 
   }
