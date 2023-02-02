@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { 
   User, 
@@ -14,7 +13,6 @@ import { FirebaseService } from '@app/services';
 export class AuthService {
 
   constructor(
-    private router: Router,
     private FirebaseService: FirebaseService
   ) { }
 
