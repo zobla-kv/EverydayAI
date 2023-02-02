@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import { 
-  User, 
+  RegisterUser, 
   FirebaseResponse 
 } from '@app/models';
 
@@ -19,7 +19,7 @@ export class FirebaseService {
   ) { }
 
   // register new user
-  register(user: User): Promise<FirebaseResponse> {
+  register(user: RegisterUser): Promise<FirebaseResponse> {
     return this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(res => {
       // res has intereseting data, check it out (email for example)

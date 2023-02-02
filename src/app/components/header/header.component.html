@@ -14,8 +14,8 @@
       <img alt="house of dogs logo" role="img">
     </a>
   </div>
-  <div class="header-item profile" *ngIf="isLogged">ACCOUNT</div>
-  <div class="header-item profile" *ngIf="!isLogged">
+  <div class="header-item profile" *ngIf="isAuthenticated">LOGGED IN</div>
+  <div class="header-item profile" *ngIf="!isAuthenticated">
     <button type="button" class="btn" (click)="handleAuthButton('login')">
       <span>Login</span>
     </button>

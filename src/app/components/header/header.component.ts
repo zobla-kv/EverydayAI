@@ -1,26 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import {
+  AuthService,
   HeaderEventsService
 } from '@app/services';
 
-import { FormType } from '@app/models';
+import {
+  User,
+  FormType 
+} from '@app/models';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
 
-  isLogged = false;
+  isAuthenticated: boolean;
+  userSub$: Subscription;
 
   constructor(
     private router: Router,
-    private headerEventsService: HeaderEventsService
-  ) {}
+    private headerEventsService: HeaderEventsService,
+    private authService: AuthService
+  ) {
+
+    this.userSub$ = this.authService.user.subscribe(user => {
+      this.isAuthenticated = user.token;
+    })
+
+  }
 
   // handle route change to log/reg form
   handleAuthButton(type: string) {
@@ -31,6 +43,10 @@ export class HeaderComponent {
     } else {
       this.router.navigate(['auth', type]);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.userSub$.unsubscribe();
   }
 
 }
