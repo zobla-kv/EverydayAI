@@ -63,7 +63,10 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.loginForm = {
-      form: new FormGroup({}),
+      form: new FormGroup({
+        'email': new FormControl(null, [Validators.required]),
+        'password': new FormControl(null, [Validators.required]),
+      }),
       type: FormType.LOGIN
     }
 

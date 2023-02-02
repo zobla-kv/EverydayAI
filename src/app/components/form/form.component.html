@@ -8,17 +8,41 @@
           <label for="reg-log"></label>
           <div class="card-3d-wrap mx-auto">
             <div class="card-3d-wrapper">
-              <form class="card-front">
+              <form [formGroup]="loginForm.form" (ngSubmit)="validateForm()" class="card-front">
                 <div class="center-wrap">
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Login</h4>
                     <div class="form-group">
-                      <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
+                      <input
+                        type="text"
+                        class="form-style"
+                        id="logemail"
+                        name="logemail"
+                        formControlName="email"
+                        placeholder="Your Email"
+                        autocomplete="off"
+                      >
                       <mat-icon>alternate_email</mat-icon>
+                      <span
+                        *ngIf="loginForm.form.get('email')?.hasError('required') && loginForm.form.get('email')?.touched"
+                        class="form-text ms-1 dark-text fw-bold d-block">Email can not be empty
+                      </span>
                     </div>
                     <div class="form-group mt-2">
-                      <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
+                      <input
+                        type="password"
+                        class="form-style"
+                        id="logpass"
+                        name="logpass"
+                        formControlName="password"
+                        placeholder="Your Password"
+                        autocomplete="off"
+                      >
                       <mat-icon>lock</mat-icon>
+                      <span
+                        *ngIf="loginForm.form.get('password')?.hasError('required') && loginForm.form.get('password')?.touched"
+                        class="form-text ms-1 dark-text fw-bold d-block">Password can not be empty
+                      </span>
                     </div>
                     <button type="button" class="btn-reverse mt-4" (click)="validateForm()">
                       <mat-spinner
@@ -88,8 +112,8 @@
                       <input
                         type="password"
                         class="form-style"
-                        id="regpass"
-                        name="regpass"
+                        id="regpassword"
+                        name="regpassword"
                         formControlName="password"
                         placeholder="Your Password"
                         autocomplete="off"
