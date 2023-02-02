@@ -97,6 +97,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       setTimeout(() => console.clear(), 0);
     })
+    .finally(() => this.showSpinner = false)
   }
 
   // validate form before submitting

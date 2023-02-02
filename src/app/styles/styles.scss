@@ -156,15 +156,20 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
   color: $white-text !important;
 }
 
-
 /* images */
 .main-logo { background-image: $main-logo; }
 
 /* material */
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
-
-.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic { stroke: $main-orange-bg-color !important; }
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic { 
+  stroke: $main-orange-bg-color !important; 
+}
+button:has(mat-spinner) { 
+  cursor: pointer;
+  pointer-events: none; 
+  border: 1px solid white;
+}
 
 /* forms */
 // failed validation
