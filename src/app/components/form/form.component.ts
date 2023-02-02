@@ -4,7 +4,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {  Subscription } from 'rxjs';
 
-import { FormType } from '@app/models';
+import { 
+  FormType
+} from '@app/models';
 
 import {
   AuthService,
@@ -87,17 +89,15 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // submit form
-  submitForm() {
+  async submitForm() {
     this.showSpinner = true;
-    this.authService.register(this.registerForm.getRawValue())
-    .catch(() => {
-      this.registerForm.controls['email'].setErrors({ 
-        [FormComponent.ERROR_EMAIL_ALREADY_USED]: 
-        FormComponent.ERROR_MSG_EMAIL_ALREADY_USED 
-      });
-      setTimeout(() => console.clear(), 0);
-    })
-    .finally(() => this.showSpinner = false)
+    const response = await this.authService.register(this.registerForm.getRawValue());
+    console.log('response: ', response);
+    if (response.error) {
+      this.registerForm.controls['email'].setErrors({ [response.error]: response.errorMessage })
+    }
+    this.showSpinner = false;
+    setTimeout(() => console.clear(), 0);
   }
 
   // validate form before submitting

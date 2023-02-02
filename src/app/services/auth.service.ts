@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-
-import {
-  User
+import { 
+  User, 
+  FirebaseResponse 
 } from '@app/models';
+
+import { FirebaseService } from '@app/services';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +15,11 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private fireAuth: AngularFireAuth,
-    private fireStore: AngularFirestore
+    private FirebaseService: FirebaseService
   ) { }
 
   // register new user
-  register(user: User): Promise<string | boolean> {
-    return this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
-    .then(res => {
-      user.id = this.fireStore.createId();
-      return this.fireStore.collection('Users').doc(user.id).set(user);
-    })
-    .then(() => this.router.navigate(['/']))
-    .catch(err => { throw Error(err) })
+  register(user: User): Promise<FirebaseResponse> {
+    return this.FirebaseService.register(user);
   }
 }
