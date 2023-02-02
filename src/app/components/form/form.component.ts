@@ -4,13 +4,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {  Subscription } from 'rxjs';
 
-import { 
+import {
   FormType
 } from '@app/models';
 
 import {
   AuthService,
-  HeaderEventsService 
+  HeaderEventsService
 } from '@app/services';
 
 @Component({
@@ -19,9 +19,6 @@ import {
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  static ERROR_EMAIL_ALREADY_USED = 'email_already_used';
-  static ERROR_MSG_EMAIL_ALREADY_USED = 'The email address is already in use by another account';
 
   // slider ref
   @ViewChild('slider') slider: ElementRef;
@@ -96,7 +93,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false;
       setTimeout(() => console.clear(), 0);
       return this.registerForm.controls['email'].setErrors({ [response.error]: response.errorMessage });
-    } 
+    }
     this.router.navigate(['/']);
   }
 
