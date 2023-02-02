@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { distinctUntilChanged, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 
 import { FormType } from '@app/models';
 
@@ -11,16 +11,15 @@ import {
   HeaderEventsService 
 } from '@app/services';
 
-
-const VALID = 'VALID';
-const INVALID = 'INVALID';
-
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  static ERROR_EMAIL_ALREADY_USED = 'email_already_used';
+  static ERROR_MSG_EMAIL_ALREADY_USED = 'The email address is already in use by another account';
 
   // slider ref
   @ViewChild('slider') slider: ElementRef;
@@ -39,10 +38,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // show spinner on submit button
   showSpinner = false;
-
-  // register form server side error
-  registerFormServerSideError = false;
-  registerFormServerSideErrorMsg = '';
 
   constructor(
     private router: Router,
@@ -95,12 +90,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   submitForm() {
     this.showSpinner = true;
     this.authService.register(this.registerForm.getRawValue())
-    .catch(err => {
-      console.log('err: ', err);
-      this.registerFormServerSideError;
-      this.registerFormServerSideErrorMsg = err;
+    .catch(() => {
+      this.registerForm.controls['email'].setErrors({ 
+        [FormComponent.ERROR_EMAIL_ALREADY_USED]: 
+        FormComponent.ERROR_MSG_EMAIL_ALREADY_USED 
+      });
+      setTimeout(() => console.clear(), 0);
     })
-    .finally(() => this.showSpinner = false);
   }
 
   // validate form before submitting

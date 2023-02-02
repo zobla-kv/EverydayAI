@@ -20,13 +20,13 @@ export class AuthService {
   ) { }
 
   // register new user
-  register(user: User): Promise<string> {
+  register(user: User): Promise<string | boolean> {
     return this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(res => {
       user.id = this.fireStore.createId();
       return this.fireStore.collection('Users').doc(user.id).set(user);
     })
     .then(() => this.router.navigate(['/']))
-    .catch(err => err)
+    .catch(err => { throw Error(err) })
   }
 }
