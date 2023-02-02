@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {  Subscription } from 'rxjs';
 
 import {
+  Form,
   FormType
 } from '@app/models';
 
@@ -23,17 +24,17 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // slider ref
   @ViewChild('slider') slider: ElementRef;
 
-  // form type
-  type = this.router.url.split('/').pop();
+  // currently active form
+  activeForm: Form = { form: new FormGroup({}), type: this.router.url.split('/').pop() };
 
   // auth buttons sub
   headerAuthButtonSub$: Subscription;
 
-  // login form
-  loginForm: FormGroup;
-
   // register form
-  registerForm: FormGroup;
+  registerForm: Form;
+
+  // login form
+  loginForm: Form;
 
   // show spinner on submit button
   showSpinner = false;
@@ -51,12 +52,22 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     // TODO: add regex validator for non alphabetic characters
-    this.registerForm = new FormGroup({
-      'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
-      'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
-      'gender': new FormControl(null, Validators.required),
-    });
+    this.registerForm = {
+      form: new FormGroup({
+        'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+        'email': new FormControl(null, [Validators.required, Validators.email]),
+        'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+        'gender': new FormControl(null, Validators.required),
+      }),
+      type: FormType.REGISTER
+    }
+
+    this.loginForm = {
+      form: new FormGroup({}),
+      type: FormType.LOGIN
+    }
+
+    this.activeForm = this.activeForm.type === this.registerForm.type ? this.registerForm : this.loginForm;
 
   }
 
@@ -67,16 +78,16 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // show proper side of the form
   displayProperForm() {
-    const isLoginForm = this.type === FormType.LOGIN ? 0 : 1
+    const isLoginForm = this.activeForm.type === FormType.LOGIN ? 0 : 1
     this.slider.nativeElement.checked = isLoginForm;
   }
 
   // handle change of form type
   handleTypeChange(type: string) {
-    this.type = type;
-    this.router.navigate([type], { relativeTo: this.activatedRoute });
+    this.activeForm = type === FormType.LOGIN ? this.loginForm : this.registerForm;
+    this.router.navigate([this.activeForm.type], { relativeTo: this.activatedRoute });
     this.displayProperForm();
-    // setTimeout(() => this[`${type}form`].reset(), 200);
+    // setTimeout(() => this.activeForm.form.reset(), 200);
   }
 
   // handle slider value change
@@ -86,26 +97,29 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // submit form
-  async submitForm() {
+  async submitForm(form: Form) {
     this.showSpinner = true;
-    const response = await this.authService.register(this.registerForm.getRawValue());
-    if (response.error) {
+    let response;
+    if (form.type === FormType.LOGIN) {
+      this.authService.login();
+    } else {
+      response = await this.authService.register(form.form.getRawValue());
+    }
+    if (response?.error) {
       this.showSpinner = false;
-      setTimeout(() => console.clear(), 0);
-      return this.registerForm.controls['email'].setErrors({ [response.error]: response.errorMessage });
+      // setTimeout(() => console.clear(), 0);
+      return this.registerForm.form.controls['email'].setErrors({ [response.error]: response.errorMessage });
     }
     this.router.navigate(['/']);
   }
 
   // validate form before submitting
   validateForm() {
-    console.log('fired');
-    this.authService.login();
-    // if (this.registerForm.valid) {
-    //   this.submitForm();
-    // } else {
-    //   this.validateAllFormFields(this.registerForm);
-    // }
+    if (this.activeForm.form.valid) {
+      this.submitForm(this.activeForm);
+    } else {
+      this.validateAllFormFields(this.activeForm.form);
+    }
   }
 
   validateAllFormFields(formGroup: FormGroup) {

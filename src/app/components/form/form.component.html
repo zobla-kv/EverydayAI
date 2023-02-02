@@ -32,7 +32,7 @@
                   </div>
                 </div>
               </form>
-              <form [formGroup]="registerForm" (ngSubmit)="validateForm()" class="card-back">
+              <form [formGroup]="registerForm.form" (ngSubmit)="validateForm()" class="card-back">
                 <div class="center-wrap">
                   <div class="section text-center">
                     <h4 class="mb-4 pb-3 dark-text">Register</h4>
@@ -48,15 +48,15 @@
                       >
                       <mat-icon>perm_identity</mat-icon>
                       <span
-                        *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.touched"
+                        *ngIf="registerForm.form.get('name')?.hasError('required') && registerForm.form.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Name is required
                       </span>
                       <span
-                        *ngIf="registerForm.get('name')?.hasError('minlength') && registerForm.get('name')?.touched"
+                        *ngIf="registerForm.form.get('name')?.hasError('minlength') && registerForm.form.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Minimum name length is 6 characters
                       </span>
                       <span
-                        *ngIf="registerForm.get('name')?.hasError('maxlength') && registerForm.get('name')?.touched"
+                        *ngIf="registerForm.form.get('name')?.hasError('maxlength') && registerForm.form.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Maximum name length is 16 characters
                       </span>
                     </div>
@@ -72,16 +72,16 @@
                       >
                       <mat-icon>alternate_email</mat-icon>
                       <span
-                        *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched"
+                        *ngIf="registerForm.form.get('email')?.hasError('required') && registerForm.form.get('email')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Email is required
                       </span>
                       <span
-                        *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched"
+                        *ngIf="registerForm.form.get('email')?.hasError('email') && registerForm.form.get('email')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
                       </span>
                       <span
-                        *ngIf="registerForm.get('email')?.hasError('email-already-in-use')"
-                        class="form-text ms-1 dark-text fw-bold d-block"> {{ registerForm.get('email')?.getError('email-already-in-use')}}
+                        *ngIf="registerForm.form.get('email')?.hasError('email-already-in-use')"
+                        class="form-text ms-1 dark-text fw-bold d-block"> {{ registerForm.form.get('email')?.getError('email-already-in-use')}}
                       </span>
                     </div>
                     <div class="form-group mt-2">
@@ -96,15 +96,15 @@
                       >
                       <mat-icon>lock</mat-icon>
                       <span
-                        *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched"
+                        *ngIf="registerForm.form.get('password')?.hasError('required') && registerForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password is required
                       </span>
                       <span
-                        *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched"
+                        *ngIf="registerForm.form.get('password')?.hasError('minlength') && registerForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password must have at least 6 characters
                       </span>
                       <span
-                        *ngIf="registerForm.get('password')?.hasError('maxlength') && registerForm.get('password')?.touched"
+                        *ngIf="registerForm.form.get('password')?.hasError('maxlength') && registerForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password can have up to 16 characters
                       </span>
                     </div>
@@ -130,7 +130,7 @@
                       <mat-icon>wc</mat-icon>
                     </div>
                     <span
-                      *ngIf="registerForm.get('gender')?.hasError('required') && registerForm.get('gender')?.touched"
+                      *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
                       class="form-text ms-1 dark-text fw-bold d-block text-start">Please select a gender
                     </span>
                     <button type="submit" class="btn-reverse mt-4">

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
-import { 
+import {
   User,
-  RegisterUser, 
-  FirebaseResponse 
+  RegisterUser,
+  FirebaseResponse
 } from '@app/models';
 
 import { FirebaseService } from '@app/services';
