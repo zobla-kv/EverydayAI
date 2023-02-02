@@ -92,12 +92,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   async submitForm() {
     this.showSpinner = true;
     const response = await this.authService.register(this.registerForm.getRawValue());
-    console.log('response: ', response);
     if (response.error) {
-      this.registerForm.controls['email'].setErrors({ [response.error]: response.errorMessage })
-    }
-    this.showSpinner = false;
-    setTimeout(() => console.clear(), 0);
+      this.showSpinner = false;
+      setTimeout(() => console.clear(), 0);
+      return this.registerForm.controls['email'].setErrors({ [response.error]: response.errorMessage });
+    } 
+    this.router.navigate(['/']);
   }
 
   // validate form before submitting
