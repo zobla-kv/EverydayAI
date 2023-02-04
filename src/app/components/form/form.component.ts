@@ -6,7 +6,9 @@ import {  Subscription } from 'rxjs';
 
 import {
   Form,
-  FormType
+  FormType,
+  FirebaseAuthResponse,
+  FirebaseError
 } from '@app/models';
 
 import {
@@ -64,7 +66,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loginForm = {
       form: new FormGroup({
-        'email': new FormControl(null, [Validators.required]),
+        'email': new FormControl(null, [Validators.required, Validators.email]),
         'password': new FormControl(null, [Validators.required]),
       }),
       type: FormType.LOGIN
@@ -102,18 +104,37 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // submit form
   async submitForm(form: Form) {
     this.showSpinner = true;
-    let response;
+    let response: FirebaseAuthResponse;
     if (form.type === FormType.LOGIN) {
-      this.authService.login();
+      response = await this.authService.login(form.form.getRawValue());
     } else {
       response = await this.authService.register(form.form.getRawValue());
     }
     if (response?.error) {
-      this.showSpinner = false;
+      // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
-      return this.registerForm.form.controls['email'].setErrors({ [response.error]: response.errorMessage });
+      this.showSpinner = false;
+      return this.addError(form.form, response.error);
     }
     this.router.navigate(['/']);
+  }
+
+  // adds error to form control based on error type
+  addError(form: FormGroup, error: FirebaseError) {
+    // this.registerForm.form.controls['email'].setErrors({ [response.error]: response.errorMessage });
+    let controlName = '';
+    switch(error.error) { 
+      case 'user-not-found':
+      case 'email-already-in-use':
+      case 'too-many-requests':
+        controlName = 'email'
+        break;
+      case 'wrong-password':
+        controlName = 'password'
+        break;
+      default:
+    }
+    form.controls[controlName].setErrors({ [error.error]: error.errorMessage })
   }
 
   // validate form before submitting

@@ -27,6 +27,18 @@
                         *ngIf="loginForm.form.get('email')?.hasError('required') && loginForm.form.get('email')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Email can not be empty
                       </span>
+                      <span
+                        *ngIf="loginForm.form.get('email')?.hasError('email') && loginForm.form.get('email')?.touched"
+                        class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
+                      </span>
+                      <span
+                        *ngIf="loginForm.form.get('email')?.hasError('user-not-found')"
+                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('user-not-found') }}
+                      </span>
+                      <span
+                        *ngIf="loginForm.form.get('email')?.hasError('too-many-requests')"
+                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('too-many-requests') }}
+                      </span>
                     </div>
                     <div class="form-group mt-2">
                       <input
@@ -42,6 +54,10 @@
                       <span
                         *ngIf="loginForm.form.get('password')?.hasError('required') && loginForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password can not be empty
+                      </span>
+                      <span
+                        *ngIf="loginForm.form.get('password')?.hasError('wrong-password')"
+                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('password')?.getError('wrong-password') }}
                       </span>
                     </div>
                     <button type="button" class="btn-reverse mt-4" (click)="validateForm()">
@@ -155,7 +171,7 @@
                     </div>
                     <span
                       *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
-                      class="form-text ms-1 dark-text fw-bold d-block text-start">Please select a gender
+                      class="form-text ms-1 dark-text fw-bold d-block text-start">Gender is required
                     </span>
                     <button type="submit" class="btn-reverse mt-4">
                       <mat-spinner

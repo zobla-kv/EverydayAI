@@ -28,7 +28,7 @@ export class HeaderComponent implements OnDestroy {
     private authService: AuthService
   ) {
 
-    this.userSub$ = this.authService.user.subscribe(user => {
+    this.userSub$ = this.authService.user.subscribe((user: User) => {
       this.isAuthenticated = user.token ? true : false;
     })
 

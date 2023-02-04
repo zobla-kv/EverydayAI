@@ -3,11 +3,20 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
+// transform subscription into promise
+import { firstValueFrom } from 'rxjs';
+
 import { 
+  User,
   RegisterUser, 
-  FirebaseResponse 
+  FirebaseAuthResponse,
 } from '@app/models';
 
+/**
+ * Firebase related acitivies
+ * EXTERNAL
+ * 
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -15,36 +24,51 @@ export class FirebaseService {
 
   constructor(
     private fireAuth: AngularFireAuth,
-    private fireStore: AngularFirestore
+    private db: AngularFirestore
   ) { }
 
   // register new user
-  register(user: RegisterUser): Promise<FirebaseResponse> {
+  register(user: RegisterUser): Promise<FirebaseAuthResponse> {
     return this.fireAuth.createUserWithEmailAndPassword(user.email, user.password)
-    .then(res => {
+    .then(async res => {
       // res has intereseting data, check it out (email for example)
-      user.id = this.fireStore.createId();
-      this.fireStore.collection('Users').doc(user.id).set(user);
-      return Promise.resolve({ error: null, errorMessage: null });
+      user.id = this.db.createId();
+      await this.db.collection('Users').doc(user.id).set(user)
+      .catch(err => this.db.collection('FailedRegisterWrites').doc(user.email).set({ reason: err }));
+      // TODO: delete user written by first call if catch is reached
+
+      const tempUser = await this.getUserByEmail(user.email);
+
+      return Promise.resolve(this.generateResponse(tempUser, null));
     })
-    .catch(err => Promise.resolve({ 
-      error: this.formatError(err.code),
-      errorMessage: this.formatErrorMessage(err.message)
-    }))
+    .catch(err => Promise.resolve(this.generateResponse(null, err.code)));
   }
 
-  // formats error returned by firebase
-  formatError(error: string): string {
-    // before -> auth/email-already-in-use
-    // after  -> email-already-in-use
-    return error.split('/')[1];
+  // log in user
+  login(user: RegisterUser): Promise<FirebaseAuthResponse> {
+    return new Promise(async (resolve) => {
+      // loginResponse.user can be used for many things (emailVerified etc.)
+      // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
+      const loginResponse = await this.fireAuth.signInWithEmailAndPassword(user.email, user.password)
+      .catch(err => resolve(this.generateResponse(null, err.code)));
+
+      const tempUser = await this.getUserByEmail(user.email);
+      resolve(this.generateResponse(tempUser, null));
+    })
   }
 
-  // formats error message returned by firebase
-  formatErrorMessage(message: string): string {
-    // before -> Firebase: The email address is already in use by another account. (auth/email-already-in-use)
-    // after  -> The email address is already in use by another account
-    return message.split(':')[1].split('.')[0].trim();
+  // generate auth response
+  generateResponse(user: RegisterUser | null, error: string | null): FirebaseAuthResponse {
+    return new FirebaseAuthResponse(user, error);
+  }
+
+  // TODO: change RegisterUser -> User later
+  getUserByEmail(email: string): Promise<RegisterUser> {
+    return firstValueFrom(this.db.collection('Users', query => query.where('email', '==', email)).get())
+    .then(res => {
+      const user = res.docs[0].data() as RegisterUser;
+      return Promise.resolve(user);
+    })
   }
 
 }
