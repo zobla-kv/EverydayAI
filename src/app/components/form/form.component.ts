@@ -104,7 +104,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // submit form
   async submitForm(form: Form) {
     this.showSpinner = true;
-    let response: FirebaseAuthResponse;
+    let response;
     if (form.type === FormType.LOGIN) {
       response = await this._authService.login(form.form.getRawValue());
     } else {
@@ -114,14 +114,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
-      return this.addError(form.form, response.error);
+      return this.handleError(form.form, response.error);
     }
-    this._router.navigate(['/']);
   }
 
-  // adds error to form control based on error type
-  addError(form: FormGroup, error: FirebaseError) {
-    // this.registerForm.form.controls['email'].setErrors({ [response.error]: response.errorMessage });
+  // handle error based on error type
+  handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
     switch(error.error) {
       case 'user-not-found':
@@ -132,6 +130,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'wrong-password':
         controlName = 'password'
         break;
+      case 'registration-write-failed':
+      case 'verification-email-sending-failed':
+        return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getErrorMessage(error.error));
       default:
     }
     form.controls[controlName].setErrors({ [error.error]: error.errorMessage })

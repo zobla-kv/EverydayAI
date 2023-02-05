@@ -8,7 +8,11 @@ import {
   FirebaseAuthResponse
 } from '@app/models';
 
-import { FirebaseService } from '@app/services';
+import {
+  FirebaseService,
+  UtilService
+ } from '@app/services';
+import { Router } from '@angular/router';
 
 /**
  * Authentication related activities
@@ -20,23 +24,30 @@ import { FirebaseService } from '@app/services';
 })
 export class AuthService {
 
-  user = new Subject<User>();
+  user$ = new Subject<User>();
 
   constructor(
-    private _firebaseService: FirebaseService
+    private _firebaseService: FirebaseService,
+    private _utilService: UtilService,
+    private _router: Router
   ) { }
 
   // register new user
-  register(user: RegisterUser): Promise<FirebaseAuthResponse> {
-    return this._firebaseService.register(user);
+  async register(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
+    const response = await this._firebaseService.register(user);
+    if (response.error) {
+      return response;
+    }
+    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getErrorMessage('registration-successful'));
   }
 
   // login user
-  async login(user: RegisterUser): Promise<FirebaseAuthResponse> {
+  async login(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
     const response = await this._firebaseService.login(user);
-    if (response.user) {
-      this.user.next(new User('test-id', 'test-token', new Date()));
+    if (response.error) {
+      return response;
     }
-    return response;
+    this.user$.next(new User('test-id', 'test-token', new Date()));
+    this._router.navigate(['/']);
   }
 }

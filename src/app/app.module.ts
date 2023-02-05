@@ -41,6 +41,7 @@ import {
 import {
   HighlightDirective
 } from '@app/directives';
+import { InformationComponent } from './components/information/information.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {
     CategorySelectorComponent,
     ProductPageComponent,
     FormComponent,
+    InformationComponent,
 
     // Directives
     HighlightDirective
