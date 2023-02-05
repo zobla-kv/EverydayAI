@@ -13,7 +13,7 @@ import {
 
 import {
   AuthService,
-  HeaderEventsService
+  UtilService
 } from '@app/services';
 
 @Component({
@@ -44,12 +44,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private headerEventsService: HeaderEventsService,
+    private utilService: UtilService,
     private authService: AuthService
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
-      this.headerEventsService.authButton$.subscribe(type => this.handleTypeChange(type));
+      this.utilService.authButtonClick$.subscribe(type => this.handleTypeChange(type));
   }
 
   ngOnInit(): void {
@@ -123,7 +123,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   addError(form: FormGroup, error: FirebaseError) {
     // this.registerForm.form.controls['email'].setErrors({ [response.error]: response.errorMessage });
     let controlName = '';
-    switch(error.error) { 
+    switch(error.error) {
       case 'user-not-found':
       case 'email-already-in-use':
       case 'too-many-requests':

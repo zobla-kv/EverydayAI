@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
+
 import { Subject } from 'rxjs';
 
+
+/**
+ * Unrelated utility methods.
+ *
+ *
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class HeaderEventsService {
+export class UtilService {
 
   // log/reg buttons
-  authButton$ = new Subject<string>();
+  authButtonClick$ = new Subject<string>();
 
   constructor() { }
 
   fireAuthButtonClicked(type: string) {
-    this.authButton$.next(type);
+    this.authButtonClick$.next(type);
   }
 }

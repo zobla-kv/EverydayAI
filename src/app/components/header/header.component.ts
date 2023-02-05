@@ -4,12 +4,12 @@ import { Subscription } from 'rxjs';
 
 import {
   AuthService,
-  HeaderEventsService
+  UtilService
 } from '@app/services';
 
 import {
   User,
-  FormType 
+  FormType
 } from '@app/models';
 
 @Component({
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnDestroy {
 
   constructor(
     private router: Router,
-    private headerEventsService: HeaderEventsService,
+    private utilService: UtilService,
     private authService: AuthService
   ) {
 
@@ -35,11 +35,12 @@ export class HeaderComponent implements OnDestroy {
   }
 
   // handle route change to log/reg form
+  // TODO: block routes if logged in
   handleAuthButton(type: string) {
     const prevRoute = this.router.url;
     if (prevRoute.includes('auth')) {
       // switch between forms when already on that route
-      this.headerEventsService.fireAuthButtonClicked(type);
+      this.utilService.fireAuthButtonClicked(type);
     } else {
       this.router.navigate(['auth', type]);
     }
