@@ -60,7 +60,7 @@
                         class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('password')?.getError('wrong-password') }}
                       </span>
                     </div>
-                    <button type="button" class="btn-reverse mt-4" (click)="validateForm()">
+                    <button type="submit" class="btn-reverse mt-4">
                       <mat-spinner
                         *ngIf="showSpinner; else noSpinner"
                         diameter="25"
