@@ -23,12 +23,12 @@ export class HeaderComponent implements OnDestroy {
   userSub$: Subscription;
 
   constructor(
-    private router: Router,
-    private utilService: UtilService,
-    private authService: AuthService
+    private _router: Router,
+    private _utilService: UtilService,
+    private _authService: AuthService
   ) {
 
-    this.userSub$ = this.authService.user.subscribe((user: User) => {
+    this.userSub$ = this._authService.user.subscribe((user: User) => {
       this.isAuthenticated = user.token ? true : false;
     })
 
@@ -37,12 +37,12 @@ export class HeaderComponent implements OnDestroy {
   // handle route change to log/reg form
   // TODO: block routes if logged in
   handleAuthButton(type: string) {
-    const prevRoute = this.router.url;
+    const prevRoute = this._router.url;
     if (prevRoute.includes('auth')) {
       // switch between forms when already on that route
-      this.utilService.fireAuthButtonClicked(type);
+      this._utilService.fireAuthButtonClicked(type);
     } else {
-      this.router.navigate(['auth', type]);
+      this._router.navigate(['auth', type]);
     }
   }
 

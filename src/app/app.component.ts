@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { IconService } from '@app/services';
 
@@ -12,9 +12,9 @@ export class AppComponent implements OnInit {
   title = 'ng-java';
 
   constructor(
-    private IconService: IconService 
+    private _iconService: IconService
   ) {
-    this.IconService.addCustomIcons();
+    this._iconService.addCustomIcons();
   }
 
   ngOnInit(): void {

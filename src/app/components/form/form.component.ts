@@ -27,7 +27,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('slider') slider: ElementRef;
 
   // currently active form
-  activeForm: Form = { form: new FormGroup({}), type: this.router.url.split('/').pop() };
+  activeForm: Form = { form: new FormGroup({}), type: this._router.url.split('/').pop() };
 
   // auth buttons sub
   headerAuthButtonSub$: Subscription;
@@ -42,14 +42,14 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   showSpinner = false;
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private utilService: UtilService,
-    private authService: AuthService
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private _utilService: UtilService,
+    private _authService: AuthService
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
-      this.utilService.authButtonClick$.subscribe(type => this.handleTypeChange(type));
+      this._utilService.authButtonClick$.subscribe(type => this.handleTypeChange(type));
   }
 
   ngOnInit(): void {
@@ -90,7 +90,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // handle change of form type
   handleTypeChange(type: string) {
     this.activeForm = type === FormType.LOGIN ? this.loginForm : this.registerForm;
-    this.router.navigate([this.activeForm.type], { relativeTo: this.activatedRoute });
+    this._router.navigate([this.activeForm.type], { relativeTo: this._activatedRoute });
     this.displayProperForm();
     // setTimeout(() => this.activeForm.form.reset(), 200);
   }
@@ -106,9 +106,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showSpinner = true;
     let response: FirebaseAuthResponse;
     if (form.type === FormType.LOGIN) {
-      response = await this.authService.login(form.form.getRawValue());
+      response = await this._authService.login(form.form.getRawValue());
     } else {
-      response = await this.authService.register(form.form.getRawValue());
+      response = await this._authService.register(form.form.getRawValue());
     }
     if (response?.error) {
       // TODO: uncomment for prod
@@ -116,7 +116,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false;
       return this.addError(form.form, response.error);
     }
-    this.router.navigate(['/']);
+    this._router.navigate(['/']);
   }
 
   // adds error to form control based on error type

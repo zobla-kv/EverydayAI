@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { DomSanitizer } from "@angular/platform-browser";
 import { MatIconRegistry } from "@angular/material/icon";
 
 @Injectable({
@@ -8,8 +8,8 @@ import { MatIconRegistry } from "@angular/material/icon";
 export class IconService {
 
   constructor(
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private _matIconRegistry: MatIconRegistry,
+    private _domSanitizer: DomSanitizer
   ) { }
 
   Icons: { name: string }[] = [
@@ -23,9 +23,9 @@ export class IconService {
   ]
 
   addCustomIcons() {
-    this.Icons.forEach(icon => this.matIconRegistry.addSvgIcon(
+    this.Icons.forEach(icon => this._matIconRegistry.addSvgIcon(
       icon.name,
-      this.domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon.name}.svg`)
+      this._domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon.name}.svg`)
     ))
   }
 }

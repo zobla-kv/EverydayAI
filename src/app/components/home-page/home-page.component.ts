@@ -29,11 +29,11 @@ export class HomePageComponent {
   spinnerSub: Subscription;
 
   constructor(
-    private spinnerService: SpinnerService
+    private _spinnerService: SpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.spinnerSub = this.spinnerService.spinner$.subscribe(() => this.handleSpinner())
+    this.spinnerSub = this._spinnerService.spinner$.subscribe(() => this.handleSpinner())
   }
 
   handleSpinner() {
