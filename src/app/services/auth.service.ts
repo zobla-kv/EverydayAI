@@ -38,7 +38,7 @@ export class AuthService {
     if (response.error) {
       return response;
     }
-    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getErrorMessage('registration-successful'));
+    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage('registration-successful'));
   }
 
   // login user

@@ -104,12 +104,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   // submit form
   async submitForm(form: Form) {
     this.showSpinner = true;
-    let response;
+    let response: FirebaseAuthResponse | void;
     if (form.type === FormType.LOGIN) {
       response = await this._authService.login(form.form.getRawValue());
     } else {
       response = await this._authService.register(form.form.getRawValue());
     }
+    // if it returns it has an error, otherwise is handled in auth service
     if (response?.error) {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
@@ -132,7 +133,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'registration-write-failed':
       case 'verification-email-sending-failed':
-        return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getErrorMessage(error.error));
+        return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(error.error));
       default:
     }
     form.controls[controlName].setErrors({ [error.error]: error.errorMessage })
