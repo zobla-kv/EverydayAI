@@ -8,7 +8,8 @@ import {
   Form,
   FormType,
   FirebaseAuthResponse,
-  FirebaseError
+  FirebaseError,
+  FirebaseConstants
 } from '@app/models';
 
 import {
@@ -123,16 +124,16 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
     switch(error.error) {
-      case 'user-not-found':
-      case 'email-already-in-use':
-      case 'too-many-requests':
+      case FirebaseConstants.LOGIN_USER_NOT_FOUND:
+      case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
+      case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
         controlName = 'email'
         break;
-      case 'wrong-password':
+      case FirebaseConstants.LOGIN_WRONG_PASSWORD:
         controlName = 'password'
         break;
-      case 'registration-write-failed':
-      case 'verification-email-sending-failed':
+      case FirebaseConstants.REGISTRATION_WRITE_FAILED:
+      case FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED:
         return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(error.error));
       default:
     }

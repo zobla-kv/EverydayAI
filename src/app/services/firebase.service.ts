@@ -10,10 +10,9 @@ import {
   User,
   RegisterUser,
   FirebaseAuthResponse,
+  FirebaseConstants
 } from '@app/models';
 
-const DB_OPERATION_SUCCESS = 'success';
-const DB_OPERATION_FAIL = 'fail';
 
 /**
  * Firebase related acitivies
@@ -38,19 +37,19 @@ export class FirebaseService {
       const isWritten = await this.writeUserToDb(user);
       const tempUser = await this.getUserByEmail(user.email);
       if (!isWritten || !tempUser) {
-        return Promise.resolve(this.generateResponse(null, 'registration-write-failed'));
+        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_WRITE_FAILED));
         // delete user written by first createUserWithEmailAndPassword
       }
 
       const isSent = await this.sendVerificationEmail();
       if (!isSent) {
-        return Promise.resolve(this.generateResponse(null, 'verification-email-sending-failed'));
+        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED));
         // delete user written by first createUserWithEmailAndPassword
       }
       // registration successful
-      return Promise.resolve(this.generateResponse(tempUser, null));
+      return Promise.resolve(new FirebaseAuthResponse(tempUser, null));
     })
-    .catch(err => Promise.resolve(this.generateResponse(null, err.code)));
+    .catch(err => Promise.resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))));
   }
 
   // log in user
@@ -59,18 +58,13 @@ export class FirebaseService {
       // loginResponse.user can be used for many things (emailVerified etc.)
       // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
       const loginResponse = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
-      .catch(err => resolve(this.generateResponse(null, err.code)));
+      .catch(err => resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))));
 
       const tempUser = await this.getUserByEmail(user.email);
-      resolve(this.generateResponse(tempUser, null));
+      resolve(new FirebaseAuthResponse(tempUser, null));
     })
   }
 
-
-  // generate auth response
-  generateResponse(user: RegisterUser | null, error: string | null): FirebaseAuthResponse {
-    return new FirebaseAuthResponse(user, error);
-  }
 
   // sends email for verification
   async sendVerificationEmail(): Promise<boolean> {

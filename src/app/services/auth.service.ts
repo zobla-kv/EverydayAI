@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import {
   User,
   RegisterUser,
-  FirebaseAuthResponse
+  FirebaseAuthResponse,
+  FirebaseConstants
 } from '@app/models';
 
 import {
@@ -38,7 +39,7 @@ export class AuthService {
     if (response.error) {
       return response;
     }
-    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage('registration-successful'));
+    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(FirebaseConstants.REGISTRATION_SUCCESSFUL));
   }
 
   // login user
