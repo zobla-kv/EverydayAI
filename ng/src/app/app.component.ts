@@ -9,7 +9,7 @@ import { IconService } from '@app/services';
 })
 export class AppComponent implements OnInit {
 
-  title = 'ng-java';
+  title = 'house-of-dogs';
 
   constructor(
     private _iconService: IconService
