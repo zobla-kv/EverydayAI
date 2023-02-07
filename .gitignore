@@ -29,7 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular
 .sass-cache/
 /connect.lock
 /coverage
@@ -42,7 +42,10 @@ testem.log
 Thumbs.db
 
 # Firebase
-public
+/ng/public
 
 # Salesforce
 .sfdx
+
+# Env variables
+.env
