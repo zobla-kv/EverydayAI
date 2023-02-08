@@ -47,7 +47,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies after zone.js are for express app",
+        "0": "Dependencies body-parser, express, cors and nodemailer are for express app",
         "1": "devDependencies dotenv and nodemon are for express app"
     }
 }
