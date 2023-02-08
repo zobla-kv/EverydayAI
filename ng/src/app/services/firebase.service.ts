@@ -60,6 +60,7 @@ export class FirebaseService {
       const loginResponse = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
       .catch(err => resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))));
 
+      // TODO: still fires in case error happens above
       const tempUser = await this.getUserByEmail(user.email);
       resolve(new FirebaseAuthResponse(tempUser, null));
     })

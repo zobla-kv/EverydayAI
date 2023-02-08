@@ -11,7 +11,8 @@ import {
 
 import {
   FirebaseService,
-  UtilService
+  UtilService,
+  HttpService
  } from '@app/services';
 import { Router } from '@angular/router';
 
@@ -30,7 +31,8 @@ export class AuthService {
   constructor(
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _router: Router
+    private _router: Router,
+    private _httpService: HttpService
   ) { }
 
   // register new user
@@ -44,6 +46,7 @@ export class AuthService {
 
   // login user
   async login(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
+    this._httpService.sendPostRequest('localhost:3000/api/send-verification-email', { requestBody: 'test' });
     const response = await this._firebaseService.login(user);
     if (response.error) {
       return response;
