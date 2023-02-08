@@ -4,11 +4,11 @@ require('dotenv').config();
 
 module.exports.sendEmail = async function (email, user, type) {
   type = type.toLowerCase();
-  if(type !== 'activation' && type !== 'reset password') {
-    throw new Error('Invalid email functionality');
+  if (type !== 'activation' && type !== 'reset password') {
+    return false;
   }
-  
-//   const token = jwt.sign({ user }, process.env.JWT_SECRET);
+
+  // const token = jwt.sign({ user }, process.env.JWT_SECRET);
   const token = 'test-test-test-test';
 
   const host = 'https://www.house-of-dogs.com'
