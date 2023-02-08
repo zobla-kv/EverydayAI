@@ -31,8 +31,7 @@ export class AuthService {
   constructor(
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _router: Router,
-    private _httpService: HttpService
+    private _router: Router
   ) { }
 
   // register new user
@@ -46,7 +45,6 @@ export class AuthService {
 
   // login user
   async login(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
-    this._httpService.sendPostRequest('localhost:3000/api/send-verification-email', { requestBody: 'test' });
     const response = await this._firebaseService.login(user);
     if (response.error) {
       return response;

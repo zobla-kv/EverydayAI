@@ -10,8 +10,13 @@ import {
   User,
   RegisterUser,
   FirebaseAuthResponse,
-  FirebaseConstants
+  FirebaseConstants,
+  EmailType
 } from '@app/models';
+
+import {
+  HttpService
+} from '@app/services';
 
 
 /**
@@ -26,7 +31,8 @@ export class FirebaseService {
 
   constructor(
     private _fireAuth: AngularFireAuth,
-    private _db: AngularFirestore
+    private _db: AngularFirestore,
+    private _httpService: HttpService
   ) { }
 
   // register new user
@@ -34,18 +40,27 @@ export class FirebaseService {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async res => {
       // res has intereseting data, check it out (email for example)
+      
+      /***** WRITE TO CUSTOM DB *****/
       const isWritten = await this.writeUserToDb(user);
       const tempUser = await this.getUserByEmail(user.email);
       if (!isWritten || !tempUser) {
         return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_WRITE_FAILED));
         // delete user written by first createUserWithEmailAndPassword
       }
+      /******************************/
 
-      const isSent = await this.sendVerificationEmail();
+      /***** SEND VERIFICATION EMAIL *****/
+      const isSent = await this._httpService.sendVerificationEmail(
+        'http://localhost:3000/api/send-verification-email', 
+        { email: user.email, email_type: EmailType.ACTIVATION }
+      );
       if (!isSent) {
         return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED));
         // delete user written by first createUserWithEmailAndPassword
       }
+      /***********************************/
+
       // registration successful
       return Promise.resolve(new FirebaseAuthResponse(tempUser, null));
     })
@@ -58,9 +73,13 @@ export class FirebaseService {
       // loginResponse.user can be used for many things (emailVerified etc.)
       // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
       const loginResponse = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
-      .catch(err => resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))));
+      .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))) });
 
-      // TODO: still fires in case error happens above
+      if (!loginResponse) {
+        // prev resolve does not stop execution
+        return;
+      }
+
       const tempUser = await this.getUserByEmail(user.email);
       resolve(new FirebaseAuthResponse(tempUser, null));
     })
@@ -78,7 +97,7 @@ export class FirebaseService {
   getUserByEmail(email: string): Promise<RegisterUser> {
     return firstValueFrom(this._db.collection('Users', query => query.where('email', '==', email)).get())
     .then(res => {
-      const user = res.docs[0].data() as RegisterUser;
+      const user = res.docs[0]?.data() as RegisterUser;
       return Promise.resolve(user);
     });
   }

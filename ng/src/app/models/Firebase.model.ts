@@ -67,3 +67,13 @@ export interface FirebaseError {
 type messageObject = {
   [key: string]: string
 }
+
+export interface Email {
+  email: string;
+  email_type: EmailType;
+}
+
+export enum EmailType {
+  ACTIVATION = 'activation',
+  RESET_PASSWORD = 'reset password'
+}
