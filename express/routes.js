@@ -1,17 +1,18 @@
 const router = require('express').Router();
 
+// services
+const emailService = require('./emailService');
+
 router.get('/', (req, res) => {
   res.status(203).send({ response: 'bob' });
 });
 
-router.get('/send-verification-email', (req, res) => {
-  console.log('got get request: ', req);
-  res.sendStatus(200);
-})
-
-router.post('/send-verification-email', (req, res) => {
-  console.log('got post request: ', req);
-  console.log('req.body: ', req.headers);
+router.post('/send-verification-email', async (req, res) => {
+  const isEmailSent = await emailService.sendEmail(req.body.email, 'blabla', req.body.email_type);
+  if (!isEmailSent) {
+    return res.status(500).send({ response: 'Failed to send verification email' })
+  }
+  res.status(200).send({ response: 'Email sent succesfully' });
 })
 
 module.exports = router;
