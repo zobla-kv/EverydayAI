@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
   res.status(203).send({ response: 'bob' });
 });
 
+// TODO: can be misused from postman, protect!!
 router.post('/send-verification-email', async (req, res) => {
   const isEmailSent = await emailService.sendEmail(req.body.email, 'blabla', req.body.email_type);
   if (!isEmailSent) {
