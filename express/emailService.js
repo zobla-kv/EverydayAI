@@ -37,10 +37,15 @@ module.exports.sendEmail = async function (email, user, type) {
       pass: process.env.EMAIL_AUTH_PASSWORD,
     },
   });
+  
+  let isSent = false;
   await transporter.sendMail({
     from: '"House of dogs" <houseofdogs.online@gmail.com>',
     to: email,
     subject,
     html: message,
-  });
+  })
+  .then(() => isSent = true)
+  
+  return isSent;
 };
