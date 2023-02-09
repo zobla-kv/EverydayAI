@@ -1,8 +1,9 @@
 // app
 const express = require('express');
 const app = express();
+require('dotenv').config();
 
-// cors 
+// cors
 const cors = require('./cors');
 
 // endpoints

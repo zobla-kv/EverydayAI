@@ -24,6 +24,7 @@
         "@angular/router": "^15.0.0",
         "bootstrap": "^5.2.3",
         "express": "^4.17.1",
+        "firebase-admin": "^11.5.0",
         "nodemailer": "^6.4.10",
         "rxjs": "~7.5.0",
         "tslib": "^2.3.0",
@@ -45,7 +46,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express and nodemailer are for express app",
+        "0": "Dependencies express, firebase-admin and nodemailer are for express app",
         "1": "devDependencies dotenv and nodemon are for express app"
     }
 }

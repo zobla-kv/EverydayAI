@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 // services
-const emailService = require('./emailService');
+const emailService = require('./services/emailService');
 
 // TODO: can be misused from postman, protect!!
 router.post('/send-verification-email', async (req, res) => {
