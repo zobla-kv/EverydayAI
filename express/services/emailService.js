@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
 const firebaseService = require('./firebaseService');
-// const jwt = require('jsonwebtoken');
 
-module.exports.sendEmail = async function (email, user, type) {
+module.exports.sendEmail = async function (email, type) {
   type = type.toLowerCase();
   if (type !== 'activation' && type !== 'reset password') {
     return false;
   }
 
-  // const token = jwt.sign({ user }, process.env.JWT_SECRET);
-  const token = 'test-test-test-test';
-  const host = 'https://www.house-of-dogs.com'
+  let verificationLink = await firebaseService.generateEmailVerificationLink(email);
+  verificationLink = verificationLink.replace('oobCode', 'code');
 
-  const verificationLink = await firebaseService.generateEmailVerificationLink(email);
+  const modifiedUrl = new URL(verificationLink);
+  modifiedUrl.searchParams.delete('apiKey');
+  modifiedUrl.searchParams.delete('continueUrl');
 
   // capitalize first letter
   const subject = `${type[0].toUpperCase() + type.slice(1)} 🐕`;
@@ -24,11 +24,8 @@ module.exports.sendEmail = async function (email, user, type) {
     <h2 style="margin-left: 250px;color:black;">
       Verify your email by clicking link below
     </h2>
-    <a href="${verificationLink}">${verificationLink}</a>
+    <a href="${modifiedUrl}">${modifiedUrl}</a>
   `;
-    // <a href="${host}/${type}/${token}">
-    //   ${host}/${type}/${token}
-    // </a>
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -47,7 +44,7 @@ module.exports.sendEmail = async function (email, user, type) {
     subject,
     html: message,
   })
-  .then(() => isSent = true)
+  .then(() => isSent = true);
 
   return isSent;
 };

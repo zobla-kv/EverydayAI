@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 
@@ -18,14 +18,41 @@ export class UtilService {
   authButtonClick$ = new Subject<string>();
 
   constructor(
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) { }
 
-  fireAuthButtonClicked(type: string) {
+  /** 
+  * Emit auth button clicked event
+  * 
+  * @param type string - login/register
+  * @returns void
+  */
+  fireAuthButtonClicked(type: string): void {
     this.authButtonClick$.next(type);
   }
 
-  navigateToInformationComponent(message: string) {
+  /** 
+  * Navigates to information component
+  * and display passed message
+  * no mode trigger for now
+  * 
+  * @param message string
+  * @returns void
+  */
+  navigateToInformationComponent(message: string): void {
     this._router.navigate(['auth', 'verify'], { state: { message } });
+  }
+
+ /** 
+  * Gets parameter value from url
+  * 
+  * @param param string
+  * @returns string | null
+  */
+  getParamFromUrl(param: string): string | null {
+    let paramValue = null;
+    paramValue = this._route.snapshot.queryParamMap.get(param);
+    return paramValue;
   }
 }

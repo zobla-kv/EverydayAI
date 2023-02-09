@@ -1,3 +1,9 @@
-<p>
+<p *ngIf="!mode">
   {{ message }}
 </p>
+
+<div *ngIf="mode === 'verifyEmail'">
+  <p *ngIf="isLoading">Verifying your email address...</p>
+  <p *ngIf="!isLoading">{{ message }}</p>
+</div>
+
