@@ -9,8 +9,10 @@ const firebaseApp = admin.initializeApp({
   })
 });
 
+// must pass something but is overriden later
+// can stay for prod
 const actionCodeSettings = {
-  url: 'http://localhost:4200/verify'
+  url: 'http://localhost'
 };
 
 async function generateEmailVerificationLink(email) {
@@ -22,7 +24,6 @@ async function generateEmailVerificationLink(email) {
     console.log('err is: ', err);
   }
 
-  console.log('link: ', link);
   return link;
 }
 
