@@ -56,7 +56,9 @@ const responseMessages: messageObject = {
   'Password incorrect',
   [FirebaseConstants.LOGIN_TOO_MANY_REQUESTS]:
   `Access to this account has been temporarily disabled due to many failed login attempts.
-  You can immediately restore it by resetting your password or you can try again later`
+  You can immediately restore it by resetting your password or you can try again later`,
+  [FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED]:
+  'Email not verified. Please verify your email before loggin in'
 }
 
 export interface FirebaseError {

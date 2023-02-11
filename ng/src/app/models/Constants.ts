@@ -13,4 +13,5 @@ export class FirebaseConstants {
   static LOGIN_USER_NOT_FOUND = 'user-not-found';
   static LOGIN_WRONG_PASSWORD = 'wrong-password';
   static LOGIN_TOO_MANY_REQUESTS = 'too-many-requests';
+  static LOGIN_EMAIL_NOT_VERIFIED = 'email-not-verified'
 }

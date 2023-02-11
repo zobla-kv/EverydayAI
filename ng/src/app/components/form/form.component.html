@@ -39,6 +39,10 @@
                         *ngIf="loginForm.form.get('email')?.hasError('too-many-requests')"
                         class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('too-many-requests') }}
                       </span>
+                      <span
+                        *ngIf="loginForm.form.get('email')?.hasError('email-not-verified')"
+                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('email-not-verified') }}
+                      </span>
                     </div>
                     <div class="form-group mt-2">
                       <input

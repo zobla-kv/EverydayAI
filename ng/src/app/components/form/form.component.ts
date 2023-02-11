@@ -127,6 +127,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
       case FirebaseConstants.LOGIN_USER_NOT_FOUND:
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
+      case FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED:
         controlName = 'email'
         break;
       case FirebaseConstants.LOGIN_WRONG_PASSWORD:
