@@ -91,15 +91,6 @@ export class FirebaseService {
     })
   }
 
-
-  // sends email for verification
-  // TODO: remove because unused
-  async sendVerificationEmail(): Promise<boolean> {
-    let isSent = true;
-    await this._fireAuth.currentUser.then(user => user?.sendEmailVerification().catch(err => isSent = false))
-    return isSent;
-  }
-
   // TODO: change RegisterUser -> User later
   getUserByEmail(email: string): Promise<RegisterUser> {
     return firstValueFrom(this._db.collection('Users', query => query.where('email', '==', email)).get())
