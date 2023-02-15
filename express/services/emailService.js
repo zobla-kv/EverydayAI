@@ -2,13 +2,23 @@ const nodemailer = require('nodemailer');
 const firebaseService = require('./firebaseService');
 const path = require('path');
 
-module.exports = async function (email, type) {
+const { appConstants, labels } = require('../constants');
+const { 
+  outterWrapperStyles,
+  innerWrapperStyles, 
+  logoWrapperStyles, 
+  logoStyles, 
+  textStyles, 
+  buttonStyles 
+} = require('../assets/styles');
+
+module.exports.sendEmail = async function (email, type) {
   type = type.toLowerCase();
-  if (type !== 'activation' && type !== 'reset password') {
+  if (type !== labels.ACTIVATION && type !== labels.RESET_PASSWORD) {
     return false;
   }
 
-  let verificationLink = await firebaseService.generateEmailVerificationLink(email);
+  let verificationLink = await firebaseService.generateEmailLink(email, type);
   verificationLink = verificationLink.replace('oobCode', 'code');
 
   const modifiedUrl = new URL(verificationLink);
@@ -18,15 +28,27 @@ module.exports = async function (email, type) {
   // capitalize first letter
   const subject = `${type[0].toUpperCase() + type.slice(1)} 🐕`;
 
-  type = type.replace(/ /g, '_');
+  const content = getContent(type);
+
+  // TODO: figure out what was this for
+  // type = type.replace(/ /g, '_');
 
   const message =
   ` 
-    <img src="cid:logo">
-    <h2 style="margin-left: 250px;color:black;">
-      Verify your email by clicking link below
-    </h2>
-    <a href="${modifiedUrl}">${modifiedUrl}</a>
+    <div style="${outterWrapperStyles}">
+      <div style="${innerWrapperStyles}">
+        <a href="${appConstants.APP_URL}" style="${logoWrapperStyles}">
+          <img src="cid:logo" style="${logoStyles}">
+        </a>
+        <h2 style="${textStyles}">
+          ${content.emailText}
+        </h2>
+        <br>
+        <a href="${modifiedUrl}" style="${buttonStyles}">
+          ${content.buttonText}
+        </a>
+      </div>
+    </div>
   `;
 
   const transporter = nodemailer.createTransport({
@@ -56,3 +78,19 @@ module.exports = async function (email, type) {
 
   return isSent;
 };
+
+// returns email content based on type
+function getContent(type) {
+  const content = { emailText: 'test', buttonText: 'test' };
+  if (type === labels.ACTIVATION) {
+    content.emailText = labels.VERIFY_EMAIL_TEXT;
+    content.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
+  }
+  if (type === labels.RESET_PASSWORD) {
+    content.emailText = labels.RESET_PASSWORD_EMAIL_TEXT;
+    content.buttonText = labels.RESET_PASSWORD_EMAIL_BUTTON_TEXT;
+  }
+  return content;
+}
+
+// sendEmail('blagoje.kv@gmail.com', 'activation');

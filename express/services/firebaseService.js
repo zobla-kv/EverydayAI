@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const { getAuth } = require('firebase-admin/auth');
+const { appConstants, labels } = require('../constants');
 
 const firebaseApp = admin.initializeApp({
   credential: admin.credential.cert({
@@ -12,14 +13,19 @@ const firebaseApp = admin.initializeApp({
 // must pass something but is overriden later
 // can stay for prod
 const actionCodeSettings = {
-  url: 'http://localhost'
+  url: appConstants.APP_URL
 };
 
-async function generateEmailVerificationLink(email) {
+async function generateEmailLink(email, type) {
   let link = null;
 
+  const that = getAuth();
+
+  const cb = type === labels.ACTIVATION ? 
+    getAuth().generateEmailVerificationLink.bind(that) : getAuth().generatePasswordResetLink.bind(that);
+
   try {
-    link = await getAuth().generateEmailVerificationLink(email, actionCodeSettings);
+    link = await cb(email, actionCodeSettings);
   } catch(err) {
     console.log('err is: ', err);
   }
@@ -27,8 +33,4 @@ async function generateEmailVerificationLink(email) {
   return link;
 }
 
-module.exports = { generateEmailVerificationLink };
-
-
-
-
+module.exports = { generateEmailLink };
