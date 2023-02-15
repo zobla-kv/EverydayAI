@@ -17,6 +17,9 @@ import {
   UtilService
 } from '@app/services';
 
+/**
+ * Only for reg/login forms
+ */
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',

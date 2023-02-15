@@ -35,13 +35,14 @@ import {
   HomePageComponent,
   CategorySelectorComponent,
   ProductPageComponent,
-  FormComponent
+  FormComponent,
+  XFormComponent,
+  InformationComponent
 } from '@app/components';
 
 import {
   HighlightDirective
 } from '@app/directives';
-import { InformationComponent } from './components/information/information.component';
 
 @NgModule({
   declarations: [
@@ -53,10 +54,11 @@ import { InformationComponent } from './components/information/information.compo
     CategorySelectorComponent,
     ProductPageComponent,
     FormComponent,
+    XFormComponent,
     InformationComponent,
 
     // Directives
-    HighlightDirective
+    HighlightDirective,
   ],
   imports: [
     BrowserModule,

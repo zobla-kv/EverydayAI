@@ -15,7 +15,8 @@ import {
 } from '@app/models';
 
 import {
-  HttpService
+  HttpService, 
+  UtilService
 } from '@app/services';
 
 
@@ -32,7 +33,8 @@ export class FirebaseService {
   constructor(
     private _fireAuth: AngularFireAuth,
     private _db: AngularFirestore,
-    private _httpService: HttpService
+    private _httpService: HttpService,
+    private _utilService: UtilService
   ) { }
 
   // register new user
@@ -51,8 +53,7 @@ export class FirebaseService {
       /******************************/
 
       /***** SEND VERIFICATION EMAIL *****/
-      const isSent = await this._httpService.sendVerificationEmail(
-        'http://localhost:3000/api/send-verification-email',
+      const isSent = await this._httpService.sendEmail(
         { email: user.email, email_type: EmailType.ACTIVATION }
       );
       if (!isSent) {
@@ -88,6 +89,23 @@ export class FirebaseService {
 
       const tempUser = await this.getUserByEmail(user.email);
       resolve(new FirebaseAuthResponse(tempUser, null));
+    })
+  }
+
+  // check if user exists and the send email
+  resetPassword(email: string): Promise<FirebaseAuthResponse | null> {
+    return new Promise(async (resolve) => {
+      // check if user exists
+      const response = await this._fireAuth.fetchSignInMethodsForEmail(email);
+      if (response.length === 0) {
+        return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_USER_NOT_FOUND))
+      }
+      // send email
+      const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD })
+      if(!isSent) {
+        return this._utilService.navigateToInformationComponent("failed to blabla");
+      }
+      this._utilService.navigateToInformationComponent("sucesful to blabla");
     })
   }
 

@@ -6,14 +6,12 @@ import {
   User,
   RegisterUser,
   FirebaseAuthResponse,
-  FirebaseConstants,
-  EmailType
+  FirebaseConstants
 } from '@app/models';
 
 import {
   FirebaseService,
-  UtilService,
-  HttpService
+  UtilService
  } from '@app/services';
 import { Router } from '@angular/router';
 
@@ -32,8 +30,7 @@ export class AuthService {
   constructor(
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _router: Router,
-    private _httpService: HttpService
+    private _router: Router
   ) { }
 
   // register new user
@@ -47,20 +44,12 @@ export class AuthService {
 
   // login user
   async login(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
-    // this.sendEmail(user.email, EmailType.ACTIVATION);
     const response = await this._firebaseService.login(user);
     if (response.error) {
       return response;
     }
     this.user$.next(new User('test-id', 'test-token', new Date()));
     this._router.navigate(['/']);
-  }
-
-  sendEmail(email: any, email_type: any) {
-    this._httpService.sendVerificationEmail(
-      'http://localhost:3000/api/send-verification-email', 
-      { email, email_type }
-    );
   }
 
 }

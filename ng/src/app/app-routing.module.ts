@@ -6,7 +6,8 @@ import {
   ProductPageComponent,
   CategorySelectorComponent,
   FormComponent,
-  InformationComponent
+  InformationComponent,
+  XFormComponent
 } from '@app/components';
 
 const routes: Routes = [
@@ -33,13 +34,18 @@ const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
       { path: 'login', component: FormComponent },
-      { path: 'register', component: FormComponent },
+      { path: 'register', component: FormComponent }
     ]
   },
   {
     path: 'auth/verify',
     component: InformationComponent
   },
+  { 
+    path: 'auth/reset-password', 
+    component: XFormComponent 
+  }
+
 ];
 
 @NgModule({

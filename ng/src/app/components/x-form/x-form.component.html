@@ -1,0 +1,43 @@
+<div class="card-3d-wrap mx-auto">
+  <div class="card-3d-wrapper">
+    <form class="card-front" [formGroup]="form" (ngSubmit)="validateForm()">
+      <div class="center-wrap">
+        <div class="section text-center">
+          <h4 class="mb-4 pb-3 dark-text">Reset password</h4>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-style"
+              id="mail"
+              name="mail"
+              formControlName="email"
+              placeholder="Your Email"
+              autocomplete="off"
+            >
+            <mat-icon>alternate_email</mat-icon>
+            <span
+              *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Email can not be empty
+            </span>
+            <span
+              *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
+            </span>
+            <span
+              *ngIf="form.get('email')?.hasError('user-not-found')"
+              class="form-text ms-1 dark-text fw-bold d-block">{{ form.get('email')?.getError('user-not-found') }}
+            </span>
+          </div>
+          <button type="submit" class="btn-reverse mt-4">
+            <mat-spinner
+              *ngIf="showSpinner; else noSpinner"
+              diameter="25"
+              strokeWidth="4"
+            ></mat-spinner>
+            <ng-template #noSpinner>Submit</ng-template>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

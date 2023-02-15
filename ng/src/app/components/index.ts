@@ -6,3 +6,4 @@ export * from './home-page/category-selector/category-selector.component';
 export * from './product-page/product-page.component';
 export * from './form/form.component';
 export * from './information/information.component'
+export * from './x-form/x-form.component';

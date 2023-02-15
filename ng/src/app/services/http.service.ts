@@ -16,10 +16,10 @@ export class HttpService {
     private http: HttpClient
   ) { }
 
-  sendVerificationEmail(endpoint: string, body: Email): Promise<boolean> {
+  sendEmail(body: Email): Promise<boolean> {
     return new Promise((resolve) => {
       this.http
-      .post<any>(endpoint, body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>('http://localhost:3000/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)

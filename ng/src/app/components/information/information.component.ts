@@ -41,7 +41,6 @@ export class InformationComponent implements OnInit {
   }
 
   handleVerifyEmail() {
-    console.log('fired');
     this.isLoading = true;
     const auth = getAuth();
     const actionCode = this._utilService.getParamFromUrl('code') as string;
