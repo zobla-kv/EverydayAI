@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { getAuth, checkActionCode, applyActionCode } from '@angular/fire/auth';
 
-import { 
+import {
   UtilService
 } from '@app/services';
 
@@ -40,6 +40,8 @@ export class InformationComponent implements OnInit {
     }
   }
 
+  // TODO: handle code expired
+  // Firebase: The action code has expired. (auth/expired-action-code) <- response.
   handleVerifyEmail() {
     this.isLoading = true;
     const auth = getAuth();
@@ -49,10 +51,10 @@ export class InformationComponent implements OnInit {
       console.log('email verifiedede: ', res);
       this.message = 'Email verified successfuly'
       // Email address has been verified.
-  
+
       // TODO: Display a confirmation message to the user.
       // You could also provide the user with a link back to the app.
-  
+
       // TODO: If a continue URL is available, display a button which on
       // click redirects the user back to the app via continueUrl with
       // additional state determined from that URL's parameters.
