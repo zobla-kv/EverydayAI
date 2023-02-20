@@ -2,13 +2,10 @@ const nodemailer = require('nodemailer');
 const firebaseService = require('./firebaseService');
 const path = require('path');
 
-require('dotenv').config();
-
 const { appConstants, labels } = require('../constants');
-
 const styles = require('../assets/styles');
 
-async function sendEmail(email, type) {
+module.exports.sendEmail = async function (email, type) {
   type = type.toLowerCase();
   if (type !== labels.ACTIVATION && type !== labels.RESET_PASSWORD) {
     return false;
@@ -30,7 +27,7 @@ async function sendEmail(email, type) {
   // type = type.replace(/ /g, '_');
 
   const message =
-  ` 
+  `
     <div style="${styles.outterWrapper}">
       <div style="${styles.innerWrapper}">
         <a href="${appConstants.APP_URL}" style="${styles.logoWrapper}">
@@ -43,12 +40,11 @@ async function sendEmail(email, type) {
         <a href="${modifiedUrl}" style="${styles.button}">
           ${content.buttonText}
         </a>
-      </div>       
-      <div style="${styles.followUs}">Follow us on</div>
-      <hr style="${styles.underline}">
+      </div>
+      <span style="${styles.followUs}">Follow us on</span>
       <a href="${appConstants.INSTAGRAM_URL}" style="${styles.instagramLogoWrapper}">
         <img src="cid:instagram" style="${styles.instagramLogo}">
-      </a> 
+      </a>
     </div>
   `;
 
@@ -89,7 +85,7 @@ async function sendEmail(email, type) {
 
 // returns email content based on type
 function getContent(type) {
-  const content = { emailText: 'test', buttonText: 'test' };
+  const content = { emailText: '', buttonText: '' };
   if (type === labels.ACTIVATION) {
     content.emailText = labels.VERIFY_EMAIL_TEXT;
     content.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
@@ -100,5 +96,3 @@ function getContent(type) {
   }
   return content;
 }
-
-sendEmail('blagoje.kv@gmail.com', 'activation');

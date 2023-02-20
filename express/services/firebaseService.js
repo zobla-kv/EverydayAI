@@ -2,8 +2,6 @@ const admin = require('firebase-admin');
 const { getAuth } = require('firebase-admin/auth');
 const { appConstants, labels } = require('../constants');
 
-require('dotenv').config();
-
 const firebaseApp = admin.initializeApp({
   credential: admin.credential.cert({
     project_id: process.env.PROJECT_ID,
@@ -23,7 +21,7 @@ async function generateEmailLink(email, type) {
 
   const that = getAuth();
 
-  const cb = type === labels.ACTIVATION ? 
+  const cb = type === labels.ACTIVATION ?
     getAuth().generateEmailVerificationLink.bind(that) : getAuth().generatePasswordResetLink.bind(that);
 
   try {

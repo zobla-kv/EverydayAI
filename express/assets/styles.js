@@ -1,22 +1,20 @@
 const outterWrapper = `
-  padding: 8px;
   background-color: #F47650;
   border-radius: 50%;
-  width: 75%;
+  width: fit-content;
   margin: 2% auto;
+  text-align: center;
 `
 
 const innerWrapper = `
   background-color: black;
-  margin: auto;
   width: 250px;
   padding: 16px;
   border-radius: 20px;
-  margin-top: 40px;
+  margin: 0 auto 4px 0;
 `
 
 // box-shadow: inset 0px 0px 34px 0px rgb(244 118 80);
-
 const logoWrapper = `
   display: block;
   width: fit-content;
@@ -32,7 +30,6 @@ const text = `
   font-size: 20px;
   width: fit-content;
   margin: auto;
-  text-align: center;
   color: white;
   margin-top: -20px;
 `
@@ -40,37 +37,28 @@ const text = `
 const button = `
   display: block;
   background-color: #F47650;
-  height: 35px;
+  height: 34px;
   border: 0;
   border-radius: 20px;
   padding: 4px 16px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 32px;
+  line-height: 34px;
   margin: 4px auto;
   text-decoration: none;
   color: black;
-  font-family: cursive;
+  font-family: math;
   font-size: 20px;
-  letter-spacing: 1px;
 `
 
 const followUs = `
-  margin-top: 6px;
-  font-size: 16px;
-  color: black;
-  text-align: center;
-  font-family: cursive;
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+  font-family: math;
 `
 
-const underline = `
-  border: 1px solid black;
-  width: 100px;
-  margin-top: 0;
-`
 const instagramLogoWrapper = `
   display: block;
-  text-align: center;
+  width: fit-content;
+  margin: auto;
 `
 
 const instagramLogo = `
@@ -85,7 +73,6 @@ module.exports = {
   text,
   button,
   followUs,
-  underline,
   instagramLogoWrapper,
   instagramLogo
 }
