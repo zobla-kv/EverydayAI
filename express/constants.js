@@ -1,5 +1,6 @@
 const appConstants = {
-  APP_URL: 'http://localhost:4200'
+  APP_URL: 'http://localhost:4200',
+  INSTAGRAM_URL: 'https://www.instagram.com/house_of_dogs_ig'
 }
 
 const labels = {

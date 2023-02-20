@@ -2,17 +2,13 @@ const nodemailer = require('nodemailer');
 const firebaseService = require('./firebaseService');
 const path = require('path');
 
-const { appConstants, labels } = require('../constants');
-const { 
-  outterWrapperStyles,
-  innerWrapperStyles, 
-  logoWrapperStyles, 
-  logoStyles, 
-  textStyles, 
-  buttonStyles 
-} = require('../assets/styles');
+require('dotenv').config();
 
-module.exports.sendEmail = async function (email, type) {
+const { appConstants, labels } = require('../constants');
+
+const styles = require('../assets/styles');
+
+async function sendEmail(email, type) {
   type = type.toLowerCase();
   if (type !== labels.ACTIVATION && type !== labels.RESET_PASSWORD) {
     return false;
@@ -35,19 +31,24 @@ module.exports.sendEmail = async function (email, type) {
 
   const message =
   ` 
-    <div style="${outterWrapperStyles}">
-      <div style="${innerWrapperStyles}">
-        <a href="${appConstants.APP_URL}" style="${logoWrapperStyles}">
-          <img src="cid:logo" style="${logoStyles}">
+    <div style="${styles.outterWrapper}">
+      <div style="${styles.innerWrapper}">
+        <a href="${appConstants.APP_URL}" style="${styles.logoWrapper}">
+          <img src="cid:logo" style="${styles.logo}">
         </a>
-        <h2 style="${textStyles}">
+        <h2 style="${styles.text}">
           ${content.emailText}
         </h2>
         <br>
-        <a href="${modifiedUrl}" style="${buttonStyles}">
+        <a href="${modifiedUrl}" style="${styles.button}">
           ${content.buttonText}
         </a>
-      </div>
+      </div>       
+      <div style="${styles.followUs}">Follow us on</div>
+      <hr style="${styles.underline}">
+      <a href="${appConstants.INSTAGRAM_URL}" style="${styles.instagramLogoWrapper}">
+        <img src="cid:instagram" style="${styles.instagramLogo}">
+      </a> 
     </div>
   `;
 
@@ -68,11 +69,18 @@ module.exports.sendEmail = async function (email, type) {
     to: email,
     subject,
     html: message,
-    attachments: [{
-      filename: 'main-logo.png',
-      path: path.join(__dirname, '..', '/assets/main-logo.png'),
-      cid: 'logo'
-  }]
+    attachments: [
+      {
+        filename: 'main-logo.png',
+        path: path.join(__dirname, '..', '/assets/main-logo.png'),
+        cid: 'logo'
+      },
+      {
+        filename: 'instagram-logo.png',
+        path: path.join(__dirname, '..', '/assets/instagram-logo.png'),
+        cid: 'instagram'
+      }
+    ]
   })
   .then(() => isSent = true);
 
@@ -93,4 +101,4 @@ function getContent(type) {
   return content;
 }
 
-// sendEmail('blagoje.kv@gmail.com', 'activation');
+sendEmail('blagoje.kv@gmail.com', 'activation');

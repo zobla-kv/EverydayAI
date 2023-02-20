@@ -1,31 +1,34 @@
-const outterWrapperStyles = `
-  padding: 16px 8px;
+const outterWrapper = `
+  padding: 8px;
   background-color: #F47650;
   border-radius: 50%;
+  width: 75%;
+  margin: 2% auto;
 `
 
-const innerWrapperStyles = `
+const innerWrapper = `
   background-color: black;
   margin: auto;
   width: 250px;
   padding: 16px;
   border-radius: 20px;
+  margin-top: 40px;
 `
 
 // box-shadow: inset 0px 0px 34px 0px rgb(244 118 80);
 
-const logoWrapperStyles = `
+const logoWrapper = `
   display: block;
   width: fit-content;
   margin: auto;
 `
 
-const logoStyles = `
+const logo = `
   width: 200px;
   height: 200px;
 `
 
-const textStyles = `
+const text = `
   font-size: 20px;
   width: fit-content;
   margin: auto;
@@ -34,7 +37,7 @@ const textStyles = `
   margin-top: -20px;
 `
 
-const buttonStyles = `
+const button = `
   display: block;
   background-color: #F47650;
   height: 35px;
@@ -52,11 +55,37 @@ const buttonStyles = `
   letter-spacing: 1px;
 `
 
+const followUs = `
+  margin-top: 6px;
+  font-size: 16px;
+  color: black;
+  text-align: center;
+  font-family: cursive;
+`
+
+const underline = `
+  border: 1px solid black;
+  width: 100px;
+  margin-top: 0;
+`
+const instagramLogoWrapper = `
+  display: block;
+  text-align: center;
+`
+
+const instagramLogo = `
+  width: 40px;
+`
+
 module.exports = {
-  outterWrapperStyles,
-  innerWrapperStyles,
-  logoWrapperStyles,
-  logoStyles,
-  textStyles,
-  buttonStyles
+  outterWrapper,
+  innerWrapper,
+  logoWrapper,
+  logo,
+  text,
+  button,
+  followUs,
+  underline,
+  instagramLogoWrapper,
+  instagramLogo
 }
