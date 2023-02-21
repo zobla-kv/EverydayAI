@@ -59,8 +59,6 @@ export class InformationComponent implements OnInit {
     }
   }
 
-  // TODO: handle code expired
-  // Firebase: The action code has expired. (auth/expired-action-code) <- response.
   handleEmailVerificationLink() {
     this.message = 'Verifying email address...'
     const auth = getAuth();
