@@ -60,14 +60,12 @@ export class XFormComponent {
     this.showSpinner = true;
     let response;
     if (this.phase === 2) {
-      console.log('submit form phase 2');
       const code = window.history.state.code;
-      response = await this._firebaseService.updatePassword(code, this.form.get('password')?.value);
+      this._firebaseService.updatePassword(code, this.form.get('password')?.value);
     } else {
       response = await this._firebaseService.sendPasswordResetEmail(this.form.get('email')?.value);
     }
     // if it returns it has an error, otherwise is handled in firebase service
-    console.log('response is: ', response);
     if (response?.error) {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
