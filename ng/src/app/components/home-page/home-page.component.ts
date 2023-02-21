@@ -5,10 +5,6 @@ import {
   ProductCategory
 } from '@app/models';
 
-import {
-  SpinnerService
-} from '@app/services';
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -29,11 +25,11 @@ export class HomePageComponent {
   spinnerSub: Subscription;
 
   constructor(
-    private _spinnerService: SpinnerService
+    
   ) {}
 
   ngOnInit(): void {
-    this.spinnerSub = this._spinnerService.spinner$.subscribe(() => this.handleSpinner())
+    
   }
 
   handleSpinner() {
