@@ -26,8 +26,9 @@ module.exports.sendEmail = async function (email, type) {
   // TODO: figure out what was this for
   // type = type.replace(/ /g, '_');
 
+  // TODO: doesn't look good in ct email, try using inline styles
   const message =
-  `
+  ` 
     <div style="${styles.outterWrapper}">
       <div style="${styles.innerWrapper}">
         <a href="${appConstants.APP_URL}" style="${styles.logoWrapper}">
@@ -52,7 +53,6 @@ module.exports.sendEmail = async function (email, type) {
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
-    service: 'gmail',
     auth: {
       user: process.env.EMAIL_AUTH_USERNAME,
       pass: process.env.EMAIL_AUTH_PASSWORD,

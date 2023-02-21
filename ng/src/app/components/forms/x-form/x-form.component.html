@@ -4,7 +4,8 @@
       <div class="center-wrap">
         <div class="section text-center">
           <h4 class="mb-4 pb-3 dark-text">Reset password</h4>
-          <div class="form-group">
+          <!-- ************ phase 1 *********** -->
+          <div class="form-group" *ngIf="!phase">
             <input
               type="text"
               class="form-style"
@@ -28,6 +29,33 @@
               class="form-text ms-1 dark-text fw-bold d-block">{{ form.get('email')?.getError('user-not-found') }}
             </span>
           </div>
+          <!-- ******************************** -->
+          <!-- ************ phase 2 *********** -->
+          <div class="form-group" *ngIf="phase == 2">
+            <input
+              type="password"
+              class="form-style"
+              id="regpassword"
+              name="regpassword"
+              formControlName="password"
+              placeholder="Your Password"
+              autocomplete="off"
+            >
+            <mat-icon>lock</mat-icon>
+            <span
+              *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Password is required
+            </span>
+            <span
+              *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Password must have at least 6 characters
+            </span>
+            <span
+              *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Password can have up to 16 characters
+            </span>
+          </div>
+          <!-- ******************** -->
           <button type="submit" class="btn-reverse mt-4">
             <mat-spinner
               *ngIf="showSpinner; else noSpinner"

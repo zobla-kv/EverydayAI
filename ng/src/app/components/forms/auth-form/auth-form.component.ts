@@ -58,6 +58,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     // TODO: add regex validator for non alphabetic characters
+    // TODO: add confirm password field, also when resetting password
     this.registerForm = {
       form: new FormGroup({
         'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),

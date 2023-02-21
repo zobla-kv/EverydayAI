@@ -44,6 +44,11 @@ const routes: Routes = [
   { 
     path: 'reset-password', 
     component: XFormComponent 
+  },
+  // TODO: 404
+  { 
+    path: '**', 
+    redirectTo: '' 
   }
 
 ];

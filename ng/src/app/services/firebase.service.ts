@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -34,7 +35,8 @@ export class FirebaseService {
     private _fireAuth: AngularFireAuth,
     private _db: AngularFirestore,
     private _httpService: HttpService,
-    private _utilService: UtilService
+    private _utilService: UtilService,
+    private _router: Router
   ) { }
 
   // register new user
@@ -93,7 +95,7 @@ export class FirebaseService {
   }
 
   // check if user exists and the send email
-  resetPassword(email: string): Promise<FirebaseAuthResponse | null> {
+  sendPasswordResetEmail(email: string): Promise<FirebaseAuthResponse | null> {
     return new Promise(async (resolve) => {
       // check if user exists
       const response = await this._fireAuth.fetchSignInMethodsForEmail(email);
@@ -101,12 +103,23 @@ export class FirebaseService {
         return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_USER_NOT_FOUND))
       }
       // send email
-      const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD })
-      if(!isSent) {
-        return this._utilService.navigateToInformationComponent("failed to blabla");
+      const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });
+      if (!isSent) {
+        return this._utilService.navigateToInformationComponent('Failed to send email verification link. Please try again.');
       }
-      this._utilService.navigateToInformationComponent("sucesful to blabla");
+      this._utilService.navigateToInformationComponent('Email containing password reset link has been sent to your email address.');
     })
+  }
+
+  // update password
+  updatePassword(oobCode: string, password: string): void {
+    // TODO: password can be same as old one, not really an issue?
+    this._fireAuth.confirmPasswordReset(oobCode, password)
+    .then(() => {
+      this._utilService.navigateToInformationComponent('Password updated succesfully. Redirecting to login page...');
+      setTimeout(() => this._router.navigate(['auth', 'login']), 2000);
+    })
+    .catch(() => this._utilService.navigateToInformationComponent('Failed to update password. Please try again.'))
   }
 
   // TODO: change RegisterUser -> User later

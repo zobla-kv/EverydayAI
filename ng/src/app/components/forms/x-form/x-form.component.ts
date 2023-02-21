@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -28,10 +28,8 @@ import {
 })
 export class XFormComponent {
 
-  @Input() type: string;
-
   // phase
-  phase: string;
+  phase: number;
   
   form: FormGroup;
 
@@ -42,17 +40,34 @@ export class XFormComponent {
   ) {}
 
   ngOnInit(): void {  
+    this.phase = window.history.state.phase;
     // TODO: add regex validator for non alphabetic characters
-    this.form = new FormGroup({
-      'email': new FormControl(null, [Validators.required, Validators.email]),
-    })
+    // if it is phase 2 it is password update 
+    // if not then it is email to which to send link
+    this.form = new FormGroup(
+      this.phase === 2 ? 
+      {
+        'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)])
+      } : 
+      {
+        'email': new FormControl(null, [Validators.required, Validators.email])
+      }
+    )
   }
 
   // submit form
   async submitForm(form: FormGroup) {
     this.showSpinner = true;
-    const response = await this._firebaseService.resetPassword(this.form.get('email')?.value);
+    let response;
+    if (this.phase === 2) {
+      console.log('submit form phase 2');
+      const code = window.history.state.code;
+      response = await this._firebaseService.updatePassword(code, this.form.get('password')?.value);
+    } else {
+      response = await this._firebaseService.sendPasswordResetEmail(this.form.get('email')?.value);
+    }
     // if it returns it has an error, otherwise is handled in firebase service
+    console.log('response is: ', response);
     if (response?.error) {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);

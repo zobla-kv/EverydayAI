@@ -12,6 +12,7 @@ export class IconService {
     private _domSanitizer: DomSanitizer
   ) { }
 
+  // name property needs to match file name
   Icons: { name: string }[] = [
     { name: 'planet' },
     { name: 'book' },

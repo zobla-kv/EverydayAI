@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { getAuth, checkActionCode, applyActionCode } from '@angular/fire/auth';
+import { getAuth, applyActionCode, verifyPasswordResetCode } from '@angular/fire/auth';
 
 import {
   UtilService
 } from '@app/services';
 
+import { 
+  FirebaseAuthResponse
+} from '@app/models';
+
 /**
  * Used to display informational message on empty route
  * message is derived from route params
+ * 
+ * Another functionality is to land from email links like
+ * email verification and password reset
  *
  */
 @Component({
@@ -18,15 +26,15 @@ import {
 })
 export class InformationComponent implements OnInit {
 
-  message: string = 'DEFAULT MESSAGE';
+  message: string = '';
 
   // **** for firebase functionality (email verification etc.) **** //
-  isLoading: boolean = false;
   mode: string | null = null;
   // ************************************************************* //
 
   constructor(
-    private _utilService: UtilService
+    private _utilService: UtilService,
+    private _router: Router
   ) {}
 
   // TODO: block /verify route
@@ -36,32 +44,49 @@ export class InformationComponent implements OnInit {
 
     this.mode = this._utilService.getParamFromUrl('mode');
     if (this.mode) {
-      this.handleVerifyEmail();
+      this.handleMode(this.mode)
+    }
+  }
+
+  handleMode(mode: string) {
+    switch(mode) {
+      case 'verifyEmail':
+        return this.handleEmailVerificationLink();
+      case 'resetPassword':
+        return this.handlePasswordResetLink();
+      default:
+        this.message = 'Invalid mode';
     }
   }
 
   // TODO: handle code expired
   // Firebase: The action code has expired. (auth/expired-action-code) <- response.
-  handleVerifyEmail() {
-    this.isLoading = true;
+  handleEmailVerificationLink() {
+    this.message = 'Verifying email address...'
     const auth = getAuth();
     const actionCode = this._utilService.getParamFromUrl('code') as string;
     applyActionCode(auth, actionCode)
     .then(res => {
-      console.log('email verifiedede: ', res);
-      this.message = 'Email verified successfuly'
-      // Email address has been verified.
-
-      // TODO: Display a confirmation message to the user.
-      // You could also provide the user with a link back to the app.
-
-      // TODO: If a continue URL is available, display a button which on
-      // click redirects the user back to the app via continueUrl with
-      // additional state determined from that URL's parameters.
+      this.message = 'Email verified successfuly. Redirecting to login page...'
+      setTimeout(() => this._router.navigate(['auth', 'login']), 2000);
     })
     .catch(err => {
-        this.message = err.message;
+      this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
     })
-    .finally(() => this.isLoading = false);
+  }
+
+  handlePasswordResetLink() {
+    this.message = 'Verifying code...'
+    const auth = getAuth();
+    const actionCode = this._utilService.getParamFromUrl('code') as string;
+    verifyPasswordResetCode(auth, actionCode)
+    .then(res => {
+      this.message = 'Code verification succesful. Redirecting to password update form...';
+      setTimeout(() => this._router.navigate(['reset-password'], { state: { phase: 2, code: actionCode }}), 2000);
+    })
+    .catch(err => {
+      // auth/invalid-code
+      this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
+    })
   }
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import {
   ProductCategory
@@ -18,29 +17,5 @@ export class HomePageComponent {
     { name: 'Medicine', icon: 'home-page-category-food' },
     { name: 'Training', icon: 'home-page-category-food' }
   ];
-
-  isLoading: boolean = false;
-
-  // spinner sub
-  spinnerSub: Subscription;
-
-  constructor(
-    
-  ) {}
-
-  ngOnInit(): void {
-    
-  }
-
-  handleSpinner() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000)
-  }
-
-  ngOnDestroy(): void {
-    this.spinnerSub.unsubscribe();
-  }
-
+  
 }
