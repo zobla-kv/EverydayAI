@@ -35,7 +35,7 @@ import {
   HomePageComponent,
   CategorySelectorComponent,
   ProductPageComponent,
-  FormComponent,
+  AuthFormComponent,
   XFormComponent,
   InformationComponent
 } from '@app/components';
@@ -53,7 +53,7 @@ import {
     HomePageComponent,
     CategorySelectorComponent,
     ProductPageComponent,
-    FormComponent,
+    AuthFormComponent,
     XFormComponent,
     InformationComponent,
 

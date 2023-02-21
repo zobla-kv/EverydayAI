@@ -21,11 +21,11 @@ import {
  * Only for reg/login forms
  */
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  selector: 'app-auth-form',
+  templateUrl: './auth-form.component.html',
+  styleUrls: ['./auth-form.component.scss']
 })
-export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // slider ref
   @ViewChild('slider') slider: ElementRef;

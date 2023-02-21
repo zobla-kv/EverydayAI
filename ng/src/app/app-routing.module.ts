@@ -5,7 +5,7 @@ import {
   HomePageComponent,
   ProductPageComponent,
   CategorySelectorComponent,
-  FormComponent,
+  AuthFormComponent,
   InformationComponent,
   XFormComponent
 } from '@app/components';
@@ -30,11 +30,11 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    component: FormComponent,
+    component: AuthFormComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
-      { path: 'login', component: FormComponent },
-      { path: 'register', component: FormComponent }
+      { path: 'login', component: AuthFormComponent },
+      { path: 'register', component: AuthFormComponent }
     ]
   },
   {
@@ -42,7 +42,7 @@ const routes: Routes = [
     component: InformationComponent
   },
   { 
-    path: 'auth/reset-password', 
+    path: 'reset-password', 
     component: XFormComponent 
   }
 
