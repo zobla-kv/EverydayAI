@@ -23,6 +23,9 @@ module.exports.sendEmail = async function (email, type) {
 
   const content = getContent(type);
 
+  // prevent gmail from trimming content
+  const random = Date.now();
+
   // TODO: figure out what was this for
   // type = type.replace(/ /g, '_');
 
@@ -47,6 +50,7 @@ module.exports.sendEmail = async function (email, type) {
         <img src="cid:instagram" style="${styles.instagramLogo}">
       </a>
     </div>
+    <div style="opacity: 0">${random}</div>
   `;
 
   const transporter = nodemailer.createTransport({
