@@ -279,3 +279,14 @@ button[type="submit"] {
   // TODO: check this trick
   // box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
+
+input[type="password"] { padding-right: 55px; }
+.show-password-toggle {
+  cursor: pointer;
+  left: calc(100% - 45px);
+  height: 20px;
+  line-height: 18px;
+  margin-top: 14px;
+  // keep color on failed validation
+  color: $main-orange-bg-color !important;
+}

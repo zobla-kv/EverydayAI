@@ -35,6 +35,9 @@ export class XFormComponent {
 
   showSpinner = false;
 
+  // show/hide password
+  showPassword = false;
+
   constructor(
     private _firebaseService: FirebaseService
   ) {}
@@ -53,6 +56,11 @@ export class XFormComponent {
         'email': new FormControl(null, [Validators.required, Validators.email])
       }
     )
+  }
+
+  // toggle show-hide password
+  showHidePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   // submit form

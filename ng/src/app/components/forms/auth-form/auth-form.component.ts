@@ -45,6 +45,9 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // show spinner on submit button
   showSpinner = false;
 
+  // show/hide password
+  showPassword = false;
+
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -104,6 +107,11 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   handleSliderUpdate(event: Event) {
     const typeFromEvent = (event.target as HTMLInputElement).checked ? FormType.REGISTER : FormType.LOGIN;
     this.handleTypeChange(typeFromEvent);
+  }
+
+  // toggle show-hide password
+  showHidePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   // submit form

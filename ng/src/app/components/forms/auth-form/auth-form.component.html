@@ -132,7 +132,7 @@
                     </div>
                     <div class="form-group mt-2">
                       <input
-                        type="password"
+                        type="{{ showPassword ? 'text' : 'password' }}"
                         class="form-style"
                         id="regpassword"
                         name="regpassword"
@@ -141,6 +141,9 @@
                         autocomplete="off"
                       >
                       <mat-icon>lock</mat-icon>
+                      <mat-icon class="show-password-toggle" (click)="showHidePassword()">
+                        {{ showPassword ? 'visibility' : 'visibility_off' }}
+                      </mat-icon>
                       <span
                         *ngIf="registerForm.form.get('password')?.hasError('required') && registerForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password is required
