@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
     private _iconService: IconService
   ) {
     this._iconService.addCustomIcons();
+    !sessionStorage.getItem('isNewBrowserSession') && sessionStorage.setItem('isNewBrowserSession', 'true');
   }
 
   ngOnInit(): void {

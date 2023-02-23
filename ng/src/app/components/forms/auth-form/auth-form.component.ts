@@ -133,6 +133,8 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // handle error based on error type
+  // TODO: do not show separate message for wrong email/password (for better security)
+  // show only credentials wrong or something..
   handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
     switch(error.error) {

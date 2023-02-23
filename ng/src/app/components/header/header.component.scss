@@ -1,15 +1,17 @@
 @import '../../styles/variables';
 
-.header-wrapper {
-  height: 120px;
-  justify-content: space-between;
+header { 
+  height: 120px; 
+  top: 0;
+  border-bottom: 1px solid white;
+  overflow: hidden;
+}
 
-  .header-item {
-    // border: 1px solid white;
-    // TODO: double check and remove
-    // width: 100%;
-    // flex-basis: 35%;
-  }
+.header-wrapper {
+  justify-content: space-between;
+  height: 100%;
+  z-index: 998;
+  position: relative;
 
   .header-item.navigation-wrapper {
     order: 1;

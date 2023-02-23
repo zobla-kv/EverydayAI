@@ -55,4 +55,19 @@ export class UtilService {
     paramValue = this._route.snapshot.queryParamMap.get(param);
     return paramValue;
   }
+
+  /** 
+  * Is user first visit in browser session
+  * used to track if animation should be triggered etc.
+  * 
+  * @return boolean
+  */
+   isFirstVisit(): boolean {
+    let isFirstVisit = true;
+    if (sessionStorage.getItem('isNewBrowserSession')) {
+      isFirstVisit = false;
+    }
+    return isFirstVisit;
+  }
+
 }

@@ -8,7 +8,7 @@ export class FirebaseAuthResponse {
   private _error: FirebaseError | null;
 
   constructor(
-    private _user: RegisterUser | null,
+    private _user: RegisterUser | null | any,
     errCode: string | null
   ) {
 

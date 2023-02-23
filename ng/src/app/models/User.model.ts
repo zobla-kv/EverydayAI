@@ -1,3 +1,6 @@
+// TODO: distinguish between Firebase user (User from 2 lines below, not class name) 
+// and Custom user stored in firestore db (RegisterUser)
+// import { User as FirebaseUser } from '@angular/fire/auth
 export class User {
   constructor(
     public id: string,

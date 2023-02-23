@@ -1,5 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 import { Subscription } from 'rxjs';
 
 import {
@@ -7,17 +10,18 @@ import {
   UtilService
 } from '@app/services';
 
-import {
-  User,
-  FormType
-} from '@app/models';
+import animations from './header.animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  animations
 })
 export class HeaderComponent implements OnDestroy {
+
+  // is everything loaded and ready to be displayed
+  isLoaded = false;
 
   isAuthenticated: boolean;
   userSub$: Subscription;
@@ -25,16 +29,21 @@ export class HeaderComponent implements OnDestroy {
   constructor(
     private _router: Router,
     private _utilService: UtilService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _fireAuth: AngularFireAuth
   ) {
 
-    this.userSub$ = this._authService.user$.subscribe((user: User) => {
-      this.isAuthenticated = user.token ? true : false;
-    })
-
+    this.userSub$ = this._fireAuth.authState.subscribe(user => {
+      this.isAuthenticated = true;
+      // this.isAuthenticated = !!user;
+      this.triggerAnimation();
+    });
   }
 
-  // handle route change to log/reg form
+  triggerAnimation() {
+    this.isLoaded = true;
+  }
+
   // TODO: block routes if logged in
   handleAuthButton(type: string) {
     const prevRoute = this._router.url;
@@ -44,6 +53,11 @@ export class HeaderComponent implements OnDestroy {
     } else {
       this._router.navigate(['auth', type]);
     }
+  }
+
+  // log user out
+  handleLogout() {
+    this._authService.logout();
   }
 
   ngOnDestroy(): void {

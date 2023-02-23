@@ -43,12 +43,15 @@ export class FirebaseService {
   register(user: RegisterUser): Promise<FirebaseAuthResponse> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async res => {
-      // res has intereseting data, check it out (email for example)
+
+      // set displayName
+      let profileUpdated = false;
+      await res.user?.updateProfile({ displayName: user.name }).then(() => profileUpdated = true);
 
       /***** WRITE TO CUSTOM DB *****/
       const isWritten = await this.writeUserToDb(user);
       const tempUser = await this.getUserByEmail(user.email);
-      if (!isWritten || !tempUser) {
+      if (!profileUpdated || !isWritten || !tempUser) {
         return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_WRITE_FAILED));
         // delete user written by first createUserWithEmailAndPassword
       }
@@ -89,9 +92,13 @@ export class FirebaseService {
         return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
 
-      const tempUser = await this.getUserByEmail(user.email);
-      resolve(new FirebaseAuthResponse(tempUser, null));
+      resolve(new FirebaseAuthResponse(loggedUserData.user, null));
     })
+  }
+
+  // log out user
+  logout(): void {
+    this._fireAuth.signOut();
   }
 
   // check if user exists and the send email

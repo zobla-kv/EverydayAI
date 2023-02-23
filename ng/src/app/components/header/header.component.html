@@ -1,26 +1,37 @@
-<header class="header-wrapper d-flex w-100 px-4" role="heading">
-  <div class="header-item navigation-wrapper absolute-center">
-    <a
-      routerLink="/"
-      routerLinkActive="nav-active"
-      [routerLinkActiveOptions]="{exact: true}"
-    >{{ 'Home' | uppercase }}</a> |
-    <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a> |
-    <a routerLink="/about" routerLinkActive="nav-active">{{ 'About' | uppercase }}</a> |
-    <a routerLink="/contact-us" routerLinkActive="nav-active">{{ 'Contact' | uppercase }}</a>
-  </div>
-  <div class="header-item logo-wrapper">
-    <a routerLink="/">
-      <img alt="house of dogs logo" role="img">
-    </a>
-  </div>
-  <div class="header-item profile" *ngIf="isAuthenticated">LOGGED IN</div>
-  <div class="header-item profile" *ngIf="!isAuthenticated">
-    <button type="button" class="btn" (click)="handleAuthButton('login')">
-      <span>Login</span>
-    </button>
-    <button type="button" class="btn me-2" (click)="handleAuthButton('register')">
-      <span>Register</span>
-    </button>
+<header role="heading">
+  <div class="header-wrapper d-flex w-100 px-4" [@loadingDone]="isLoaded" [@.disabled]="true">
+    <div class="header-item navigation-wrapper absolute-center">
+      <a
+        routerLink="/"
+        routerLinkActive="nav-active"
+        [routerLinkActiveOptions]="{exact: true}"
+      >
+        {{ 'Home' | uppercase }}
+      </a> |
+      <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a> |
+      <a routerLink="/about" routerLinkActive="nav-active">{{ 'About' | uppercase }}</a> |
+      <a routerLink="/contact-us" routerLinkActive="nav-active">{{ 'Contact' | uppercase }}</a>
+    </div>
+    <div class="header-item logo-wrapper">
+      <a routerLink="/">
+        <img alt="house of dogs logo" role="img">
+      </a>
+    </div>
+    <!-- LOGGED IN -->
+    <div class="header-item profile" *ngIf="isAuthenticated">
+      LOGGED IN
+      <button (click)="handleLogout()">logout</button>
+    </div>
+    <!-- ********* -->
+    <!-- LOGGED OUT -->
+    <div class="header-item profile" *ngIf="!isAuthenticated">
+      <button type="button" class="btn" (click)="handleAuthButton('login')">
+        <span>Login</span>
+      </button>
+      <button type="button" class="btn me-2" (click)="handleAuthButton('register')">
+        <span>Register</span>
+      </button>
+    </div>
+    <!-- *********** -->
   </div>
 </header>

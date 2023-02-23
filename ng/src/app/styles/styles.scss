@@ -97,17 +97,12 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .gray-text { color: $gray-text !important; }
 
 /* header footer */
-.header-wrapper,
+header,
 .footer-wrapper {
   background-color: $main-dark-bg-color;
   width: 100%;
   z-index: 999;
   position: sticky;
-}
-
-.header-wrapper {
-  top: 0;
-  border-bottom: 1px solid white;
 }
 
 .custom-border {

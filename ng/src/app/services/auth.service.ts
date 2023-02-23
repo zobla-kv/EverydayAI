@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Subject } from 'rxjs';
-
 import {
-  User,
   RegisterUser,
   FirebaseAuthResponse,
   FirebaseConstants
@@ -24,8 +21,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-
-  user$ = new Subject<User>();
 
   constructor(
     private _firebaseService: FirebaseService,
@@ -48,8 +43,12 @@ export class AuthService {
     if (response.error) {
       return response;
     }
-    this.user$.next(new User('test-id', 'test-token', new Date()));
     this._router.navigate(['/']);
+  }
+
+  // logout user
+  async logout(): Promise<FirebaseAuthResponse | void> {
+    this._firebaseService.logout();
   }
 
 }
