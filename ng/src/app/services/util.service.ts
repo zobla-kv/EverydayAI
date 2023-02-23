@@ -22,9 +22,9 @@ export class UtilService {
     private _route: ActivatedRoute
   ) { }
 
-  /** 
+/**
   * Emit auth button clicked event
-  * 
+  *
   * @param type string - login/register
   * @returns void
   */
@@ -32,11 +32,11 @@ export class UtilService {
     this.authButtonClick$.next(type);
   }
 
-  /** 
+/**
   * Navigates to information component
   * and display passed message
   * no mode trigger for now
-  * 
+  *
   * @param message string
   * @returns void
   */
@@ -44,9 +44,9 @@ export class UtilService {
     this._router.navigate(['auth', 'verify'], { state: { message } });
   }
 
- /** 
+/**
   * Gets parameter value from url
-  * 
+  *
   * @param param string
   * @returns string | null
   */
@@ -56,15 +56,15 @@ export class UtilService {
     return paramValue;
   }
 
-  /** 
+/**
   * Is user first visit in browser session
   * used to track if animation should be triggered etc.
-  * 
+  *
   * @return boolean
   */
    isFirstVisit(): boolean {
     let isFirstVisit = true;
-    if (sessionStorage.getItem('isNewBrowserSession')) {
+    if (sessionStorage.getItem('new_session')) {
       isFirstVisit = false;
     }
     return isFirstVisit;

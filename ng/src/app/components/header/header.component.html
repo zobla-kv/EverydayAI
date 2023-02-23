@@ -1,5 +1,5 @@
 <header role="heading">
-  <div class="header-wrapper d-flex w-100 px-4" [@loadingDone]="isLoaded" [@.disabled]="true">
+  <div class="header-wrapper d-flex w-100 px-4" [@loading]="isFirstVisit ? loadingState : 'no-animation'">
     <div class="header-item navigation-wrapper absolute-center">
       <a
         routerLink="/"

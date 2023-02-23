@@ -20,8 +20,11 @@ import animations from './header.animations';
 })
 export class HeaderComponent implements OnDestroy {
 
-  // is everything loaded and ready to be displayed
-  isLoaded = false;
+  // is first visit
+  isFirstVisit = this._utilService.isFirstVisit();
+
+  // animation state
+  loadingState = 'loadingStarted';
 
   isAuthenticated: boolean;
   userSub$: Subscription;
@@ -33,15 +36,17 @@ export class HeaderComponent implements OnDestroy {
     private _fireAuth: AngularFireAuth
   ) {
 
+    this._authService.getUser() && (this.isAuthenticated = true);
+
     this.userSub$ = this._fireAuth.authState.subscribe(user => {
-      this.isAuthenticated = true;
-      // this.isAuthenticated = !!user;
+      console.log('fire 2')
+      this.isAuthenticated = !!user;
       this.triggerAnimation();
     });
   }
 
   triggerAnimation() {
-    this.isLoaded = true;
+    this.loadingState = 'loadingEnded';
   }
 
   // TODO: block routes if logged in

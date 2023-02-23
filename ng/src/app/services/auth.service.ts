@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+  AppConstants,
   RegisterUser,
   FirebaseAuthResponse,
   FirebaseConstants
@@ -49,6 +50,23 @@ export class AuthService {
   // logout user
   async logout(): Promise<FirebaseAuthResponse | void> {
     this._firebaseService.logout();
+  }
+
+  // sets mock value representing user
+  setUser(): void {
+    if (!sessionStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
+      sessionStorage.setItem(AppConstants.STORAGE_USER_KEY, AppConstants.STORAGE_USER_VALUE)
+    }
+  }
+
+  // get mock value from session storage
+  getUser(): string | null {
+    return sessionStorage.getItem(AppConstants.STORAGE_USER_KEY);
+  }
+
+  // remove mock user from session storage
+  removeUser(): void {
+    sessionStorage.removeItem(AppConstants.STORAGE_USER_KEY);
   }
 
 }

@@ -1,5 +1,6 @@
 export class AppConstants {
-
+  static STORAGE_USER_KEY = 'user_hash';
+  static STORAGE_USER_VALUE = 'cdf5a81aef0796bcb17d68d58436c4cc';
 }
 
 // TODO: remove auth/ ?
