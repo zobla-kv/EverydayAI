@@ -50,10 +50,10 @@ const responseMessages: messageObject = {
   'Failed to send verification email. Resend by clicking below button.',
   [FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED]:
   'The email address is already in use by another account',
-  [FirebaseConstants.LOGIN_USER_NOT_FOUND]:
+  [FirebaseConstants.USER_NOT_FOUND]:
   'User does not exist',
-  [FirebaseConstants.LOGIN_WRONG_PASSWORD]:
-  'Password incorrect',
+  [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]:
+  'Wrong credentials',
   [FirebaseConstants.LOGIN_TOO_MANY_REQUESTS]:
   `Access to this account has been temporarily disabled due to many failed login attempts.
   You can immediately restore it by resetting your password or you can try again later`,

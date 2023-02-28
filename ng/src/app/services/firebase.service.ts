@@ -80,10 +80,10 @@ export class FirebaseService {
       // loginResponse.user can be used for many things (emailVerified etc.)
       // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
       const loggedUserData = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
-      .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))) });
+      .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_WRONG_CREDENTIALS)) });
 
       if (!loggedUserData) {
-        // this if means it signIn went into catch block
+        // this if means signIn went into catch block
         // does not stop execution so stop it manually
         return;
       }
@@ -107,7 +107,7 @@ export class FirebaseService {
       // check if user exists
       const response = await this._fireAuth.fetchSignInMethodsForEmail(email);
       if (response.length === 0) {
-        return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_USER_NOT_FOUND))
+        return resolve(new FirebaseAuthResponse(null, FirebaseConstants.USER_NOT_FOUND))
       }
       // send email
       const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });

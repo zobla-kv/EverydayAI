@@ -32,10 +32,6 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
                       </span>
                       <span
-                        *ngIf="loginForm.form.get('email')?.hasError('user-not-found')"
-                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('user-not-found') }}
-                      </span>
-                      <span
                         *ngIf="loginForm.form.get('email')?.hasError('too-many-requests')"
                         class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('too-many-requests') }}
                       </span>
@@ -60,8 +56,8 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Password can not be empty
                       </span>
                       <span
-                        *ngIf="loginForm.form.get('password')?.hasError('wrong-password')"
-                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('password')?.getError('wrong-password') }}
+                        *ngIf="loginForm.form.hasError('wrong-credentials')"
+                        class="form-text ms-1 dark-text fw-bold d-block">Wrong credentials
                       </span>
                     </div>
                     <button type="submit" class="btn-reverse mt-4">

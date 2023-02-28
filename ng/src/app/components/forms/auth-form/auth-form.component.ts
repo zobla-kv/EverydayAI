@@ -147,14 +147,15 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
     switch(error.error) {
-      case FirebaseConstants.LOGIN_USER_NOT_FOUND:
+      // in below case set error directly on form to avoid fields getting red
+      case FirebaseConstants.LOGIN_WRONG_CREDENTIALS:
+        return form.setErrors({ 
+          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: FirebaseAuthResponse.getMessage(FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
+        })
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
       case FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED:
         controlName = 'email'
-        break;
-      case FirebaseConstants.LOGIN_WRONG_PASSWORD:
-        controlName = 'password'
         break;
       case FirebaseConstants.REGISTRATION_WRITE_FAILED:
       case FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED:
@@ -166,7 +167,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // validate form before submitting
   validateForm() {
-    console.log('form: ', this.activeForm.form);
     if (this.activeForm.form.valid) {
       this.submitForm(this.activeForm);
     } else {

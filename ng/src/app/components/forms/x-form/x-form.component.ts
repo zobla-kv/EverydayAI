@@ -44,7 +44,6 @@ export class XFormComponent {
 
   ngOnInit(): void {  
     this.phase = window.history.state.phase;
-    // TODO: add regex validator for non alphabetic characters
     // if it is phase 2 it is password update 
     // if not then it is email to which to send link
     this.form = new FormGroup(
@@ -88,18 +87,9 @@ export class XFormComponent {
   }
 
   // handle error based on error type
+  // only error is that user is not found
   handleError(form: FormGroup, error: FirebaseError) {
-    let controlName = '';
-    switch(error.error) {
-      case FirebaseConstants.LOGIN_USER_NOT_FOUND:
-        controlName = 'email'
-        break;
-      case FirebaseConstants.LOGIN_WRONG_PASSWORD:
-        controlName = 'password'
-        break;
-      default:
-    }
-    form.controls[controlName].setErrors({ [error.error]: error.errorMessage })
+    form.controls['email'].setErrors({ [error.error]: error.errorMessage })
   }
 
   // validate form before submitting
