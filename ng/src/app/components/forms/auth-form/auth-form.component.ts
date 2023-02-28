@@ -60,13 +60,22 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO: add regex validator for non alphabetic characters
     // TODO: add confirm password field, also when resetting password
     this.registerForm = {
       form: new FormGroup({
-        'name': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+        'name': new FormControl(null, [
+          Validators.required, 
+          Validators.minLength(6), 
+          Validators.maxLength(16), 
+          Validators.pattern('^[a-zA-Z0-9]*$')
+        ]),
         'email': new FormControl(null, [Validators.required, Validators.email]),
-        'password': new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+        'password': new FormControl(null, [
+          Validators.required, 
+          Validators.minLength(6), 
+          Validators.maxLength(16),
+          Validators.pattern('^[a-zA-Z0-9]*$')
+        ]),
         'gender': new FormControl(null, Validators.required),
       }),
       type: FormType.REGISTER
@@ -157,6 +166,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // validate form before submitting
   validateForm() {
+    console.log('form: ', this.activeForm.form);
     if (this.activeForm.form.valid) {
       this.submitForm(this.activeForm);
     } else {

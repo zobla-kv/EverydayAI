@@ -57,6 +57,10 @@
               *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.touched"
               class="form-text ms-1 dark-text fw-bold d-block">Password can have up to 16 characters
             </span>
+            <span
+              *ngIf="form.get('password')?.hasError('pattern') && form.get('password')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Special characters not allowed
+            </span>
           </div>
           <!-- ******************** -->
           <button type="submit" class="btn-reverse mt-4">

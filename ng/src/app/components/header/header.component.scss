@@ -1,7 +1,7 @@
 @import '../../styles/variables';
 
 header { 
-  height: 120px; 
+  height: $header-height; 
   top: 0;
   border-bottom: 1px solid white;
   overflow: hidden;

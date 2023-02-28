@@ -105,6 +105,10 @@
                         *ngIf="registerForm.form.get('name')?.hasError('maxlength') && registerForm.form.get('name')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Maximum name length is 16 characters
                       </span>
+                      <span
+                        *ngIf="registerForm.form.get('name')?.hasError('pattern') && registerForm.form.get('name')?.touched"
+                        class="form-text ms-1 dark-text fw-bold d-block">Special characters not allowed
+                      </span>
                     </div>
                     <div class="form-group mt-2">
                       <input
@@ -156,6 +160,10 @@
                         *ngIf="registerForm.form.get('password')?.hasError('maxlength') && registerForm.form.get('password')?.touched"
                         class="form-text ms-1 dark-text fw-bold d-block">Password can have up to 16 characters
                       </span>
+                      <span
+                      *ngIf="registerForm.form.get('password')?.hasError('pattern') && registerForm.form.get('password')?.touched"
+                      class="form-text ms-1 dark-text fw-bold d-block">Special characters not allowed
+                    </span>
                     </div>
                     <div class="form-group gender mt-2">
                       <div class="form-style">
