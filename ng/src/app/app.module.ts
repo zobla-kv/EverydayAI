@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // *************  firebase ******************* //
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 const firebaseConfig = {
   apiKey: "AIzaSyBdBGoR3VvzO59rVahX9oGU5XKNLwAAF2Y",

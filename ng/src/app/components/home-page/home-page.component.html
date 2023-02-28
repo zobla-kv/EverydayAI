@@ -1,5 +1,6 @@
 <section class="top-section-wrapper">
-  <div class="container-fluid flex-center g-0">
+  <div class="container-fluid flex-center g-0" [@loading]="isFirstVisit ? loadingState : 'no-animation'">
+  <!-- <div class="container-fluid flex-center g-0" [@loading]="loadingState"> -->
     <div class="image-section w-40">
       <img src="../../../assets/images/img/landing-page-image.jpg" class="img-fluid" alt="dog-bark-banner">
     </div>

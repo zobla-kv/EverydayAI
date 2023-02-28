@@ -1,9 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-
-import { Subscription } from 'rxjs';
 
 import {
   AuthService,
@@ -18,7 +16,7 @@ import animations from './header.animations';
   styleUrls: ['./header.component.scss'],
   animations
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent {
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
@@ -27,7 +25,6 @@ export class HeaderComponent implements OnDestroy {
   loadingState = 'loadingStarted';
 
   isAuthenticated: boolean;
-  userSub$: Subscription;
 
   constructor(
     private _router: Router,
@@ -38,11 +35,11 @@ export class HeaderComponent implements OnDestroy {
 
     this._authService.getUser() && (this.isAuthenticated = true);
 
-    this.userSub$ = this._fireAuth.authState.subscribe(user => {
-      console.log('fire 2')
+    this._fireAuth.onAuthStateChanged(user => {
       this.isAuthenticated = !!user;
       this.triggerAnimation();
     });
+
   }
 
   triggerAnimation() {
@@ -63,10 +60,6 @@ export class HeaderComponent implements OnDestroy {
   // log user out
   handleLogout() {
     this._authService.logout();
-  }
-
-  ngOnDestroy(): void {
-    this.userSub$.unsubscribe();
   }
 
 }

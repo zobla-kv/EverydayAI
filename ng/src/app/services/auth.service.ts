@@ -66,7 +66,10 @@ export class AuthService {
 
   // remove mock user from session storage
   removeUser(): void {
-    sessionStorage.removeItem(AppConstants.STORAGE_USER_KEY);
+    if (sessionStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
+      console.log('remove session')
+      sessionStorage.removeItem(AppConstants.STORAGE_USER_KEY)
+    }
   }
 
 }

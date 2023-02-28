@@ -1,6 +1,5 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Subscription } from 'rxjs';
 
 import {
   IconService,
@@ -12,17 +11,15 @@ import {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   @HostListener('window:unload')
   unloadHandler() {
-    // used for animations prevention after first page visit it new browser session
+    // used for animations prevention after first page visit if new browser session
+    // TODO: open app in new tab without closing first will cause animation to run again
     !sessionStorage.getItem('new_session') && sessionStorage.setItem('new_session', 'true');
   }
 
   title = 'house-of-dogs';
-
-  // user sub
-  userSub$: Subscription;
 
   constructor(
     private _iconService: IconService,
@@ -31,14 +28,9 @@ export class AppComponent implements OnInit {
   ) {
     this._iconService.addCustomIcons();
 
-    this.userSub$ = this._fireAuth.authState.subscribe(user => {
-      console.log('fire 1')
+    this._fireAuth.onAuthStateChanged(user => {
       user ? this._authService.setUser() : this._authService.removeUser();
-    })
-  }
-
-  ngOnInit(): void {
-    this.userSub$.unsubscribe();
+    });
   }
 
 }
