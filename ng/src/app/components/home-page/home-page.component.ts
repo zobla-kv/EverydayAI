@@ -44,5 +44,9 @@ export class HomePageComponent {
   triggerAnimation() {
     this.loadingState = 'loadingEnded';
   }
-  
+
+  onVisible(event: HTMLElement) {
+    console.log('visible fired: ', event);
+  }
+
 }

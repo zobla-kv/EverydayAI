@@ -39,7 +39,8 @@ import {
 } from '@app/components';
 
 import {
-  HighlightDirective
+  HighlightDirective,
+  ObserveVisibilityDirective
 } from '@app/directives';
 
 @NgModule({
@@ -57,6 +58,7 @@ import {
 
     // Directives
     HighlightDirective,
+    ObserveVisibilityDirective
   ],
   imports: [
     BrowserModule,
