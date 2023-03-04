@@ -106,10 +106,11 @@
 .about-us-section-wrapper {
   color: white;
 
-  // TODO: overflows on small screen
+  // TODO: overflows on small screen, but because of below padding
   hr { width: 300px; }
 
   .about-us-top-section {
+    // TODO: not good for responsive
     padding: 1.125rem 6rem;
 
     .about-us-section-header {
