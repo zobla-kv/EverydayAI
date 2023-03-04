@@ -45,8 +45,4 @@ export class HomePageComponent {
     this.loadingState = 'loadingEnded';
   }
 
-  onVisible(event: HTMLElement) {
-    console.log('visible fired: ', event);
-  }
-
 }

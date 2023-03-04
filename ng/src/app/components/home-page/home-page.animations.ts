@@ -19,5 +19,16 @@ export default [
     //   // style({ 'transform': 'translateY(50px)',  'opacity': '0.8', offset: 0.9 }),
     //   // style({ 'transform': 'translateY(0)',     'opacity': '1',   offset: 1 }),
     // ])))
-  ])
+  ]),
+  trigger('appear', [
+    state('hide', style({
+      'opacity': '0',
+      'transform': 'translateY(50px)'
+    })),
+    state('show', style({
+      'opacity': '1',
+      'transform': 'translateY(0px)'
+    })),
+    transition('hide => show', animate('300ms 200ms'))
+  ]),
 ]
