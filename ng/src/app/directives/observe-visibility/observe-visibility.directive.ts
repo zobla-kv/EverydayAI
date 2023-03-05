@@ -6,7 +6,7 @@ import { Subject, delay, filter } from 'rxjs';
 /**
  * Observe visibility directive
  * run animation once element is in view
- * for now used only to show (animate) element once in view - once 
+ * for now used only to show (animate) element once in view
  */
 @Directive({
   selector: '[appear]'
@@ -14,12 +14,13 @@ import { Subject, delay, filter } from 'rxjs';
 export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewInit {
   @Input() debounceTime = 0;
   @Input() threshold = 0;
+  @Input() rootMargin = '0px';
 
   // object holding hide styles
   // TODO: create model
-  @Input() hideStyles = { 'opacity': '0', 'transform': 'translateY(20px)', 'filter': 'blur(20px)' };
-  // object holding show styles 
-  @Input() showStyles = { 'opacity': '1', 'transform': 'translateY(0px)' };
+  @Input('hide') hideStyles: any = { 'opacity': '0', 'transform': 'translateY(20px)', 'filter': 'blur(20px)' };
+  // object holding show styles
+  @Input('show') showStyles: any = { 'opacity': '1', 'transform': 'translateY(0px)', 'filter': 'blur(0px)' };
 
   // animation (hide -> show)
   animation: AnimationPlayer;
@@ -54,11 +55,12 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
         const target = this._element.nativeElement;
         this.animation.play();
         // cancel after firing once
-        this.observer?.unobserve(target);   
+        this.observer?.unobserve(target);
       });
   }
 
 
+  // hide element (should be reverse of show)
   setHideStyles(styles: any) {
     for (const style of Object.keys(styles)) {
       this._renderer.setStyle(this._element.nativeElement, style, styles[style])
@@ -68,13 +70,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   // create animation and set variable
   // TODO: make this dynamic through input
   createAnimation() {
-    const factory = this.builder.build([
-      animate('500ms 0ms', style({
-        'opacity': '1',
-        'transform': 'translateY(0px)',
-        'filter': 'blur(0)'
-      }))
-    ]);
+    const factory = this.builder.build([animate('500ms 0ms', style(this.showStyles))]);
     this.animation = factory.create(this._element.nativeElement);
   }
 
@@ -82,17 +78,54 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
     const options = {
       // root: new Document(),
       root: null,
-      rootMargin: '0px',
+      rootMargin: this.rootMargin,
       threshold: this.threshold,
     };
 
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
-          this.subject$.next();
+        // if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
+        if (entry.isIntersecting && entry.intersectionRatio >= this.threshold && this.isInViewport(entry.target)) {
+        // if (this.isInViewport(entry.target) && entry.isIntersecting) {
+          // if (entry.target.innerHTML == ' dogs') {
+            console.log('dogs fired: ', entry.target.getBoundingClientRect())
+            // if (this.isInViewport(entry.target)) {
+              this.subject$.next();
+            // }
+          // }
         }
       });
     }, options);
+  }
+
+  // is element visible
+  isInViewport(element: Element): boolean {
+    // if (!element || element.nodeType !== 1 || element.innerHTML !== ' dogs') {
+    if (!element || element.nodeType !== 1) {
+      return false;
+    };
+
+    const html = document.documentElement;
+    const rect = element.getBoundingClientRect();
+
+    console.log('element: ', element)
+
+    console.log('html height: ', html.clientHeight);
+    console.log('html width: ', html.clientWidth);
+    // console.log('rect: ', rect);
+
+
+    let isTrue = !!rect &&
+      rect.bottom >= 0 &&                 // donja ispod gornje ivice
+      rect.right >= 0 &&                  // desna desno od leve ivice
+      rect.left <= html.clientWidth &&    // leva levo od desne ivice
+      rect.top <= html.clientHeight;      // gornja iznad donje ivice && ispod headera
+
+      // top moze da bude veci od clientHeight???
+
+      console.log('is true: ', isTrue);
+
+    return isTrue;
   }
 
   ngOnDestroy() {
