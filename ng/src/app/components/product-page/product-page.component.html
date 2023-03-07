@@ -55,34 +55,32 @@
 <!-- init -->
 <section class="product-list-wrapper">
   <div class="container">
-      <div class="row justify-content-center text-center">
-          <div class="col-md-8 col-lg-6">
-              <div class="header">
-                  <h3>Featured Product</h3>
-                  <h2>Popular Products</h2>
-              </div>
-          </div>
+    <div class="row justify-content-center text-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="header">
+          <h3>Featured</h3>
+          <h2>Popular Courses</h2>
+        </div>
       </div>
-      <div class="row">
-          <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let product of productList">
-              <div id="product-1" class="single-product rounded overflow-hidden">
-                  <div class="top-section">
-                    <img src="{{ product.imgPath }}" alt="">
-                      <ul>
-                          <li><a href="#"><mat-icon>shopping_cart</mat-icon></a></li>
-                          <li><a href="#"><mat-icon>cloud_download</mat-icon></a></li>
-                          <li><a href="#"><mat-icon>folder_shared</mat-icon></a></li>
-                          <li><a href="#"><mat-icon>shopping_cart</mat-icon></a></li>
-                      </ul>
-                  </div>
-                  <div class="bottom-section">
-                      <h3 class="product-title">{{ product.title }}</h3>
-                      <h4 class="product-old-price">$79.99</h4>
-                      <h4 class="product-price">{{ product.price }}</h4>
-                  </div>
-              </div>
-          </div>
+    </div>
+    <div class="row">
+      <div class="single-product rounded overflow-hidden col-md-6 col-lg-3" *ngFor="let product of productList">
+        <div class="top-section">
+          <img src="{{ product.imgPath }}" alt="">
+          <ul>
+            <li><a href="#"><mat-icon>shopping_cart</mat-icon></a></li>
+            <li><a href="#"><mat-icon>download</mat-icon></a></li>
+            <li><a href="#"><mat-icon>favorite</mat-icon></a></li>
+          </ul>
+        </div>
+        <div class="bottom-section">
+          <h3 class="product-title">{{ product.title }}</h3>
+          <h3 class="product-title">{{ product.description }}</h3>
+          <h4 class="product-old-price">$79.99</h4>
+          <h4 class="product-price">{{ product.price }}</h4>
+        </div>
       </div>
+    </div>
   </div>
 </section>
 

@@ -89,34 +89,40 @@
 
 .product-list-wrapper {
   border: 1px solid white;
-  // TODO: check
-  padding: 80px 0 54px;
 
   .header {
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 
     h3 {
       font-size: 1rem;
-      color: #fe302f;
+      color: $main-orange-bg-color;
       font-weight: 500;
     }
 
     h2 {
       font-size: 2.2rem;
       font-weight: 400;
-      color: #444444; 
+      color: $gray-text;
     }
+  }
+
+  .row {
+    border: 1px solid red;
+    row-gap: 50px;
+    column-gap: 50px;
   }
 
   .single-product {
     background-color: $main-orange-bg-color;
-    // TODO: check 
-    margin-bottom: 26px;
+    // TODO: check
+    // min-width: 320px;
+    max-width: 320px;
+    // height: 290px;
 
     .top-section {
       position: relative;
-      height: 290px;
-      max-height: 290px;
+      // height: 290px;
+      // max-height: 290px;
       overflow: hidden;
 
       ul {

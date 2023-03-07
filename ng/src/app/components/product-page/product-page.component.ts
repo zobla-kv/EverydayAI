@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { 
+import {
   Product
 } from '@app/models';
 
