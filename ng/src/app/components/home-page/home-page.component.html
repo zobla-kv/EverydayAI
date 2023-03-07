@@ -39,8 +39,6 @@
         <span class="opacity-50 d-inline">Improving life of our</span>
         <span
           class="orange-text d-inline"
-          appear
-          [threshold]="1"
         > beloved ones</span>
       </div>
       <hr class="hr-right mt-2">
@@ -50,8 +48,6 @@
         <span class="opacity-50 d-inline">Connecting dog lovers around the</span>
         <span
           class="orange-text d-inline"
-          appear
-          [threshold]="1"
         > world</span>
       </div>
       <hr class="hr-right mt-2">
@@ -59,20 +55,15 @@
         <mat-icon svgIcon="book"></mat-icon>
         <span class="fw-bold">Knowledge</span>
         <span class="opacity-50 d-inline">Spreading knowledge about</span>
-        <span
-          class="orange-text d-inline test"
-          appear
-          [threshold]="1"
-          [rootMargin]="'0px 0px -100px 0px'"
-        > dogs</span>
+        <div
+          class="orange-text d-inline"
+        > dogs</div>
       </div>
       <hr class="hr-right mt-2">
     </div>
   </div>
   <div class="about-us-bottom-section w-100 mt-4">
-    <!-- [@appear]="isFirstVisit ? loadingState : 'no-animation'" -->
     <div
-      appear [threshold]="0.5"
       class="about-us-qoute-section col-lg-7 col-md-10 col-11 mx-auto text-center"
     >
       <mat-icon svgIcon="qoute" class="absolute-center"></mat-icon>

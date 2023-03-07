@@ -49,7 +49,8 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
     this.observer.observe(this._element.nativeElement);
 
-    this.subject$
+    setTimeout(() => {
+      this.subject$
       // .pipe(delay(this.debounceTime), filter(Boolean))
       .subscribe(async () => {
         const target = this._element.nativeElement;
@@ -57,6 +58,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
         // cancel after firing once
         this.observer?.unobserve(target);
       });
+    }, 1000)
   }
 
 
@@ -81,18 +83,11 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       rootMargin: this.rootMargin,
       threshold: this.threshold,
     };
-
+    
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        // if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
-        if (entry.isIntersecting && entry.intersectionRatio >= this.threshold && this.isInViewport(entry.target)) {
-        // if (this.isInViewport(entry.target) && entry.isIntersecting) {
-          // if (entry.target.innerHTML == ' dogs') {
-            console.log('dogs fired: ', entry.target.getBoundingClientRect())
-            // if (this.isInViewport(entry.target)) {
-              this.subject$.next();
-            // }
-          // }
+        if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
+          this.subject$.next();   
         }
       });
     }, options);
@@ -100,32 +95,18 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // is element visible
   isInViewport(element: Element): boolean {
-    // if (!element || element.nodeType !== 1 || element.innerHTML !== ' dogs') {
     if (!element || element.nodeType !== 1) {
       return false;
     };
 
     const html = document.documentElement;
     const rect = element.getBoundingClientRect();
-
-    console.log('element: ', element)
-
-    console.log('html height: ', html.clientHeight);
-    console.log('html width: ', html.clientWidth);
-    // console.log('rect: ', rect);
-
-
-    let isTrue = !!rect &&
+    
+    return !!rect &&
       rect.bottom >= 0 &&                 // donja ispod gornje ivice
       rect.right >= 0 &&                  // desna desno od leve ivice
       rect.left <= html.clientWidth &&    // leva levo od desne ivice
       rect.top <= html.clientHeight;      // gornja iznad donje ivice && ispod headera
-
-      // top moze da bude veci od clientHeight???
-
-      console.log('is true: ', isTrue);
-
-    return isTrue;
   }
 
   ngOnDestroy() {
