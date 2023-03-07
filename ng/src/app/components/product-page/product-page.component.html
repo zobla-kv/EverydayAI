@@ -45,5 +45,45 @@
   </ng-container>
 </section>
 <hr class="w-80 mx-auto">
+<!-- https://mahabis.com/ check this product list example -->
+<!-- <section class="product-list-wrapper my-4 px-lg-5 px-md-3 px-sm-1">
+  <div class="product-list-inner-wrapper d-flex flex-direction-row flex-wrap mx-auto">
+    <mat-card *ngFor="let product of productList"></mat-card>
+  </div>
+</section> -->
+
+<!-- init -->
+<section class="product-list-wrapper">
+  <div class="container">
+      <div class="row justify-content-center text-center">
+          <div class="col-md-8 col-lg-6">
+              <div class="header">
+                  <h3>Featured Product</h3>
+                  <h2>Popular Products</h2>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6 col-lg-4 col-xl-3" *ngFor="let product of productList">
+              <div id="product-1" class="single-product rounded overflow-hidden">
+                  <div class="top-section">
+                    <img src="{{ product.imgPath }}" alt="">
+                      <ul>
+                          <li><a href="#"><mat-icon>shopping_cart</mat-icon></a></li>
+                          <li><a href="#"><mat-icon>cloud_download</mat-icon></a></li>
+                          <li><a href="#"><mat-icon>folder_shared</mat-icon></a></li>
+                          <li><a href="#"><mat-icon>shopping_cart</mat-icon></a></li>
+                      </ul>
+                  </div>
+                  <div class="bottom-section">
+                      <h3 class="product-title">{{ product.title }}</h3>
+                      <h4 class="product-old-price">$79.99</h4>
+                      <h4 class="product-price">{{ product.price }}</h4>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
 
 

@@ -1,4 +1,4 @@
-export * from './ProductCategory.model';
+export * from './Product.model';
 export * from './User.model'
 export * from './Firebase.model';
 export * from './Form.model';
