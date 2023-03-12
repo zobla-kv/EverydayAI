@@ -58,14 +58,15 @@
   // background: $main-orange-bg-color;
   // background: white;
 
-  .text-section { color: white;
-  }
+  .text-section { color: white; }
   .image-section {
     background-color: $main-orange-bg-color;
     img { max-height: 250px; }
   }
 }
 
+// TODO: choose one
+// for approach one (classic)
 .product-buying-steps {
   height: 100px;
   color: $main-dark-bg-color;
@@ -87,11 +88,52 @@
   }
 }
 
-.product-list-wrapper {
-  border: 1px solid white;
+.product-buying-steps-2 {
 
+  ol {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    list-style: none;
+    counter-reset: stepnr;
+  }
+  
+  ol li {
+    counter-increment: stepnr;
+    inset: 0;
+    border-radius: 50%;
+    border: 25px solid $main-dark-bg-color;
+    line-height: 1.1;
+    width: 18rem;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+
+    .step-number-big {
+      position: absolute;
+      top: 0;
+      left: 10rem;
+      color: $main-orange-bg-color;
+      font-size: 12rem;
+      font-weight: 700;
+    }
+  }
+  
+  ol li > * { width: 7.5rem }
+  ol li .icon { text-align: center }
+  ol li .title { font-size: 2rem; font-weight: 500 }
+  ol li .descr { font-size: 0.8rem; font-weight: 300 }
+
+}
+
+.product-list-wrapper {
+
+  & > .container { max-width: 1000px; }
   .header {
-    margin-bottom: 25px;
 
     h3 {
       font-size: 1rem;
@@ -106,24 +148,18 @@
     }
   }
 
-  .row {
-    border: 1px solid red;
-    row-gap: 50px;
-    column-gap: 50px;
-  }
-
   .single-product {
     background-color: $main-orange-bg-color;
-    // TODO: check
-    // min-width: 320px;
     max-width: 320px;
-    // height: 290px;
+    min-width: 250px;
+
+    .mat-icon svg { vertical-align: top; }
 
     .top-section {
       position: relative;
-      // height: 290px;
-      // max-height: 290px;
       overflow: hidden;
+      cursor: pointer;
+      max-height: 260px;
 
       ul {
         position: absolute;
@@ -141,6 +177,21 @@
           display: inline-block;
           margin-right: 4px;
           background-color: $main-dark-bg-color;
+
+          .mat-icon {
+            position: relative;
+            &[icon="cart"] {
+              transform: scale(1.2);
+              top: -2px;
+            }
+            &[icon="download"] {
+              transform: scale(1.25);
+              top: 1px;
+            }
+            &[icon="favorite"] {
+              transform: scale(1.1);
+            }
+          }
 
           a {
             display: inline-block;
@@ -164,30 +215,74 @@
     }
 
     .bottom-section {
-      margin-top: 4px;
-      padding: 8px 16px;
+      padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+      color: $main-dark-bg-color;
+      font-family: cursive, 'Courier New', Courier, monospace;
+      max-height: 130px;
 
-      .product-title { font-size: 1rem; }
-      h4 {
-        display: inline-block;
-        font-size: 1rem;
+      .product-title { 
+        font-size: calc(1rem + 0.5vw);
+        line-height: 24px; 
+        text-align: center;
+        a {
+          text-decoration: none;
+          color: black;
+        }
       }
 
-      .product-old-price {
-        position: relative;
-        padding: 0 7px;
-        margin-right: 2px;
-        opacity: 0.6;
+      .product-information {
 
-        &::after {
-          position: absolute;
-          content: "";
-          top: 50%;
-          left: 0;
-          width: 100%;
-          height: 1px;
-          background-color: #444444;
-          transform: translateY(-50%);
+        .product-information-item {
+          // TODO: check responsive
+          // border: 1px solid;
+          position: relative;
+          display: flex;
+          padding: 0;
+  
+          &:has(.mat-icon[svgIcon="dollar"]) {
+            svg path { 
+              stroke: $main-dark-bg-color; 
+              fill: none; 
+              transform: scale(0.8);
+            }
+          }
+
+          .mat-icon { 
+            color: $main-dark-bg-color; 
+            svg path { fill: $main-dark-bg-color; }
+
+            &[icon="download"] { transform: scale(1.3); }
+          }
+
+          &.difficulty.length-1 { left: 21px; }
+          &.difficulty.length-3 { left: 14px; }
+          &.difficulty.length-4 { left: 11px; }
+
+          .product-old-price {
+            position: absolute;
+            top: -8px;
+            left: 24px;
+            opacity: 0.6;
+    
+            &::after {
+              position: absolute;
+              content: "";
+              top: 50%;
+              left: 0;
+              width: 100%;
+              height: 2px;
+              // TODO: choose color
+              background-color: #444444;
+              background-color: red;
+              transform: translateY(-50%);
+            }
+          }
+
+          .product-discount-price {
+            position: relative;
+            top: 6px;
+          }
+
         }
       }
     }
@@ -196,14 +291,34 @@
 
 /* MEDIA QUERIES */
 // bigger than 976px
+@media only screen and (max-width: 1200px) {
+ //
+}
+// bigger than 976px
 @media only screen and (min-width: 976px) {
   // TODO: is this default? no need?
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
   .product-buying-steps .buying-step { margin: 0 2rem; }
+  .product-list-wrapper { 
+    .single-product {
+      max-width: 260px;
+      margin: auto;
+      min-width: unset;
+      .product-information { 
+        padding: 0; 
+        .difficulty.length-1 { left: 18px !important; }
+        .difficulty.length-3 { left: 10px !important; }
+        .difficulty.length-4 { left: 8px !important; }
+      }
+    }
+  }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
   p { font-size: 16px !important; }
 }
+
+
+

@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
 
 import {
   Product
@@ -10,7 +11,7 @@ import {
   styleUrls: ['./product-page.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ProductPageComponent {
+export class ProductPageComponent implements OnInit {
 
   // TODO: put directly in html?
   // buying steps
@@ -20,11 +21,20 @@ export class ProductPageComponent {
     { name: 'Support', icon: 'record_voice_over' },
   ]
 
-  productList: Product[] = [
-    { id: 1, title: 'title-1', description: 'description-1', price: 1, imgPath: '../../../assets/images/img/landing-page-image.jpg' },
-    { id: 2, title: 'title-2', description: 'description-2', price: 2, imgPath: '../../../assets/images/img/landing-page-image.jpg' },
-    { id: 3, title: 'title-3', description: 'description-3', price: 3, imgPath: '../../../assets/images/img/landing-page-image.jpg' },
-    { id: 4, title: 'title-4', description: 'description-4', price: 4, imgPath: '../../../assets/images/img/landing-page-image.jpg' },
-  ]
+  productList: Product[];
+
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  // TODO: get data from back end
+  // TODO: move to http service
+  ngOnInit(): void {
+    this.http.get('assets/mockData/productList.json')
+    .subscribe(response => {
+      console.log('fetch data: ', response);
+      this.productList = response as Product[];
+    })
+  }
 
 }

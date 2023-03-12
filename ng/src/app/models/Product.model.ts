@@ -8,10 +8,19 @@ export interface Product {
   id: number;
   title: string;
   description: string;
-  price: number;
+  information: {
+    price: number;
+    videoDuration: number;
+    downloadSize: number; 
+    // duration required to teach dog (3 days etc.)
+    daysToMasterSkill: number;
+    difficulty: 'easy' | 'medium' | 'hard'
+    discount?: {
+      percentage: number;
+      discountPrice: number;
+    }
+  }
   imgPath: string;
   //TODO: img alt for SEO
   imgAlt?: string;
-  // size in mb
-  size?: string; 
 }
