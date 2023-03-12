@@ -1,0 +1,131 @@
+[
+  {
+    "id": 1,
+    "title": "Jump on command",
+    "description": "Make your dog jump by giving him command. This is short course that will teach your dog to jump better.",
+    "information": {
+      "price": "100",
+      "videoDuration": "10.5",
+      "downloadSize": "12.5",
+      "daysToMasterSkill": "6",
+      "difficulty": "easy",
+      "discount": {
+        "percentage": 20,
+        "discountPrice": 78.9
+      }
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Attack on command",
+    "description": "Make your dog attack by giving him command. This is short course that will teach your dog to attack to the end.",
+    "information": {
+      "price": "150",
+      "videoDuration": "8",
+      "downloadSize": "6.9",
+      "daysToMasterSkill": "10",
+      "difficulty": "medium",
+      "discount": {
+        "percentage": 10,
+        "discountPrice": 139.99
+      }
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Roll on command",
+    "description": "Make your roll each on command. Caution: Don't overuse because the dog might get concussion\n                    and will not react to anything for a couple of minutes.\n                    Don't worry, he will be back.",
+    "information": {
+      "price": "150",
+      "videoDuration": "9",
+      "downloadSize": "10.2",
+      "daysToMasterSkill": "10",
+      "difficulty": "hard"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Jump on command",
+    "description": "Make your dog jump by giving him command. This is short course that will teach your dog to jump better.",
+    "information": {
+      "price": "100",
+      "videoDuration": "8",
+      "downloadSize": "12",
+      "daysToMasterSkill": "6",
+      "difficulty": "easy"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Attack on command",
+    "description": "Make your dog attack by giving him command. This is short course that will teach your dog to attack to the end.",
+    "information": {
+      "price": "150",
+      "videoDuration": "8.5",
+      "downloadSize": "6",
+      "daysToMasterSkill": "10",
+      "difficulty": "medium"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Roll on command",
+    "description": "Make your roll each on command. Caution: Don't overuse because the dog might get concussion\n                    and will not react to anything for a couple of minutes.\n                    Don't worry, he will be back.",
+    "information": {
+      "price": "150",
+      "videoDuration": "9.5",
+      "downloadSize": "10",
+      "daysToMasterSkill": "10",
+      "difficulty": "hard"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Jump on command",
+    "description": "Make your dog jump by giving him command. This is short course that will teach your dog to jump better",
+    "information": {
+      "price": "100",
+      "videoDuration": "10.5",
+      "downloadSize": "12",
+      "daysToMasterSkill": "6",
+      "difficulty": "easy"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Attack on command",
+    "description": "Make your dog attack by giving him command. This is short course that will teach your dog to attack to the end.",
+    "information": {
+      "price": "150",
+      "videoDuration": "15.5",
+      "downloadSize": "6",
+      "daysToMasterSkill": "10",
+      "difficulty": "medium",
+      "discount": {
+        "percentage": 20,
+        "discountPrice": 79.9
+      }
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  },
+  {
+    "id": 9,
+    "title": "Roll on command",
+    "description": "Make your roll each on command. \n Caution: Don't overuse because the dog might get concussion\n                    and will not react to anything for a couple of minutes.\n                    Don't worry, he will be back.",
+    "information": {
+      "price": "150",
+      "videoDuration": "9.1",
+      "downloadSize": "10",
+      "daysToMasterSkill": "10",
+      "difficulty": "hard"
+    },
+    "imgPath": "../../../assets/images/img/landing-page-image.jpg"
+  }
+]
