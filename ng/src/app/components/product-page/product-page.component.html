@@ -70,7 +70,7 @@
         <div class="title">Step 4</div>
         <div class="descr"><b class="orange-text">We</b> provide support.</div>
     </li>
-</ol>
+  </ol>
 </section>
 <hr class="w-80 mx-auto">
 <!-- https://mahabis.com/ check this product list example -->
@@ -121,7 +121,7 @@
                   <mat-icon>check_circle</mat-icon>
                   <span>{{ product.information.daysToMasterSkill }} days</span>
                 </div>
-                <div 
+                <div
                   [ngClass]="{
                     'length-1': (product.information.videoDuration).toString().length === 1,
                     'length-3': (product.information.videoDuration).toString().length === 3,
@@ -138,9 +138,16 @@
         </div>
       </div>
     </div>
+    <mat-paginator
+      class="mt-3"
+      #paginator
+      pageSize="{{ pageSize }}"
+      showFirstLastButtons="true"
+      (page)="handlePaginator($event)"
+    ></mat-paginator>
   </div>
 </section>
-<hr class="w-80 mx-auto mb-4">
+<hr class="w-80 mx-auto">
 
 
 

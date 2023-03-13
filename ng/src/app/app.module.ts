@@ -6,6 +6,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -70,6 +71,7 @@ import {
     // material
     MatIconModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
 
     // firebase
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

@@ -70,4 +70,14 @@ export class UtilService {
     return isFirstVisit;
   }
 
+  /**
+  * Gets items in range from an array
+  *
+  * @param message string
+  * @returns void
+  */
+  getFromRange(array: any[], from: number, to: number): any[] {
+    return array.slice(from, to);
+  }
+
 }
