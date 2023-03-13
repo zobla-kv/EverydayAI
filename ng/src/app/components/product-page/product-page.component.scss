@@ -101,32 +101,60 @@
   
   ol li {
     counter-increment: stepnr;
-    inset: 0;
-    border-radius: 50%;
-    border: 25px solid $main-dark-bg-color;
-    line-height: 1.1;
-    width: 18rem;
+    width: 15rem;
     aspect-ratio: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden;
-    filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+    padding-left: 3.5rem;
+    position: relative;
 
-    .step-number-big {
+    &::before,
+    &::after {
+      inset: 0;
       position: absolute;
-      top: 0;
-      left: 10rem;
-      color: $main-orange-bg-color;
-      font-size: 12rem;
-      font-weight: 700;
+      border-radius: 50%;
+      border: 25px solid $main-dark-bg-color;
+      line-height: 1.1;
     }
+
+    &::before {
+      content: counter(stepnr);
+      color: $main-orange-bg-color;
+      padding-top: 0.5rem;
+      padding-left: 8.5rem;
+      font-size: 9rem;
+      font-weight: 700;
+      overflow: hidden;
+      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+      // TODO: check this (remove rings and number), also comment out drop shadow below
+      // display: none;
+    }
+
+    &::after {
+      content: "";
+      // TODO: choose one
+      // without blur
+      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+      // with blur
+      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(5px);
+      // with orange
+      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem $main-orange-bg-color) blur(0px);
+    }
+
+    &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
   }
   
-  ol li > * { width: 7.5rem }
-  ol li .icon { text-align: center }
-  ol li .title { font-size: 2rem; font-weight: 500 }
-  ol li .descr { font-size: 0.8rem; font-weight: 300 }
+  ol li > * { width: 7.5rem; }
+  ol li .icon { 
+    text-align: center; 
+    transform: scale(1.5); 
+    position: relative; 
+    left: -12px; 
+    top: 5px;
+  }
+  ol li .title { font-size: 2rem; font-weight: 500; }
+  ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
 
 }
 
