@@ -1,5 +1,7 @@
 @import '../../styles/variables';
 
+hr { width: 80%; margin-left: auto; margin-right: auto; }
+
 // TODO: use for showcase and remove later??
 // create common component if want to reuse
 .top-section-wrapper-showcase {
@@ -161,6 +163,9 @@
 .product-list-wrapper {
 
   & > .container { max-width: 1000px; }
+
+  .inner-list-wrapper { min-height: 880px; }
+
   .header {
 
     h3 {
@@ -315,12 +320,91 @@
       }
     }
   }
+
+  // TODO: choose pagination
+  // classic
+  .mat-mdc-paginator {
+    background-color: $main-dark-bg-color;
+
+    .mat-mdc-paginator-page-size { display: none; }
+
+    .mat-mdc-paginator-range-actions {
+      .mat-mdc-paginator-range-label { 
+        color: $main-orange-bg-color;
+        font-size: 0.875rem;
+        margin: 0 0.5rem;
+      }
+      button { 
+        background-color: $main-orange-bg-color; 
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  // pagination center
+  // .mat-mdc-paginator {
+  //   background-color: $main-dark-bg-color;
+
+  //   .mat-mdc-paginator-page-size { display: none; }
+    
+  //   .mat-mdc-paginator-range-actions {
+  //     .mat-mdc-paginator-range-label { 
+  //       color: $main-orange-bg-color;
+  //       font-size: 0.875rem;
+  //       margin: 0 0.5rem;
+  //     }
+  //     button { 
+  //       background-color: $main-orange-bg-color; 
+  //       margin-left: 0.5rem;
+  //     }
+  //   }
+  
+  //   .mat-mdc-paginator-range-actions {
+  //     // border: 1px solid white;
+  //     margin: auto;
+  //     display: block;
+  //     .mat-mdc-paginator-range-label { 
+  //       color: $main-orange-bg-color;
+  //       font-size: 0.875rem;
+  //       margin: 0 auto 0.5rem auto;
+  //       width: fit-content;
+  //     }
+  //     button { 
+  //       background-color: $main-orange-bg-color; 
+  //       margin-left: 1rem;
+  //       &:nth-child(2) { margin-left: 0; }
+  //     }
+  //   }
+  // }
+
+  // traka centar
+  // .mat-mdc-paginator {
+  //   width: 40%;
+  //   margin: auto;
+
+  //   .mat-mdc-paginator-page-size { display: none; }
+
+  //   .mat-mdc-paginator-range-actions {
+  //     width: 100%;
+  //     display: flex;
+  //     justify-content: center;
+  //     .mat-mdc-paginator-range-label { 
+  //       color: $main-dark-bg-color;
+  //       font-size: 0.875rem;
+  //       margin: 0 0.5rem;
+  //     }
+  //     button { 
+  //       background-color: $main-orange-bg-color; 
+  //       margin-left: 0.5rem;
+  //     }
+  //   }
+  // }
 }
 
 /* MEDIA QUERIES */
 // bigger than 976px
 @media only screen and (max-width: 1200px) {
- //
+  hr { width: 90%; }
 }
 // bigger than 976px
 @media only screen and (min-width: 976px) {

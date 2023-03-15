@@ -168,6 +168,11 @@ button:has(mat-spinner) {
   border: 1px solid white;
 }
 
+.mat-mdc-paginator {
+  background-color: $main-orange-bg-color;
+  border-radius: 8px;
+}
+
 /* forms */
 // failed validation
 input.ng-invalid.ng-touched,

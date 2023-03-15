@@ -71,13 +71,15 @@ export class UtilService {
   }
 
   /**
-  * Gets items in range from an array
+  * Gets items in range from an array 
+  * includes last from range (to)
   *
   * @param message string
   * @returns void
   */
   getFromRange(array: any[], from: number, to: number): any[] {
-    return array.slice(from, to);
+    // to + 1 because slice doesn't include last
+    return array.slice(from, to + 1);
   }
 
 }

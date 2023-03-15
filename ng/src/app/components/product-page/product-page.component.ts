@@ -11,11 +11,15 @@ import {
   UtilService
 } from '@app/services';
 
+import animations from './product-page.animations';
+import { AnimationEvent } from '@angular/animations';
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations
 })
 export class ProductPageComponent implements OnInit {
 
@@ -28,15 +32,18 @@ export class ProductPageComponent implements OnInit {
   // ]
 
   @ViewChild('paginator') paginator: MatPaginator;
-
-  // number of items per page
-  pageSize = 6;
-
+  
   // list containing all products
   fullProductList: Product[];
 
   // paginated list
   productList: Product[];
+
+  // number of items per page
+  pageSize = 6;
+
+  // animate show/hide product items
+  productVisibilityState = 'show';
 
   constructor(
     private http: HttpClient,
@@ -48,16 +55,55 @@ export class ProductPageComponent implements OnInit {
   ngOnInit(): void {
     this.http.get('assets/mockData/productList.json')
     .subscribe(response => {
-      console.log('paginator: ', this.paginator);
       this.fullProductList = response as Product[];
       this.paginator.length = this.fullProductList.length;
-      // TODO: need to find formula for pagination
-      this.productList = this._utilService.getFromRange(this.fullProductList, this.paginator.pageIndex, this.pageSize);
+      this.updatePageInfo();
     })
   }
 
-  handlePaginator(event: PageEvent) {
-    console.log('page event: ', event);
+  // handle pagination navigation
+  handlePaginatorNagivation(event: PageEvent) {
+    // flow: click on pagination navigation -> hide animation -> afterProducstAnimation
+    const direction = event.pageIndex > event.previousPageIndex! ? 'next' : 'previous';
+    direction === 'next' ? this.hideProductsToTheLeft() : this.hideProductsToTheRight();
+  }
+
+  // show items depending on page
+  updatePageInfo() {
+    // PAGINATION FORMULA 
+    // from: currentPageIndex * itemsPerPage
+    // to:   (currentPageIndex + 1) * itemsPerPage - 1
+    this.productList = this._utilService.getFromRange(
+      this.fullProductList, 
+      this.paginator.pageIndex * this.pageSize, 
+      (this.paginator.pageIndex + 1) * this.pageSize - 1
+    );
+    this.updatePageNumber();
+    this.showProductItems();
+  }
+
+  // updates page number in pagination
+  updatePageNumber() {
+    const list = document.getElementsByClassName('mat-mdc-paginator-range-label');
+    list[0] && (list[0].innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + this.paginator.getNumberOfPages());
+  }
+
+  // trigger show animation
+  showProductItems() {
+    this.productVisibilityState = 'show';
+  }
+  hideProductsToTheLeft() {
+    this.productVisibilityState = 'hideLeft';
+  }
+  hideProductsToTheRight() {
+    this.productVisibilityState = 'hideRight';
+  }
+
+  // update page after hide animation is complete
+  afterProducstAnimation(ev: AnimationEvent) {
+    if (ev.fromState === 'show') {
+      this.updatePageInfo();
+    }
   }
 
 }

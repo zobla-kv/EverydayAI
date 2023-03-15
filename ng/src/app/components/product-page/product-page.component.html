@@ -72,7 +72,7 @@
     </li>
   </ol>
 </section>
-<hr class="w-80 mx-auto">
+<hr>
 <!-- https://mahabis.com/ check this product list example -->
 <section class="product-list-wrapper">
   <div class="container">
@@ -84,57 +84,63 @@
         </div>
       </div>
     </div>
-    <div class="row g-4 gy-5">
-      <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
-        <div class="single-product rounded overflow-hidden">
-          <div class="top-section">
-            <img src="{{ product.imgPath }}" alt="">
-            <ul>
-              <li><a href="#"><mat-icon svgIcon="cart-add" icon="cart"></mat-icon></a></li>
-              <li><a href="#"><mat-icon icon="download">download</mat-icon></a></li>
-              <li><a href="#"><mat-icon icon="favorite">favorite</mat-icon></a></li>
-            </ul>
-          </div>
-          <div class="bottom-section">
-            <div class="product-title fw-bold"><a href="#">{{ product.title }}</a></div>
-            <div class="container product-information">
-              <div class="row gy-3 mx-auto my-0">
-                <div class="col-4 product-information-item">
-                  <mat-icon svgIcon="dollar"></mat-icon>
-                  <ng-container *ngIf="!product.information.discount">
-                    <span>{{ product.information.price }}</span>
-                  </ng-container>
-                  <ng-container *ngIf="product.information.discount">
-                    <span class="product-old-price">{{ product.information.price }}</span>
-                    <span class="product-discount-price">{{ product.information.discount.discountPrice }}</span>
-                  </ng-container>
-                </div>
-                <div class="col-4 product-information-item justify-content-center">
-                  <mat-icon svgIcon="video"></mat-icon>
-                  <span class="ms-1">{{ product.information.videoDuration }}h</span>
-                </div>
-                <div class="col-4 product-information-item justify-content-end">
-                  <mat-icon icon="download">download</mat-icon>
-                  <span class="ms-1">{{ product.information.downloadSize }}gb</span>
-                </div>
-                <div class="col-4 product-information-item">
-                  <mat-icon>check_circle</mat-icon>
-                  <span>{{ product.information.daysToMasterSkill }} days</span>
-                </div>
-                <div
-                  [ngClass]="{
-                    'length-1': (product.information.videoDuration).toString().length === 1,
-                    'length-3': (product.information.videoDuration).toString().length === 3,
-                    'length-4': (product.information.videoDuration).toString().length === 4
-                  }"
-                  class="col-8 product-information-item difficulty position-relative"
-                >
-                  <mat-icon svgIcon="sweat-drops"></mat-icon>
-                  <span class="ms-1">{{ product.information.difficulty | titlecase }}</span>
+    <div class="overflow-y-hidden">
+      <div 
+        class="row g-4 gy-5 inner-list-wrapper" 
+        [@changePage]="productVisibilityState" 
+        (@changePage.done)="afterProducstAnimation($event)"
+      >
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
+          <div class="single-product rounded overflow-hidden">
+            <div class="top-section">
+              <img src="{{ product.imgPath }}" alt="">
+              <ul>
+                <li><a href="#"><mat-icon svgIcon="cart-add" icon="cart"></mat-icon></a></li>
+                <li><a href="#"><mat-icon icon="download">download</mat-icon></a></li>
+                <li><a href="#"><mat-icon icon="favorite">favorite</mat-icon></a></li>
+              </ul>
+            </div>
+            <div class="bottom-section">
+              <div class="product-title fw-bold"><a href="#">{{ product.title }}</a></div>
+              <div class="container product-information">
+                <div class="row gy-3 mx-auto my-0">
+                  <div class="col-4 product-information-item">
+                    <mat-icon svgIcon="dollar"></mat-icon>
+                    <ng-container *ngIf="!product.information.discount">
+                      <span>{{ product.information.price }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="product.information.discount">
+                      <span class="product-old-price">{{ product.information.price }}</span>
+                      <span class="product-discount-price">{{ product.information.discount.discountPrice }}</span>
+                    </ng-container>
+                  </div>
+                  <div class="col-4 product-information-item justify-content-center">
+                    <mat-icon svgIcon="video"></mat-icon>
+                    <span class="ms-1">{{ product.information.videoDuration }}h</span>
+                  </div>
+                  <div class="col-4 product-information-item justify-content-end">
+                    <mat-icon icon="download">download</mat-icon>
+                    <span class="ms-1">{{ product.information.downloadSize }}gb</span>
+                  </div>
+                  <div class="col-4 product-information-item">
+                    <mat-icon>check_circle</mat-icon>
+                    <span>{{ product.information.daysToMasterSkill }} days</span>
+                  </div>
+                  <div
+                    [ngClass]="{
+                      'length-1': (product.information.videoDuration).toString().length === 1,
+                      'length-3': (product.information.videoDuration).toString().length === 3,
+                      'length-4': (product.information.videoDuration).toString().length === 4
+                    }"
+                    class="col-8 product-information-item difficulty position-relative"
+                  >
+                    <mat-icon svgIcon="sweat-drops"></mat-icon>
+                    <span class="ms-1">{{ product.information.difficulty | titlecase }}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div>  
         </div>
       </div>
     </div>
@@ -143,11 +149,11 @@
       #paginator
       pageSize="{{ pageSize }}"
       showFirstLastButtons="true"
-      (page)="handlePaginator($event)"
+      (page)="handlePaginatorNagivation($event)"
     ></mat-paginator>
   </div>
 </section>
-<hr class="w-80 mx-auto">
+<hr>
 
 
 
