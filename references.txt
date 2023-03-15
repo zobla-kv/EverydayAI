@@ -1,2 +1,6 @@
 scroll image
-https://www.telegraf.rs/vesti/hronika/3501266-ovako-je-ubijen-nikola-zecevic-zeka-u-kragujevcu-maskirani-ubica-mu-prisao-s-ledja-pa-ispalio-kisu-metaka
+https://www.telegraf.rs/vesti/hronika/3501266-ovako-je-ubijen-nikola-zecevic-zeka-u-kragujevcu-maskirani-ubica-mu-prisao-s-ledja-pa-ispalio-kisu-metaka\
+
+
+templates
+https://bootstrapmade.com/bootstrap-business-templates/
