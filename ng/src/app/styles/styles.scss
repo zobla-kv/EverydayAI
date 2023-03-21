@@ -66,6 +66,8 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 
 .opaque { opacity: 0; }
 
+.rotate-180 { transform: rotate(180deg); }
+
 /* alignment */
 .absolute-center {
   position: absolute;
@@ -157,15 +159,11 @@ header,
 .main-logo { background-image: $main-logo; }
 
 /* material */
+*:has(> mat-spinner) { user-select: none !important; cursor: default !important; }
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic { 
   stroke: $main-orange-bg-color !important; 
-}
-button:has(mat-spinner) { 
-  cursor: pointer;
-  pointer-events: none; 
-  border: 1px solid white;
 }
 
 .mat-mdc-paginator {
