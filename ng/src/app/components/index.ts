@@ -7,3 +7,4 @@ export * from './product-page/product-page.component';
 export * from './forms/auth-form/auth-form.component';
 export * from './forms/x-form/x-form.component';
 export * from './information/information.component'
+export * from './shopping-cart/shopping-cart.component';

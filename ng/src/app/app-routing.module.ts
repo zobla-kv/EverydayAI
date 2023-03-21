@@ -7,7 +7,8 @@ import {
   CategorySelectorComponent,
   AuthFormComponent,
   InformationComponent,
-  XFormComponent
+  XFormComponent,
+  ShoppingCartComponent
 } from '@app/components';
 
 const routes: Routes = [
@@ -44,6 +45,10 @@ const routes: Routes = [
   { 
     path: 'reset-password', 
     component: XFormComponent 
+  },
+  { 
+    path: 'cart', 
+    component: ShoppingCartComponent 
   },
   // TODO: 404
   { 

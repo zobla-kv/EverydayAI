@@ -10,6 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator'
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 const firebaseConfig = {
   apiKey: "AIzaSyBdBGoR3VvzO59rVahX9oGU5XKNLwAAF2Y",
@@ -20,9 +21,6 @@ const firebaseConfig = {
   appId: "1:829869000499:web:6669cdd8ebf78446ee6046",
   measurementId: "G-66BZM3SHPN"
 }
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-// import * as firebaseConfig from '../../firebase.json';
-
 // ****************************************** //
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,7 +34,8 @@ import {
   ProductPageComponent,
   AuthFormComponent,
   XFormComponent,
-  InformationComponent
+  InformationComponent,
+  ShoppingCartComponent
 } from '@app/components';
 
 import {
@@ -56,6 +55,7 @@ import {
     AuthFormComponent,
     XFormComponent,
     InformationComponent,
+    ShoppingCartComponent,
 
     // Directives
     HighlightDirective,
