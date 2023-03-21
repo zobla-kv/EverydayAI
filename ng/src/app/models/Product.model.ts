@@ -23,4 +23,7 @@ export interface Product {
   imgPath: string;
   //TODO: img alt for SEO
   imgAlt?: string;
+
+  // front end only
+  spinners?: any
 }

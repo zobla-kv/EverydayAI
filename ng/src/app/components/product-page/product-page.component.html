@@ -95,13 +95,35 @@
             <div class="top-section">
               <img src="{{ product.imgPath }}" alt="">
               <ul>
-                <li><a href="#"><mat-icon svgIcon="cart-add" icon="cart"></mat-icon></a></li>
-                <li><a href="#"><mat-icon icon="download">download</mat-icon></a></li>
-                <li><a href="#"><mat-icon icon="favorite">favorite</mat-icon></a></li>
+                <!-- // TODO: some don't have tooltip when hovered (download, like etc.) -->
+                <!-- // TODO: show only one below -->
+                <li>
+                  <mat-spinner
+                    *ngIf="product.spinners.showAddToCartSpinner; else addIcon"
+                    diameter="25"
+                    strokeWidth="5"
+                  ></mat-spinner>
+                  <ng-template #addIcon>
+                    <mat-icon svgIcon="cart-add" icon="cart" (click)="addToCart(product.id)"></mat-icon>
+                  </ng-template>
+                </li>
+                <li>
+                  <mat-spinner
+                    *ngIf="product.spinners.showRemoveFromCartSpinner; else removeIcon"
+                    diameter="25"
+                    strokeWidth="5"
+                  ></mat-spinner>
+                  <ng-template #removeIcon>
+                    <mat-icon svgIcon="cart-remove" icon="cart" (click)="removeFromCart(product.id)"></mat-icon>
+                  </ng-template>
+                </li>
+                <!-- // TODO: No handlers for below ones, will they be in prod? -->
+                <li><mat-icon icon="download">download</mat-icon></li>
+                <li><mat-icon icon="favorite">favorite</mat-icon></li>
               </ul>
             </div>
             <div class="bottom-section">
-              <div class="product-title fw-bold"><a href="#">{{ product.title }}</a></div>
+              <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
               <div class="container product-information">
                 <div class="row gy-3 mx-auto my-0">
                   <div class="col-4 product-information-item">

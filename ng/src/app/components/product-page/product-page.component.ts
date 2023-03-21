@@ -13,6 +13,7 @@ import {
 
 import animations from './product-page.animations';
 import { AnimationEvent } from '@angular/animations';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-product-page',
@@ -53,9 +54,22 @@ export class ProductPageComponent implements OnInit {
   // TODO: get data from back end
   // TODO: move to http service
   ngOnInit(): void {
-    this.http.get('assets/mockData/productList.json')
-    .subscribe(response => {
-      this.fullProductList = response as Product[];
+    this.http.get<Product[]>('assets/mockData/productList.json')
+    .pipe(
+      map((products: Product[]) => {
+        // add spinners property
+        return products.map(product => product = {
+          ...product,
+          spinners: {
+            showAddToCartSpinner: false,
+            showRemoveFromCartSpinner: false
+          }
+        })
+      })
+    )
+    .subscribe(products => {
+      console.log('products: ', products);
+      this.fullProductList = products as unknown as Product[];
       this.paginator.length = this.fullProductList.length;
       this.updatePageInfo();
     })
@@ -104,6 +118,18 @@ export class ProductPageComponent implements OnInit {
     if (ev.fromState === 'show') {
       this.updatePageInfo();
     }
+  }
+
+  // handles add to cart
+  addToCart(productId: number) {
+    let targetProduct: any = this.productList.find(product => product.id === productId);
+    targetProduct && (targetProduct.spinners.showAddToCartSpinner = true);
+  }
+
+  // handles remove from cart
+  removeFromCart(productId: number) {
+    let targetProduct: any = this.productList.find(product => product.id === productId);
+    targetProduct && (targetProduct.spinners.showRemoveFromCartSpinner = true);
   }
 
 }
