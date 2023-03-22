@@ -1,6 +1,31 @@
-import { animate, keyframes, state, style, transition, trigger } from "@angular/animations";
+import { animate, keyframes, query, stagger, state, style, transition, trigger } from "@angular/animations";
 
 export default [
+  trigger('productsLoaded', [
+    // good animation but doesnt work well with spinner or image loading (when it needs to be delayed)
+    // transition('* <=> *', [
+    //   query(':enter .single-product',
+    //     [
+    //       style({ 'opacity': '0', 'transform': 'translateY(50px)' }),
+    //       stagger('100ms', animate('750ms ease-out', style({ 'opacity': '1', 'transform': 'translateY(0px)' })))
+    //     ],
+    //     { optional: true }
+    //   )
+    // ])
+
+    // figured out it 
+    // animate false => 'loaded' 
+    // ignore void => false
+    transition('false <=> loaded', [
+      query('.single-product',
+        [
+          style({ 'opacity': '0', 'transform': 'translateY(50px)' }),
+          stagger('100ms', animate('750ms ease-out', style({ 'opacity': '1', 'transform': 'translateY(0px)' })))
+        ],
+        { optional: true }
+      )
+    ])
+  ]),
   trigger('changePage', [
     state('show', style({
       'opacity': '1',

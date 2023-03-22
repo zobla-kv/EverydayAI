@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {
   AppConstants,
@@ -11,7 +12,6 @@ import {
   FirebaseService,
   UtilService
  } from '@app/services';
-import { Router } from '@angular/router';
 
 /**
  * Authentication related activities

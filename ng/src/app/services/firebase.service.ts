@@ -5,14 +5,15 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 // transform subscription into promise
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 import {
   User,
   RegisterUser,
   FirebaseAuthResponse,
   FirebaseConstants,
-  EmailType
+  EmailType,
+  Product
 } from '@app/models';
 
 import {
@@ -148,6 +149,12 @@ export class FirebaseService {
       successfulWrite = false;
     });
     return successfulWrite;
+  }
+
+  // return all products from db wrapped by observable
+  getProducts(): Observable<Product[]> {
+    // valueChanges makes it an observable
+    return this._db.collection('Products').valueChanges() as Observable<Product[]>;
   }
 
 }

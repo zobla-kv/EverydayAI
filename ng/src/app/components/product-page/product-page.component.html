@@ -84,16 +84,24 @@
         </div>
       </div>
     </div>
-    <div class="overflow-y-hidden">
+    <div class="overflow-y-hidden inner-list-wrapper">
+      <mat-spinner
+        *ngIf="showSpinner"
+        diameter="250"
+        strokeWidth="15"
+      ></mat-spinner>
       <div 
-        class="row g-4 gy-5 inner-list-wrapper" 
+        class="row g-4 gy-5"
+        [ngClass]="{'d-none': showSpinner }"
+        [@productsLoaded]="!showSpinner && 'loaded'"
         [@changePage]="productVisibilityState" 
-        (@changePage.done)="afterProducstAnimation($event)"
+        (@changePage.done)="afterChangePageAnimation($event)"
       >
         <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
           <div class="single-product rounded overflow-hidden">
             <div class="top-section">
-              <img src="{{ product.imgPath }}" alt="">
+              <!-- // TODO: add alt -->
+              <img #img src="{{ product.imgPath }}" alt="" (load)="handleImageLoaded()">
               <ul>
                 <!-- // TODO: some don't have tooltip when hovered (download, like etc.) -->
                 <!-- // TODO: show only one below -->

@@ -164,7 +164,15 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 
   & > .container { max-width: 1000px; }
 
-  .inner-list-wrapper { min-height: 880px; }
+  .inner-list-wrapper { 
+    min-height: 880px;
+    // only if it has direct child mat spinner  
+    &:has(> mat-spinner) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    } 
+  }
 
   .header {
 

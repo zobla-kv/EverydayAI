@@ -1,19 +1,18 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { AnimationEvent } from '@angular/animations';
+import { map } from 'rxjs/internal/operators/map';
 
 import {
   Product
 } from '@app/models';
 
 import {
+  HttpService,
   UtilService
 } from '@app/services';
 
 import animations from './product-page.animations';
-import { AnimationEvent } from '@angular/animations';
-import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-product-page',
@@ -46,17 +45,29 @@ export class ProductPageComponent implements OnInit {
   // animate show/hide product items
   productVisibilityState = 'show';
 
+  // products loading spinner
+  showSpinner = false;
+
+  // number of loaded images
+  numOfloadedImages = 0;
+
   constructor(
-    private http: HttpClient,
+    private _httpService: HttpService,
     private _utilService: UtilService
   ) {}
 
-  // TODO: get data from back end
-  // TODO: move to http service
+  // TODO: error handling
+  // TODO: keep data when routing so it wouldn't reach DB every time
   ngOnInit(): void {
-    this.http.get<Product[]>('assets/mockData/productList.json')
+    this.showSpinner = true;
+    this._httpService.getProducts()
     .pipe(
       map((products: Product[]) => {
+        // multiply items
+        // TODO: remove later
+        for(let i = 0; i < 10; i++) {
+          products.push(products[0]);
+        }
         // add spinners property
         return products.map(product => product = {
           ...product,
@@ -68,16 +79,23 @@ export class ProductPageComponent implements OnInit {
       })
     )
     .subscribe(products => {
-      console.log('products: ', products);
       this.fullProductList = products as unknown as Product[];
       this.paginator.length = this.fullProductList.length;
       this.updatePageInfo();
     })
   }
 
+  // TODO: runs on each page
+  // TODO: maybe add checks (img.complete && img.naturalWidth ~) ?
+  handleImageLoaded() {
+    if (++this.numOfloadedImages === this.pageSize) {
+      this.showSpinner = false;
+    }
+  }
+
   // handle pagination navigation
   handlePaginatorNagivation(event: PageEvent) {
-    // flow: click on pagination navigation -> hide animation -> afterProducstAnimation
+    // flow: click on pagination navigation -> hide animation -> afterChangePageAnimation
     const direction = event.pageIndex > event.previousPageIndex! ? 'next' : 'previous';
     direction === 'next' ? this.hideProductsToTheLeft() : this.hideProductsToTheRight();
   }
@@ -114,7 +132,7 @@ export class ProductPageComponent implements OnInit {
   }
 
   // update page after hide animation is complete
-  afterProducstAnimation(ev: AnimationEvent) {
+  afterChangePageAnimation(ev: AnimationEvent) {
     if (ev.fromState === 'show') {
       this.updatePageInfo();
     }
