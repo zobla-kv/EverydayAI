@@ -101,7 +101,9 @@
           <div class="single-product position-relative">
           <!-- <div class="single-product overflow-hidden"> for discout-ribbon-inside -->
             <div *ngIf="product.information.discount" class="discount-ribbon-outside">
-              <span>- {{ product.information.discount.percentage }} %</span>
+              <span>- {{ product.information.discount.percentage }} %
+              <div class="glow"></div>
+              </span>
             </div>
             <div class="top-section overflow-hidden">
               <!-- // TODO: add alt -->

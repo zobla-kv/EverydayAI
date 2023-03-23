@@ -405,6 +405,40 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
       top: 30px;
       transform: rotate(45deg);
     }
+
+    @-webkit-keyframes flow {
+      0%  { left: -20px; opacity: 0;   }
+      7%  { left: 80px;  opacity: 0.5; }
+      15% { left: 170px; opacity: 0;   }
+      100%{ left: 100px; opacity: 0;   }
+    }
+    @keyframes flow {
+      0%  { left: -20px; opacity: 0;   }
+      7%  { left: 80px;  opacity: 0.5; }
+      15% { left: 170px; opacity: 0;   }
+      100%{ left: 100px; opacity: 0;   }
+    } 
+    
+    .glow { 
+      background: rgb(255,255,255); 
+      width: 40px; 
+      height: 100%; 
+      z-index: 2; 
+      position: absolute;
+      top: 0;
+      -webkit-animation: flow 10s linear infinite;
+      -moz-animation: flow 10s linear infinite;
+      -webkit-transform: skew(20deg);
+      -moz-transform: skew(20deg);
+      -o-transform: skew(20deg);
+      background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(248, 243, 147, 0.8)), color-stop(1%,rgba(248, 243, 147, 0.8)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+      background: -moz-linear-gradient(left, rgba(248, 243, 147, 0.8) 100%,rgb(255, 255, 255) 100%,rgb(255, 255, 255) 100%); /* FF3.6+ */
+      background: -webkit-linear-gradient(left, rgba(248, 243, 147, 0.8) 100%,rgb(255, 255, 255) 100%,rgb(255, 255, 255) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(left, rgba(248, 243, 147, 0.8) 100%,rgb(255, 255, 255) 100%,rgb(255, 255, 255) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(left, rgba(248, 243, 147, 0.8) 100%,rgb(255, 255, 255) 100%,rgb(255, 255, 255) 100%); /* IE10+ */
+      background: linear-gradient(to right, rgba(248, 243, 147, 0.8) 100%,rgb(255, 255, 255) 100%,rgb(255, 255, 255) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */ border-left:1px solid #fff;
+  }
   }
 
   // TODO: choose pagination
