@@ -290,6 +290,7 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
           }
 
           &.difficulty.length-1 { left: 21px; }
+          &.difficulty.length-2 { left: 17px; }
           &.difficulty.length-3 { left: 14px; }
           &.difficulty.length-4 { left: 11px; }
 
@@ -313,7 +314,7 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
             }
           }
 
-          .product-discount-price {
+          .product-discounted-price {
             position: relative;
             top: 6px;
           }

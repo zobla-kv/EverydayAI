@@ -17,7 +17,7 @@ export interface Product {
     difficulty: 'easy' | 'medium' | 'hard'
     discount?: {
       percentage: number;
-      discountPrice: number;
+      discountedPrice: number;
     }
   }
   imgPath: string;

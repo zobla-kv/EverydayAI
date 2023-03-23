@@ -141,7 +141,7 @@
                     </ng-container>
                     <ng-container *ngIf="product.information.discount">
                       <span class="product-old-price">{{ product.information.price }}</span>
-                      <span class="product-discount-price">{{ product.information.discount.discountPrice }}</span>
+                      <span class="product-discounted-price">{{ product.information.discount.discountedPrice }}</span>
                     </ng-container>
                   </div>
                   <div class="col-4 product-information-item justify-content-center">
@@ -159,6 +159,7 @@
                   <div
                     [ngClass]="{
                       'length-1': (product.information.videoDuration).toString().length === 1,
+                      'length-2': (product.information.videoDuration).toString().length === 2,
                       'length-3': (product.information.videoDuration).toString().length === 3,
                       'length-4': (product.information.videoDuration).toString().length === 4
                     }"

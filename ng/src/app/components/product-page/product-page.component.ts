@@ -63,11 +63,6 @@ export class ProductPageComponent implements OnInit {
     this._httpService.getProducts()
     .pipe(
       map((products: Product[]) => {
-        // multiply items
-        // TODO: remove later
-        for(let i = 0; i < 10; i++) {
-          products.push(products[0]);
-        }
         // add spinners property
         return products.map(product => product = {
           ...product,
@@ -87,8 +82,9 @@ export class ProductPageComponent implements OnInit {
 
   // TODO: runs on each page
   // TODO: maybe add checks (img.complete && img.naturalWidth ~) ?
+  // TODO: can also fail, do error handling (endpoint will return url but image is not available)
   handleImageLoaded() {
-    if (++this.numOfloadedImages === this.pageSize) {
+    if (++this.numOfloadedImages === this.productList.length) {
       this.showSpinner = false;
     }
   }
