@@ -50,6 +50,7 @@ export class AuthService {
   // logout user
   async logout(): Promise<FirebaseAuthResponse | void> {
     this._firebaseService.logout();
+    this._router.navigate(['/']);
   }
 
   // sets mock value representing user
