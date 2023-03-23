@@ -98,8 +98,12 @@
         (@changePage.done)="afterChangePageAnimation($event)"
       >
         <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
-          <div class="single-product rounded overflow-hidden">
-            <div class="top-section">
+          <div class="single-product position-relative">
+          <!-- <div class="single-product overflow-hidden"> for discout-ribbon-inside -->
+            <div *ngIf="product.information.discount" class="discount-ribbon-outside">
+              <span>- {{ product.information.discount.percentage }} %</span>
+            </div>
+            <div class="top-section overflow-hidden">
               <!-- // TODO: add alt -->
               <img #img src="{{ product.imgPath }}" alt="" (load)="handleImageLoaded()">
               <ul>

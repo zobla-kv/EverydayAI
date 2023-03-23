@@ -190,7 +190,6 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
   }
 
   .single-product {
-    background-color: $main-orange-bg-color;
     max-width: 320px;
     min-width: 250px;
 
@@ -198,9 +197,14 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 
     .top-section {
       position: relative;
-      overflow: hidden;
       cursor: pointer;
       max-height: 260px;
+
+      img { 
+        max-height: inherit; 
+        border-start-end-radius: 8px;
+        border-start-start-radius: 8px;
+      }
 
       ul {
         position: absolute;
@@ -250,6 +254,9 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
     }
 
     .bottom-section {
+      background-color: $main-orange-bg-color;
+      border-end-end-radius: 8px;
+      border-end-start-radius: 8px;
       padding: 0.5rem 0.5rem 0.75rem 0.5rem;
       color: $main-dark-bg-color;
       font-family: cursive, 'Courier New', Courier, monospace;
@@ -321,6 +328,82 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 
         }
       }
+    }
+
+    .discount-ribbon-inside {
+      width: 160px;
+      padding: 15px 0;
+      overflow: hidden;
+      position: absolute;
+      top: 8px;
+      background: red;
+      right: -45px;
+      transform: rotate(45deg);
+      text-align: center;
+      letter-spacing: 2px;
+      z-index: 1;
+      font: 700 18px/1 sans-serif;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+      text-transform: uppercase;
+    }
+
+    .discount-ribbon-inside::before,
+    .discount-ribbon-inside::after {
+      position: absolute;
+      z-index: -1;
+      content: '';
+      display: block;
+    }
+
+    .discount-ribbon-inside::before,
+    .discount-ribbon-inside::after {
+      border-top-color: $main-orange-bg-color;
+      border-bottom-color: $main-orange-bg-color;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .discount-ribbon-outside {
+      width: 120px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: -9.5px;
+      right: -10px;
+      z-index: 1;
+    }
+    .discount-ribbon-outside::before,
+    .discount-ribbon-outside::after {
+      position: absolute;
+      z-index: -1;
+      content: '';
+      display: block;
+      border: 5px solid rgb(218, 3, 3);
+    }
+    .discount-ribbon-outside::before {
+      top: 0;
+      left: 0;
+    }
+    .discount-ribbon-outside::after {
+      bottom: 0;
+      right: 0;
+    }
+    .discount-ribbon-outside span {
+      position: absolute;
+      display: block;
+      width: 225px;
+      padding: 15px 26px 15px 0;
+      background-color: red;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      font: 700 18px/1 sans-serif;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+      text-transform: uppercase;
+      text-align: center;
+      left: -25px;
+      top: 30px;
+      transform: rotate(45deg);
     }
   }
 
