@@ -8,7 +8,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import {
-  User,
+  CustomUser,
   RegisterUser,
   FirebaseAuthResponse,
   FirebaseConstants,
@@ -41,9 +41,13 @@ export class FirebaseService {
   ) { }
 
   // register new user
+  // TODO: duplicate name allowed?
+  // TODO: login form no password eye (not related to this place)
   register(user: RegisterUser): Promise<FirebaseAuthResponse> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async res => {
+      // firebase automatically logs in after register, prevent that
+      this.logout();
 
       // set displayName
       let profileUpdated = false;
@@ -82,7 +86,6 @@ export class FirebaseService {
       // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
       const loggedUserData = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
       .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_WRONG_CREDENTIALS)) });
-
       if (!loggedUserData) {
         // this if means signIn went into catch block
         // does not stop execution so stop it manually
@@ -90,6 +93,8 @@ export class FirebaseService {
       }
 
       if (!loggedUserData.user?.emailVerified) {
+        // firebase automatically logs in user even without email verified, prevent that
+        this.logout();
         return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
 
@@ -113,6 +118,8 @@ export class FirebaseService {
       // send email
       const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });
       if (!isSent) {
+        // TODO: no resend option
+        // also for registration
         return this._utilService.navigateToInformationComponent('Failed to send email verification link. Please try again.');
       }
       this._utilService.navigateToInformationComponent('Email containing password reset link has been sent to your email address.');
@@ -142,8 +149,9 @@ export class FirebaseService {
   // return value whether it succeeded
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
     let successfulWrite = true;
-    user.id = this._db.createId();
-    await this._db.collection('Users').doc(user.id).set(user)
+    // TODO: izbaci sifru odavde (sacuvaj negde drugde)
+    const customUser: CustomUser = { ...user, id: this._db.createId(), cart: { items: [], totalSum: 0 } }; 
+    await this._db.collection('Users').doc(user.id).set(customUser)
     .catch(err => {
       this._db.collection('FailedRegisterWrites').doc(user.email).set({ reason: err });
       successfulWrite = false;
