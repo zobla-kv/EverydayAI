@@ -20,6 +20,8 @@ import {
   HttpService, 
   UtilService
 } from '@app/services';
+import { UserCredential } from '@angular/fire/auth';
+import { DocumentSnapshot } from '@angular/fire/firestore';
 
 
 /**
@@ -45,16 +47,20 @@ export class FirebaseService {
   // TODO: login form no password eye (not related to this place)
   register(user: RegisterUser): Promise<FirebaseAuthResponse> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
-    .then(async res => {
+    .then(async (res: UserCredential | any) => {
       // firebase automatically logs in after register, prevent that
+      // get uid before that 
+      const uid = res.user?.uid;
       this.logout();
 
       // set displayName
       let profileUpdated = false;
+      // TODO: if display name is stored in custom user, is this really needed?
       await res.user?.updateProfile({ displayName: user.name }).then(() => profileUpdated = true);
 
       /***** WRITE TO CUSTOM DB *****/
-      const isWritten = await this.writeUserToDb(user);
+      const isWritten = await this.writeUserToDb({...user, id: uid });
+      // TODO: this step might not be needed (speed up if deleted)
       const tempUser = await this.getUserByEmail(user.email);
       if (!profileUpdated || !isWritten || !tempUser) {
         return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_WRITE_FAILED));
@@ -150,7 +156,7 @@ export class FirebaseService {
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
     let successfulWrite = true;
     // TODO: izbaci sifru odavde (sacuvaj negde drugde)
-    const customUser: CustomUser = { ...user, id: this._db.createId(), cart: { items: [], totalSum: 0 } }; 
+    const customUser: CustomUser = { ...user, cart: { items: [], totalSum: 0 } }; 
     await this._db.collection('Users').doc(user.id).set(customUser)
     .catch(err => {
       this._db.collection('FailedRegisterWrites').doc(user.email).set({ reason: err });
@@ -163,6 +169,12 @@ export class FirebaseService {
   getProducts(): Observable<Product[]> {
     // valueChanges makes it an observable
     return this._db.collection('Products').valueChanges() as Observable<Product[]>;
+  }
+
+  // from firebaseAuth get customUser
+  async getUserByUid(uid: string): Promise<CustomUser> {
+    return firstValueFrom(this._db.collection('Users').doc(uid).get())
+    .then(user => Promise.resolve(user.data() as CustomUser));
   }
 
 }

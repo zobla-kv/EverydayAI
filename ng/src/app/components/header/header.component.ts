@@ -30,16 +30,20 @@ export class HeaderComponent {
     private _router: Router,
     private _utilService: UtilService,
     private _authService: AuthService,
-    private _fireAuth: AngularFireAuth
+    private _fireAuth: AngularFireAuth,
   ) {
 
-    this._authService.getUser() && (this.isAuthenticated = true);
+    if (this._authService.getUser()) {
+      console.log('fired');
+      this.isAuthenticated = true
+    }
+    // this._authService.getUser() && (this.isAuthenticated = true);
 
     this._fireAuth.onAuthStateChanged(user => {
       this.isAuthenticated = !!user;
       this.triggerAnimation();
+      console.log('get user: ', this._authService.getUser())
     });
-
   }
 
   triggerAnimation() {
