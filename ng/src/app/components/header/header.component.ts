@@ -33,16 +33,12 @@ export class HeaderComponent {
     private _fireAuth: AngularFireAuth,
   ) {
 
-    if (this._authService.getUser()) {
-      console.log('fired');
-      this.isAuthenticated = true
-    }
-    // this._authService.getUser() && (this.isAuthenticated = true);
+    // avoid flickering
+    this._authService.getUserFromSessionStorage() && (this.isAuthenticated = true);
 
     this._fireAuth.onAuthStateChanged(user => {
       this.isAuthenticated = !!user;
       this.triggerAnimation();
-      console.log('get user: ', this._authService.getUser())
     });
   }
 
