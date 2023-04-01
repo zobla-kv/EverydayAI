@@ -30,7 +30,7 @@ export class AppComponent {
     this._iconService.addCustomIcons();
 
     this._fireAuth.onAuthStateChanged(user => {
-      user ? this._authService.setUser(<User>user) : this._authService.removeUser();
+      user ? this._authService.setUser(<User>user) : this._authService.setUser(null);
     });
   }
 

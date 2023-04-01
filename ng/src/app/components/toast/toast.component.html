@@ -1,0 +1,9 @@
+<div class="d-flex justify-content-between px-4">
+  <span matSnackBarLabel>
+      {{ data.message}} 
+  </span>
+  <span matSnackBarActions>
+    <mat-icon *ngIf="data.type == 'success'">check_circle</mat-icon>
+    <mat-icon *ngIf="data.type == 'error'">error</mat-icon>
+  </span>
+</div>

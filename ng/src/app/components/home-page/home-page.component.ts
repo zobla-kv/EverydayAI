@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Subscription } from 'rxjs';
 
 import {
   ProductCategory
 } from '@app/models';
 
 import {
+  AuthService,
   UtilService
 } from '@app/services';
 
@@ -25,6 +26,9 @@ export class HomePageComponent {
   // animation state
   loadingState = 'loadingStarted';
 
+  // subscibe to user state (change to number of cart items etc.)
+  customUserState$: Subscription;
+
   productCategories: ProductCategory[] = [
     { name: 'Food', icon: 'home-page-category-food' },
     { name: 'Toys', icon: 'home-page-category-food' },
@@ -34,15 +38,19 @@ export class HomePageComponent {
 
   constructor(
     private _utilService: UtilService,
-    private _fireAuth: AngularFireAuth
+    private _authService: AuthService
   ) {
 
-    this._fireAuth.onAuthStateChanged(() => this.triggerAnimation());
+    this.customUserState$ = this._authService.userState$.subscribe(user => this.triggerAnimation());
 
   }
 
   triggerAnimation() {
     this.loadingState = 'loadingEnded';
+  }
+
+  ngOnDestroy() {
+    this.customUserState$.unsubscribe();
   }
 
 }

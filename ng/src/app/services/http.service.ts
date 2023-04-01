@@ -1,16 +1,12 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs';
 
 import {
   Email, 
-  Product
 } from '@app/models';
 
-import { 
-  FirebaseService 
-} from '@app/services';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +14,8 @@ import {
 export class HttpService {
 
   constructor(
-    private _http: HttpClient,
-    // bypass circular dependency using injector
-    // private _firebaseService: FirebaseService
-    private _injector: Injector,
+    private _http: HttpClient
   ) { }
-
-  // get all products
-  getProducts(): Observable<Product[]> {
-    const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
-    return firebaseService.getProducts();
-  }
 
   // call endpoint for sending email
   sendEmail(body: Email): Promise<boolean> {
@@ -42,5 +29,9 @@ export class HttpService {
       .subscribe(isSent => resolve(isSent));
     })
   }
+
+  // bypass circular dependency using injector
+  // private _injector: Injector,
+  // this._injector.get<FirebaseService>(FirebaseService);
 
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
 
 // transform subscription into promise
 import { firstValueFrom, Observable } from 'rxjs';
@@ -17,11 +18,11 @@ import {
 } from '@app/models';
 
 import {
+  AuthService,
   HttpService, 
   UtilService
 } from '@app/services';
 import { UserCredential } from '@angular/fire/auth';
-import { DocumentSnapshot } from '@angular/fire/firestore';
 
 
 /**
@@ -39,7 +40,8 @@ export class FirebaseService {
     private _db: AngularFirestore,
     private _httpService: HttpService,
     private _utilService: UtilService,
-    private _router: Router
+    private _router: Router,
+    private _injector: Injector
   ) { }
 
   // register new user
@@ -92,6 +94,7 @@ export class FirebaseService {
       // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
       const loggedUserData = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
       .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_WRONG_CREDENTIALS)) });
+      
       if (!loggedUserData) {
         // this if means signIn went into catch block
         // does not stop execution so stop it manually
@@ -165,16 +168,44 @@ export class FirebaseService {
     return successfulWrite;
   }
 
+  // from firebaseAuth get customUser
+  async getUserByUid(uid: string): Promise<CustomUser> {
+    return firstValueFrom(this._db.collection('Users').doc(uid).get())
+    .then(user => Promise.resolve(user.data() as CustomUser));
+  }
+  
   // return all products from db wrapped by observable
   getProducts(): Observable<Product[]> {
     // valueChanges makes it an observable
     return this._db.collection('Products').valueChanges() as Observable<Product[]>;
   }
 
-  // from firebaseAuth get customUser
-  async getUserByUid(uid: string): Promise<CustomUser> {
-    return firstValueFrom(this._db.collection('Users').doc(uid).get())
-    .then(user => Promise.resolve(user.data() as CustomUser));
+  // add single product to cart
+  addProductToCart(product: Product): Promise<void> {
+  // .getUser sync version because this can only be triggered if user is logged in
+  const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
+  return this._db.collection('Users').doc(currentUserId).ref.update({
+    'cart.items': arrayUnion(product),
+    'cart.totalSum': increment(
+        product.information.discount ? 
+          product.information.discount.discountedPrice : 
+          product.information.price
+      )
+    })
   }
+
+  // add single product to cart
+  removeProductFromCart(product: Product): Promise<void> {
+    // TODO: below line will require change if getUser is to become async
+    const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
+    return this._db.collection('Users').doc(currentUserId).ref.update({
+      'cart.items': arrayRemove(product),
+      'cart.totalSum': increment(
+          product.information.discount ? 
+            -product.information.discount.discountedPrice : 
+            -product.information.price
+        )
+      })
+    }
 
 }

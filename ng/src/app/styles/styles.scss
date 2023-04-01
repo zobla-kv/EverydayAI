@@ -105,7 +105,7 @@ header,
 .footer-wrapper {
   background-color: $main-dark-bg-color;
   width: 100%;
-  z-index: 999;
+  z-index: 99999;
   position: sticky;
 }
 
@@ -169,6 +169,42 @@ header,
 .mat-mdc-paginator {
   background-color: $main-orange-bg-color;
   border-radius: 8px;
+}
+
+.mdc-snackbar { 
+  margin-top: 130px !important; 
+
+  .mdc-snackbar__surface {
+    padding-right: 0 !important;
+    max-width: 230px !important;
+    min-width: 150px !important;
+    text-align: center;
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+      border-radius: 4px !important;
+      padding-left: 0;
+
+      .mat-icon { 
+        position: relative; 
+        left: 6px; 
+      }
+    }
+  }
+
+  &.snackbar-success .mdc-snackbar__surface {
+    background-color: green !important;
+    .mat-icon { color: #02ff00; transform: scale(1.1); }
+  }
+  &.snackbar-error .mdc-snackbar__surface {
+    background-color: #B11010 !important;
+    .mat-icon { color: red; transform: scale(1.2); }
+  }
+}
+
+.mat-badge-content {
+  // disable animation
+  transition: none !important;
 }
 
 /* forms */

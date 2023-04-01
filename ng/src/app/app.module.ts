@@ -6,7 +6,9 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginatorModule } from '@angular/material/paginator'
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge'
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -35,7 +37,8 @@ import {
   AuthFormComponent,
   XFormComponent,
   InformationComponent,
-  ShoppingCartComponent
+  ShoppingCartComponent,
+  ToastComponent
 } from '@app/components';
 
 import {
@@ -59,7 +62,8 @@ import {
 
     // Directives
     HighlightDirective,
-    ObserveVisibilityDirective
+    ObserveVisibilityDirective,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -72,12 +76,22 @@ import {
     MatIconModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatSnackBarModule,
+    MatBadgeModule,
 
     // firebase
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore())
   ],
-  providers: [{ provide: FIREBASE_OPTIONS, useValue: firebaseConfig }],
+  providers: [
+    { provide: FIREBASE_OPTIONS, useValue: firebaseConfig },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { 
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        duration: 2500
+      } 
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

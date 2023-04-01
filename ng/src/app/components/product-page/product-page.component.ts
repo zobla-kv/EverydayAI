@@ -1,14 +1,20 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Router} from '@angular/router';
 import { AnimationEvent } from '@angular/animations';
+
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { map } from 'rxjs/internal/operators/map';
+import { first, Subscription } from 'rxjs';
 
 import {
-  Product
+  Product,
+  ToastConstants
 } from '@app/models';
 
 import {
-  HttpService,
+  AuthService,
+  FirebaseService,
+  ToastService,
   UtilService
 } from '@app/services';
 
@@ -51,29 +57,53 @@ export class ProductPageComponent implements OnInit {
   // number of loaded images
   numOfloadedImages = 0;
 
+  // subscibe to user state (change to number of cart items etc.)
+  customUserState$: Subscription;
+
+  // is component loaded from another route (header etc.) or by initial land/refresh page?
+  isLoadedFromAnotherRoute: boolean;
+
   constructor(
-    private _httpService: HttpService,
-    private _utilService: UtilService
-  ) {}
+    private _authService: AuthService,
+    private _firebaseService: FirebaseService,
+    private _utilService: UtilService,
+    private _toast: ToastService,
+    private _router: Router
+  ) {
+    this.isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
+  }
+
 
   // TODO: error handling
   // TODO: keep data when routing so it wouldn't reach DB every time
   ngOnInit(): void {
     this.showSpinner = true;
-    this._httpService.getProducts()
+    if (this.isLoadedFromAnotherRoute) {
+      // fires on change page because user is not emitted in that case
+      this.fetchProducts();
+    } else {
+      // fires on initial load after custom user object is stored
+      console.log('subscribed')
+      this.customUserState$ = this._authService.userState$.subscribe(() => {
+        console.log('sub triggered')
+        this.fetchProducts()
+      });
+    }   
+
+  }
+
+  fetchProducts(): void {
+    this._firebaseService.getProducts()
     .pipe(
-      map((products: Product[]) => {
-        // add spinners property
-        return products.map(product => product = {
-          ...product,
-          spinners: {
-            showAddToCartSpinner: false,
-            showRemoveFromCartSpinner: false
-          }
-        })
-      })
+      first(),
+      // if logged in attach front end properties (action spinners, isInCart etc.)
+      map((products: Product[]) => this._authService.getUser() ? 
+        products.map(product => this.addFrontendProperties(product)) : 
+        products
+      )
     )
     .subscribe(products => {
+      console.log('pPPP: ', products);
       this.fullProductList = products as unknown as Product[];
       this.paginator.length = this.fullProductList.length;
       this.updatePageInfo();
@@ -134,16 +164,94 @@ export class ProductPageComponent implements OnInit {
     }
   }
 
+  // add front end properties to Product (spinners, isInCart etc.)
+  // only if user is logged in
+  addFrontendProperties(product: Product): Product {
+    return {
+      ...product,
+      spinners: {
+        showAddToCartSpinner: false,
+        showRemoveFromCartSpinner: false
+      },
+      isInCart: this.isInCart(product)
+    }
+  }
+
+  // remove front end properties added by reverse method
+  // get original object to store in db
+  removeFrontendProperties(product: Product): Product {
+    const productCopy = this._utilService.getDeepCopy(product);
+    delete productCopy.spinners;
+    delete productCopy.isInCart;
+    return productCopy;
+  }
+
+  // is product in cart?
+  isInCart(product: Product): boolean {
+    const cart = this._authService.getUser()?.cart.items as Product[];
+    return cart.findIndex(el => el.id === product.id) > -1;
+  }
+
   // handles add to cart
   addToCart(productId: number) {
     let targetProduct: any = this.productList.find(product => product.id === productId);
-    targetProduct && (targetProduct.spinners.showAddToCartSpinner = true);
+    if (targetProduct) {
+      targetProduct.spinners.showAddToCartSpinner = true;
+      this._firebaseService.addProductToCart(this.removeFrontendProperties(targetProduct))
+      .then(async () => await this.handleAddedToCart(targetProduct))
+      .catch(err => this.handleAddToCartFailed(targetProduct))
+    } else {
+      this.handleAddToCartFailed(targetProduct);
+    }
   }
 
   // handles remove from cart
+  // TODO: 1 spinner can probably be used
   removeFromCart(productId: number) {
     let targetProduct: any = this.productList.find(product => product.id === productId);
-    targetProduct && (targetProduct.spinners.showRemoveFromCartSpinner = true);
+    if (targetProduct) {
+      targetProduct.spinners.showRemoveFromCartSpinner = true;
+      this._firebaseService.removeProductFromCart(this.removeFrontendProperties(targetProduct))
+      .then(async () => await this.handleRemovedFromCart(targetProduct))
+      .catch(err => this.handleRemoveFromCartFailed(targetProduct))
+    } else {
+      this.handleRemoveFromCartFailed(targetProduct);
+    }
+  }
+
+  // after product was added to cart
+  async handleAddedToCart(product: Product) {
+    // this can trigger catch block
+    await this._authService.updateUser();
+    product.isInCart = true;
+    product.spinners.showAddToCartSpinner = false;
+    this._toast.open(ToastConstants.MESSAGES.ADDED_TO_CART, ToastConstants.TYPE.SUCCESS.type);
+  }
+
+  // after product failed to be added to cart
+  handleAddToCartFailed(product: Product) {
+    product.spinners.showAddToCartSpinner = false;
+    this._utilService.showDefaultErrorToast();
+  }
+
+  // after product was removed from cart
+  async handleRemovedFromCart(product: Product) {
+    // this can trigger catch block
+    await this._authService.updateUser();
+    product.isInCart = false;
+    product.spinners.showRemoveFromCartSpinner = false;
+    this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+  }
+
+  // after product failed to be added to cart
+  // TODO: if 1 spinner this can be deleted and upper one used instead
+  handleRemoveFromCartFailed(product: Product) {
+    product.spinners.showRemoveFromCartSpinner = false;
+    this._utilService.showDefaultErrorToast();
+  }
+
+  ngOnDestroy() {
+    this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
 }

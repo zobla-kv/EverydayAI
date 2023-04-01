@@ -3,6 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 
+import {
+  ToastConstants
+} from '@app/models';
+
+import { 
+  ToastService 
+} from './toast.service';
+
 
 /**
  * Unrelated utility methods.
@@ -19,7 +27,8 @@ export class UtilService {
 
   constructor(
     private _router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _toast: ToastService
   ) { }
 
 /**
@@ -81,5 +90,26 @@ export class UtilService {
     // to + 1 because slice doesn't include last
     return array.slice(from, to + 1);
   }
+
+  /**
+  * Returns deep copy of an object.
+  *
+  * @param object 
+  * @returns object
+  */
+  getDeepCopy(object: any): any {
+    return JSON.parse(JSON.stringify(object));
+  }
+
+  /**
+  * Shows 'Something went wrong. Please try again.' toast message.
+  *
+  * @param object 
+  * @returns object
+  */
+ showDefaultErrorToast(): void {
+    this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+  }
+
 
 }

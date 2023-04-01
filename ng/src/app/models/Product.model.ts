@@ -26,4 +26,5 @@ export interface Product {
 
   // front end only
   spinners?: any
+  isInCart?: any;
 }

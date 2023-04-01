@@ -20,7 +20,7 @@
         background-color: $main-orange-bg-color;
         border: 0;
         border-radius: 8px;
-        box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: $shadow-lifted;
       }
     }
   }

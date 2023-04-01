@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import {
-  AppConstants,
   CustomUser,
   RegisterUser,
   FirebaseAuthResponse,
@@ -27,7 +27,10 @@ export class AuthService {
 
   // NOTE: FirebaseService contains default user
   // Custom user is stored in db
-  private _user: CustomUser | null; 
+  private _user: CustomUser | null = null;
+
+  // subscribe to user state changes (update of cart etc.)
+  public userState$ = new Subject<CustomUser | null>();
 
   constructor(
     private _firebaseService: FirebaseService,
@@ -36,42 +39,32 @@ export class AuthService {
   ) { }
 
   // set custom user (transfer from firebase user to custom user)
-  async setUser(user: User): Promise<void> {
+  async setUser(user: User | null): Promise<void> {
     // TODO: what happens if db call fails
     // two users would be out of sync (fb user is there but custom isn't)
     // some error handling needed?
-    this.setUserToSessionStorage();
-    this._user = await this._firebaseService.getUserByUid(user.uid);
+    console.log('set user fired');
+    if (user) {
+      this._user = await this._firebaseService.getUserByUid(user.uid);
+    } else {
+      this._user = null;
+    }
+    console.log('emitted: ', this._user);
+    this.userState$.next(this._user);
   }
 
-  // get custom user
-  // TODO: should this be async? (get user on start then update cart on BE? then they out of sync)
+  // get custom user - sync 
+  // use if not on load
   getUser(): CustomUser | null {
     return this._user;
   }
 
-  // remove custom user
-  removeUser(): void {
-    this.removeUserFromSessionStorage();
-    this._user = null;
-  }
-
-  // save mock user to session storage (should exist only if user is logged in)
-  setUserToSessionStorage(): void {
-    if (!sessionStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
-      sessionStorage.setItem(AppConstants.STORAGE_USER_KEY, AppConstants.STORAGE_USER_VALUE)
-    }
-  }
-  
-  // for immediately returning user logged in state (avoid flickering)
-  getUserFromSessionStorage(): string | null {
-    return sessionStorage.getItem(AppConstants.STORAGE_USER_KEY);
-  }
-
-  // remove mock user from session storage
-  removeUserFromSessionStorage(): void {
-    if (sessionStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
-      sessionStorage.removeItem(AppConstants.STORAGE_USER_KEY)
+  // update user object to be in sync with DB
+  async updateUser(): Promise<CustomUser | void> {
+    if (this._user) {
+      this._user = await this._firebaseService.getUserByUid(this._user.id);
+      this.userState$.next(this._user);
+      return this._user;
     }
   }
 
@@ -90,13 +83,23 @@ export class AuthService {
     if (response.error) {
       return response;
     }
+    // TODO: causes user to be emitted twice, but this only happens on login
+    // check if this causes any issues?
+    // one way to eliminate is to check what method called setUser 
+    // and not trigger .next if it was 'login' method
+    await this.setUser(response.user);
     this._router.navigate(['/']);
   }
 
   // logout user
   async logout(): Promise<FirebaseAuthResponse | void> {
     this._firebaseService.logout();
+    this.setUser(null);
     this._router.navigate(['/']);
+  }
+
+  ngOnDestroy() {
+    this.userState$.complete();
   }
 
 }

@@ -100,6 +100,7 @@
         <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
           <div class="single-product position-relative">
           <!-- <div class="single-product overflow-hidden"> for discout-ribbon-inside -->
+            <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
             <div *ngIf="product.information.discount" class="discount-ribbon-outside">
               <span>- {{ product.information.discount.percentage }} %
               <div class="glow"></div>
@@ -111,9 +112,9 @@
               <ul>
                 <!-- // TODO: some don't have tooltip when hovered (download, like etc.) -->
                 <!-- // TODO: show only one below -->
-                <li>
+                <li *ngIf="!product.isInCart">
                   <mat-spinner
-                    *ngIf="product.spinners.showAddToCartSpinner; else addIcon"
+                    *ngIf="product.spinners?.showAddToCartSpinner; else addIcon"
                     diameter="25"
                     strokeWidth="5"
                   ></mat-spinner>
@@ -121,9 +122,9 @@
                     <mat-icon svgIcon="cart-add" icon="cart" (click)="addToCart(product.id)"></mat-icon>
                   </ng-template>
                 </li>
-                <li>
+                <li *ngIf="product.isInCart">
                   <mat-spinner
-                    *ngIf="product.spinners.showRemoveFromCartSpinner; else removeIcon"
+                    *ngIf="product.spinners?.showRemoveFromCartSpinner; else removeIcon"
                     diameter="25"
                     strokeWidth="5"
                   ></mat-spinner>
@@ -158,7 +159,7 @@
                     <mat-icon icon="download">download</mat-icon>
                     <span class="ms-1">{{ product.information.downloadSize }}gb</span>
                   </div>
-                  <div class="col-4 product-information-item">
+                  <div class="col-4 product-information-item text-nowrap">
                     <mat-icon>check_circle</mat-icon>
                     <span>{{ product.information.daysToMasterSkill }} days</span>
                   </div>
