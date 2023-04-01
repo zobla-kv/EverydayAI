@@ -18,7 +18,7 @@
 
     .image-section {
       z-index: 3;
-      img { max-height: 450px; }
+      img { max-height: 450px; min-height: 385px; }
     }
 
     .text-section {
