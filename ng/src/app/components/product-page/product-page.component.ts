@@ -100,12 +100,6 @@ export class ProductPageComponent implements OnInit {
       )
     )
     .subscribe(products => {
-      const x = this._utilService.getDeepCopy(products);
-      x.forEach((e: any) => {
-        e.id = e.id + Math.floor(Math.random() * 100)
-        products.push(e);
-      });
-      
       console.log('products: ', products);
       this.fullProductList = products as unknown as Product[];
       this.paginator.length = this.fullProductList.length;
