@@ -111,25 +111,15 @@
               <img #img src="{{ product.imgPath }}" alt="" (load)="handleImageLoaded()">
               <ul>
                 <!-- // TODO: some don't have tooltip when hovered (download, like etc.) -->
-                <!-- // TODO: show only one below -->
-                <li *ngIf="!product.isInCart">
+                <li>
                   <mat-spinner
-                    *ngIf="product.spinners?.showAddToCartSpinner; else addIcon"
+                    *ngIf="product.spinners?.showCartActionSpinner; else cartAction"
                     diameter="25"
                     strokeWidth="5"
                   ></mat-spinner>
-                  <ng-template #addIcon>
-                    <mat-icon svgIcon="cart-add" icon="cart" (click)="addToCart(product.id)"></mat-icon>
-                  </ng-template>
-                </li>
-                <li *ngIf="product.isInCart">
-                  <mat-spinner
-                    *ngIf="product.spinners?.showRemoveFromCartSpinner; else removeIcon"
-                    diameter="25"
-                    strokeWidth="5"
-                  ></mat-spinner>
-                  <ng-template #removeIcon>
-                    <mat-icon svgIcon="cart-remove" icon="cart" (click)="removeFromCart(product.id)"></mat-icon>
+                  <ng-template #cartAction>
+                    <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart(product.id)"></mat-icon>
+                    <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart" (click)="removeFromCart(product.id)"></mat-icon>
                   </ng-template>
                 </li>
                 <!-- // TODO: No handlers for below ones, will they be in prod? -->

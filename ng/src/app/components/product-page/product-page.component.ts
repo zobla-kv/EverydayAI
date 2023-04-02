@@ -83,11 +83,9 @@ export class ProductPageComponent implements OnInit {
       this.fetchProducts();
     } else {
       // fires on initial load after custom user object is stored
-      console.log('subscribed')
-      this.customUserState$ = this._authService.userState$.subscribe(() => {
-        console.log('sub triggered')
-        this.fetchProducts()
-      });
+      this.customUserState$ = this._authService.userState$
+      .pipe(first())
+      .subscribe(() => this.fetchProducts());
     }   
 
   }
@@ -95,7 +93,6 @@ export class ProductPageComponent implements OnInit {
   fetchProducts(): void {
     this._firebaseService.getProducts()
     .pipe(
-      first(),
       // if logged in attach front end properties (action spinners, isInCart etc.)
       map((products: Product[]) => this._authService.getUser() ? 
         products.map(product => this.addFrontendProperties(product)) : 
@@ -103,7 +100,13 @@ export class ProductPageComponent implements OnInit {
       )
     )
     .subscribe(products => {
-      console.log('pPPP: ', products);
+      const x = this._utilService.getDeepCopy(products);
+      x.forEach((e: any) => {
+        e.id = e.id + Math.floor(Math.random() * 100)
+        products.push(e);
+      });
+      
+      console.log('products: ', products);
       this.fullProductList = products as unknown as Product[];
       this.paginator.length = this.fullProductList.length;
       this.updatePageInfo();
@@ -170,8 +173,7 @@ export class ProductPageComponent implements OnInit {
     return {
       ...product,
       spinners: {
-        showAddToCartSpinner: false,
-        showRemoveFromCartSpinner: false
+        showCartActionSpinner: false
       },
       isInCart: this.isInCart(product)
     }
@@ -196,57 +198,46 @@ export class ProductPageComponent implements OnInit {
   addToCart(productId: number) {
     let targetProduct: any = this.productList.find(product => product.id === productId);
     if (targetProduct) {
-      targetProduct.spinners.showAddToCartSpinner = true;
+      targetProduct.spinners.showCartActionSpinner = true;
       this._firebaseService.addProductToCart(this.removeFrontendProperties(targetProduct))
-      .then(async () => await this.handleAddedToCart(targetProduct))
-      .catch(err => this.handleAddToCartFailed(targetProduct))
+      .then(async () => await this.handleCartActionSucceeded(targetProduct, 'add'))
+      .catch(err => this.handleCartActionFailed(targetProduct))
     } else {
-      this.handleAddToCartFailed(targetProduct);
+      this.handleCartActionFailed(targetProduct);
     }
   }
 
   // handles remove from cart
-  // TODO: 1 spinner can probably be used
   removeFromCart(productId: number) {
     let targetProduct: any = this.productList.find(product => product.id === productId);
     if (targetProduct) {
-      targetProduct.spinners.showRemoveFromCartSpinner = true;
+      targetProduct.spinners.showCartActionSpinner = true;
       this._firebaseService.removeProductFromCart(this.removeFrontendProperties(targetProduct))
-      .then(async () => await this.handleRemovedFromCart(targetProduct))
-      .catch(err => this.handleRemoveFromCartFailed(targetProduct))
+      .then(async () => await this.handleCartActionSucceeded(targetProduct, 'remove'))
+      .catch(err => this.handleCartActionFailed(targetProduct))
     } else {
-      this.handleRemoveFromCartFailed(targetProduct);
+      this.handleCartActionFailed(targetProduct);
     }
   }
 
-  // after product was added to cart
-  async handleAddedToCart(product: Product) {
-    // this can trigger catch block
+  // after product was added/removed to cart
+  async handleCartActionSucceeded(product: Product, action: string) {
+    // this can trigger catch block, for that 'await' is needed
     await this._authService.updateUser();
-    product.isInCart = true;
-    product.spinners.showAddToCartSpinner = false;
-    this._toast.open(ToastConstants.MESSAGES.ADDED_TO_CART, ToastConstants.TYPE.SUCCESS.type);
+    if (action === 'add') {
+      product.isInCart = true;
+      this._toast.open(ToastConstants.MESSAGES.ADDED_TO_CART, ToastConstants.TYPE.SUCCESS.type);
+    }
+    if (action === 'remove') {
+      product.isInCart = false;
+      this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+    }
+    product.spinners.showCartActionSpinner = false;
   }
 
-  // after product failed to be added to cart
-  handleAddToCartFailed(product: Product) {
-    product.spinners.showAddToCartSpinner = false;
-    this._utilService.showDefaultErrorToast();
-  }
-
-  // after product was removed from cart
-  async handleRemovedFromCart(product: Product) {
-    // this can trigger catch block
-    await this._authService.updateUser();
-    product.isInCart = false;
-    product.spinners.showRemoveFromCartSpinner = false;
-    this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
-  }
-
-  // after product failed to be added to cart
-  // TODO: if 1 spinner this can be deleted and upper one used instead
-  handleRemoveFromCartFailed(product: Product) {
-    product.spinners.showRemoveFromCartSpinner = false;
+  // after product failed to be added/removed to cart
+  handleCartActionFailed(product: Product) {
+    product.spinners.showCartActionSpinner = false;
     this._utilService.showDefaultErrorToast();
   }
 

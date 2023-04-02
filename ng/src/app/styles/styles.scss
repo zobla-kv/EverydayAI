@@ -205,6 +205,9 @@ header,
 .mat-badge-content {
   // disable animation
   transition: none !important;
+  background-color: $main-orange-bg-color;
+  border: 1px solid $main-dark-bg-color;
+  color: $main-dark-bg-color;
 }
 
 /* forms */
