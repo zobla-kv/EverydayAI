@@ -190,6 +190,11 @@ export class ProductPageComponent implements OnInit {
 
   // handles add to cart
   addToCart(productId: number) {
+    // if not logged in
+    if (!this._authService.getUser()) {
+      this._router.navigate(['auth', 'login']);
+      return;
+    }
     let targetProduct: any = this.productList.find(product => product.id === productId);
     if (targetProduct) {
       targetProduct.spinners.showCartActionSpinner = true;

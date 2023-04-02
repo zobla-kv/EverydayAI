@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import {
@@ -38,10 +39,17 @@ export class HomePageComponent {
 
   constructor(
     private _utilService: UtilService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router
   ) {
-
-    this.customUserState$ = this._authService.userState$.subscribe(user => this.triggerAnimation());
+    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
+    if (isLoadedFromAnotherRoute) {
+      // fires on change page because user is not emitted in that case
+      this.triggerAnimation();
+    } else {
+      // fires on initial load after custom user object is stored
+      this.customUserState$ = this._authService.userState$.subscribe(() => this.triggerAnimation());
+    }   
 
   }
 
@@ -50,7 +58,7 @@ export class HomePageComponent {
   }
 
   ngOnDestroy() {
-    this.customUserState$.unsubscribe();
+    this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
 }
