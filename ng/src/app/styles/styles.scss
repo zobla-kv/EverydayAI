@@ -9,6 +9,8 @@ body {
   background-color: $main-dark-bg-color;
   color: $white-text;
   box-sizing: border-box;
+  // TODO: this is only for preloader to have it so it wouldn't appear after (causes page flick)
+  overflow-y: scroll;
 
   .header-wrapper, .page-wrapper, .footer-wrapper {
     max-width: 1600px;

@@ -4,3 +4,7 @@ https://www.telegraf.rs/vesti/hronika/3501266-ovako-je-ubijen-nikola-zecevic-zek
 
 templates
 https://bootstrapmade.com/bootstrap-business-templates/
+
+
+intersection observer root margin
+// rootMargin understand: https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/769b2733-5700-4d2d-a32f-6850a173abaa/1-dynamic-header-intersection-observer.png

@@ -1,0 +1,2 @@
+1. Image flash on load/refresh is because image container does not have height set so it increases as image loads.
+This caused IntersectionObserver to detect that element is in view because of that split mili second.

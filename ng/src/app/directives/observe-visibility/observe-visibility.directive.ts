@@ -1,78 +1,96 @@
 import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
-import { Subject, delay, filter } from 'rxjs';
+import { Subject, first } from 'rxjs';
+
+import { 
+  UtilService 
+} from '@app/services';
 
 // TODO: clear unused variables
 /**
  * Observe visibility directive
  * run animation once element is in view
- * for now used only to show (animate) element once in view
  */
 @Directive({
   selector: '[appear]'
 })
 export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewInit {
-  @Input() debounceTime = 0;
-  @Input() threshold = 0;
-  @Input() rootMargin = '0px';
 
   // object holding hide styles
-  // TODO: create model
-  @Input('hide') hideStyles: any = { 'opacity': '0', 'transform': 'translateY(20px)', 'filter': 'blur(20px)' };
+  @Input('hide') hideStyles: any = { 'opacity': '0' };
   // object holding show styles
-  @Input('show') showStyles: any = { 'opacity': '1', 'transform': 'translateY(0px)', 'filter': 'blur(0px)' };
+  @Input('show') showStyles: any = { 'opacity': '1' };
+  // show animation duration 
+  @Input('duration') duration: number = 1000;
+  // show animation delay 
+  @Input('delay') delay: number = 0;
+  // what percentage should be visible before triggering
+  @Input('threshold') threshold: number = 0.3;
+  // root margin
+  @Input('rootMargin') rootMargin: string = '0px';
+
+  // is first visit
+  isFirstVisit = this._utilService.isFirstVisit();
 
   // animation (hide -> show)
   animation: AnimationPlayer;
 
-  private observer: IntersectionObserver | null;
-  private subject$ = new Subject<void>();
-
+  // intersection observer
+  private _observer: IntersectionObserver | null;
+  
+  // intersection trigger 
+  private _intersect$ = new Subject<void>();
+  
   constructor(
     private _element: ElementRef,
     private _renderer: Renderer2,
-    private builder: AnimationBuilder
+    private _builder: AnimationBuilder,
+    private _utilService: UtilService
   ) {}
 
   ngOnInit() {
     // hide element initially
-    this.setHideStyles(this.hideStyles);
-
+    this.setHideStyles();
     this.createObserver();
     this.createAnimation();
+    this.startObserving();
   }
 
-  ngAfterViewInit() {
-    if (!this.observer) {
+  // start observing
+  startObserving() {
+    if (!this.isFirstVisit) {
+      // setTimeout to skip landing image load layout shift (flick)
+      // because this would detect below elements 
+      setTimeout(() => this._observer?.observe(this._element.nativeElement), 100)
       return;
     }
 
-    this.observer.observe(this._element.nativeElement);
+    this._utilService.appLoaded$.pipe(first()).subscribe(() => {
+      this._observer?.observe(this._element.nativeElement);
+    })
+  }
 
-    setTimeout(() => {
-      this.subject$
-      // .pipe(delay(this.debounceTime), filter(Boolean))
-      .subscribe(async () => {
-        const target = this._element.nativeElement;
-        this.animation.play();
-        // cancel after firing once
-        this.observer?.unobserve(target);
-      });
-    }, 1000)
+  ngAfterViewInit() {
+    this._intersect$.subscribe(() => {
+      const target = this._element.nativeElement;
+      console.log('element visible: ', target);
+      this.animation.play();
+      // cancel after firing once
+      this._observer?.unobserve(target);
+    });
   }
 
 
   // hide element (should be reverse of show)
-  setHideStyles(styles: any) {
-    for (const style of Object.keys(styles)) {
-      this._renderer.setStyle(this._element.nativeElement, style, styles[style])
+  setHideStyles() {
+    for (const style of Object.keys(this.hideStyles)) {
+      this._renderer.setStyle(this._element.nativeElement, style, this.hideStyles[style])
     }
   }
 
   // create animation and set variable
-  // TODO: make this dynamic through input
   createAnimation() {
-    const factory = this.builder.build([animate('500ms 0ms', style(this.showStyles))]);
+    const factory = this._builder.build([animate(`${this.duration}ms ${this.delay}ms`, style(this.showStyles))]);
     this.animation = factory.create(this._element.nativeElement);
   }
 
@@ -84,73 +102,21 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       threshold: this.threshold,
     };
     
-    this.observer = new IntersectionObserver((entries, observer) => {
+    this._observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
-          this.subject$.next();   
+          this._intersect$.next();   
         }
       });
     }, options);
   }
 
-  // is element visible
-  isInViewport(element: Element): boolean {
-    if (!element || element.nodeType !== 1) {
-      return false;
-    };
-
-    const html = document.documentElement;
-    const rect = element.getBoundingClientRect();
-    
-    return !!rect &&
-      rect.bottom >= 0 &&                 // donja ispod gornje ivice
-      rect.right >= 0 &&                  // desna desno od leve ivice
-      rect.left <= html.clientWidth &&    // leva levo od desne ivice
-      rect.top <= html.clientHeight;      // gornja iznad donje ivice && ispod headera
-  }
-
   ngOnDestroy() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = null;
+    if (this._observer) {
+      this._observer.disconnect();
+      this._observer = null;
     }
-    this.subject$.complete();
+    this._intersect$.complete();
   }
 
 }
-
-// rootMargin understand: https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/769b2733-5700-4d2d-a32f-6850a173abaa/1-dynamic-header-intersection-observer.png
-
-// Input animation into directive, saved for later reference!!!
-
-// @Directive({
-//   selector: '[zetFadeInOut]',
-// })
-// export class FadeInOutDirective {
-
-//   @Input()
-//   set show(show: boolean) {
-//     const metadata = show ? this.fadeIn() : this.fadeOut();
-
-//     const factory = this.builder.build(metadata);
-//     const player = factory.create(this.el.nativeElement);
-
-//     player.play();
-//   }
-
-//   constructor(private builder: AnimationBuilder, private el: ElementRef) {}
-
-//   private fadeIn(): AnimationMetadata[] {
-//     return [
-//       style({ opacity: 0 }),
-//       animate('400ms ease-in', style({ opacity: 1 })),
-//     ];
-//   }
-
-//   private fadeOut(): AnimationMetadata[] {
-//     return [
-//       style({ opacity: '*' }),
-//       animate('400ms ease-in', style({ opacity: 0 })),
-//     ];
-//   }
-// }

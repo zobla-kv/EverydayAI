@@ -1,10 +1,18 @@
 <section class="top-section-wrapper">
-  <div class="container-fluid flex-center g-0" [@loading]="isFirstVisit ? loadingState : 'no-animation'">
-  <!-- <div class="container-fluid flex-center g-0" [@loading]="loadingState"> -->
+  <div class="container-fluid flex-center g-0">
     <div class="image-section w-40">
-      <img src="../../../assets/images/img/landing-page-image.jpg" class="img-fluid" alt="dog-bark-banner">
+      <img 
+        src="../../../assets/images/img/landing-page-image.jpg" 
+        class="img-fluid" 
+        alt="dog-bark-banner" 
+        appear 
+        [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
+        [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
+        [duration]="300"
+        [delay]="isFirstVisit ? 700 : 100"
+      >
     </div>
-    <div class="text-section w-60">
+    <div class="text-section w-60" appear [duration]="500" [delay]="isFirstVisit ? 900 : 300">
       <h2>Your dog won't believe you!</h2>
       <p>
         Visit shop and find the product of your dog's needs. Look no furher, we have it all!
@@ -38,7 +46,7 @@
         <span class="fw-bold">Dog life</span>
         <span class="opacity-50 d-inline">Improving life of our</span>
         <span
-          class="orange-text d-inline"
+          class="orange-text d-inline" appear
         > beloved ones</span>
       </div>
       <hr class="hr-right mt-2">
@@ -63,9 +71,7 @@
     </div>
   </div>
   <div class="about-us-bottom-section w-100 mt-4">
-    <div
-      class="about-us-qoute-section col-lg-7 col-md-10 col-11 mx-auto text-center"
-    >
+    <div class="about-us-qoute-section col-lg-7 col-md-10 col-11 mx-auto text-center">
       <mat-icon svgIcon="qoute" class="absolute-center"></mat-icon>
       <p class="mb-4">
         Spiritual fulfillment doesn't have to mean belief

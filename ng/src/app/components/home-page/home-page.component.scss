@@ -9,7 +9,7 @@
 
   .container-fluid {
     position: relative;
-    height: auto;
+    height: 100%;
     color: black;
     padding: 1rem 0;
 
@@ -18,7 +18,9 @@
 
     .image-section {
       z-index: 3;
-      img { max-height: 450px; min-height: 385px; }
+      // TODO: image flash on refresh, set min height but that causes responsive problem
+      // TODO: also causes intersection observer to fire earlier
+      img { max-height: 450px; }
     }
 
     .text-section {

@@ -99,6 +99,7 @@
       >
         <div class="col-lg-4 col-md-6 col-sm-6 col-12" *ngFor="let product of productList">
           <div class="single-product position-relative">
+          <!-- // TODO: check and remove -->
           <!-- <div class="single-product overflow-hidden"> for discout-ribbon-inside -->
             <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
             <div *ngIf="product.information.discount" class="discount-ribbon-outside">

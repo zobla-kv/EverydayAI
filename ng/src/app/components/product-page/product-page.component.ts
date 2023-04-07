@@ -38,6 +38,9 @@ export class ProductPageComponent implements OnInit {
   // ]
 
   @ViewChild('paginator') paginator: MatPaginator;
+
+  // is first visit
+  isFirstVisit = this._utilService.isFirstVisit();
   
   // list containing all products
   fullProductList: Product[];
@@ -49,7 +52,7 @@ export class ProductPageComponent implements OnInit {
   pageSize = 6;
 
   // animate show/hide product items
-  productVisibilityState = 'show';
+  productVisibilityState = 'hide';
 
   // products loading spinner
   showSpinner = false;

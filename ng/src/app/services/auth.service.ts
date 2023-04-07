@@ -43,13 +43,11 @@ export class AuthService {
     // TODO: what happens if db call fails
     // two users would be out of sync (fb user is there but custom isn't)
     // some error handling needed?
-    console.log('set user fired');
     if (user) {
       this._user = await this._firebaseService.getUserByUid(user.uid);
     } else {
       this._user = null;
     }
-    console.log('emitted: ', this._user);
     this.userState$.next(this._user);
   }
 

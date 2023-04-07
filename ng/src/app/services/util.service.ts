@@ -22,6 +22,12 @@ import {
 })
 export class UtilService {
 
+  // app load complete and preload animation started
+  appLoaded$ = new Subject<void>();
+
+  // preload animation done
+  appLoadedAnimationComplete$ = new Subject<void>();
+
   // log/reg buttons
   authButtonClick$ = new Subject<string>();
 
@@ -30,6 +36,16 @@ export class UtilService {
     private _route: ActivatedRoute,
     private _toast: ToastService
   ) { }
+
+/**
+* Handle all stuff needed after app has loaded
+*
+* @returns void
+*/
+appLoaded(): void {
+  !sessionStorage.getItem('new_session') && sessionStorage.setItem('new_session', 'true');
+  this.appLoaded$.next();
+}
 
 /**
   * Emit auth button clicked event

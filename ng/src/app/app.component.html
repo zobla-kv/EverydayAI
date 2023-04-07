@@ -1,7 +1,24 @@
-<app-header></app-header>
+<div 
+  *ngIf="isFirstVisit && !isPreloadAnimationDone"
+  class="preloader" 
+  [@appLoad]="runPreloadAnimation" 
+  (@appLoad.start)="handleLoadAnimationStarted($event)"
+  (@appLoad.done)="handleLoadAnimationDone($event)"
+>
+  <mat-spinner [@appLoadSpinner]="runPreloadAnimation" diameter="50" strokeWidth="5"></mat-spinner>
+</div>
 
-<main class="page-wrapper">
-  <router-outlet></router-outlet>
-</main>
+<!-- NOTE: appear like this solves layout shift (flick) of landing image -->
+<!-- TODO: the other way is to manually control responsiveness of top section -->
+<!-- without directive doesn't trigger other elements intersection -->
+<!-- <div> -->
+<div appear="!isFirstVisit" [duration]="0">
 
-<app-footer></app-footer>
+  <app-header></app-header>
+  
+  <main class="page-wrapper">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <app-footer></app-footer>
+</div>

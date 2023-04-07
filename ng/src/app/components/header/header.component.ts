@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 import {
   AuthService,
@@ -22,9 +21,6 @@ export class HeaderComponent implements OnDestroy {
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
 
-  // animation state
-  loadingState = 'loadingStarted';
-
   // is user logged in
   isAuthenticated: boolean;
 
@@ -38,7 +34,6 @@ export class HeaderComponent implements OnDestroy {
     private _router: Router,
     private _utilService: UtilService,
     private _authService: AuthService,
-    private _fireAuth: AngularFireAuth,
     private _storageService: StorageService
   ) {
 
@@ -50,13 +45,8 @@ export class HeaderComponent implements OnDestroy {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.numberOfItemsInCart = user ? user.cart.items.length : 0;
       this.isAuthenticated = !!user;
-      this.triggerAnimation();
     })
 
-  }
-
-  triggerAnimation() {
-    this.loadingState = 'loadingEnded';
   }
 
   // TODO: block routes if logged in
