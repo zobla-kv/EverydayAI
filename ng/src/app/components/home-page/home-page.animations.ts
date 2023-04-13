@@ -1,5 +1,7 @@
 import { animate, state, style, transition, trigger } from "@angular/animations";
 
+// TODO: clear .animation files as they not used
+// save for ref?
 export default [
   trigger('loading', [
     state('loadingStarted', style({

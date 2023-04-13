@@ -1,11 +1,23 @@
 @import '../../styles/variables';
 
+section .section-header {
+  text-align: center;
+  font-size: 45px;
+  font-weight: 600;
+  line-height: 1.5em;
+}
+
 .top-section-wrapper {
   // TODO: choose one
   background-color: $light-orange-bg-color;
   background-color: $main-dark-bg-color;
   // background-color: $main-orange-bg-color;
-  padding: 2rem;
+
+  // TODO: landing section always span full height on load
+  // messes responsive
+  // added viewport-height css class, change to this later
+  height: $viewport-height-without-header;
+  padding-bottom: 4rem;
 
   .container-fluid {
     position: relative;
@@ -17,10 +29,11 @@
     border: 0;
 
     .image-section {
+      height: 100%;
       z-index: 3;
       // TODO: image flash on refresh, set min height but that causes responsive problem
       // TODO: also causes intersection observer to fire earlier
-      img { max-height: 450px; }
+      img { height: 100%; }
     }
 
     .text-section {
@@ -164,8 +177,177 @@
   }
 }
 
+.about-us-section-wrapper-new {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .about-us { max-width: 960px; }
+
+  .about-us-mission {
+    margin-top: 5rem;
+
+    .mission-item {
+      padding: 45px 20px;
+      background-color: $main-orange-bg-color;
+      box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      //NOTE: Avoid setting ViewEncapsulation.None just for this one property
+      &::ng-deep mat-icon svg path { fill: $main-dark-bg-color; }
+
+      mat-icon {
+        height: 50px;
+        transform: scale(2);
+        margin: auto;
+        font-size: 50px;
+        display: flex;
+        margin-bottom: 12px;
+      }
+    }
+
+    .mission-item:hover {
+      box-shadow: 0 0px 2px rgba($main-orange-bg-color, 1);
+      transition: 0.5s;
+    }
+  }
+
+}
+
+.how-it-works-section {
+  margin-top: 3rem;
+
+  .container-fluid { max-width: 1000px; }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    row-gap: 2rem;
+    list-style: none;
+    counter-reset: stepnr;
+
+    .col-circle {
+      display: flex;
+      justify-content: center;
+    }
+
+    .col-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .inner-wrapper {
+        background-color: $main-orange-bg-color;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1rem;
+        text-align: center;
+        max-width: 275px;
+        max-height: 144px;
+      }
+    }
+  }
+  
+  ol li {
+    counter-increment: stepnr;
+    width: 15rem;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 3.5rem;
+    position: relative;
+    background-color: $main-dark-bg-color;
+    border-radius: 50%;
+
+    .cover-wrapper {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 2;
+
+      .cover { 
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        background-color: $main-dark-bg-color;
+        // border-bottom: 1px solid white; 
+        filter: drop-shadow(-0.25rem 0.25rem 0.675rem rgba(0, 0, 0, 1)) blur(0px);
+        filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+
+      }
+      
+    }
+
+    & * { z-index: 1; }
+    
+    &::before,
+    &::after {
+      inset: 0;
+      position: absolute;
+      border-radius: 50%;
+      border: 25px solid $main-dark-bg-color;
+      line-height: 1.1;
+    }
+
+    &::before {
+      content: counter(stepnr);
+      color: $main-orange-bg-color;
+      padding-top: 0.5rem;
+      padding-left: 8.5rem;
+      font-size: 9rem;
+      font-weight: 700;
+      overflow: hidden;
+      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+      // TODO: check this (remove rings and number), also comment out drop shadow below
+      // display: none;
+    }
+
+    &::after {
+      z-index: 2;
+      content: "";
+      // TODO: choose one
+      // without blur
+      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+      // with blur
+      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(5px);
+      // with orange
+      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem $main-orange-bg-color) blur(0px);
+    }
+
+    &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
+
+  }
+  
+  ol li > * { width: 7.5rem; }
+  ol li .icon { 
+    text-align: center; 
+    transform: scale(1.5); 
+    position: relative; 
+    left: -12px; 
+    top: 5px;
+  }
+  ol li .title { font-size: 2rem; font-weight: 500; }
+  ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
+
+}
+
 /* MEDIA QUERIES */
-// smaller than 976px
+// bigger than 1440px
+@media only screen and (min-width: 1440px) {
+  // center vh area vertically on large screens
+  .about-us-section-wrapper-new { justify-content: center; }
+}
 @media only screen and (max-width: 976px) {
   .about-us-top-section {
     flex-direction: column;
@@ -177,6 +359,9 @@
   .about-us-section-wrapper .about-us-qoute-section {
     padding-left: 4rem;
     padding-right: 4rem;
+  }
+  .about-us-section-wrapper-new {
+    text-align: justify;
   }
 }
 // smaller than 576px

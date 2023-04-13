@@ -116,6 +116,17 @@ appLoaded(): void {
   getDeepCopy(object: any): any {
     return JSON.parse(JSON.stringify(object));
   }
+  
+
+  /**
+  * Returns value of css style without 'px'.
+  *
+  * @param object 
+  * @returns object
+  */
+  getStyleValueWithoutPx(value: string): number {
+    return parseInt(value.replace(/px/,''));
+  }
 
   /**
   * Shows 'Something went wrong. Please try again.' toast message.

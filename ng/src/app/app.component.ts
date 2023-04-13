@@ -1,7 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
+
 import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 import { first } from 'rxjs';
 
 import {
@@ -31,6 +33,7 @@ import {
 ]
 })
 export class AppComponent {
+
   // app title
   title = 'house-of-dogs';
 
@@ -47,7 +50,7 @@ export class AppComponent {
     private _iconService: IconService,
     private _fireAuth: AngularFireAuth,
     private _authService: AuthService,
-    private _utilService: UtilService,
+    private _utilService: UtilService
   ) {
     this._iconService.addCustomIcons();
 
@@ -84,6 +87,5 @@ export class AppComponent {
       this._utilService.appLoadedAnimationComplete$.next();
     }
   }
-
 
 }

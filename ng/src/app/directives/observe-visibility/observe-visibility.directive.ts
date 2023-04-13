@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { Subject, first } from 'rxjs';
 
@@ -28,6 +28,11 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   @Input('threshold') threshold: number = 0.3;
   // root margin
   @Input('rootMargin') rootMargin: string = '0px';
+  // appear immediately (don't wait to be in view)
+  @Input('appearImmediately') appearImmediately: boolean = false;
+
+  // emit event when element enters viewport
+  @Output() intersection = new EventEmitter<ElementRef>();
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
@@ -59,6 +64,10 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   // start observing
   startObserving() {
     if (!this.isFirstVisit) {
+      if (this.appearImmediately) {
+        this.animation.play();
+        return;
+      }
       // setTimeout to skip landing image load layout shift (flick)
       // because this would detect below elements 
       setTimeout(() => this._observer?.observe(this._element.nativeElement), 100)
@@ -73,7 +82,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   ngAfterViewInit() {
     this._intersect$.subscribe(() => {
       const target = this._element.nativeElement;
-      console.log('element visible: ', target);
+      // console.log('element visible: ', target);
       this.animation.play();
       // cancel after firing once
       this._observer?.unobserve(target);
@@ -105,8 +114,8 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
     this._observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
-          this._intersect$.next();   
-        }
+          this._intersect$.next();  
+        } 
       });
     }, options);
   }

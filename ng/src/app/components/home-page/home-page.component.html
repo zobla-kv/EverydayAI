@@ -1,5 +1,21 @@
 <section class="top-section-wrapper">
+<!-- TODO: check these 3 -->
+<!-- <section class="top-section-wrapper"
+  appear
+  [hide]="{'padding': '0' }"
+  [show]="{'padding': '2rem'   }"
+  [duration]="300"
+  [delay]="isFirstVisit ? 1000 : 700"
+> -->
   <div class="container-fluid flex-center g-0">
+  <!-- TODO: check these 3 -->
+  <!-- <div class="container-fluid flex-center g-0"
+    appear
+    [hide]="{'padding': '1rem 2rem' }"
+    [show]="{'padding': '1rem 0'    }"
+    [duration]="300"
+    [delay]="isFirstVisit ? 1000 : 700"
+  > -->
     <div class="image-section w-40">
       <img 
         src="../../../assets/images/img/landing-page-image.jpg" 
@@ -23,9 +39,18 @@
       </button>
     </div>
     <div class="main-orange-bg h-100 square"></div>
+    <!-- TODO: check these 3 -->
+    <!-- <div class="main-orange-bg h-100 square" 
+      appear
+      [hide]="{'width': '100%' }"
+      [show]="{'width': '80%'   }"
+      [duration]="300"
+      [delay]="isFirstVisit ? 1000 : 700"
+    ></div> -->
   </div>
 </section>
-<section class="about-us-section-wrapper main-dark-bg w-100">
+<!-- TODO: old section  -->
+<!-- <section class="about-us-section-wrapper main-dark-bg w-100">
   <div class="about-us-top-section d-flex">
     <div class="w-60">
       <h2 class="about-us-section-header mb-3">
@@ -83,7 +108,7 @@
         an inner longing to feel part of
         something bigger than ourselves.
       </p>
-      <!-- TODO: reduce size of this img (250kb now) -->
+      TODO: reduce size of this img (250kb now)
       <img src="../../../assets/images/img/cesar-millan.png" alt="Cesar Millan" role="img" class="my-2">
       <br>
       <span class="fw-bold">Cesar Millan</span>
@@ -91,8 +116,133 @@
       <span class="opacity-50">Dog whisperer</span>
     </div>
   </div>
+</section> -->
+<section class="about-us-section-wrapper-new viewport-height">
+  <div class="container about-us">
+    <div class="row">
+      <h2 class="section-header mb-3">
+        What is <span class="orange-text">House of dogs</span>?
+      </h2>
+      <p 
+        appear 
+        [hide]="{'opacity': '0', 'transform': 'translateY(20px)'}" 
+        [show]="{'opacity': '1', 'transform': 'translateY(0px)' }" 
+        [duration]="500"
+        [threshold]="0.8"
+      >
+        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
+        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
+        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
+        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
+        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
+        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
+      </p>  
+    </div>
+  </div>
+  <div class="container about-us-mission">
+    <div class="row justify-content-center gap-3">
+      <div class="mission-item col-xl-3 col-md-6 position-relative" 
+        appear 
+        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
+        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
+        [duration]="500"
+        [delay]="100"
+      >
+        <mat-icon svgIcon="dog-happy"></mat-icon>
+        <span class="fw-bold">Dog life</span>
+        <span class="opacity-50 d-block">Improving life of our</span>
+        <span class="dark-text d-block"> beloved ones</span>
+      </div>
+      <div class="mission-item col-xl-3 col-md-6"
+        appear 
+        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
+        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
+        [duration]="500"
+        [delay]="200"
+      >
+        <mat-icon svgIcon="planet"></mat-icon>
+        <span class="fw-bold">Networking</span>
+        <span class="opacity-50 d-block">Connecting dog lovers around the</span>
+        <span class="dark-text d-block"> world</span>
+      </div>
+      <div class="mission-item col-xl-3 col-md-6"
+        appear 
+        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
+        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
+        [duration]="500"
+        [delay]="400"
+      >
+        <mat-icon svgIcon="book"></mat-icon>
+        <span class="fw-bold">Knowledge</span>
+        <span class="opacity-50 d-block">Spreading knowledge about</span>
+        <div class="dark-text d-block"> dogs</div>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="categories-section-wrapper container-fluid d-flex align-items-center justify-content-center">
+<section class="how-it-works-section">
+  <div class="container-fluid">
+    <h2 class="section-header mb-3">
+      How it <span class="orange-text">works</span>?
+    </h2>
+    <ol class="row px-lg-5 px-md-4 px-3">
+      <div class="col-md-6 col-sm-12 col-circle left">
+        <li> 
+          <div class="cover-wrapper">
+            <div class="cover" appear [hide]="{'transform': 'translateY(0px)' }" [show]="{'transform': 'translateY(-240px)'}" [threshold]="1" [duration]="1200"></div>
+          </div>
+          <div class="icon"><mat-icon>search</mat-icon></div>
+          <div class="title">Step 1</div>
+          <div class="descr"><b class="orange-text">You</b> find the course.</div>
+        </li>
+      </div>
+      <div class="col-md-6 col-sm-12 col-text" appear [hide]="{'opacity': 0, 'transform': 'translateX(20px)'}" [show]="{'opacity': 1, 'transform': 'translateX(0)' }" [threshold]="1" [duration]="300">
+        <div class="inner-wrapper w-70 h-60">Take a look around and find product that best suits your needs!</div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-text" appear [hide]="{'opacity': 0, 'transform': 'translateX(-20px)'}" [show]="{'opacity': 1, 'transform': 'translateX(0)' }" [threshold]="1" [duration]="300">
+        <div class="inner-wrapper w-70 h-60">Order the product so that we know you are 100% sure!</div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-circle right">
+        <li>
+          <div class="cover-wrapper">
+            <div class="cover" appear [hide]="{'opacity': 1}" [show]="{'transform': 'translateY(-240px)'}" [threshold]="1" [duration]="1200"></div>
+          </div>
+          <div class="icon"><mat-icon>payment</mat-icon></div>
+          <div class="title">Step 2</div>
+          <div class="descr"><b class="orange-text">You</b> order it.</div>
+        </li>
+      </div>
+      <div class="col-md-6 col-sm-12 col-circle left">
+        <li>
+          <div class="cover-wrapper">
+            <div class="cover" appear [hide]="{'opacity': 1}" [show]="{'transform': 'translateY(-240px)'}" [threshold]="1" [duration]="1200"></div>
+          </div>
+          <div class="icon"><mat-icon>local_shipping</mat-icon></div>
+          <div class="title">Step 3</div>
+          <div class="descr"><b class="orange-text">We</b> ship it to you.</div>
+      </li>
+      </div>
+      <div class="col-md-6 col-sm-12 col-text" appear [hide]="{'opacity': 0, 'transform': 'translateX(20px)'}" [show]="{'opacity': 1, 'transform': 'translateX(0)'   }" [threshold]="1" [duration]="300">
+        <div class="inner-wrapper w-70 h-60">From now we take on. Take rest and wait for product to arrive!</div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-text" appear [hide]="{'opacity': 0, 'transform': 'translateX(-20px)'}" [show]="{'opacity': 1, 'transform': 'translateX(0)'   }" [threshold]="1" [duration]="300">
+        <div class="inner-wrapper w-70 h-60">Have any questions? Write us a message! 24/7 support available.</div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-circle right">
+        <li>
+          <div class="cover-wrapper">
+            <div class="cover" appear [hide]="{'opacity': 1}" [show]="{'transform': 'translateY(-240px)'}" [threshold]="1" [duration]="1200"></div>
+          </div>
+          <div class="icon"><mat-icon>record_voice_over</mat-icon></div>
+          <div class="title">Step 4</div>
+          <div class="descr"><b class="orange-text">We</b> provide support.</div>
+        </li>
+      </div>
+    </ol>
+  </div>
+</section>
+<!-- TODO: disabled -->
+<!-- <section class="categories-section-wrapper container-fluid d-flex align-items-center justify-content-center">
   <div class="categories-heading-wrapper absolute-center light-orange-bg rounded">
     <h2>Categories</h2>
   </div>
@@ -103,7 +253,7 @@
       [text]="product.name"
     ></app-category-selector>
   </div>
-</section>
+</section> -->
 <!-- <div>
   <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@house_of_dogs_tiktok/video/7190852387026767109" data-video-id="7190852387026767109" style="max-width: 605px;min-width: 325px;" > <section> <a target="_blank" title="@house_of_dogs_tiktok" href="https://www.tiktok.com/@house_of_dogs_tiktok?refer=embed">@house_of_dogs_tiktok</a> She thought glass doors were closed 😍 <a title="retriever" target="_blank" href="https://www.tiktok.com/tag/retriever?refer=embed">#retriever</a> <a title="goldenretriever" target="_blank" href="https://www.tiktok.com/tag/goldenretriever?refer=embed">#goldenretriever</a> <a title="goldenretrieverpup" target="_blank" href="https://www.tiktok.com/tag/goldenretrieverpup?refer=embed">#goldenretrieverpup</a> <a title="goldenretrieverfunny" target="_blank" href="https://www.tiktok.com/tag/goldenretrieverfunny?refer=embed">#goldenretrieverfunny</a> <a title="goldenretrievertiktok" target="_blank" href="https://www.tiktok.com/tag/goldenretrievertiktok?refer=embed">#goldenretrievertiktok</a> <a target="_blank" title="♬ original sound - house_of_dogs_tiktok" href="https://www.tiktok.com/music/original-sound-7190852371434441477?refer=embed">♬ original sound - house_of_dogs_tiktok</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
 </div>

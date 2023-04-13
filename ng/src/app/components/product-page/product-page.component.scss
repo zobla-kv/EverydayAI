@@ -67,99 +67,6 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
   }
 }
 
-// TODO: choose one
-// for approach one (classic)
-.product-buying-steps {
-  height: 100px;
-  color: $main-dark-bg-color;
-
-  .mat-icon { color: $main-dark-bg-color; }
-  .mat-icon:not(.next-step-icon) { transform: scale(2.5); }
-  .mat-icon.next-step-icon { transform: scale(3, 3); }
-
-  svg { vertical-align: baseline; }
-
-  .buying-step {
-    margin: 0 3rem;
-    width: 150px;
-  }
-
-  span {
-    position: relative;
-    top: 13px;
-  }
-}
-
-.product-buying-steps-2 {
-
-  ol {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    list-style: none;
-    counter-reset: stepnr;
-  }
-  
-  ol li {
-    counter-increment: stepnr;
-    width: 15rem;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 3.5rem;
-    position: relative;
-
-    &::before,
-    &::after {
-      inset: 0;
-      position: absolute;
-      border-radius: 50%;
-      border: 25px solid $main-dark-bg-color;
-      line-height: 1.1;
-    }
-
-    &::before {
-      content: counter(stepnr);
-      color: $main-orange-bg-color;
-      padding-top: 0.5rem;
-      padding-left: 8.5rem;
-      font-size: 9rem;
-      font-weight: 700;
-      overflow: hidden;
-      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
-      // TODO: check this (remove rings and number), also comment out drop shadow below
-      // display: none;
-    }
-
-    &::after {
-      content: "";
-      // TODO: choose one
-      // without blur
-      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
-      // with blur
-      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(5px);
-      // with orange
-      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem $main-orange-bg-color) blur(0px);
-    }
-
-    &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
-  }
-  
-  ol li > * { width: 7.5rem; }
-  ol li .icon { 
-    text-align: center; 
-    transform: scale(1.5); 
-    position: relative; 
-    left: -12px; 
-    top: 5px;
-  }
-  ol li .title { font-size: 2rem; font-weight: 500; }
-  ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
-
-}
-
 .product-list-wrapper {
 
   & > .container { max-width: 1000px; }
@@ -543,7 +450,6 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
-  .product-buying-steps .buying-step { margin: 0 2rem; }
   .product-list-wrapper { 
     .single-product {
       max-width: 260px;
