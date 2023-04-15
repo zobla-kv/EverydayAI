@@ -219,6 +219,11 @@ section .section-header {
 
 .how-it-works-section {
   margin-top: 3rem;
+  background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0)), url('../../../assets/images/img/mountain.jpg');
+  // background-image: url('../../../assets/images/img/mountain.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 
   .container-fluid { max-width: 1000px; }
 
@@ -340,6 +345,19 @@ section .section-header {
   ol li .title { font-size: 2rem; font-weight: 500; }
   ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
 
+}
+
+.big-img-wrapper {
+  margin-top: 3rem;
+  // border: 1px solid;
+  height: 600px;
+  background-color: $main-orange-bg-color;
+  // TODO: change for prod
+  // background-image: url('../../../assets/images/img/mountain.jpg');
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-attachment: fixed;
+  // background-size: 7000px;
 }
 
 /* MEDIA QUERIES */
