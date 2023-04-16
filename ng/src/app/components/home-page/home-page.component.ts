@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import {
   ProductCategory
@@ -36,10 +35,8 @@ export class HomePageComponent implements AfterViewInit {
     private _el: ElementRef
   ) {
     // NOTE: is loaded from another route
-    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);  
+    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
-
-  observable: Observable<any>
 
 
   ngAfterViewInit() {
@@ -56,24 +53,6 @@ export class HomePageComponent implements AfterViewInit {
     aboutUsSection.style.minHeight = aboutUsSection.offsetHeight + 'px';
     // *******************
 
-  }
-
-  // TODO: remove if not used
-  initializeObservers() {
-    let count = 0;
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        // if (entry.isIntersecting && entry.intersectionRatio >= 0) {
-        if (entry.isIntersecting) {
-          // this.handleEnteredViewport(this.cover.nativeElement);
-        } else {
-          // count > 0 && this.handleLeftViewport(this.cover.nativeElement);
-          count++;
-        }
-      });
-    }, { threshold: 0 });
-
-    // observer.observe(this.cover.nativeElement);
   }
 
 }

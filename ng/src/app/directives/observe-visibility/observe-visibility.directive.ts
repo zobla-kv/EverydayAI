@@ -2,8 +2,8 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, O
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { Subject, first } from 'rxjs';
 
-import { 
-  UtilService 
+import {
+  UtilService
 } from '@app/services';
 
 // TODO: clear unused variables
@@ -20,9 +20,9 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   @Input('hide') hideStyles: any = { 'opacity': '0' };
   // object holding show styles
   @Input('show') showStyles: any = { 'opacity': '1' };
-  // show animation duration 
+  // show animation duration
   @Input('duration') duration: number = 1000;
-  // show animation delay 
+  // show animation delay
   @Input('delay') delay: number = 0;
   // what percentage should be visible before triggering
   @Input('threshold') threshold: number = 0.3;
@@ -42,10 +42,10 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // intersection observer
   private _observer: IntersectionObserver | null;
-  
-  // intersection trigger 
+
+  // intersection trigger
   private _intersect$ = new Subject<void>();
-  
+
   constructor(
     private _element: ElementRef,
     private _renderer: Renderer2,
@@ -63,13 +63,14 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // start observing
   startObserving() {
+    if (this.appearImmediately) {
+      this.animation.play();
+      return;
+    }
+
     if (!this.isFirstVisit) {
-      if (this.appearImmediately) {
-        this.animation.play();
-        return;
-      }
       // setTimeout to skip landing image load layout shift (flick)
-      // because this would detect below elements 
+      // because this would detect below elements
       setTimeout(() => this._observer?.observe(this._element.nativeElement), 100)
       return;
     }
@@ -110,12 +111,12 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       rootMargin: this.rootMargin,
       threshold: this.threshold,
     };
-    
+
     this._observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= this.threshold) {
-          this._intersect$.next();  
-        } 
+          this._intersect$.next();
+        }
       });
     }, options);
   }
