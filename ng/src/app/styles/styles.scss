@@ -22,7 +22,6 @@ body {
   min-height: 100vh;
   margin-top: $header-height;
   position: relative;
-  padding: 2rem;
 }
 
 img {
@@ -40,7 +39,7 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 
 /* general */
 // TODO: check zoom out
-.viewport-height { min-height: $viewport-height-without-header; } 
+.viewport-height { min-height: $viewport-height-without-header; }
 
 .w-10 { width: 10% !important; }
 .w-20 { width: 20% !important; }
@@ -161,8 +160,8 @@ header,
 *:has(> mat-spinner) { user-select: none !important; cursor: default !important; }
 .mat-icon { color: $orange-text; }
 .mat-icon svg path { fill: $orange-text; }
-.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic { 
-  stroke: $main-orange-bg-color !important; 
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: $main-orange-bg-color !important;
 }
 
 .mat-mdc-paginator {
@@ -170,8 +169,8 @@ header,
   border-radius: 8px;
 }
 
-.mdc-snackbar { 
-  margin-top: 130px !important; 
+.mdc-snackbar {
+  margin-top: 130px !important;
 
   .mdc-snackbar__surface {
     padding-right: 0 !important;
@@ -184,9 +183,9 @@ header,
       border-radius: 4px !important;
       padding-left: 0;
 
-      .mat-icon { 
-        position: relative; 
-        left: 6px; 
+      .mat-icon {
+        position: relative;
+        left: 6px;
       }
     }
   }
@@ -229,6 +228,7 @@ input.ng-invalid.ng-touched,
 // bigger than 976px
 @media only screen and (min-width: 976px) {
   // TODO: is this default? no need?
+  .page-wrapper { padding: 2rem; }
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {

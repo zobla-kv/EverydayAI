@@ -41,7 +41,7 @@ export class ProductPageComponent implements OnInit {
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
-  
+
   // list containing all products
   fullProductList: Product[];
 
@@ -86,10 +86,11 @@ export class ProductPageComponent implements OnInit {
       this.fetchProducts();
     } else {
       // fires on initial load after custom user object is stored
+      // TODO: remove this. variable and unsubscribe if pipe(first()) is enough
       this.customUserState$ = this._authService.userState$
       .pipe(first())
       .subscribe(() => this.fetchProducts());
-    }   
+    }
 
   }
 
@@ -97,8 +98,8 @@ export class ProductPageComponent implements OnInit {
     this._firebaseService.getProducts()
     .pipe(
       // if logged in attach front end properties (action spinners, isInCart etc.)
-      map((products: Product[]) => this._authService.getUser() ? 
-        products.map(product => this.addFrontendProperties(product)) : 
+      map((products: Product[]) => this._authService.getUser() ?
+        products.map(product => this.addFrontendProperties(product)) :
         products
       )
     )
@@ -128,12 +129,12 @@ export class ProductPageComponent implements OnInit {
 
   // show items depending on page
   updatePageInfo() {
-    // PAGINATION FORMULA 
+    // PAGINATION FORMULA
     // from: currentPageIndex * itemsPerPage
     // to:   (currentPageIndex + 1) * itemsPerPage - 1
     this.productList = this._utilService.getFromRange(
-      this.fullProductList, 
-      this.paginator.pageIndex * this.pageSize, 
+      this.fullProductList,
+      this.paginator.pageIndex * this.pageSize,
       (this.paginator.pageIndex + 1) * this.pageSize - 1
     );
     this.updatePageNumber();

@@ -3,7 +3,7 @@
 .shopping-cart-outer-wrapper {
   background-color: $main-dark-bg-color;
 
-  .custom-width { max-width: 900px; } 
+  .custom-width { max-width: 900px; }
 
   .shopping-card-inner-wrapper {
     background-color: $main-orange-bg-color;
@@ -11,6 +11,20 @@
     .cart-items-column-wrapper {
       // position: relative;
       // left: 20px;
+      .cart-items-wrapper {
+
+
+        .cart-item {
+          background-color: inherit;
+          border: none;
+          &:hover {
+            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.2s
+          }
+
+          .icon-delete { color: inherit; }
+        }
+      }
     }
 
     .payment-column-wrapper {
@@ -45,7 +59,7 @@
 /* MEDIA QUERIES */
 // bigger than 976px
 @media only screen and (max-width: 1200px) {
-    
+
 }
 // bigger than 976px
 @media only screen and (min-width: 976px) {
@@ -55,7 +69,7 @@
 @media only screen and (max-width: 992px) {
   .shopping-cart-outer-wrapper .shopping-card-inner-wrapper {
     .cart-items-column-wrapper,
-    .payment-column-wrapper { left: 0; }    
+    .payment-column-wrapper { left: 0; }
   }
 }
 // smaller than 976px
@@ -64,5 +78,5 @@
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  
+
 }
