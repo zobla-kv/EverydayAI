@@ -11,18 +11,31 @@
     .cart-items-column-wrapper {
       // position: relative;
       // left: 20px;
-      .cart-items-wrapper {
+      mat-spinner { top: 120px; }
+      .mat-mdc-paginator {
+        color: white;
+        font-weight: 500;
+        &::ng-deep button .mat-mdc-paginator-icon  { fill: white; }
+      }
 
+      .cart-items-wrapper {
+        height: 460px;
 
         .cart-item {
           background-color: inherit;
           border: none;
-          &:hover {
+          transition: all 1s;
+
+          &:hover,
+          &.hovered {
             box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.2s
+            transition: all 1s
           }
 
-          .icon-delete { color: inherit; }
+          .vr { min-height: 12px; margin: auto 2px; }
+          .icon-delete { color: inherit; cursor: pointer; }
+          mat-spinner { top: 0; }
+
         }
       }
     }
@@ -35,6 +48,30 @@
         border: 0;
         border-radius: 8px;
         box-shadow: $shadow-lifted;
+
+        .secure-payment-wrapper {
+          padding: 0.5rem;
+          background-color: rgb(6, 104, 6);
+          border-radius: 8px;
+          display: flex;
+          column-gap: 4px;
+
+          .secure-text-wrapper {
+            line-height: 18px;
+            margin: auto;
+
+            span { 
+              font-family: $secure-payment-font-family;
+              color: #2fe8c9;
+              font-weight: bold;
+              &.secure { font-size: 1.125rem; }
+              &.ssl { font-size: 0.875rem; }
+            }
+
+          }
+
+        }
+
       }
     }
   }

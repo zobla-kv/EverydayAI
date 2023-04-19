@@ -73,6 +73,9 @@ export class ProductPageComponent implements OnInit {
     private _toast: ToastService,
     private _router: Router
   ) {
+    // TODO: move variable to util if one can be shared
+    // create service with shared variables?
+    // this variable must be called in construcor, onInit is too late
     this.isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
@@ -87,9 +90,7 @@ export class ProductPageComponent implements OnInit {
     } else {
       // fires on initial load after custom user object is stored
       // TODO: remove this. variable and unsubscribe if pipe(first()) is enough
-      this.customUserState$ = this._authService.userState$
-      .pipe(first())
-      .subscribe(() => this.fetchProducts());
+      this.customUserState$ = this._authService.userState$.pipe(first()).subscribe(() => this.fetchProducts());
     }
 
   }
@@ -160,7 +161,7 @@ export class ProductPageComponent implements OnInit {
 
   // update page after hide animation is complete
   afterChangePageAnimation(ev: AnimationEvent) {
-    if (ev.fromState === 'show') {
+    if (ev.fromState === 'show' && ev.toState !== 'void') {
       this.updatePageInfo();
     }
   }
@@ -226,6 +227,7 @@ export class ProductPageComponent implements OnInit {
   // after product was added/removed to cart
   async handleCartActionSucceeded(product: Product, action: string) {
     // this can trigger catch block, for that 'await' is needed
+    // TODO: move updateUser to firebaseService
     await this._authService.updateUser();
     if (action === 'add') {
       product.isInCart = true;

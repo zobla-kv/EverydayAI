@@ -8,7 +8,7 @@
 
               <div class="col-lg-7 cart-items-column-wrapper">
                 <h5 class="mb-3">
-                  <a routerLink="/products" class="d-flex gap-1 dark-text text-decoration-underline">
+                  <a routerLink="/products" class="d-inline-flex gap-1 dark-text text-decoration-underline">
                     <mat-icon class="rotate-180">arrow_right_alt</mat-icon>
                     <span>Continue shopping</span>
                   </a>
@@ -18,7 +18,13 @@
                 <div class="d-flex justify-content-flex-start align-items-center mb-4">
                   <div>
                     <p class="mb-1">Shopping cart</p>
-                    <p class="mb-0">You have 4 items in your cart</p>
+                    <span class="mb-0" *ngIf="cart">
+                      You have 
+                      {{ cart.items.length }}
+                      <p class="d-inline" *ngIf="cart.items.length == 1">item</p>
+                      <p class="d-inline" *ngIf="cart.items.length > 1" >items</p>
+                      in your cart
+                    </span>
                   </div>
                   <!-- <div>
                     <p class="mb-0"><span class="text-muted">Sort by:</span>
@@ -30,32 +36,75 @@
                   </div> -->
                 </div>
 
-                <div class="cart-items-wrapper">
-                  <div class="card mb-3 cart-item">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                          <div>
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                              class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;"
-                            >
+                <mat-spinner
+                  *ngIf="!cart; else noSpinner"
+                  diameter="50"
+                  strokeWidth="5"
+                  class="reverse absolute-center"
+                ></mat-spinner>
+
+                <ng-template #noSpinner>
+                  <div class="cart-items-wrapper">
+                    <div class="card mb-3 cart-item" *ngFor="let item of paginatedCart" [ngClass]="{'hovered' : item.spinners?.deleteSpinner}">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <div class="d-flex flex-row align-items-center">
+                            <div>
+                              <img
+                                src="{{ item.imgPath }}"
+                                class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;"
+                              >
+                            </div>
+                            <div class="ms-3">
+                              <h5>{{ item.title }}</h5>
+                              <div class="d-flex gap-1">
+                                <p class="small mb-0">{{ item.information.downloadSize}}gb</p>
+                                <div class="vr"></div>
+                                <p class="small mb-0">{{ item.information.videoDuration}}h</p>
+                                <div class="vr"></div>
+                                <p class="small mb-0">{{ item.information.difficulty}}</p>
+                              </div>
+                            </div>
                           </div>
-                          <div class="ms-3">
-                            <h5>Iphone 11 pro</h5>
-                            <p class="small mb-0">256GB, Navy Blue</p>
+                          <div class="d-flex flex-row align-items-center gap-3">
+                            <div>
+                              <!-- // TODO: add original price next to discounted -->
+                              <h5 class="mb-0">
+                                {{ item.information.discount ? 
+                                  item.information.discount.discountedPrice : item.information.price }}&nbsp;$
+                              </h5>
+                            </div>
+                            <mat-icon 
+                              *ngIf="!item.spinners?.deleteSpinner"
+                              class="icon-delete" 
+                              (click)="removeFromCart($event, item.id)"
+                            >delete_forever
+                            </mat-icon>
+                            <mat-spinner
+                              *ngIf="item.spinners?.deleteSpinner"
+                              diameter="25"
+                              strokeWidth="4"
+                              class="reverse"
+                            ></mat-spinner>
                           </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center gap-3">
-                          <div>
-                            <h5 class="mb-0">$900</h5>
-                          </div>
-                          <mat-icon class="icon-delete">delete_forever</mat-icon>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+
+                  <mat-paginator
+                    class="mt-4"
+                    #paginator
+                    *ngIf="cart.items.length > pageSize"
+                    [length]="cart.items.length"
+                    pageSize="{{ pageSize }}"
+                    hidePageSize="true"
+                    showFirstLastButtons="true"
+                    (page)="changePage()"
+                  ></mat-paginator>
+                    
+                </ng-template>
+    
 
               </div>
 
@@ -65,8 +114,20 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                       <h5 class="mb-0">Card details</h5>
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
+                      <div class="secure-payment-wrapper">
+                        <img src="../../../assets/images/img/secure.png"
+                          class="img-fluid rounded-3" style="width: 45px;" alt="Secure payment"
+                        >
+                        <div class="secure-text-wrapper">
+                          <span class="d-block secure">100% secure</span>
+                          <span class="d-block ssl">SSL Encryption</span>
+                        </div>
+                      </div>
+
+                      <!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar"
+                      > -->
+
                     </div>
 
                     <p class="small mb-2">Card type</p>
@@ -99,9 +160,9 @@
                       </div>
 
                       <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                        <input type="text" id="typeText1" class="form-control form-control-lg" siez="17"
                           placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-                        <label class="form-label" for="typeText">Card Number</label>
+                        <label class="form-label" for="typeText1">Card Number</label>
                       </div>
 
                       <div class="row mb-4">
@@ -114,9 +175,9 @@
                         </div>
                         <div class="col-md-6">
                           <div class="form-outline form-white">
-                            <input type="password" id="typeText" class="form-control form-control-lg"
+                            <input type="password" id="typeText2" class="form-control form-control-lg"
                               placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
-                            <label class="form-label" for="typeText">Cvv</label>
+                            <label class="form-label" for="typeText2">Cvv</label>
                           </div>
                         </div>
                       </div>

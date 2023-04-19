@@ -19,6 +19,7 @@
   mat-spinner {
     overflow: visible;
     position: fixed;
+    // TODO: add 'reverse' css class and remove this
     .mdc-circular-progress__indeterminate-circle-graphic { 
       stroke: $main-dark-bg-color !important; 
     }

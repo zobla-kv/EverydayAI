@@ -194,7 +194,7 @@ export class FirebaseService {
     })
   }
 
-  // add single product to cart
+  // remove single product from cart
   removeProductFromCart(product: Product): Promise<void> {
     // TODO: below line will require change if getUser is to become async
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
