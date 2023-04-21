@@ -41,7 +41,7 @@ export class HomePageComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // *** TOP SECTION ***
-    const landingSection: HTMLElement = this._el.nativeElement.querySelector('.top-section-wrapper');
+    const landingSection: HTMLElement = this._el.nativeElement.querySelector('.top-section-wrapper-new');
     // TODO: landing section fixes (zoom out and dev tools)
     landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
     landingSection.style.minHeight = landingSection.offsetHeight + 'px';
@@ -49,7 +49,7 @@ export class HomePageComponent implements AfterViewInit {
     // *** ABOUT US SECTION ***
     // NOTE: fix for zoom out - required for .viewport-height when dynamic (responsive)
     // first set to 100vh then change to same size in pixels
-    const aboutUsSection: HTMLElement = this._el.nativeElement.querySelector('.about-us-section-wrapper-new');
+    const aboutUsSection: HTMLElement = this._el.nativeElement.querySelector('.about-us-section-wrapper');
     aboutUsSection.style.minHeight = aboutUsSection.offsetHeight + 'px';
     // *******************
 

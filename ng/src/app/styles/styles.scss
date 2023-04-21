@@ -15,6 +15,8 @@ body {
   .header-wrapper, .page-wrapper, .footer-wrapper {
     max-width: 1600px;
     margin: 0 auto;
+    // TODO: check without it
+    overflow: hidden;
   }
 }
 
@@ -248,9 +250,7 @@ input.ng-invalid.ng-touched,
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
-  p { font-size: 20px !important; }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  p { font-size: 16px !important; }
 }

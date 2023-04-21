@@ -2,95 +2,229 @@
 
 section .section-header {
   text-align: center;
-  font-size: 45px;
+  font-size: 50px;
   font-weight: 600;
   line-height: 1.5em;
+
+  border-bottom: 2px solid $main-orange-bg-color;
+  width: fit-content;
+  margin: auto;
 }
 
-.top-section-wrapper {
-  // TODO: choose one
-  background-color: $light-orange-bg-color;
-  background-color: $main-dark-bg-color;
-  // background-color: $main-orange-bg-color;
+.section-header.subtext {
+  width: 400px;
+}
 
-  // TODO: landing section always span full height on load
-  // messes responsive
-  // added viewport-height css class, change to this later
-  height: $viewport-height-without-header;
-  padding-bottom: 4rem;
+.top-section-wrapper-new {
+  // - padding
+  min-height: calc($viewport-height-without-header - 4rem);
+  // forces child to take 100% height
+  height: 1px;
 
-  .container-fluid {
-    position: relative;
+  .landing-text-wrapper {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: 100%;
-    color: black;
-    padding: 1rem 0;
+    padding-right: 1rem;
 
-    // TODO: remove later
-    border: 0;
-
-    .image-section {
-      height: 100%;
-      z-index: 3;
-      // TODO: image flash on refresh, set min height but that causes responsive problem
-      // TODO: also causes intersection observer to fire earlier
-      img { height: 100%; }
+    h1 {
+      color: white;
+      font-size: 100px;
+      line-height: 100px;
+      font-weight: bold;
     }
 
-    .text-section {
-      z-index: 2;
-      padding: 1rem 1rem 0 2rem;
-
-      .btn-reverse {
-        display: flex;
-        padding: 0.5rem 1rem;
-        font-size: 16px;
-      }
-      .btn-reverse > .mat-icon {
-          width: 9px;
-          height: 9px;
-          border-right: 2px solid white;
-          border-bottom: 2px solid white;
-          transform: rotate(-45deg);
-          margin: 0 0.5rem;
-          transition: all .3s ease;
-      }
-      .btn-reverse > .mat-icon::before {
-          display: block;
-          background-color: white;
-          width: 10px;
-          transform-origin: bottom right;
-          height: 2px;
-          position: absolute;
-          opacity: 0;
-          bottom: -1px;
-          transform: rotate(45deg);
-          transition: all .3s ease;
-          content: "";
-          right: 0;
-      }
-      .btn-reverse:hover {
-        background-color: $main-dark-bg-color;
-        color: white;
-      }
-      .btn-reverse:hover > .mat-icon {
-          transform: rotate(-45deg) translate(4px, 4px);
-          // TODO: remove later
-          // border-color: black;
-      }
-      .btn-reverse:hover > .mat-icon::before {
-          opacity: 1;
-          width: 20px;
-      }
-    }
-
-    .square {
-      position: absolute;
-      width: 80%;
-      right: 0;
+    p {
+      margin-top: 2rem;
+      color: white;
+      line-height: 30px;
+      font-weight: 500;
+      font-size: 20px;
       z-index: 1;
+      transition: 1s;
+    }
+
+    .btn-reverse {
+      display: flex;
+      align-self: flex-end;
+      position: relative;
+      padding: 0.5rem 1rem;
+      font-size: 16px;
+      left: 40px;
+
+      .animation-filler {
+        position: absolute;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: $main-orange-bg-color;
+        transition: 0.8s;
+        border: 1px solid white;
+        // check it out
+        // border-radius: inherit;
+      }
+
+      &:hover .animation-filler {
+        transition: 0.8s;
+        border: 1px solid $main-orange-bg-color;
+        width: 100%;
+      }
+    }
+    .btn-reverse > .mat-icon {
+        width: 9px;
+        height: 9px;
+        border-right: 2px solid $main-orange-bg-color;
+        border-bottom: 2px solid $main-orange-bg-color;
+        transform: rotate(-45deg);
+        margin: 0 0.5rem;
+        transition: all .3s ease;
+        position: relative;
+        top: 2px;
+    }
+    .btn-reverse > .mat-icon::before {
+        display: block;
+        background-color: $main-dark-bg-color;
+        width: 10px;
+        transform-origin: bottom right;
+        height: 2px;
+        position: absolute;
+        opacity: 0;
+        bottom: -1px;
+        transform: rotate(45deg);
+        transition: all .3s ease;
+        content: "";
+        right: 0;
+    }
+    .btn-reverse:hover { background-color: transparent; }
+    .btn-reverse:hover p { color: $dark-text;  transition: 1s; }
+    .btn-reverse:hover > .mat-icon {
+        transform: rotate(-45deg) translate(4px, 4px);
+        border-color: $main-dark-bg-color;
+    }
+    .btn-reverse:hover > .mat-icon::before {
+        opacity: 1;
+        width: 20px;
     }
   }
+
+  .landing-image-wrapper-new {
+    width: 500px;
+    height: 400px;
+    margin-left: 8rem;
+
+    img {
+      transform: scale(0.9);
+      position: relative;
+      top: -90px;
+      left: -20px;
+    }
+  }
+
+  // TODO: needed for responsive on some resolution? cleanup if not
+  // .landing-image-wrapper {
+  //   min-width: 200px; max-width: 360px;
+  //   min-height: 200px; max-height: 360px;
+  //   margin-left: 8rem;
+    
+  //   img {
+  //     transform: scale(1.3);
+  //     position: relative;
+  //     top: -50px;
+
+  //     // transform: scale(0.9);
+  //     // top: -110px;
+  //     // left: -20px;
+  //   }
+  // }
 }
+
+// TODO: OLD SCTION
+// .top-section-wrapper {
+//   // TODO: choose one
+//   background-color: $light-orange-bg-color;
+//   background-color: $main-dark-bg-color;
+//   // background-color: $main-orange-bg-color;
+
+//   // TODO: landing section always span full height on load
+//   // messes responsive
+//   // added viewport-height css class, change to this later
+//   height: $viewport-height-without-header;
+//   padding-bottom: 4rem;
+
+//   .container-fluid {
+//     position: relative;
+//     height: 100%;
+//     color: black;
+//     padding: 1rem 0;
+
+//     // TODO: remove later
+//     border: 0;
+
+//     .image-section {
+//       height: 100%;
+//       z-index: 3;
+//       // TODO: image flash on refresh, set min height but that causes responsive problem
+//       // TODO: also causes intersection observer to fire earlier
+//       img { height: 100%; }
+//     }
+
+//     .text-section {
+//       z-index: 2;
+//       padding: 1rem 1rem 0 2rem;
+
+//       .btn-reverse {
+//         display: flex;
+//         padding: 0.5rem 1rem;
+//         font-size: 16px;
+//       }
+//       .btn-reverse > .mat-icon {
+//           width: 9px;
+//           height: 9px;
+//           border-right: 2px solid white;
+//           border-bottom: 2px solid white;
+//           transform: rotate(-45deg);
+//           margin: 0 0.5rem;
+//           transition: all .3s ease;
+//       }
+//       .btn-reverse > .mat-icon::before {
+//           display: block;
+//           background-color: white;
+//           width: 10px;
+//           transform-origin: bottom right;
+//           height: 2px;
+//           position: absolute;
+//           opacity: 0;
+//           bottom: -1px;
+//           transform: rotate(45deg);
+//           transition: all .3s ease;
+//           content: "";
+//           right: 0;
+//       }
+//       .btn-reverse:hover {
+//         background-color: $main-dark-bg-color;
+//         color: white;
+//       }
+//       .btn-reverse:hover > .mat-icon {
+//           transform: rotate(-45deg) translate(4px, 4px);
+//           // TODO: remove later
+//           // border-color: black;
+//       }
+//       .btn-reverse:hover > .mat-icon::before {
+//           opacity: 1;
+//           width: 20px;
+//       }
+//     }
+
+//     .square {
+//       position: absolute;
+//       width: 80%;
+//       right: 0;
+//       z-index: 1;
+//     }
+//   }
+// }
 
 .categories-section-wrapper {
   position: relative;
@@ -118,103 +252,168 @@ section .section-header {
   }
 }
 
-.about-us-section-wrapper {
-  color: white;
+.about-us-section-wrapper-new {
+  margin-top: 6rem;
 
-  // TODO: overflows on small screen, but because of below padding
-  hr { width: 300px; }
+  $col-img-width: 500px;
 
-  .about-us-top-section {
-    // TODO: not good for responsive
-    padding: 1.125rem 6rem;
+  .col-img {
+    // border: 1px solid;
+    width: $col-img-width;
+  }
 
-    .about-us-section-header {
+  .col-text {
+    // border: 1px solid;
+    width: calc(100% - $col-img-width);
+    width: 600px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+      font-family: Heebo;
+      font-weight: 700;
       font-size: 45px;
-      font-weight: 600;
-      line-height: 1.5em;
+      line-height: 60px;
+      letter-spacing: 0px;
     }
 
-    .about-us-mission {
-      span { display: block; }
-      .mat-icon {
-        width: 24px;
-        height: 26px;
-        position: relative;
-        right: 2px;
-        & ~ .fw-bold { margin-top: -0.2rem; }
-      }
+    p {
+      margin-top: 2rem;
+      width: 500px;
+      letter-spacing: 1px;
     }
   }
 
-  .about-us-qoute-section {
-    padding: 2rem 6rem 2rem 6rem;
-    border: 1px solid $main-orange-bg-color;
-    box-shadow: $main-orange-bg-color 0px 16px 0px -6px;
-    margin-bottom: 40px;
-    position: relative;
+  .caring-professionals {
+    padding: 4rem 0;
+    img.big { transform: scale(1.1) rotate(12deg); }
+  }
+  .experience {
+    padding: 0 4rem 0 0;
+    margin-top: 5rem;
+    img.big { transform: scale(1.1) rotate(12deg); }
+  }
+  .expectance {
+    margin-top: 5rem;
+    // whole column because here this one has manually set bg color
+    // previous ones images have grey bg
+    .col-img { 
+      background-color: #D2CED0; 
+      transform: scale(1.1) rotate(-12deg);
+    }
+  }
 
-    .mat-icon {
-      top: -20px;
-      width: 60px;
-      height: 40px;
-      background-color: $main-dark-bg-color;
-      border-radius: 8px;
+  .mission-item {
+    margin-top: 4rem;
+    width: 180px;
+    padding: 1rem;
+    background-color: $main-orange-bg-color;
+    box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+
+    //NOTE: Avoid setting ViewEncapsulation.None just for this one property
+    &::ng-deep mat-icon svg path { fill: $main-dark-bg-color; }
+
+    mat-icon {
+      height: 50px;
+      transform: scale(2);
+      margin: auto;
+      font-size: 50px;
+      display: flex;
+      margin-bottom: 12px;
     }
-    p {
-      font-size: 24px;
-      line-height: 1.6em;
-      font-weight: 100;
-    }
-    img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
-    & :last-child {
-      position: relative;
-      top: -4px;
-    }
+
+    span { margin: 0 auto; }
   }
 }
 
-.about-us-section-wrapper-new {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
+// TODO: OLD ABOUT US SECTION
+// .about-us-section-wrapper {
+//   display: flex;
+//   flex-direction: column;
+//   text-align: center;
 
-  .about-us { max-width: 960px; }
+//   .about-us { max-width: 960px; }
 
-  .about-us-mission {
-    margin-top: 5rem;
+//   .about-us-mission {
+//     margin-top: 5rem;
 
-    .mission-item {
-      padding: 45px 20px;
-      background-color: $main-orange-bg-color;
-      box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.08);
-      border-radius: 8px;
+//     .mission-item {
+//       padding: 45px 20px;
+//       background-color: $main-orange-bg-color;
+//       box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.08);
+//       border-radius: 8px;
+//       display: flex;
+//       flex-direction: column;
+//       justify-content: center;
+
+//       //NOTE: Avoid setting ViewEncapsulation.None just for this one property
+//       &::ng-deep mat-icon svg path { fill: $main-dark-bg-color; }
+
+//       mat-icon {
+//         height: 50px;
+//         transform: scale(2);
+//         margin: auto;
+//         font-size: 50px;
+//         display: flex;
+//         margin-bottom: 12px;
+//       }
+//     }
+
+//     .mission-item:hover {
+//       box-shadow: 0 0px 2px rgba($main-orange-bg-color, 1);
+//       transition: 0.5s;
+//     }
+//   }
+
+// }
+
+.who-are-you-section {
+  margin-top: 6rem;
+  
+  .col-img {
+    border: 1px solid;
+    min-height: 600px;
+  }
+
+  .col-text {
+    border: 1px solid
+  }
+}
+
+.offer-section {
+  margin-top: 5rem;
+
+  .mission-item {
+    padding: 45px 20px;
+    background-color: $main-orange-bg-color;
+    box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    //NOTE: Avoid setting ViewEncapsulation.None just for this one property
+    &::ng-deep mat-icon svg path { fill: $main-dark-bg-color; }
+
+    mat-icon {
+      height: 50px;
+      transform: scale(2);
+      margin: auto;
+      font-size: 50px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      //NOTE: Avoid setting ViewEncapsulation.None just for this one property
-      &::ng-deep mat-icon svg path { fill: $main-dark-bg-color; }
-
-      mat-icon {
-        height: 50px;
-        transform: scale(2);
-        margin: auto;
-        font-size: 50px;
-        display: flex;
-        margin-bottom: 12px;
-      }
-    }
-
-    .mission-item:hover {
-      box-shadow: 0 0px 2px rgba($main-orange-bg-color, 1);
-      transition: 0.5s;
+      margin-bottom: 12px;
     }
   }
 
+  .mission-item:hover {
+    box-shadow: 0 0px 2px rgba($main-orange-bg-color, 1);
+    transition: 0.5s;
+  }
 }
 
 .how-it-works-section {
@@ -364,29 +563,23 @@ section .section-header {
 // bigger than 1440px
 @media only screen and (min-width: 1440px) {
   // center vh area vertically on large screens
-  .about-us-section-wrapper-new { justify-content: center; }
+  .about-us-section-wrapper { justify-content: center; }
+}
+// smaller than 1200px
+@media only screen and (max-width: 1200px) {
+  .top-section-wrapper-new .landing-image-wrapper-new { margin-left: 3rem; }
 }
 @media only screen and (max-width: 976px) {
   .about-us-top-section {
     flex-direction: column;
     .w-60, .w-40 { width: 100% !important; }
-    .about-us-section-header,
     .about-us-mission { text-align: center; }
     hr { margin: auto; }
   }
-  .about-us-section-wrapper .about-us-qoute-section {
-    padding-left: 4rem;
-    padding-right: 4rem;
-  }
-  .about-us-section-wrapper-new {
+  .about-us-section-wrapper {
     text-align: justify;
   }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  .about-us-section-wrapper .about-us-qoute-section {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    img { width: 48px; height: 48px; }
-  }
 }
