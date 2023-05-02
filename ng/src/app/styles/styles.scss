@@ -24,6 +24,7 @@ body {
   min-height: 100vh;
   margin-top: $header-height;
   position: relative;
+  padding: 2rem;
 }
 
 img {
@@ -68,6 +69,7 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 
 .opaque { opacity: 0; }
 .rotate-180 { transform: rotate(180deg); }
+.absolute-filler { position: absolute; width: 100%; height: 100%; z-index: -1; }
 
 /* alignment */
 .absolute-center {
@@ -88,6 +90,20 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .hr-center { margin: 0 auto; }
 .hr-right { margin: 0 0 0 auto; }
 .hr-left { margin: 0 auto 0 0; }
+
+/* animations */
+.infinite-zoom {
+  animation: infiniteZoom 20s linear infinite;
+}
+@keyframes infiniteZoom {
+  50% {
+    -webkit-transform:scale(1.2);
+    -moz-transform:scale(1.2);
+    -ms-transform:scale(1.2);
+    -o-transform:scale(1.2);
+    transform:scale(1.2);
+  }
+}
 
 /* backgrounds */
 .main-orange-bg { background-color: $main-orange-bg-color; }
@@ -246,7 +262,6 @@ input.ng-invalid.ng-touched,
 /* MEDIA QUERIES */
 // bigger than 976px
 @media only screen and (min-width: 976px) {
-  .page-wrapper { padding: 2rem; }
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {

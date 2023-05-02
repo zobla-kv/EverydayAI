@@ -85,6 +85,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       const target = this._element.nativeElement;
       // console.log('element visible: ', target);
       this.animation.play();
+      this.intersection.emit(this._element.nativeElement);
       // cancel after firing once
       this._observer?.unobserve(target);
     });

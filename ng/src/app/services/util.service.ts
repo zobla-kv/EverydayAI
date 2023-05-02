@@ -132,10 +132,42 @@ appLoaded(): void {
   * Shows 'Something went wrong. Please try again.' toast message.
   *
   * @param object 
-  * @returns object
+  * @returns void
   */
- showDefaultErrorToast(): void {
+  showDefaultErrorToast(): void {
     this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+  }
+
+  /**
+  * Sleep function.
+  *
+  * @param number - milliseconds 
+  * @returns Promise
+  */
+  sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+  * Move elements in array to the right.
+  *
+  * @param Array - array
+  * @returns Array - shifted array
+  */
+  rotateArrayToRight(array: Array<any>): Array<any> {
+    array.unshift(array.pop());
+    return array;
+  }
+
+  /**
+  * Move elements in array to the left.
+  *
+  * @param Array - array
+  * @returns Array - shifted array
+  */
+  rotateArrayToLeft(array: Array<any>): Array<any> {
+    array.push(array.shift());
+    return array;
   }
 
 

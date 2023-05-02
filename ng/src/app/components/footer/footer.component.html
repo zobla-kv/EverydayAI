@@ -1,9 +1,7 @@
-<footer class='footer-wrapper'>
-  <!-- bind to properties of a directive -->
-  <p [appHighlight]="'red'" [highlightColor]="'green'">FOOTER</p>
+<footer class='footer-wrapper' [@show]="show">
+  <a href="https://www.instagram.com/house_of_dogs_ig/" class="text-reset text-decoration-none" target="_blank">
+    <span>Visit us on</span>
+    <img src="../../../assets/images/transparent/instagram-logo.png" alt="house of dogs instagram">
+  </a>
 </footer>
-
-
-<!-- property binding in general, if we pass a string we can omit [] -->
-<!-- <p [appHighlight]="'red'" highlightColor="green">footer works!</p> -->
 

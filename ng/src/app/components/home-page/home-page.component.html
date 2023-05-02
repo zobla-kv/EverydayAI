@@ -1,4 +1,4 @@
-<section class="top-section-wrapper-new">
+<section class="top-section">
   <div class="container-fluid h-100 px-6">
     <div class="row h-100">
       <div class="col-md-5 h-100">
@@ -71,36 +71,8 @@
     </div>
   </div>
 </section>
-<!-- TODO: OLD TOP SECTION -->
-<!-- <section class="top-section-wrapper">
-  <div class="container-fluid flex-center g-0">
-    <div class="image-section w-40">
-      <img 
-        src="../../../assets/images/img/landing-page-image.jpg" 
-        class="img-fluid" 
-        alt="dog-bark-banner" 
-        appear 
-        [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
-        [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
-        [duration]="300"
-        [delay]="isFirstVisit ? 700 : 100"
-      >
-    </div>
-    <div class="text-section w-60" appear [duration]="500" [delay]="isFirstVisit ? 900 : 300">
-      <h2>Your dog won't believe you!</h2>
-      <p>
-        Visit shop and find the product of your dog's needs. Look no furher, we have it all!
-      </p>
-      <button type="button" class="btn-reverse" routerLink="/products">
-        <p class="m-0 btn-text">Take a tour</p>
-        <mat-icon>arrow_forward</mat-icon>
-      </button>
-    </div>
-    <div class="main-orange-bg h-100 square"></div>
-  </div>
-</section> -->
 
-<section class="about-us-section-wrapper-new">
+<section class="about-us-section">
   <h2 class="section-header mb-3">
     What is <span class="orange-text">House of dogs</span>?
   </h2>
@@ -209,6 +181,7 @@
           [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
           [duration]="500"
         >
+          The love of a dog is a pure thing. He gives you a trust which is total. You must not betray it.
           Our mission is to enrich the lives of each and every pet in our care.
           Look how they are looking at you.
         </p>
@@ -220,10 +193,96 @@
   <h2 class="section-header mb-3">
     Who are <span class="orange-text">you</span>? 
   </h2>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-img"></div>
-      <div class="col-text"></div>
+  <div class="container-fluid inner-wrapper">
+    <div class="row justify-content-between position-relative">
+      <div class="line"></div>
+      <div class="col-img">
+        <div class="top-bottom-lines"></div>
+        <div 
+          #carousel
+          class="img-wrapper"
+          appear 
+          [hide]="{'opacity': 0, 'transform': 'translateX(-40px)'}"
+          [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
+          [duration]="400"
+          [threshold]="0.5"
+          (intersection)="setCarousel()"
+        >
+          <img 
+            *ngFor="let img of carouselItems" 
+            #carouselItem
+            class="{{ img.name }}" 
+            src="{{ img.imgSrc }}" 
+            alt="{{ img.name }}"
+          > 
+        </div>
+        <!-- // TODO: ref https://codepen.io/MarkBoots/pen/yLPwvda -->
+        <!-- banner is here, use for something else -->
+        <!-- <div class="banner">
+          <ul>
+            <li>
+              <img src="../../../assets/images/img/cesar-millan.png" class="w-90 h-90 m-auto">
+            </li>
+          </ul>
+        </div> -->
+      </div>
+      <div class="col-list">
+        <ol>
+          <li 
+            #bullet
+            appear 
+            [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
+            [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
+            [duration]="400"
+          >
+            <div class="icon-area">
+              <div class="glow-wrapper"></div>
+              <mat-icon svgIcon="dog-enthusiast" class="dog-enthusiast"></mat-icon>
+            </div>
+            <div class="content">
+              <div class="title">Dog enthusiast</div>
+              <div class="text">You understand empowering power that dogs have on one's life.</div>
+            </div>
+          </li>
+          <li
+            #bullet
+            appear 
+            [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
+            [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
+            [duration]="400"
+            [delay]="100"
+          >
+            <div class="icon-area">
+              <div class="glow-wrapper"></div>
+              <mat-icon svgIcon="courage" class="courage"></mat-icon>
+            </div>
+            <div class="content">
+              <!-- <div class="title">Open minded</div> -->
+              <div class="title">Courageous</div>
+              <div class="text">Only those who will risk going too far can possibly find out how far one can go.</div>
+            </div>
+          </li>
+          <li
+            #bullet
+            appear 
+            [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
+            [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
+            [duration]="400"
+            [delay]="200"
+          >
+            <div class="icon-area">
+              <div class="glow-wrapper"></div>
+              <mat-icon svgIcon="open-mind" class="open-mind"></mat-icon>
+            </div>
+            <div class="content">
+              <!-- <div class="title">Growth oriented</div> -->
+              <!-- <div class="title">Your glass is half full</div> -->
+              <div class="title">Open minded</div>
+              <div class="text">Don't go through life, grow through life.</div>
+            </div>
+          </li>
+        </ol>
+      </div>
     </div>
   </div>
 </section>
@@ -239,8 +298,8 @@
     Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
     Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
   </p>  
-  <div class="d-flex justify-content-center gap-2 mt-5">
-    <div class="mission-item col-xl-3 col-md-6 position-relative" 
+  <div class="d-flex justify-content-center gap-2 mt-5 flex-wrap">
+    <div class="mission-item position-relative" 
       appear 
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
@@ -248,11 +307,17 @@
       [delay]="100"
     >
       <mat-icon svgIcon="dog-happy"></mat-icon>
-      <span class="fw-bold">Dog life</span>
-      <span class="opacity-50 d-block">Improving life of our</span>
-      <span class="dark-text d-block"> beloved ones</span>
+      <span class="fw-bold mission-item-header">Chance</span>
+      <div class="position-relative w-100">
+        <span class="text">Chace for every dog</span>
+      </div>
+      <!-- <span>return pride to dogs that have fallen</span> -->
+      <img src="../../../assets/images/img/dog-chance-1.jpg" alt="new chance" class="background-image infinite-zoom">
+      <div class="background-cover"></div>
+      <div class="text-cover"></div>
     </div>
-    <div class="mission-item col-xl-3 col-md-6"
+    <!-- <div class="mission-item col-xl-3 col-md-6" -->
+    <div class="mission-item"
       appear 
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
@@ -260,11 +325,15 @@
       [delay]="200"
     >
       <mat-icon svgIcon="planet"></mat-icon>
-      <span class="fw-bold">Networking</span>
-      <span class="opacity-50 d-block">Connecting dog lovers around the</span>
-      <span class="dark-text d-block"> world</span>
+      <span class="fw-bold mission-item-header">Networking</span>
+      <div class="position-relative w-100">
+        <span class="text">Connecting dog lovers around the world</span>
+      </div>
+      <img src="../../../assets/images/img/networking.jpeg" alt="networking" class="background-image infinite-zoom">
+      <div class="background-cover"></div>
+      <div class="text-cover"></div>
     </div>
-    <div class="mission-item col-xl-3 col-md-6"
+    <div class="mission-item"
       appear 
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
@@ -272,78 +341,79 @@
       [delay]="400"
     >
       <mat-icon svgIcon="book"></mat-icon>
-      <span class="fw-bold">Knowledge</span>
-      <span class="opacity-50 d-block">Spreading knowledge about</span>
-      <div class="dark-text d-block"> dogs</div>
+      <span class="fw-bold mission-item-header">Knowledge</span>
+      <div class="position-relative w-100">
+        <span class="text">The more you know the stronger you are</span>
+      </div>
+      <img src="../../../assets/images/img/knowledge.jpeg" alt="knowledge" class="background-image infinite-zoom">
+      <div class="background-cover"></div>
+      <div class="text-cover"></div>
     </div>
   </div>
 </section>
 
-<!-- TODO: OLD ABOUT US SECTION -->
-<!-- <section class="about-us-section-wrapper viewport-height">
-  <div class="container about-us">
-    <div class="row">
-      <h2 class="section-header mb-3">
-        What is <span class="orange-text">House of dogs</span>?
-      </h2>
-      <p 
-        appear 
-        [hide]="{'opacity': '0', 'transform': 'translateY(20px)'}" 
-        [show]="{'opacity': '1', 'transform': 'translateY(0px)' }" 
-        [duration]="500"
-        [threshold]="0.8"
-      >
-        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
-        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
-        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
-        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
-        Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
-        Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
-      </p>  
-    </div>
-  </div>
-  <div class="container about-us-mission">
-    <div class="row justify-content-center gap-3">
-      <div class="mission-item col-xl-3 col-md-6 position-relative" 
-        appear 
-        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
-        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
-        [duration]="500"
-        [delay]="100"
-      >
-        <mat-icon svgIcon="dog-happy"></mat-icon>
-        <span class="fw-bold">Dog life</span>
-        <span class="opacity-50 d-block">Improving life of our</span>
-        <span class="dark-text d-block"> beloved ones</span>
+<!-- TODO: IDEJA ZA ANIMACIJU
+kao kocka na land pocinje, nestaje u desno i pojavljuje se na levoj strani
+zoom in cezara i opacity quote -->
+<section class="qoute-section">
+  <div class="container-fluid">
+    <div class="row wrapper flex-wrap justify-content-between">
+      <div class="col-img position-relative">
+        <div 
+          class="absolute-filler" 
+          appear 
+          [hide]="{ 'opacity': 0, 'transform': 'translateX(-100px)'}"
+          [show]="{ 'opacity': 1, 'transform': 'translateX(0px)'}"
+          [duration]="400"
+          [threshold]="1"
+        ></div>
+        <img src="../../../assets/images/transparent/caesar-millan.png" alt="caesar millan">
       </div>
-      <div class="mission-item col-xl-3 col-md-6"
-        appear 
-        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
-        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
-        [duration]="500"
-        [delay]="200"
-      >
-        <mat-icon svgIcon="planet"></mat-icon>
-        <span class="fw-bold">Networking</span>
-        <span class="opacity-50 d-block">Connecting dog lovers around the</span>
-        <span class="dark-text d-block"> world</span>
-      </div>
-      <div class="mission-item col-xl-3 col-md-6"
-        appear 
-        [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
-        [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
-        [duration]="500"
-        [delay]="400"
-      >
-        <mat-icon svgIcon="book"></mat-icon>
-        <span class="fw-bold">Knowledge</span>
-        <span class="opacity-50 d-block">Spreading knowledge about</span>
-        <div class="dark-text d-block"> dogs</div>
+      <div class="col-text position-relative">
+        <div class="qoute-wrapper mx-auto text-center" 
+          appear 
+          [hide]="{'transform': 'rotateY(90deg)'}"
+          [show]="{'transform': 'rotateY(360deg)'}"
+          [duration]="600"
+          [threshold]="1"
+          [rootMargin]="'-320px'"
+        >
+          <mat-icon svgIcon="qoute" class="absolute-center"></mat-icon>
+          <p class="mb-4">
+            Spiritual fulfillment doesn't have to mean belief
+            in a religion or disbelief in science. ...
+            Whether one believes in an unseen,
+            all-knowing force, or the wonder of science
+            and the universe, or simply the beauty
+            of the human spirit, nearly every one of feels
+            an inner longing to feel part of
+            something bigger than ourselves.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-</section> -->
-<section class="how-it-works-section">
+</section>
+
+<section class="lets-talk-about-your-dog-section">
+  <div class="container-fluid position-relative p-0">
+    <div class="circle-wrapper w-100 h-100 position-absolute overflow-hidden">
+      <div class="circle left"></div>
+      <div class="circle right"></div>
+    </div>
+    <div class="row wrapper flex-wrap justify-content-around">
+      <div class="col-img lets-talk-about-your-dog">
+        <img src="../../../assets/images/transparent/lets-talk-about-your-dog.png" alt="happy dog">
+      </div>
+      <div class="col-text">
+        <h3>Lets talk about your dog</h3>
+        <button class="btn rounded-0">Contact us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="how-it-works-section">
   <div class="container-fluid">
     <h2 class="section-header mb-3">
       How it <span class="orange-text">works</span>?
@@ -403,10 +473,10 @@
       </div>
     </ol>
   </div>
-</section>
-<section class="big-img-wrapper container-fluid">
+</section> -->
+<!-- <section class="big-img-wrapper container-fluid">
 aa
-</section>
+</section> -->
 <!-- TODO: disabled -->
 <!-- <section class="categories-section-wrapper container-fluid d-flex align-items-center justify-content-center">
   <div class="categories-heading-wrapper absolute-center light-orange-bg rounded">
