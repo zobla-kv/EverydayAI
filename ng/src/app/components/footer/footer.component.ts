@@ -13,7 +13,7 @@ export class FooterComponent {
   @HostListener('window:scroll', ['$event']) 
   onScroll(event: any) {
     // check if user reached bottom of the page then show footer
-    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 10) {
       !this.show && this.showFooter();
     } else {
       this.show && this.hideFooter();
