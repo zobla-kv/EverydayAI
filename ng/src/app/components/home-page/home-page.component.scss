@@ -869,6 +869,21 @@ section .section-header {
     }          
   }
 
+  .who-are-you-section {
+    .col-img { 
+      width: 440px; 
+      .top-bottom-lines { display: none; }
+    }
+    .col-list {
+      width: 440px;
+      ol { align-items: center; padding-left: 2rem; }
+    }
+    .inner-wrapper {
+      left: 0;
+      .content { width: 370px !important; }
+    }
+  }
+
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
@@ -906,6 +921,40 @@ section .section-header {
       .col-img { width: 300px; }
       .col-text { left: 40px; }
     } 
+  }
+
+  .who-are-you-section {
+    .inner-wrapper { margin-top: 3rem; }
+    .col-img { display: none; }
+    .col-list {
+      width: 440px;
+      padding: 0;
+
+      ol {
+        padding-left: 0;
+
+        li { 
+          flex-direction: column; 
+          margin-top: 0;
+          .icon-area { 
+            margin: auto; 
+            transform: translateY(6px);
+          }
+  
+          .content {
+            left: 0;
+            width: 370px;
+            height: 95px;
+            text-align: center;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%) !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            &::before { display: none; }
+          }
+        }
+      }
+    }
   }
 }
 // smaller than 768px
@@ -1015,5 +1064,9 @@ section .section-header {
     // TODO: in this section fonts are not the same on mobile
     text-align: center;
     .col-text h1 { font-size: 24px; line-height: 32px; }
+  }
+
+  .who-are-you-section {
+    .inner-wrapper { margin-top: 1rem; }
   }
 }
