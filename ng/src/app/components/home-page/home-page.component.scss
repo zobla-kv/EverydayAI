@@ -843,6 +843,32 @@ section .section-header {
     }
   }
 
+  .about-us-section {
+
+    .col-text {
+      position: relative;
+      width: 400px;
+      h1 { font-size: 36px; line-height: 46px; } 
+      p { font-size: 14px; width: 100%; }
+    }
+
+    .caring-professionals {
+      width: 92%;
+      margin: auto;
+      .col-img { width: 330px; }
+      .col-text { left: 40px; }
+    }
+    .experience {
+      padding: 0;
+      .col-img { width: 400px; }
+      .col-text { left: -40px; }
+    }          
+    .expectance {
+      .col-img { width: 370px; position: relative; left: 20px; }
+      .col-text { left: 50px; }
+    }          
+  }
+
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
@@ -859,13 +885,28 @@ section .section-header {
     }
   }
 
-  .about-us-top-section {
-    flex-direction: column;
-    .w-60, .w-40 { width: 100% !important; }
-    .about-us-mission { text-align: center; }
-    hr { margin: auto; }
+  .about-us-section { 
+    text-align: justify; 
+
+    .col-text {
+      width: 340px;
+      h1 { font-size: 30px; line-height: 40px; } 
+      p { font-size: 14px; }
+    }
+
+    .caring-professionals {
+      .col-img { width: 300px; }
+      .col-text { left: 40px; }
+    }
+    .experience {
+      .col-img { width: 340px; }
+      .col-text { left: -20px; }
+    }          
+    .expectance {
+      .col-img { width: 300px; }
+      .col-text { left: 40px; }
+    } 
   }
-  .about-us-section { text-align: justify; }
 }
 // smaller than 768px
 @media only screen and (max-width: 768px) {
@@ -933,7 +974,46 @@ section .section-header {
       &:active { background-color: transparent !important; }
     }
   }
+
+  .about-us-section {
+
+    .col-text {
+      left: 0 !important;
+      h1 { font-size: 36px; line-height: 46px; } 
+      p { margin-top: 1rem; }
+    }
+
+    .col-img { 
+      margin-top: 1rem;
+      order: 2;
+      transform: none !important;
+      left: 0 !important;
+      img { transform: none !important; }
+    }
+
+    .caring-professionals {
+      padding: 2rem 0;
+      .col-img { width: 330px; }
+      .col-text { width: 400px; }
+    }
+    .experience {
+      margin-top: 2rem;
+      .col-img { width: 400px; }
+      .col-text { width: 400px; }
+    }          
+    .expectance {
+      margin-top: 4rem;
+      .col-img { width: 330px; }
+      .col-text { width: 400px; }
+    }          
+  }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) { 
+  .section-header { font-size: 1.75rem !important; }
+  .about-us-section {
+    // TODO: in this section fonts are not the same on mobile
+    text-align: center;
+    .col-text h1 { font-size: 24px; line-height: 32px; }
+  }
 }
