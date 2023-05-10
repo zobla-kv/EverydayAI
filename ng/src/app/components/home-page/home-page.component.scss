@@ -21,6 +21,71 @@ section .section-header {
   // forces child to take 100% height
   height: 1px;
 
+  button {
+    display: flex;
+    align-self: flex-end;
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    left: 40px;
+
+    &.large-screen { display: block; }
+    &.small-screen { display: none; }
+
+    .animation-filler {
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background-color: $main-orange-bg-color;
+      transition: 0.8s;
+      border: 1px solid white;
+      // TODO: check it out
+      // border-radius: inherit;
+    }
+
+    &:hover .animation-filler {
+      transition: 0.8s;
+      border: 1px solid $main-orange-bg-color;
+      width: 100%;
+    }
+  }
+  button > .mat-icon {
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid $main-orange-bg-color;
+      border-bottom: 2px solid $main-orange-bg-color;
+      transform: rotate(-45deg);
+      margin: 0 0.5rem;
+      transition: all .3s ease;
+      position: relative;
+      top: 2px;
+  }
+  button > .mat-icon::before {
+      display: block;
+      background-color: $main-dark-bg-color;
+      width: 10px;
+      transform-origin: bottom right;
+      height: 2px;
+      position: absolute;
+      opacity: 0;
+      bottom: -1px;
+      transform: rotate(45deg);
+      transition: all .3s ease;
+      content: "";
+      right: 0;
+  }
+  button:hover { background-color: transparent; }
+  button:hover p { color: $dark-text;  transition: 1s; }
+  button:hover > .mat-icon {
+      transform: rotate(-45deg) translate(4px, 4px);
+      border-color: $main-dark-bg-color;
+  }
+  button:hover > .mat-icon::before {
+      opacity: 1;
+      width: 20px;
+  }
+
   .landing-text-wrapper {
     text-align: right;
     display: flex;
@@ -43,73 +108,12 @@ section .section-header {
       font-weight: 500;
       font-size: 20px;
       z-index: 1;
-      transition: 1s;
     }
 
-    .btn-reverse {
-      display: flex;
-      align-self: flex-end;
-      position: relative;
-      padding: 0.5rem 1rem;
-      font-size: 16px;
-      left: 40px;
-
-      .animation-filler {
-        position: absolute;
-        left: 0;
-        width: 0;
-        height: 100%;
-        background-color: $main-orange-bg-color;
-        transition: 0.8s;
-        border: 1px solid white;
-        // check it out
-        // border-radius: inherit;
-      }
-
-      &:hover .animation-filler {
-        transition: 0.8s;
-        border: 1px solid $main-orange-bg-color;
-        width: 100%;
-      }
-    }
-    .btn-reverse > .mat-icon {
-        width: 9px;
-        height: 9px;
-        border-right: 2px solid $main-orange-bg-color;
-        border-bottom: 2px solid $main-orange-bg-color;
-        transform: rotate(-45deg);
-        margin: 0 0.5rem;
-        transition: all .3s ease;
-        position: relative;
-        top: 2px;
-    }
-    .btn-reverse > .mat-icon::before {
-        display: block;
-        background-color: $main-dark-bg-color;
-        width: 10px;
-        transform-origin: bottom right;
-        height: 2px;
-        position: absolute;
-        opacity: 0;
-        bottom: -1px;
-        transform: rotate(45deg);
-        transition: all .3s ease;
-        content: "";
-        right: 0;
-    }
-    .btn-reverse:hover { background-color: transparent; }
-    .btn-reverse:hover p { color: $dark-text;  transition: 1s; }
-    .btn-reverse:hover > .mat-icon {
-        transform: rotate(-45deg) translate(4px, 4px);
-        border-color: $main-dark-bg-color;
-    }
-    .btn-reverse:hover > .mat-icon::before {
-        opacity: 1;
-        width: 20px;
-    }
   }
 
-  .landing-image-wrapper-new {
+  .landing-image-wrapper {
+    // for responsive change those
     width: 500px;
     height: 400px;
     margin-left: 8rem;
@@ -122,48 +126,6 @@ section .section-header {
     }
   }
 
-  // TODO: needed for responsive on some resolution? cleanup if not
-  // .landing-image-wrapper {
-  //   min-width: 200px; max-width: 360px;
-  //   min-height: 200px; max-height: 360px;
-  //   margin-left: 8rem;
-    
-  //   img {
-  //     transform: scale(1.3);
-  //     position: relative;
-  //     top: -50px;
-
-  //     // transform: scale(0.9);
-  //     // top: -110px;
-  //     // left: -20px;
-  //   }
-  // }
-}
-
-.categories-section-wrapper {
-  position: relative;
-  top: 40px;
-
-  // TODO: remove later
-  border: 1px solid $main-orange-bg-color !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-
-  .categories-heading-wrapper {
-    color: black;
-    width: 250px;
-    text-align: center;
-    height: 40px;
-    top: -20px;
-
-    background-color: $main-dark-bg-color !important;
-    color: white;
-  }
-
-  .categories-content {
-    width: 80%;
-    justify-content: space-between;
-  }
 }
 
 .about-us-section {
@@ -861,19 +823,6 @@ section .section-header {
   }
 }
 
-.big-img-wrapper {
-  margin-top: 3rem;
-  // border: 1px solid;
-  height: 600px;
-  background-color: $main-orange-bg-color;
-  // TODO: change for prod
-  // background-image: url('../../../assets/images/img/mountain.jpg');
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-attachment: fixed;
-  // background-size: 7000px;
-}
-
 /* MEDIA QUERIES */
 // bigger than 1440px
 @media only screen and (min-width: 1440px) {
@@ -882,9 +831,34 @@ section .section-header {
 }
 // smaller than 1200px
 @media only screen and (max-width: 1200px) {
-  .top-section-wrapper .landing-image-wrapper-new { margin-left: 3rem; }
+  .top-section {
+    .landing-text-wrapper {
+      h1 { font-size: 85px; line-height: 85px; }
+    }
+    .landing-image-wrapper {
+      margin-left: 5rem;
+      width: 400px;
+      height: 400px;
+      img { top: -25px; left: -10px; }
+    }
+  }
+
 }
+// smaller than 976px
 @media only screen and (max-width: 976px) {
+  .top-section {
+    .landing-text-wrapper {
+      h1 { font-size: 65px; line-height: 65px; }
+      p { margin-top: 1rem; font-size: 16px; }
+    }
+    .landing-image-wrapper {
+      margin-left: 3rem;
+      width: 300px;
+      height: 300px;
+      img { top: -25px; left: -10px; }
+    }
+  }
+
   .about-us-top-section {
     flex-direction: column;
     .w-60, .w-40 { width: 100% !important; }
@@ -893,6 +867,73 @@ section .section-header {
   }
   .about-us-section { text-align: justify; }
 }
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  .top-section {
+
+    .landing-text-wrapper {
+      text-align: left;
+      padding-right: 0;
+      h1 { 
+        font-size: 2.5rem; 
+        line-height: 3rem; 
+        text-align: center;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        span { display: inline !important; }
+      }
+      p { 
+        font-size: 0.875rem; 
+        text-align: center; 
+        line-height: 1.5rem; 
+        margin-top: 0.5rem; 
+        margin-bottom: 0;
+      }
+    }
+    .landing-image-wrapper {
+      margin-left: 0;
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      img { top: -12px; left: -6px; }
+
+      margin-top: 2rem;
+      margin-left: 0;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      right: 0;
+    }
+
+    .col-md-7 { flex-direction: column; }
+    .animation-filler { width: 100% !important; z-index: -1; border: 0 !important; }
+
+    button.large-screen { display: none !important; }
+    button.small-screen { 
+      display: block !important; 
+      align-self: center;
+      left: 0;
+      background-color: transparent;
+      width: 200px;
+      height: 50px;
+      margin-top: 2rem;
+      border: 0;
+
+      p { color: $dark-text; margin-top: 2px !important; }
+
+      .mat-icon { 
+        border-color: $main-dark-bg-color !important; 
+        transform: rotate(-45deg) !important;
+        overflow: visible;
+        margin-top: 0.25rem;
+        &::before { opacity: 1; width: 16px; }
+      }
+      &:active { background-color: transparent !important; }
+    }
+  }
+}
 // smaller than 576px
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 576px) { 
 }

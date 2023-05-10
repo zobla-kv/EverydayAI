@@ -1,7 +1,7 @@
 <section class="top-section">
   <div class="container-fluid h-100 px-6">
-    <div class="row h-100">
-      <div class="col-md-5 h-100">
+    <div class="row position-relative justify-content-md-between">
+      <div class="col-md-5 col-sm-12">
         <div class="landing-text-wrapper">
           <h1>
             <span 
@@ -44,7 +44,7 @@
               <br>
               Your dog deserves only the best!
             </p>
-            <button type="button" class="btn-reverse" routerLink="/products">
+            <button type="button" class="btn-reverse large-screen" routerLink="/products">
               <div class="animation-filler">
               </div>
               <p class="m-0 btn-text">Our dogs</p>
@@ -53,9 +53,9 @@
           </div>
         </div>
       </div>
-      <div class="col-md-7 h-100 d-flex align-items-center">
-        <div class="landing-image-wrapper-new main-orange-bg">
-          <!-- TODO: there if flick of this image -->
+      <div class="col-md-7 col-sm-12 d-flex align-items-center flex-wrap">
+        <div class="landing-image-wrapper main-orange-bg">
+          <!-- NOTE: directive hides flick (cls) -->
           <img 
             src="../../../assets/images/transparent/landing-page-image-dog.png" 
             alt="landing image" 
@@ -67,6 +67,13 @@
             [delay]="isFirstVisit ? 700 : 100"
           >
         </div>
+        <br>
+        <button type="button" class="btn-reverse small-screen" routerLink="/products">
+          <div class="animation-filler">
+          </div>
+          <p class="m-0 btn-text">Our dogs</p>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
       </div>
     </div>
   </div>
@@ -355,7 +362,7 @@
 <!-- TODO: IDEJA ZA ANIMACIJU
 kao kocka na land pocinje, nestaje u desno i pojavljuje se na levoj strani
 zoom in cezara i opacity quote -->
-<section class="qoute-section">
+<!-- <section class="qoute-section">
   <div class="container-fluid">
     <div class="row wrapper flex-wrap justify-content-between">
       <div class="col-img position-relative">
@@ -393,13 +400,13 @@ zoom in cezara i opacity quote -->
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="lets-talk-about-your-dog-section">
   <div class="container-fluid position-relative p-0">
     <div class="circle-wrapper w-100 h-100 position-absolute overflow-hidden">
-      <div class="circle left"></div>
-      <div class="circle right"></div>
+      <div class="circle left" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="300" [threshold]="1"></div>
+      <div class="circle right" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="100" [threshold]="0.1"></div>
     </div>
     <div class="row wrapper flex-wrap justify-content-around">
       <div class="col-img lets-talk-about-your-dog">
@@ -407,7 +414,9 @@ zoom in cezara i opacity quote -->
       </div>
       <div class="col-text">
         <h3>Lets talk about your dog</h3>
-        <button class="btn rounded-0">Contact us</button>
+        <button class="btn rounded-0">
+          <a href = "mailto: houseofdogs.online@gmail.com" class="text-reset text-decoration-none">Contact us</a>
+        </button>
       </div>
     </div>
   </div>
@@ -472,22 +481,6 @@ zoom in cezara i opacity quote -->
         </li>
       </div>
     </ol>
-  </div>
-</section> -->
-<!-- <section class="big-img-wrapper container-fluid">
-aa
-</section> -->
-<!-- TODO: disabled -->
-<!-- <section class="categories-section-wrapper container-fluid d-flex align-items-center justify-content-center">
-  <div class="categories-heading-wrapper absolute-center light-orange-bg rounded">
-    <h2>Categories</h2>
-  </div>
-  <div class="categories-content d-flex">
-    <app-category-selector
-      *ngFor="let product of productCategories"
-      [icon]="product.icon"
-      [text]="product.name"
-    ></app-category-selector>
   </div>
 </section> -->
 <!-- <div>
