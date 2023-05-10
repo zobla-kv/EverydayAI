@@ -29,7 +29,7 @@ section .section-header {
     font-size: 16px;
     left: 40px;
 
-    &.large-screen { display: block; }
+    &.large-screen { display: flex; }
     &.small-screen { display: none; }
 
     .animation-filler {
