@@ -16,6 +16,7 @@ import {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  // svg inside mat-icon does not have css selector for encapsulation added
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('appLoad', [

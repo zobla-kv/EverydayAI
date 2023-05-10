@@ -1,9 +1,3 @@
-// TODO: is this really needed
-export interface ProductCategory {
-  name: string;
-  icon: string;
-}
-
 export interface Product {
   id: number;
   title: string;

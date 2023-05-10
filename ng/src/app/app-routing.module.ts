@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import {
   HomePageComponent,
   ProductPageComponent,
-  CategorySelectorComponent,
   AuthFormComponent,
   InformationComponent,
   XFormComponent,
@@ -20,14 +19,6 @@ const routes: Routes = [
   {
     path: 'products',
     component: ProductPageComponent,
-  },
-  {
-    path: 'about',
-    component: CategorySelectorComponent
-  },
-  {
-    path: 'contact-us',
-    component: CategorySelectorComponent
   },
   {
     path: 'auth',

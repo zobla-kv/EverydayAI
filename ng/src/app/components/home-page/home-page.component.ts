@@ -3,10 +3,6 @@ import { Router } from '@angular/router';
 import { Observable, fromEvent, interval, merge, throttle } from 'rxjs';
 
 import {
-  ProductCategory
-} from '@app/models';
-
-import {
   UtilService
 } from '@app/services';
 
@@ -42,13 +38,6 @@ export class HomePageComponent implements AfterViewInit {
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
 
-  productCategories: ProductCategory[] = [
-    { name: 'Food', icon: 'home-page-category-food' },
-    { name: 'Toys', icon: 'home-page-category-food' },
-    { name: 'Medicine', icon: 'home-page-category-food' },
-    { name: 'Training', icon: 'home-page-category-food' }
-  ];
-
   constructor(
     private _utilService: UtilService,
     private _router: Router,
@@ -66,8 +55,8 @@ export class HomePageComponent implements AfterViewInit {
 
     // *** TOP SECTION ***
     const landingSection: HTMLElement = this._el.nativeElement.querySelector('.top-section');
-    landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
-    landingSection.style.minHeight = landingSection.offsetHeight + 'px';
+    // landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
+    // landingSection.style.minHeight = landingSection.offsetHeight + 'px';
 
     // TODO: works without them also
     // *** ABOUT US SECTION ***
