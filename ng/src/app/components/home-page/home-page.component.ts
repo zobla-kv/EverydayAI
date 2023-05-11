@@ -55,19 +55,8 @@ export class HomePageComponent implements AfterViewInit {
 
     // *** TOP SECTION ***
     const landingSection: HTMLElement = this._el.nativeElement.querySelector('.top-section');
-    // landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
-    // landingSection.style.minHeight = landingSection.offsetHeight + 'px';
-
-    // TODO: works without them also
-    // *** ABOUT US SECTION ***
-    // const aboutUsSection: HTMLElement = this._el.nativeElement.querySelector('.about-us-section');
-    // aboutUsSection.style.minHeight = aboutUsSection.offsetHeight + 'px';
-    // // *** WHO ARE YOU ***
-    // const whoAreYouSection: HTMLElement = this._el.nativeElement.querySelector('.who-are-you-section');
-    // whoAreYouSection.style.minHeight = whoAreYouSection.offsetHeight + 'px';
-    // // *** LETS TALK ABOUT YOUR DOG ***
-    // const letsTalkAboutYourDog: HTMLElement = this._el.nativeElement.querySelector('.lets-talk-about-your-dog-section');
-    // letsTalkAboutYourDog.style.minHeight = letsTalkAboutYourDog.offsetHeight + 'px';
+    landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
+    landingSection.style.minHeight = landingSection.offsetHeight + 'px';
 
     // this.setBulletPointsHover();
     // this.bulletPointsHover$ = merge(
