@@ -66,8 +66,8 @@ export class HomePageComponent implements AfterViewInit {
     // const whoAreYouSection: HTMLElement = this._el.nativeElement.querySelector('.who-are-you-section');
     // whoAreYouSection.style.minHeight = whoAreYouSection.offsetHeight + 'px';
     // // *** LETS TALK ABOUT YOUR DOG ***
-    const letsTalkAboutYourDog: HTMLElement = this._el.nativeElement.querySelector('.lets-talk-about-your-dog-section');
-    letsTalkAboutYourDog.style.minHeight = letsTalkAboutYourDog.offsetHeight + 'px';
+    // const letsTalkAboutYourDog: HTMLElement = this._el.nativeElement.querySelector('.lets-talk-about-your-dog-section');
+    // letsTalkAboutYourDog.style.minHeight = letsTalkAboutYourDog.offsetHeight + 'px';
 
     // this.setBulletPointsHover();
     // this.bulletPointsHover$ = merge(
