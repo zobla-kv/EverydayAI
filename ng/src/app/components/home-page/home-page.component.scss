@@ -482,7 +482,7 @@ section .section-header {
   margin-top: 5rem;
 
   .mission-item {
-    width: 375px;
+    width: 360px;
     height: 220px;
     min-width: 300px;
     padding: 60px 20px;
@@ -884,6 +884,23 @@ section .section-header {
     }
   }
 
+  .offer-section {
+    .mission-item { 
+      min-width: unset;
+      width: 330px;  
+      height: 200px; 
+      font-size: 0.875rem;
+      padding: 60px 1rem 60px 1rem;
+
+      mat-icon { height: 50px; transform: scale(2); }
+
+      &:hover {
+        .text { transform: none; top: 53px; }
+        .text-cover { height: 30px; }
+      } 
+    }
+  }
+
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
@@ -954,6 +971,25 @@ section .section-header {
           }
         }
       }
+    }
+  }
+
+  .offer-section {
+    .section-header-subtext { font-size: 0.875rem; text-align: center; }
+    .mission-item { 
+      min-width: unset;
+      width: 100%;  
+      max-width: 330px;
+      min-width: 300px;
+      height: 200px; 
+      font-size: 0.875rem;
+
+      mat-icon { height: 36px; transform: scale(1.75); }
+
+      &:hover {
+        .text { transform: scale(1.1); top: 42px; }
+        .text-cover { height: 30px; }
+      } 
     }
   }
 }
