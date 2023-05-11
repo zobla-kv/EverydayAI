@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -17,6 +17,19 @@ import animations from './header.animations';
   animations
 })
 export class HeaderComponent implements OnDestroy {
+
+  @HostListener('window:scroll', ['$event']) 
+  onScroll(event: any) {
+    // check if user reached bottom of the page then show footer
+    if (window.pageYOffset === 0) {
+      !this.expand && this.expandHeader();
+    } else {
+      this.expand && this.collapseHeader();
+    }
+  }
+
+  // expand when user scroll is on top
+  expand = true;
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
@@ -47,6 +60,16 @@ export class HeaderComponent implements OnDestroy {
       this.isAuthenticated = !!user;
     })
 
+  }
+
+  // trigger header expand animation
+  expandHeader() {
+    this.expand = true;
+  }
+
+  // trigger header collapse animation
+  collapseHeader() {
+    this.expand = false;
   }
 
   // TODO: block routes if logged in

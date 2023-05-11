@@ -1,17 +1,17 @@
 import { animate, state, style, transition, trigger } from "@angular/animations";
 
 export default [
-  trigger('loading', [
-    state('loadingStarted', style({
-      'opacity': '0',
-      'transform': 'translateX(10px)',
-      // 'border-bottom': '1px solid rgba(255, 255, 255, 0)',
+  trigger('expand', [
+    state('true', style({
+      'height': '140px',
+      'box-shadow': 'none',
+      // 'border-bottom': 'none'
     })),
-    state('loadingEnded', style({
-      'opacity': '1',
-      'transform': 'translateX(0px)',
-      // 'border-bottom': '1px solid rgba(255, 255, 255, 1)'
+    state('false', style({
+      'height': '120px',
+      'box-shadow': '0px 3px 48px rgba(0, 0, 0, 0.3)',
+      // 'border-bottom': '1px solid white'
     })),
-    transition('loadingStarted => loadingEnded', animate(300))
+    transition('false <=> true', animate(300))
   ])
 ]

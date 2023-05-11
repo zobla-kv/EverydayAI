@@ -3,13 +3,7 @@
 header { 
   height: $header-height; 
   top: 0;
-  // TODO: border?
-  border-bottom: 1px solid white;
   overflow: hidden;
-  // TODO: header shadow
-  // box-shadow: 0px 3px 48px rgba(0, 0, 0, 0.3);
-  // TODO: remove this
-  // display: none;
 }
 
 // TODO: remove if not used
