@@ -9,15 +9,12 @@
 </div>
 
 <!-- NOTE: appear like this solves layout shift (flick) of landing image -->
-<!-- TODO: the other way is to manually control responsiveness of top section -->
 <!-- without directive doesn't trigger other elements intersection -->
-<!-- <div> -->
-  <!-- // TODO: BUG, sometimes remains opacity 0 -->
 <div appear [duration]="0" [appearImmediately]="true">
 
   <app-header></app-header>
   
-  <main class="page-wrapper">
+  <main class="page-wrapper" [@liftOnHeaderCollapse]="liftPage">
     <router-outlet></router-outlet>
   </main>
   

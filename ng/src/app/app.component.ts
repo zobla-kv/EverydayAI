@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { User } from '@angular/fire/auth';
@@ -30,10 +30,19 @@ import {
   ]),
   trigger('appLoadSpinner', [
     state('true', style({ 'opacity': '0' })),
+  ]),
+  trigger('liftOnHeaderCollapse', [
+    state('false', style({
+      'transform': 'translateY(0px)'
+    })),
+    state('true', style({
+      'transform': 'translateY(-25px)'
+    })),
+    transition('false <=> true', animate(300))
   ])
 ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   // app title
   title = 'house-of-dogs';
@@ -46,6 +55,9 @@ export class AppComponent {
 
   // is preload animation done
   isPreloadAnimationDone = false;
+
+  // follow header animation
+  liftPage = true;
 
   constructor(
     private _iconService: IconService,
@@ -70,6 +82,21 @@ export class AppComponent {
       this._utilService.appLoaded();
     })
 
+  }
+
+  ngOnInit() {
+    // TODO: this should only happen on small screens
+    this._utilService.scrolledToTop$.subscribe(scrolledToTop => 
+      scrolledToTop ? this.animateUp() : this.animateDown()
+    );
+  }
+
+  // methods for following header animation
+  animateUp() {
+    this.liftPage = true;
+  }
+  animateDown() {
+    this.liftPage = false;
   }
 
   // app loaded and preloader animation started

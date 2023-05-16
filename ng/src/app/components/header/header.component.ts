@@ -1,5 +1,5 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import {
@@ -17,6 +17,11 @@ import animations from './header.animations';
   animations
 })
 export class HeaderComponent implements OnDestroy {
+
+  // TODO: disable page wrapper animation on mobile
+
+  // TODO: exists on large screen, but should not
+  @ViewChild('hamburgerToggle') hamburgerToggle: ElementRef;
 
   @HostListener('window:scroll', ['$event']) 
   onScroll(event: any) {
@@ -58,18 +63,32 @@ export class HeaderComponent implements OnDestroy {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.numberOfItemsInCart = user ? user.cart.items.length : 0;
       this.isAuthenticated = !!user;
-    })
+    });
+
+    this._router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // close hamburger on route leave
+        this.closeHamburgerMenu();
+      }
+  });
 
   }
 
   // trigger header expand animation
   expandHeader() {
     this.expand = true;
+    this._utilService.scrolledToTop$.next(true);
   }
 
   // trigger header collapse animation
   collapseHeader() {
     this.expand = false;
+    this._utilService.scrolledToTop$.next(false);
+  }
+
+  // close hamburger menu
+  closeHamburgerMenu() {
+    this.hamburgerToggle.nativeElement.checked = false;
   }
 
   // TODO: block routes if logged in

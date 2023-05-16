@@ -1,6 +1,6 @@
 <!-- // TODO: to use topbar or not? -->
 <!-- <div class="topbar"></div> -->
-<header role="heading" [@expand]="expand">
+<header role="heading" [@expand]="expand" class="large-screen">
   <div class="header-wrapper d-flex w-100">
     <div class="header-item navigation-wrapper absolute-center">
       <a
@@ -46,3 +46,100 @@
     <!-- *********** -->
   </div>
 </header>
+
+<header role="heading" class="medium-screen">
+  <div class="outer-menu">
+    <input class="checkbox-toggle" type="checkbox" #hamburgerToggle/>
+    <div class="hamburger flex-center">
+      <div class="flex-center"></div>
+    </div>
+    <div class="menu flex-center">
+      <div class="flex-center">
+        <div class="flex-center">
+          <ul>
+            <li>
+              <a routerLink="/" routerLinkActive="nav-active-mobile" [routerLinkActiveOptions]="{exact: true}">
+                <span>Home</span>
+              </a> 
+            </li>
+            <li>
+              <a routerLink="/products" routerLinkActive="nav-active-mobile">
+                <span>Products</span>
+              </a>
+            </li>
+            <hr class="orange-line my-0">
+            <li *ngIf="!isAuthenticated" class="mb-0">
+              <button type="button" class="btn" (click)="handleAuthButton('login')">
+                <span>Login</span>
+              </button>
+            </li>
+            <li *ngIf="!isAuthenticated" class="mt-2">
+              <button type="button" class="btn" (click)="handleAuthButton('register')">
+                <span>Register</span>
+              </button>
+            </li>
+            <li *ngIf="isAuthenticated">
+              <button type="button" class="btn" (click)="handleLogout()">
+                <span>Logout</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NOTE: implemented but lagging on mobile
+// TODO: remove? -->
+<!-- <header role="heading to-be-removed" class="medium-screen">
+  <div class="container-fluid position-relative d-flex justify-content-end">
+
+    This checkbox will give us the toggle behavior, it will be hidden, but functional
+    <input id="toggle" type="checkbox">
+
+    IMPORTANT: Any element that we want to modify when the checkbox state changes go here, being "sibling" of the checkbox element
+
+    This label is tied to the checkbox, and it will contain the toggle "buttons"
+    <label class="toggle-container" for="toggle">
+        If menu is open, it will be the "X" icon, otherwise just a clickable area behind the hamburger menu icon
+        <span class="button button-toggle"></span>
+    </label>
+
+    The nav menu
+    <nav class="nav">
+      <div class="nav-inner">
+        <div class="inner-inner">
+          <a
+            class="nav-item"
+            routerLink="/"
+            routerLinkActive="nav-active-mobile"
+            [routerLinkActiveOptions]="{exact: true}"
+          >
+            {{ 'Home' | uppercase }}
+          </a> 
+          <a class="nav-item" routerLink="/products" routerLinkActive="nav-active-mobile">
+            {{ 'Products' | uppercase }}
+          </a>
+          <hr class="nav-item">
+          <a class="nav-item pt-2" *ngIf="!isAuthenticated">
+            <button type="button" class="btn nav-item" (click)="handleAuthButton('login')">
+              <span>Login</span>
+            </button>
+          </a>
+          <a class="nav-item pt-3" *ngIf="!isAuthenticated">
+            <button type="button" class="btn nav-item" (click)="handleAuthButton('register')">
+              <span>Register</span>
+            </button>
+          </a>
+          <a class="nav-item pt-3" *ngIf="isAuthenticated">
+            <button type="button" class="btn nav-item" (click)="handleLogout()">
+              <span>Logout</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+</div>
+</header> -->

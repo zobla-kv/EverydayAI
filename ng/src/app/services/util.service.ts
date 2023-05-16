@@ -31,6 +31,9 @@ export class UtilService {
   // log/reg buttons
   authButtonClick$ = new Subject<string>();
 
+  // scrolled to top of the page
+  scrolledToTop$ = new Subject<boolean>();
+
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
@@ -169,6 +172,5 @@ appLoaded(): void {
     array.push(array.shift());
     return array;
   }
-
 
 }
