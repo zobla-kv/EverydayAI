@@ -1120,6 +1120,7 @@ section .section-header {
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) { 
+  .top-section { margin-top: 4rem; }
   .section-header { font-size: 1.75rem !important; }
   .about-us-section {
     // TODO: in this section fonts are not the same on mobile
