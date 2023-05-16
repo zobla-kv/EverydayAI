@@ -163,6 +163,7 @@ export class ProductPageComponent implements OnInit {
   afterChangePageAnimation(ev: AnimationEvent) {
     if (ev.fromState === 'show' && ev.toState !== 'void') {
       this.updatePageInfo();
+      setTimeout(() => window.scroll({ top: 20, left: 0, behavior: 'smooth' }), 300);
     }
   }
 

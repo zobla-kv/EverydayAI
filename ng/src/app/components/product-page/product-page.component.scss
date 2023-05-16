@@ -441,16 +441,12 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 }
 
 /* MEDIA QUERIES */
-// bigger than 976px
+// bigger than 1200px
 @media only screen and (max-width: 1200px) {
   hr { width: 90%; }
 }
-// bigger than 976px
-@media only screen and (min-width: 976px) {
-  // TODO: is this default? no need?
-}
-// smaller than 976px
-@media only screen and (max-width: 976px) {
+// smaller than 992px
+@media only screen and (max-width: 992px) {
   .product-list-wrapper { 
     .single-product {
       max-width: 260px;
@@ -463,6 +459,15 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
         .difficulty.length-4 { left: 8px !important; }
       }
     }
+  }
+}
+// smaller than 976px
+@media only screen and (max-width: 976px) {
+}
+// smaller than 960 (hamburger appears)
+@media only screen and (max-width: 960px) {
+  .product-list-wrapper { 
+    margin-top: 2rem; 
   }
 }
 // smaller than 576px
