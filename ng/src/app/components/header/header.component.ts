@@ -110,6 +110,7 @@ export class HeaderComponent implements OnDestroy {
 
   // log user out
   handleLogout() {
+    this.hamburgerToggle && this.closeHamburgerMenu();
     this._authService.logout();
   }
 
