@@ -1,6 +1,9 @@
-<!-- // TODO: to use topbar or not? -->
-<!-- <div class="topbar"></div> -->
-<header role="heading" [@expand]="expand" class="large-screen">
+<header 
+  *ngIf="['xl', 'lg', 'md'].includes(currentScreenSize)" 
+  class="large-screen"
+  role="heading" 
+  [@expand]="expand" 
+>
   <div class="header-wrapper d-flex w-100">
     <div class="header-item navigation-wrapper absolute-center">
       <a
@@ -47,7 +50,12 @@
   </div>
 </header>
 
-<header role="heading" class="medium-screen">
+<header 
+  *ngIf="['sm', 'xs'].includes(currentScreenSize)" 
+  role="heading"
+  class="medium-screen"
+  role="heading" 
+  >
   <div class="outer-menu">
     <input class="checkbox-toggle" type="checkbox" #hamburgerToggle/>
     <div class="hamburger flex-center">
@@ -89,57 +97,3 @@
     </div>
   </div>
 </header>
-
-<!-- NOTE: implemented but lagging on mobile
-// TODO: remove? -->
-<!-- <header role="heading to-be-removed" class="medium-screen">
-  <div class="container-fluid position-relative d-flex justify-content-end">
-
-    This checkbox will give us the toggle behavior, it will be hidden, but functional
-    <input id="toggle" type="checkbox">
-
-    IMPORTANT: Any element that we want to modify when the checkbox state changes go here, being "sibling" of the checkbox element
-
-    This label is tied to the checkbox, and it will contain the toggle "buttons"
-    <label class="toggle-container" for="toggle">
-        If menu is open, it will be the "X" icon, otherwise just a clickable area behind the hamburger menu icon
-        <span class="button button-toggle"></span>
-    </label>
-
-    The nav menu
-    <nav class="nav">
-      <div class="nav-inner">
-        <div class="inner-inner">
-          <a
-            class="nav-item"
-            routerLink="/"
-            routerLinkActive="nav-active-mobile"
-            [routerLinkActiveOptions]="{exact: true}"
-          >
-            {{ 'Home' | uppercase }}
-          </a> 
-          <a class="nav-item" routerLink="/products" routerLinkActive="nav-active-mobile">
-            {{ 'Products' | uppercase }}
-          </a>
-          <hr class="nav-item">
-          <a class="nav-item pt-2" *ngIf="!isAuthenticated">
-            <button type="button" class="btn nav-item" (click)="handleAuthButton('login')">
-              <span>Login</span>
-            </button>
-          </a>
-          <a class="nav-item pt-3" *ngIf="!isAuthenticated">
-            <button type="button" class="btn nav-item" (click)="handleAuthButton('register')">
-              <span>Register</span>
-            </button>
-          </a>
-          <a class="nav-item pt-3" *ngIf="isAuthenticated">
-            <button type="button" class="btn nav-item" (click)="handleLogout()">
-              <span>Logout</span>
-            </button>
-          </a>
-        </div>
-      </div>
-    </nav>
-
-</div>
-</header> -->

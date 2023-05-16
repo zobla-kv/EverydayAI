@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { User } from '@angular/fire/auth';
@@ -42,7 +42,7 @@ import {
   ])
 ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   // app title
   title = 'house-of-dogs';
@@ -82,13 +82,19 @@ export class AppComponent implements OnInit {
       this._utilService.appLoaded();
     })
 
-  }
 
-  ngOnInit() {
-    // TODO: this should only happen on small screens
-    this._utilService.scrolledToTop$.subscribe(scrolledToTop => 
-      scrolledToTop ? this.animateUp() : this.animateDown()
-    );
+    this._utilService.screenSizeChange$.subscribe(size => {
+      if (['xl','lg', 'md'].includes(size)) {
+        // animate only on larger screens
+        this._utilService.scrolledToTop$.subscribe(scrolledToTop => 
+          scrolledToTop ? this.animateUp() : this.animateDown()
+        );
+      } else {
+        // clear sub if resize from large to small
+        this._utilService.scrolledToTop$.complete();
+      }
+    });
+    
   }
 
   // methods for following header animation

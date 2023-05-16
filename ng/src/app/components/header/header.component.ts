@@ -18,9 +18,7 @@ import animations from './header.animations';
 })
 export class HeaderComponent implements OnDestroy {
 
-  // TODO: disable page wrapper animation on mobile
-
-  // TODO: exists on large screen, but should not
+  // hamburger menu toggle
   @ViewChild('hamburgerToggle') hamburgerToggle: ElementRef;
 
   @HostListener('window:scroll', ['$event']) 
@@ -32,6 +30,9 @@ export class HeaderComponent implements OnDestroy {
       this.expand && this.collapseHeader();
     }
   }
+
+  // current screen size
+  currentScreenSize: string;
 
   // expand when user scroll is on top
   expand = true;
@@ -47,6 +48,9 @@ export class HeaderComponent implements OnDestroy {
 
   // subscibe to user state (change to number of cart items etc.)
   customUserState$: Subscription;
+
+  // subscibe to screen size change
+  screenSizeChangeSub$: Subscription;
 
   constructor(
     private _router: Router,
@@ -70,6 +74,8 @@ export class HeaderComponent implements OnDestroy {
         // close hamburger on route leave
         this.closeHamburgerMenu();
       }
+
+    this._utilService.screenSizeChange$.subscribe(size => this.currentScreenSize = size);
   });
 
   }
@@ -88,7 +94,7 @@ export class HeaderComponent implements OnDestroy {
 
   // close hamburger menu
   closeHamburgerMenu() {
-    this.hamburgerToggle.nativeElement.checked = false;
+    this.hamburgerToggle && (this.hamburgerToggle.nativeElement.checked = false);
   }
 
   // TODO: block routes if logged in
@@ -109,6 +115,7 @@ export class HeaderComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.customUserState$.unsubscribe();
+    this.screenSizeChangeSub$.unsubscribe();
   }
 
 }

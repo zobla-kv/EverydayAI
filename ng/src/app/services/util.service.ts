@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
+
+import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 
 import {
   ToastConstants
@@ -34,18 +36,48 @@ export class UtilService {
   // scrolled to top of the page
   scrolledToTop$ = new Subject<boolean>();
 
+  // screen size
+  screenSizeChange$ = new ReplaySubject<string>();
+
+  // screen size map
+  screenSizeMap = new Map([
+    [Breakpoints.XSmall, 'xs'],
+    [Breakpoints.Small,  'sm'],
+    [Breakpoints.Medium, 'md'],
+    [Breakpoints.Large,  'lg'],
+    [Breakpoints.XLarge, 'xl'],
+  ]);
+
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
-    private _toast: ToastService
-  ) { }
+    private _toast: ToastService,
+    private _bo: BreakpointObserver
+  ) { 
+
+    this._bo.observe([
+      Breakpoints.XLarge, 
+      Breakpoints.Large, 
+      Breakpoints.Medium, 
+      Breakpoints.Small, 
+      Breakpoints.XSmall
+    ])
+    .subscribe((bs: BreakpointState) => {
+      for (const query of Object.keys(bs.breakpoints)) {
+        if (bs.breakpoints[query]) {
+          const size = this.screenSizeMap.get(query) ?? 'Unknown';
+          this.screenSizeChange$.next(size)
+        }
+      }
+    })
+  }
 
 /**
-* Handle all stuff needed after app has loaded
-*
-* @returns void
-*/
-appLoaded(): void {
+  * Handle all stuff needed after app has loaded
+  *
+  * @returns void
+  */
+  appLoaded(): void {
   !sessionStorage.getItem('new_session') && sessionStorage.setItem('new_session', 'true');
   this.appLoaded$.next();
 }
@@ -98,7 +130,7 @@ appLoaded(): void {
     return isFirstVisit;
   }
 
-  /**
+/**
   * Gets items in range from an array 
   * includes last from range (to)
   *
@@ -110,7 +142,7 @@ appLoaded(): void {
     return array.slice(from, to + 1);
   }
 
-  /**
+/**
   * Returns deep copy of an object.
   *
   * @param object 
@@ -121,7 +153,7 @@ appLoaded(): void {
   }
   
 
-  /**
+/**
   * Returns value of css style without 'px'.
   *
   * @param object 
@@ -131,7 +163,7 @@ appLoaded(): void {
     return parseInt(value.replace(/px/,''));
   }
 
-  /**
+/**
   * Shows 'Something went wrong. Please try again.' toast message.
   *
   * @param object 
@@ -141,7 +173,7 @@ appLoaded(): void {
     this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
   }
 
-  /**
+/**
   * Sleep function.
   *
   * @param number - milliseconds 
@@ -151,7 +183,7 @@ appLoaded(): void {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  /**
+/**
   * Move elements in array to the right.
   *
   * @param Array - array
@@ -162,7 +194,7 @@ appLoaded(): void {
     return array;
   }
 
-  /**
+/**
   * Move elements in array to the left.
   *
   * @param Array - array
