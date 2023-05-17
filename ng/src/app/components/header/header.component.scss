@@ -58,7 +58,6 @@ header {
     width: fit-content;
     color: $gray-border-color;
   }
-
   .header-item.logo-wrapper {
     cursor: pointer;
     a { padding: 0; }
@@ -69,7 +68,6 @@ header {
       width: 120px;
     }
   }
-
   .header-item.profile {
     order: 2;
     align-self: center;
@@ -81,9 +79,8 @@ header {
       min-width: 100px;
     }
     .btn:hover { border: 1px solid $gray-border-color; }
-    // TODO: double check and remove
-    // .btn:hover { border: 1px solid white; }
   }
+  .header-item-splitter { position: relative; top: -2px; }
 
 }
 
