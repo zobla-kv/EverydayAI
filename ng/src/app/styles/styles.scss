@@ -22,9 +22,10 @@ body {
 
 .page-wrapper {
   min-height: 100vh;
-  margin-top: $header-height;
   position: relative;
-  padding: 2rem;
+  padding: 0 2rem 2rem 2rem;
+
+  &:has(.auth-form-page) { height: calc(100vh - 10rem); min-height: unset; }
 }
 
 img {
@@ -147,6 +148,7 @@ header,
   align-items: center;
   font-weight: bold;
   transition: all .3s ease;
+  border: 0;
 }
 .btn:hover {
   background-color: $main-dark-bg-color;
@@ -157,6 +159,7 @@ header,
   @extend .btn;
   background-color: $main-dark-bg-color;
   color: white;
+  transition: all .3s ease;
 }
 .btn-reverse:hover {
   background-color: $main-orange-bg-color;
@@ -167,6 +170,7 @@ header,
 .btn:active {
   background-color: $main-orange-bg-color !important;
   color: $dark-text !important;
+  border: 0 !important;
 }
 .btn-reverse:active {
   background-color: $main-dark-bg-color !important;

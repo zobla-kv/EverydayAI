@@ -96,7 +96,10 @@ header.medium-screen {
   $hover-line-height: $hamburger-menu-line-height;
   $hover-color: darken($main-orange-bg-color, 10%);
 
+  // visible content on the top of the screen (no header)
   height: 0px;
+  // act as a height to push content
+  margin-bottom: $header-height;
 
   a,
   a:visited,

@@ -16,10 +16,7 @@ section .section-header {
 }
 
 .top-section {
-  // - padding
-  min-height: calc($viewport-height-without-header - 4rem);
-  // forces child to take 100% height
-  height: 1px;
+  height: $viewport-height-without-header;
 
   button {
     display: flex;
@@ -108,6 +105,7 @@ section .section-header {
       font-weight: 500;
       font-size: 20px;
       z-index: 1;
+      transition: all 1s ease;
     }
 
   }
@@ -1119,7 +1117,6 @@ section .section-header {
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) { 
-  .top-section { margin-top: 4rem; }
   .section-header { font-size: 1.75rem !important; }
   .about-us-section {
     // TODO: in this section fonts are not the same on mobile
