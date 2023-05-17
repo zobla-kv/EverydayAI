@@ -290,3 +290,8 @@ input[type="password"] { padding-right: 55px; }
   // keep color on failed validation
   color: $main-orange-bg-color !important;
 }
+
+// smaller than 576px 
+@media only screen and (max-width: 576px) {
+  .center-wrap { padding: 3rem 1rem; }
+}
