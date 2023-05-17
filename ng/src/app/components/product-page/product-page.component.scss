@@ -78,6 +78,7 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
       display: flex;
       justify-content: center;
       align-items: center;
+      transform: translateY(-150px);
     } 
   }
 
@@ -479,6 +480,14 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
   p { font-size: 16px !important; }
+  .product-list-wrapper {
+    .inner-list-wrapper {
+      &:has(> mat-spinner) .mat-mdc-progress-spinner {
+        width: 150px !important;
+        height: 150px !important;
+      } 
+    }
+  }
 }
 
 

@@ -27,4 +27,10 @@
 }
 
 
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  .preloader mat-spinner { transform: translateY(-50px); }
+}
+
+
 
