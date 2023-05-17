@@ -166,7 +166,7 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
       border-end-start-radius: 8px;
       padding: 0.5rem 0.5rem 0.75rem 0.5rem;
       color: $main-dark-bg-color;
-      font-family: cursive, 'Courier New', Courier, monospace;
+      font-family: 'Cambria', 'Courier New', Courier, monospace;
       max-height: 130px;
       min-height: 130px;
 
@@ -449,13 +449,14 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 @media only screen and (max-width: 992px) {
   .product-list-wrapper { 
     .single-product {
-      max-width: 260px;
+      max-width: 300px;
       margin: auto;
       min-width: unset;
       .product-information { 
         padding: 0; 
-        .difficulty.length-1 { left: 18px !important; }
-        .difficulty.length-3 { left: 10px !important; }
+        .difficulty.length-1 { left: 23px !important; }
+        .difficulty.length-2 { left: 19px !important; }
+        .difficulty.length-3 { left: 11px !important; }
         .difficulty.length-4 { left: 8px !important; }
       }
     }
@@ -463,6 +464,11 @@ hr { width: 80%; margin-left: auto; margin-right: auto; }
 }
 // smaller than 976px
 @media only screen and (max-width: 976px) {
+  .product-list-wrapper {
+    .single-product {
+      .bottom-section { min-height: unset; max-height: unset; }
+    }
+  }
 }
 // smaller than 960 (hamburger appears)
 @media only screen and (max-width: 960px) {
