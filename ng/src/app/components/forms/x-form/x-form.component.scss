@@ -179,13 +179,12 @@ button[type="submit"] {
 
 input[type="password"] { padding-right: 55px; }
 .show-password-toggle {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   cursor: pointer;
   left: calc(100% - 45px);
-  height: 20px;
-  line-height: 20px;
+  height: 50px;
   // keep color on failed validation
   color: $main-orange-bg-color !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

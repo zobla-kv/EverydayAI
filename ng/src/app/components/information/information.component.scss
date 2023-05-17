@@ -1,0 +1,15 @@
+@import '../../styles/variables.scss';
+
+div { 
+  margin-top: 25px;
+  height: calc($viewport-height-without-header - 3rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  span {
+    position: relative;
+    top: -50px;
+  }
+}

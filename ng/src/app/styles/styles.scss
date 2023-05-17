@@ -177,6 +177,11 @@ header,
   color: $white-text !important;
 }
 
+.btn,
+.btn-reverse {
+  &:has(mat-spinner) { pointer-events: none; }
+}
+
 /* images */
 .main-logo { background-image: $main-logo; }
 
