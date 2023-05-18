@@ -60,7 +60,7 @@ export class HeaderComponent implements OnDestroy {
   ) {
 
     // *** avoid flickering ***
-    this._storageService.getUserFromSessionStorage() && (this.isAuthenticated = true);
+    this._storageService.getUserFromLocalStorage() && (this.isAuthenticated = true);
     this._storageService.getNumberOfItemsInCart() && (this.numberOfItemsInCart = this._storageService.getNumberOfItemsInCart());
     // ************************
 

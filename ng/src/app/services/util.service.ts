@@ -80,9 +80,23 @@ export class UtilService {
   * @returns void
   */
   appLoaded(): void {
-  !sessionStorage.getItem('new_session') && sessionStorage.setItem('new_session', 'true');
-  this.appLoaded$.next();
-}
+    document.cookie = 'new_session';
+    this.appLoaded$.next();
+  }
+
+/**
+  * Is user first visit in browser session
+  * used to track if animation should be triggered etc.
+  *
+  * @return boolean
+  */
+  isFirstVisit(): boolean {
+    let isFirstVisit = true;
+    if (document.cookie === 'new_session') {
+      isFirstVisit = false;
+    }
+    return isFirstVisit;
+  }
 
 /**
   * Emit auth button clicked event
@@ -116,20 +130,6 @@ export class UtilService {
     let paramValue = null;
     paramValue = this._route.snapshot.queryParamMap.get(param);
     return paramValue;
-  }
-
-/**
-  * Is user first visit in browser session
-  * used to track if animation should be triggered etc.
-  *
-  * @return boolean
-  */
-   isFirstVisit(): boolean {
-    let isFirstVisit = true;
-    if (sessionStorage.getItem('new_session')) {
-      isFirstVisit = false;
-    }
-    return isFirstVisit;
   }
 
 /**

@@ -25,7 +25,7 @@ body {
   position: relative;
   padding: 0 2rem 2rem 2rem;
 
-  &:has(.auth-form-page) { height: calc(100vh - 10rem); min-height: unset; }
+  &:has(.auth-form-page) { min-height: calc(100vh - 3rem); }
 }
 
 img {
