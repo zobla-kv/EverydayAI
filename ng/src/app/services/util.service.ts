@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReplaySubject, Subject } from 'rxjs';
 
+import { User as FirebaseUser } from '@angular/fire/auth';
+
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 
 import {
@@ -203,6 +205,33 @@ export class UtilService {
   rotateArrayToLeft(array: Array<any>): Array<any> {
     array.push(array.shift());
     return array;
+  }
+
+  /**
+  * For dealing with firebase default behaviour of loggin in user automatically 
+  * on register
+  * on login with unverified email
+  *
+  * @param user - firebase user
+  * @returns boolean - should be logged out?
+  */
+  reverseFirebaseAutoLogin(user: FirebaseUser): boolean {
+    if (!user) {
+      return false;
+    }
+    // check if user is logged by registration by checking if less than 10 seconds passed since registration
+    const registrationTime = Date.parse(user.metadata.creationTime as string);
+    const timeNow = Date.now();
+    if ((timeNow - registrationTime) / 1000 < 10) {
+      return true;
+    }
+
+    // check if user is logged in by login with unverified email
+    if (!user.emailVerified) {
+      return true;
+    }
+
+    return false;
   }
 
 }

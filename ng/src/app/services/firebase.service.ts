@@ -51,9 +51,7 @@ export class FirebaseService {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async (res: UserCredential | any) => {
       // firebase automatically logs in after register, prevent that
-      // get uid before that 
       const uid = res.user?.uid;
-      this.logout();
 
       // set displayName
       let profileUpdated = false;
@@ -61,7 +59,7 @@ export class FirebaseService {
       await res.user?.updateProfile({ displayName: user.name }).then(() => profileUpdated = true);
 
       /***** WRITE TO CUSTOM DB *****/
-      const isWritten = await this.writeUserToDb({...user, id: uid });
+      const isWritten = await this.writeUserToDb({ ...user, id: uid });
       // TODO: this step might not be needed (speed up if deleted)
       const tempUser = await this.getUserByEmail(user.email);
       if (!profileUpdated || !isWritten || !tempUser) {
@@ -103,7 +101,7 @@ export class FirebaseService {
 
       if (!loggedUserData.user?.emailVerified) {
         // firebase automatically logs in user even without email verified, prevent that
-        this.logout();
+        // this.logout();
         return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
 

@@ -69,6 +69,11 @@ export class AppComponent {
 
     // auth coming from firebase
     this._fireAuth.onAuthStateChanged(user => {
+      // to counter firebase default auto login behaviour
+      if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
+        this._authService.logout(false);
+        return;
+      }
       user ? this._authService.setUser(<User>user) : this._authService.setUser(null);
     });
     

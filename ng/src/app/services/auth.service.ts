@@ -81,19 +81,17 @@ export class AuthService {
     if (response.error) {
       return response;
     }
-    // TODO: causes user to be emitted twice, but this only happens on login
-    // check if this causes any issues?
-    // one way to eliminate is to check what method called setUser 
-    // and not trigger .next if it was 'login' method
     await this.setUser(response.user);
     this._router.navigate(['/']);
   }
 
   // logout user
-  async logout(): Promise<FirebaseAuthResponse | void> {
+  async logout(redirectToHomePage: boolean): Promise<FirebaseAuthResponse | void> {
     this._firebaseService.logout();
     this.setUser(null);
-    this._router.navigate(['/']);
+    if (redirectToHomePage) {
+      this._router.navigate(['/']);
+    }
   }
 
   ngOnDestroy() {
