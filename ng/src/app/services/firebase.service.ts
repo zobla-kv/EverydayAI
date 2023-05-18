@@ -105,6 +105,9 @@ export class FirebaseService {
         return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
 
+      // doesn't matter if it succeeded
+      this.updateLastActiveTime(loggedUserData.user)
+
       resolve(new FirebaseAuthResponse(loggedUserData.user, null));
     })
   }
@@ -153,11 +156,21 @@ export class FirebaseService {
     });
   }
 
+  // updates last active time on user
+  async updateLastActiveTime(user: any): Promise<void> {;
+    this._db.collection('Users').doc(user.uid).update({ lastActiveDate: new Date() });
+  }
+  
   // return value whether it succeeded
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
     let successfulWrite = true;
     // TODO: izbaci sifru odavde (sacuvaj negde drugde)
-    const customUser: CustomUser = { ...user, cart: { items: [], totalSum: 0 } }; 
+    const customUser: CustomUser = { 
+      ...user, 
+      cart: { items: [], totalSum: 0},
+      registrationDate: new Date(), 
+      lastActiveDate: new Date()
+    }; 
     await this._db.collection('Users').doc(user.id).set(customUser)
     .catch(err => {
       this._db.collection('FailedRegisterWrites').doc(user.email).set({ reason: err });
