@@ -44,10 +44,8 @@ export class FirebaseAuthResponse {
 const responseMessages: messageObject = {
   [FirebaseConstants.REGISTRATION_SUCCESSFUL]:
   'Registration succcessful. Verification mail is sent to your email address.',
-  [FirebaseConstants.REGISTRATION_WRITE_FAILED]:
+  [FirebaseConstants.REGISTRATION_FAILED]:
   'Registration failed. Please try again.',
-  [FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED]:
-  'Failed to send verification email. Resend by clicking below button.',
   [FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED]:
   'The email address is already in use by another account',
   [FirebaseConstants.USER_NOT_FOUND]:

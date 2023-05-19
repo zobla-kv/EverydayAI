@@ -156,8 +156,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
       case FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED:
         controlName = 'email'
         break;
-      case FirebaseConstants.REGISTRATION_WRITE_FAILED:
-      case FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED:
+      case FirebaseConstants.REGISTRATION_FAILED:
         return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(error.error));
       default:
     }

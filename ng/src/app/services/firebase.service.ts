@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, doc, increment } from '@angular/fire/firestore';
 
 // transform subscription into promise
 import { firstValueFrom, Observable } from 'rxjs';
@@ -46,7 +46,6 @@ export class FirebaseService {
 
   // register new user
   // TODO: duplicate name allowed?
-  // TODO: login form no password eye (not related to this place)
   register(user: RegisterUser): Promise<FirebaseAuthResponse> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async (res: UserCredential | any) => {
@@ -60,24 +59,23 @@ export class FirebaseService {
 
       /***** WRITE TO CUSTOM DB *****/
       const isWritten = await this.writeUserToDb({ ...user, id: uid });
-      // TODO: this step might not be needed (speed up if deleted)
-      const tempUser = await this.getUserByEmail(user.email);
-      if (!profileUpdated || !isWritten || !tempUser) {
-        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_WRITE_FAILED));
-        // delete user written by first createUserWithEmailAndPassword
-      }
-      /******************************/
-
       /***** SEND VERIFICATION EMAIL *****/
-      const isSent = await this._httpService.sendEmail(
-        { email: user.email, email_type: EmailType.ACTIVATION }
-      );
-      if (!isSent) {
-        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_VERIFICATION_EMAIL_FAILED));
-        // registration goes through but it fails to send verification link
-        // delete user written by first createUserWithEmailAndPassword
+      const isSent = await this._httpService.sendEmail({ email: user.email, email_type: EmailType.ACTIVATION });
+      // get user data to return to auth service (then can be used for passing email to information component)
+      // TODO: this step might not be needed (speed up if deleted)
+      const tempUser: RegisterUser = await this.getUserByEmail(user.email);
+      if (!profileUpdated || !isWritten || !tempUser || !isSent) {
+        // TODO: these 2 return promises, but how to handle?
+        
+        // delete firebase user
+        res.user.delete();
+        // delete custom user
+        const usersCollection = this._db.collection('Users');
+        usersCollection.doc(res.user.uid).delete();
+
+        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_FAILED));
+        //TODO: delete user written by first createUserWithEmailAndPassword !!
       }
-      /***********************************/
 
       // registration successful
       return Promise.resolve(new FirebaseAuthResponse(tempUser, null));
@@ -130,7 +128,7 @@ export class FirebaseService {
       if (!isSent) {
         // TODO: no resend option
         // also for registration
-        return this._utilService.navigateToInformationComponent('Failed to send email verification link. Please try again.');
+        return this._utilService.navigateToInformationComponent('Failed to send email containing password reset link. Please try again.');
       }
       this._utilService.navigateToInformationComponent('Email containing password reset link has been sent to your email address.');
     })

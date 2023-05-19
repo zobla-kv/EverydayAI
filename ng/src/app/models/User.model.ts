@@ -36,5 +36,8 @@ export class CustomUser {
   gender: string;
   cart: ShoppingCart;
   // used for registration and login
+  // TODO: exposed
   password?: string;
+  registrationDate: Date;
+  lastActiveDate: Date;
 }
