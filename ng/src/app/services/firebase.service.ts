@@ -126,8 +126,6 @@ export class FirebaseService {
       // send email
       const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });
       if (!isSent) {
-        // TODO: no resend option
-        // also for registration
         return this._utilService.navigateToInformationComponent('Failed to send email containing password reset link. Please try again.');
       }
       this._utilService.navigateToInformationComponent('Email containing password reset link has been sent to your email address.');

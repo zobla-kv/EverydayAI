@@ -33,7 +33,7 @@
           <!-- ************ phase 2 *********** -->
           <div class="form-group" *ngIf="phase == 2">
             <input
-              type="password"
+              type="{{ showPassword ? 'text' : 'password' }}"
               class="form-style"
               id="regpassword"
               name="regpassword"

@@ -60,8 +60,6 @@ export class InformationComponent implements OnInit {
   // TODO: block /verify route
   ngOnInit() {
     const message = window.history.state.message;
-
-    console.log('message: ', message)
     message && (this.message = message);
 
     this.mode = this._utilService.getParamFromUrl('mode');
@@ -70,6 +68,7 @@ export class InformationComponent implements OnInit {
     }
 
     this.encryptedEmail = this._utilService.getParamFromUrl('type');
+
   }
 
   handleMode(mode: string) {
@@ -112,7 +111,7 @@ export class InformationComponent implements OnInit {
     .catch(err => {
       // auth/invalid-code
       this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
-      // this.showResendButton = true;
+      this.showResendButton = true;
     })
   }
 
@@ -120,38 +119,36 @@ export class InformationComponent implements OnInit {
   async handleResendCode() {
     this.showSpinner = true;
     this.message = 'Sending email...';
-    if (this.mode === 'verifyEmail') {
-      const email = await this.getDecryptedEmail();
-      if (!email) {
-        this.handleResendCodeFailed();
-        return;
-      }
 
-      const isSent = await this._http.sendEmail({ email, email_type: EmailType.ACTIVATION })
-      if (!isSent) {
-        this.handleResendCodeFailed();
-        return;
-      }
-      
-      this.handleResendCodeSucceded();
-    }
+    const email = await this.getDecryptedEmail();
+    if (!email) {
+      this.handleResendCodeFailed();
+      return;
+    };
 
-    if (this.mode === 'resetPassword') {
+    const isSent = await this._http.sendEmail({ 
+      email, 
+      email_type: this.mode === 'verifyEmail' ? EmailType.ACTIVATION : EmailType.RESET_PASSWORD 
+    });
 
-    }
+    if (!isSent) {
+      this.handleResendCodeFailed();
+      return;
+    };
 
+    this.handleResendCodeSucceded();
   }
 
   // actions after resend code was send succesfully to email
   handleResendCodeSucceded() {
     this.showResendButton = false;
     this.showSpinner = false;
-    this.message = 'Email containing verification link sent succesfully.'
+    this.message = 'Email sent succesfully.'
   }
   // actions after resend code failed to be sent to email
   handleResendCodeFailed() {
     this.showSpinner = false;
-    this.message = 'Failed to send email containing verification link. Please try again.'
+    this.message = 'Failed to send email. Please try again.'
   }
 
   // gets key and decrypts email
