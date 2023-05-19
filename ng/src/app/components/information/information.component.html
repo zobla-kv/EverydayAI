@@ -1,4 +1,21 @@
-<div>
+<div class="wrapper">
   <span>{{ message }}</span>
-</div>
 
+  <div>
+
+    <ng-template #noSpinner>
+      <button *ngIf="showResendButton" class="btn" (click)="handleResendCode()">
+        <span>Request new</span>
+      </button>
+    </ng-template>
+    
+    <mat-spinner
+      *ngIf="showSpinner; else noSpinner"
+      class="mx-auto"
+      diameter="25"
+      strokeWidth="4"
+    ></mat-spinner>
+
+  </div>
+
+</div>

@@ -1,15 +1,19 @@
 @import '../../styles/variables.scss';
 
-div { 
+div.wrapper { 
   margin-top: 25px;
   height: calc($viewport-height-without-header - 3rem);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  position: relative;
+  top: -50px;
 
-  span {
-    position: relative;
-    top: -50px;
+  > div {
+    margin-top: 1.5rem;
+    width: 120px;
+    height: 40px;
   }
 }

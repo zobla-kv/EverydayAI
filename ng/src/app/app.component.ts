@@ -80,6 +80,7 @@ export class AppComponent {
     // custom user set
     // for now this is only deteremining factor for app load
     this._authService.userState$.pipe(first()).subscribe(user => {
+      // TODO: preloader not visible immediately on page land (dark background)
       if (this.isFirstVisit) {
         setTimeout(() => this.runPreloadAnimation = true, 2000);
         return;

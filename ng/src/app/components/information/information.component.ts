@@ -3,12 +3,17 @@ import { Router } from '@angular/router';
 
 import { getAuth, applyActionCode, verifyPasswordResetCode } from '@angular/fire/auth';
 
+import * as CryptoJS from 'crypto-js';
+
 import {
+  HttpService,
   UtilService
 } from '@app/services';
 
 import { 
-  FirebaseAuthResponse
+  EmailType,
+  FirebaseAuthResponse,
+  FirebaseConstants
 } from '@app/models';
 
 /**
@@ -26,26 +31,45 @@ import {
 })
 export class InformationComponent implements OnInit {
 
+  // TODO: verification link redirected to login form
+  // THIS SHOULD HAPPEN IF CODE IS VERIFIED WELL BUT PRELOADER FROM EMAIl MAKES IT LOOK LIKE A BUG
+
   message: string = '';
 
-  // **** for firebase functionality (email verification etc.) **** //
+  // for firebase functionality (email verification etc.)
   mode: string | null = null;
-  // ************************************************************* //
+
+  // enctypted email
+  encryptedEmail: string | null;
+
+  // user email
+  email: string | null;
+
+  // show resend button
+  showResendButton = false;
+
+  // show button spinner
+  showSpinner = false;
 
   constructor(
     private _utilService: UtilService,
-    private _router: Router
+    private _router: Router,
+    private _http: HttpService
   ) {}
 
   // TODO: block /verify route
-  ngOnInit(): void {
+  ngOnInit() {
     const message = window.history.state.message;
+
+    console.log('message: ', message)
     message && (this.message = message);
 
     this.mode = this._utilService.getParamFromUrl('mode');
     if (this.mode) {
       this.handleMode(this.mode)
     }
+
+    this.encryptedEmail = this._utilService.getParamFromUrl('type');
   }
 
   handleMode(mode: string) {
@@ -55,10 +79,11 @@ export class InformationComponent implements OnInit {
       case 'resetPassword':
         return this.handlePasswordResetLink();
       default:
-        this.message = 'Invalid mode';
+        this.message = 'Invalid mode.';
     }
   }
 
+  // read verification code and verify email
   handleEmailVerificationLink() {
     this.message = 'Verifying email address...'
     const auth = getAuth();
@@ -70,9 +95,11 @@ export class InformationComponent implements OnInit {
     })
     .catch(err => {
       this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
+      this.showResendButton = true;
     })
   }
 
+  // read verification code and go to reset form
   handlePasswordResetLink() {
     this.message = 'Verifying code...'
     const auth = getAuth();
@@ -85,6 +112,57 @@ export class InformationComponent implements OnInit {
     .catch(err => {
       // auth/invalid-code
       this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
+      // this.showResendButton = true;
     })
   }
+
+  // sends new code to email
+  async handleResendCode() {
+    this.showSpinner = true;
+    this.message = 'Sending email...';
+    if (this.mode === 'verifyEmail') {
+      const email = await this.getDecryptedEmail();
+      if (!email) {
+        this.handleResendCodeFailed();
+        return;
+      }
+
+      const isSent = await this._http.sendEmail({ email, email_type: EmailType.ACTIVATION })
+      if (!isSent) {
+        this.handleResendCodeFailed();
+        return;
+      }
+      
+      this.handleResendCodeSucceded();
+    }
+
+    if (this.mode === 'resetPassword') {
+
+    }
+
+  }
+
+  // actions after resend code was send succesfully to email
+  handleResendCodeSucceded() {
+    this.showResendButton = false;
+    this.showSpinner = false;
+    this.message = 'Email containing verification link sent succesfully.'
+  }
+  // actions after resend code failed to be sent to email
+  handleResendCodeFailed() {
+    this.showSpinner = false;
+    this.message = 'Failed to send email containing verification link. Please try again.'
+  }
+
+  // gets key and decrypts email
+  async getDecryptedEmail() {
+    return this._http.getPrivateKey()
+    .then(key => {
+      const bytes  = CryptoJS.AES.decrypt(this.encryptedEmail as string, key);
+      const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
+      return decryptedEmail;
+    })
+    .catch(err => err);
+  }
+
 }

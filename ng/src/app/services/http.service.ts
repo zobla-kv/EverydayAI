@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { catchError, map } from 'rxjs';
 
@@ -27,6 +27,19 @@ export class HttpService {
         catchError(async () => false)
       )
       .subscribe(isSent => resolve(isSent));
+    })
+  }
+
+  // gets private key from BE
+  getPrivateKey(): Promise<string> {
+    return new Promise((resolve) => {
+      this._http
+      .get<any>('http://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
+      .pipe(
+        map(data => data.response),
+        catchError(async () => '')
+      )
+      .subscribe(key => resolve(key));
     })
   }
 

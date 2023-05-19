@@ -11,4 +11,8 @@ router.post('/send-email', async (req, res) => {
   res.status(200).send({ response: labels.EMAIL_SEND_SUCCESFUL });
 });
 
+router.get('/crypto', async (req, res) => {
+  res.status(200).send({ response: process.env.CRYPT_PRIVATE_KEY });
+});
+
 module.exports = router;

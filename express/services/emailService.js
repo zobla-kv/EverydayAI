@@ -1,6 +1,8 @@
-const nodemailer = require('nodemailer');
-const firebaseService = require('./firebaseService');
 const path = require('path');
+const nodemailer = require('nodemailer');
+const CryptoJS = require('crypto-js');
+
+const firebaseService = require('./firebaseService');
 
 const { appConstants, labels } = require('../constants');
 const styles = require('../assets/styles');
@@ -12,11 +14,21 @@ module.exports.sendEmail = async function (email, type) {
   }
 
   let verificationLink = await firebaseService.generateEmailLink(email, type);
+  if (!verificationLink) {
+    // in case too many requests in small time
+    return false;
+  }
+  
   verificationLink = verificationLink.replace('oobCode', 'code');
 
   const modifiedUrl = new URL(verificationLink);
   modifiedUrl.searchParams.delete('apiKey');
   modifiedUrl.searchParams.delete('continueUrl');
+
+  // encrypt email address
+  const encryptedEmail = CryptoJS.AES.encrypt(email, process.env.CRYPT_PRIVATE_KEY);
+
+  modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
   // capitalize first letter
   const subject = `${type[0].toUpperCase() + type.slice(1)} 🐕`;
@@ -82,7 +94,8 @@ module.exports.sendEmail = async function (email, type) {
       }
     ]
   })
-  .then(() => isSent = true);
+  .then(() => isSent = true)
+  .catch(() => isSent = false);
 
   return isSent;
 };
