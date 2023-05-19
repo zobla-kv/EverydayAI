@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -116,8 +116,8 @@ export class UtilService {
   * @param message string
   * @returns void
   */
-  navigateToInformationComponent(message: string): void {
-    this._router.navigate(['auth', 'verify'], { state: { message } });
+  navigateToInformationComponent(message: string, queryParams?: Params): void {
+    this._router.navigate(['auth', 'verify'], { state: { message }, queryParams });
   }
 
 /**
