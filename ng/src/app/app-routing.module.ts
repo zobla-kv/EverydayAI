@@ -10,6 +10,10 @@ import {
   ShoppingCartComponent
 } from '@app/components';
 
+
+import { LoginGuardService } from './services/login-guard.service';
+import { LogoutGuardService } from './services/logout-guard.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -18,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    component: ProductPageComponent,
+    component: ProductPageComponent
   },
   {
     path: 'auth',
@@ -27,19 +31,24 @@ const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
       { path: 'login', component: AuthFormComponent },
       { path: 'register', component: AuthFormComponent }
-    ]
+    ],
+    canActivate: [LogoutGuardService]
   },
   {
+    // TODO: kako da svaki auth/veirfy bude redirected na auth ako nema mode ili neki parametar
     path: 'auth/verify',
-    component: InformationComponent
+    component: InformationComponent,
+    canActivate: [LogoutGuardService]
   },
   { 
     path: 'reset-password', 
-    component: XFormComponent 
+    component: XFormComponent,
+    canActivate: [LogoutGuardService]
   },
   { 
     path: 'cart', 
-    component: ShoppingCartComponent 
+    component: ShoppingCartComponent,
+    canActivate: [LoginGuardService]
   },
   // TODO: 404
   { 

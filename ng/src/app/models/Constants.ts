@@ -31,7 +31,8 @@ export class ToastConstants {
   static MESSAGES = {
     SOMETHING_WENT_WRONG: 'Something went wrong. Please try again.',
     ADDED_TO_CART: 'Product added to cart succesfuly.',
-    REMOVED_FROM_CART: 'Product removed from cart succesfuly.'
+    REMOVED_FROM_CART: 'Product removed from cart succesfuly.',
+    CANNOT_OPEN_PAGE: 'Failed to open page.'
   }
   
 }

@@ -1,9 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
-import { User } from '@angular/fire/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-
 import { first } from 'rxjs';
 
 import {
@@ -61,21 +58,10 @@ export class AppComponent {
 
   constructor(
     private _iconService: IconService,
-    private _fireAuth: AngularFireAuth,
     private _authService: AuthService,
     private _utilService: UtilService
   ) {
     this._iconService.addCustomIcons();
-
-    // auth coming from firebase
-    this._fireAuth.onAuthStateChanged(user => {
-      // to counter firebase default auto login behaviour
-      if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
-        this._authService.logout(false);
-        return;
-      }
-      user ? this._authService.setUser(<User>user) : this._authService.setUser(null);
-    });
     
     // custom user set
     // for now this is only deteremining factor for app load

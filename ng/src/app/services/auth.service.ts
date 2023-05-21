@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
+
+import { User } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 import {
   CustomUser,
@@ -30,13 +32,24 @@ export class AuthService {
   private _user: CustomUser | null = null;
 
   // subscribe to user state changes (update of cart etc.)
-  public userState$ = new Subject<CustomUser | null>();
+  public userState$ = new ReplaySubject<CustomUser | null>();
 
   constructor(
+    private _fireAuth: AngularFireAuth,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
     private _router: Router
-  ) { }
+  ) {
+    // auth coming from firebase
+    this._fireAuth.onAuthStateChanged(async user => {
+      // to counter firebase default auto login behaviour
+      if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
+        this.logout(false);
+        return;
+      }
+      user ? this.setUser(<User>user) : this.setUser(null);
+    });
+  }
 
   // set custom user (transfer from firebase user to custom user)
   async setUser(user: User | null): Promise<void> {
@@ -88,7 +101,7 @@ export class AuthService {
   // logout user
   async logout(redirectToHomePage: boolean): Promise<FirebaseAuthResponse | void> {
     this._firebaseService.logout();
-    this.setUser(null);
+    await this.setUser(null);
     if (redirectToHomePage) {
       this._router.navigate(['/']);
     }
