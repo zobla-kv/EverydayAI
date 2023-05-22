@@ -25,8 +25,8 @@
               class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
             </span>
             <span
-              *ngIf="form.get('email')?.hasError('user-not-found')"
-              class="form-text ms-1 dark-text fw-bold d-block">{{ form.get('email')?.getError('user-not-found') }}
+              *ngIf="form.get('email')?.hasError('auth/user-not-found')"
+              class="form-text ms-1 dark-text fw-bold d-block">{{ form.get('email')?.getError('auth/user-not-found') }}
             </span>
           </div>
           <!-- ******************************** -->

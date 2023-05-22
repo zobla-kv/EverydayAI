@@ -12,8 +12,7 @@ import {
 
 import { 
   EmailType,
-  FirebaseAuthResponse,
-  FirebaseConstants
+  FirebaseError
 } from '@app/models';
 
 /**
@@ -93,7 +92,7 @@ export class InformationComponent implements OnInit {
       setTimeout(() => this._router.navigate(['auth', 'login']), 2000);
     })
     .catch(err => {
-      this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
+      this.message = FirebaseError.getMessage(err.code);
       this.showResendButton = true;
     })
   }
@@ -110,7 +109,7 @@ export class InformationComponent implements OnInit {
     })
     .catch(err => {
       // auth/invalid-code
-      this.message = FirebaseAuthResponse.getMessage(FirebaseAuthResponse.formatError(err.code));
+      this.message = FirebaseError.getMessage(err.code);
       this.showResendButton = true;
     })
   }

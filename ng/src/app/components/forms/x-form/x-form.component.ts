@@ -2,17 +2,10 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {
-  Form,
-  FormType,
-  FirebaseAuthResponse,
   FirebaseError,
-  FirebaseConstants
 } from '@app/models';
 
 import {
-  AuthService,
-  UtilService,
-  HttpService,
   FirebaseService
 } from '@app/services';
 
@@ -78,18 +71,18 @@ export class XFormComponent {
       response = await this._firebaseService.sendPasswordResetEmail(this.form.get('email')?.value);
     }
     // if it returns it has an error, otherwise is handled in firebase service
-    if (response?.error) {
+    if (response) {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
-      return this.handleError(form, response.error);
+      return this.handleError(form, response);
     }
   }
 
   // handle error based on error type
   // only error is that user is not found
   handleError(form: FormGroup, error: FirebaseError) {
-    form.controls['email'].setErrors({ [error.error]: error.errorMessage })
+    form.controls['email'].setErrors({ [error.errorCode]: error.errorMessage })
   }
 
   // validate form before submitting

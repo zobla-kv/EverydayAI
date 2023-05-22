@@ -32,8 +32,8 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
                       </span>
                       <span
-                        *ngIf="loginForm.form.get('email')?.hasError('too-many-requests')"
-                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('too-many-requests') }}
+                        *ngIf="loginForm.form.get('email')?.hasError('auth/too-many-requests')"
+                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('auth/too-many-requests') }}
                       </span>
                       <span
                         *ngIf="loginForm.form.get('email')?.hasError('email-not-verified')"
@@ -129,8 +129,8 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
                       </span>
                       <span
-                        *ngIf="registerForm.form.get('email')?.hasError('email-already-in-use')"
-                        class="form-text ms-1 dark-text fw-bold d-block"> {{ registerForm.form.get('email')?.getError('email-already-in-use')}}
+                        *ngIf="registerForm.form.get('email')?.hasError('auth/email-already-in-use')"
+                        class="form-text ms-1 dark-text fw-bold d-block"> {{ registerForm.form.get('email')?.getError('auth/email-already-in-use')}}
                       </span>
                     </div>
                     <div class="form-group mt-2">

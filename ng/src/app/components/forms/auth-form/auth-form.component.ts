@@ -2,18 +2,18 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import {
   Form,
   FormType,
-  FirebaseAuthResponse,
   FirebaseError,
   FirebaseConstants
 } from '@app/models';
 
 import {
   AuthService,
+  ToastService,
   UtilService
 } from '@app/services';
 
@@ -52,7 +52,8 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _utilService: UtilService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _toast: ToastService
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
@@ -126,30 +127,31 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // submit form
   async submitForm(form: Form) {
     this.showSpinner = true;
-    let response: FirebaseAuthResponse | void;
+    let response: FirebaseError | void;
     if (form.type === FormType.LOGIN) {
       response = await this._authService.login(form.form.getRawValue());
     } else {
       response = await this._authService.register(form.form.getRawValue());
     }
     // if it returns it has an error, otherwise is handled in auth service
-    if (response?.error) {
+    if (response) {
       // TODO: uncomment for prod
       // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
-      return this.handleError(form.form, response.error);
+      return this.handleError(form.form, response);
     }
   }
 
   // handle error based on error type
   handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
-    switch(error.error) {
+    switch(error.errorCode) {
       // in below case set error directly on form to avoid fields getting red
       // do not show what exactly is wrong (better security)
-      case FirebaseConstants.LOGIN_WRONG_CREDENTIALS:
+      case FirebaseConstants.LOGIN_USER_NOT_FOUND:
+      case FirebaseConstants.LOGIN_WRONG_PASSWORD:
         return form.setErrors({ 
-          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: FirebaseAuthResponse.getMessage(FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
+          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: FirebaseError.getMessage(FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
         })
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
@@ -157,10 +159,12 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
         controlName = 'email'
         break;
       case FirebaseConstants.REGISTRATION_FAILED:
-        return this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(error.error));
+        return this._utilService.navigateToInformationComponent(FirebaseError.getMessage(FirebaseConstants.REGISTRATION_FAILED));
       default:
+        // return this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG);
+        return this._toast.open(error.errorMessage);
     }
-    form.controls[controlName].setErrors({ [error.error]: error.errorMessage })
+    form.controls[controlName].setErrors({ [error.errorCode]: error.errorMessage })
   }
 
   // validate form before submitting

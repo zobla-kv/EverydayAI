@@ -7,17 +7,19 @@ export class AppConstants {
 // TODO: remove auth/ ?
 export class FirebaseConstants {
 
+  /* firebase responses */
+  static REGISTRATION_EMAIL_ALREADY_USED = 'auth/email-already-in-use';
+  static LOGIN_WRONG_PASSWORD = 'auth/wrong-password'
+  static LOGIN_USER_NOT_FOUND = 'auth/user-not-found';
+  static LOGIN_TOO_MANY_REQUESTS = 'auth/too-many-requests';
+  
+  /* custom responses */
   static REGISTRATION_SUCCESSFUL = 'registration-successful';
   static REGISTRATION_FAILED = 'verification-email-sending-failed';
-  static REGISTRATION_EMAIL_ALREADY_USED = 'email-already-in-use';
-
   static LOGIN_WRONG_CREDENTIALS = 'wrong-credentials';
-  static LOGIN_TOO_MANY_REQUESTS = 'too-many-requests';
+  static EMAIL_VERIFY_INVALID_CODE = 'invalid-action-code'
   static LOGIN_EMAIL_NOT_VERIFIED = 'email-not-verified'
 
-  static USER_NOT_FOUND = 'user-not-found';
-
-  static INVALID_CODE = 'invalid-action-code'
 }
 
 // constants used for toast

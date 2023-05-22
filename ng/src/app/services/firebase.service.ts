@@ -11,10 +11,10 @@ import { firstValueFrom, Observable } from 'rxjs';
 import {
   CustomUser,
   RegisterUser,
-  FirebaseAuthResponse,
+  FirebaseError,
   FirebaseConstants,
   EmailType,
-  Product
+  Product,
 } from '@app/models';
 
 import {
@@ -46,7 +46,7 @@ export class FirebaseService {
 
   // register new user
   // TODO: duplicate name allowed?
-  register(user: RegisterUser): Promise<FirebaseAuthResponse> {
+  register(user: RegisterUser): Promise<FirebaseError | void> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async (res: UserCredential | any) => {
       // firebase automatically logs in after register, prevent that
@@ -73,55 +73,48 @@ export class FirebaseService {
         const usersCollection = this._db.collection('Users');
         usersCollection.doc(res.user.uid).delete();
 
-        return Promise.resolve(new FirebaseAuthResponse(null, FirebaseConstants.REGISTRATION_FAILED));
+        return Promise.resolve(new FirebaseError(FirebaseConstants.REGISTRATION_FAILED));
         //TODO: delete user written by first createUserWithEmailAndPassword !!
       }
 
       // registration successful
-      return Promise.resolve(new FirebaseAuthResponse(tempUser, null));
+      return Promise.resolve();
     })
-    .catch(err => Promise.resolve(new FirebaseAuthResponse(null, FirebaseAuthResponse.formatError(err.code))));
+    // TODO: no handler for network failure, just form failures
+    .catch(err => Promise.resolve(new FirebaseError(err.code)));
   }
 
   // log in user
-  login(user: RegisterUser): Promise<FirebaseAuthResponse> {
-    return new Promise(async (resolve) => {
-      // loginResponse.user can be used for many things (emailVerified etc.)
-      // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
-      const loggedUserData = await this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
-      .catch(err => { resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_WRONG_CREDENTIALS)) });
-      
-      if (!loggedUserData) {
-        // this if means signIn went into catch block
-        // does not stop execution so stop it manually
-        return;
-      }
-
-      if (!loggedUserData.user?.emailVerified) {
+  login(user: RegisterUser): Promise<FirebaseError | void> {
+    // loginResponse.user can be used for many things (emailVerified etc.)
+    // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
+    return this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
+    .then(async (userData: any) => {
+      if (!userData.user?.emailVerified) {
         // firebase automatically logs in user even without email verified, prevent that
-        // this.logout();
-        return resolve(new FirebaseAuthResponse(null, FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
+        return Promise.resolve(new FirebaseError(FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
-
       // doesn't matter if it succeeded
-      this.updateLastActiveTime(loggedUserData.user)
-
-      resolve(new FirebaseAuthResponse(loggedUserData.user, null));
+      this.updateLastActiveTime(userData.user);
+      // login succeeded
+      return Promise.resolve();
     })
+    // resolve in catch leads to then
+    .catch(err => Promise.resolve(new FirebaseError(err.code)));
   }
 
   // log out user
-  logout(): void {
+  async logout(): Promise<void> {
     this._fireAuth.signOut();
   }
 
   // check if user exists and the send email
-  sendPasswordResetEmail(email: string): Promise<FirebaseAuthResponse | null> {
+  sendPasswordResetEmail(email: string): Promise<FirebaseError | null> {
     return new Promise(async (resolve) => {
       // check if user exists
       const response = await this._fireAuth.fetchSignInMethodsForEmail(email);
       if (response.length === 0) {
-        return resolve(new FirebaseAuthResponse(null, FirebaseConstants.USER_NOT_FOUND))
+        return resolve(new FirebaseError(FirebaseConstants.LOGIN_USER_NOT_FOUND));
       }
       // send email
       const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });

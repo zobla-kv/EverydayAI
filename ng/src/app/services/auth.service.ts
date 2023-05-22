@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, first, skip } from 'rxjs';
 
 import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -8,7 +8,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   CustomUser,
   RegisterUser,
-  FirebaseAuthResponse,
+  FirebaseError,
   FirebaseConstants
 } from '@app/models';
 
@@ -32,7 +32,7 @@ export class AuthService {
   private _user: CustomUser | null = null;
 
   // subscribe to user state changes (update of cart etc.)
-  public userState$ = new ReplaySubject<CustomUser | null>();
+  public userState$ = new ReplaySubject<CustomUser | null>(1);
 
   constructor(
     private _fireAuth: AngularFireAuth,
@@ -42,6 +42,7 @@ export class AuthService {
   ) {
     // auth coming from firebase
     this._fireAuth.onAuthStateChanged(async user => {
+      console.log('auth state changed: ', user);
       // to counter firebase default auto login behaviour
       if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
         this.logout(false);
@@ -53,6 +54,7 @@ export class AuthService {
 
   // set custom user (transfer from firebase user to custom user)
   async setUser(user: User | null): Promise<void> {
+    console.log('set user fired');
     // TODO: what happens if db call fails
     // two users would be out of sync (fb user is there but custom isn't)
     // some error handling needed?
@@ -61,6 +63,7 @@ export class AuthService {
     } else {
       this._user = null;
     }
+    console.log('user state next: ', this._user);
     this.userState$.next(this._user);
   }
 
@@ -80,28 +83,31 @@ export class AuthService {
   }
 
   // register new user
-  async register(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
+  async register(user: RegisterUser): Promise<FirebaseError | void> {
     const response = await this._firebaseService.register(user);
-    if (response.error) {
+    console.log('register response: ', response);
+    if (response) {
       return response;
     }
-    this._utilService.navigateToInformationComponent(FirebaseAuthResponse.getMessage(FirebaseConstants.REGISTRATION_SUCCESSFUL));
+    this._utilService.navigateToInformationComponent(FirebaseError.getMessage(FirebaseConstants.REGISTRATION_SUCCESSFUL));
   }
 
   // login user
-  async login(user: RegisterUser): Promise<FirebaseAuthResponse | void> {
+  async login(user: RegisterUser): Promise<FirebaseError | void> {
     const response = await this._firebaseService.login(user);
-    if (response.error) {
+    console.log('login response: ', response);
+    if (response) {
       return response;
     }
-    await this.setUser(response.user);
-    this._router.navigate(['/']);
+    // skip old value from replaySubject (act as Subject)
+    this.userState$.pipe(skip(1), first()).subscribe(() => {
+      this._router.navigate(['/']);
+    });
   }
 
   // logout user
-  async logout(redirectToHomePage: boolean): Promise<FirebaseAuthResponse | void> {
-    this._firebaseService.logout();
-    await this.setUser(null);
+  async logout(redirectToHomePage: boolean): Promise<FirebaseError | void> {
+    await this._firebaseService.logout();
     if (redirectToHomePage) {
       this._router.navigate(['/']);
     }
