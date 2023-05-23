@@ -4,7 +4,7 @@ import { AnimationEvent } from '@angular/animations';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { map } from 'rxjs/internal/operators/map';
-import { first, Subscription } from 'rxjs';
+import { first } from 'rxjs';
 
 import {
   Product,
@@ -29,14 +29,6 @@ import animations from './product-page.animations';
 })
 export class ProductPageComponent implements OnInit {
 
-  // TODO: put directly in html?
-  // buying steps
-  // buyingSteps = [
-  //   { name: 'Order', icon: 'payment' },
-  //   { name: 'Delivery', icon: 'local_shipping' },
-  //   { name: 'Support', icon: 'record_voice_over' },
-  // ]
-
   @ViewChild('paginator') paginator: MatPaginator;
 
   // is first visit
@@ -59,9 +51,6 @@ export class ProductPageComponent implements OnInit {
 
   // number of loaded images
   numOfloadedImages = 0;
-
-  // subscibe to user state (change to number of cart items etc.)
-  customUserState$: Subscription;
 
   // is component loaded from another route (header etc.) or by initial land/refresh page?
   isLoadedFromAnotherRoute: boolean;
@@ -90,7 +79,7 @@ export class ProductPageComponent implements OnInit {
     } else {
       // fires on initial load after custom user object is stored
       // TODO: remove this. variable and unsubscribe if pipe(first()) is enough
-      this.customUserState$ = this._authService.userState$.pipe(first()).subscribe(() => this.fetchProducts());
+      this._authService.userState$.pipe(first()).subscribe(() => this.fetchProducts());
     }
 
   }
@@ -98,6 +87,7 @@ export class ProductPageComponent implements OnInit {
   fetchProducts(): void {
     this._firebaseService.getProducts()
     .pipe(
+      first(),
       // if logged in attach front end properties (action spinners, isInCart etc.)
       map((products: Product[]) => this._authService.getUser() ?
         products.map(product => this.addFrontendProperties(product)) :
@@ -245,10 +235,6 @@ export class ProductPageComponent implements OnInit {
   handleCartActionFailed(product: Product) {
     product.spinners.showCartActionSpinner = false;
     this._utilService.showDefaultErrorToast();
-  }
-
-  ngOnDestroy() {
-    this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
 }
