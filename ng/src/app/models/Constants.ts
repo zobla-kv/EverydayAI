@@ -12,12 +12,12 @@ export class FirebaseConstants {
   static LOGIN_WRONG_PASSWORD = 'auth/wrong-password'
   static LOGIN_USER_NOT_FOUND = 'auth/user-not-found';
   static LOGIN_TOO_MANY_REQUESTS = 'auth/too-many-requests';
+  static EMAIL_VERIFY_INVALID_CODE = 'auth/invalid-action-code'
   
   /* custom responses */
   static REGISTRATION_SUCCESSFUL = 'registration-successful';
   static REGISTRATION_FAILED = 'verification-email-sending-failed';
   static LOGIN_WRONG_CREDENTIALS = 'wrong-credentials';
-  static EMAIL_VERIFY_INVALID_CODE = 'invalid-action-code'
   static LOGIN_EMAIL_NOT_VERIFIED = 'email-not-verified'
 
 }
