@@ -15,6 +15,7 @@ import {
   FirebaseConstants,
   EmailType,
   Product,
+  Labels,
 } from '@app/models';
 
 import {
@@ -66,7 +67,6 @@ export class FirebaseService {
       const tempUser: RegisterUser = await this.getUserByEmail(user.email);
       if (!profileUpdated || !isWritten || !tempUser || !isSent) {
         // TODO: these 2 return promises, but how to handle?
-        
         // delete firebase user
         res.user.delete();
         // delete custom user
@@ -74,7 +74,6 @@ export class FirebaseService {
         usersCollection.doc(res.user.uid).delete();
 
         return Promise.resolve(new FirebaseError(FirebaseConstants.REGISTRATION_FAILED));
-        //TODO: delete user written by first createUserWithEmailAndPassword !!
       }
 
       // registration successful
@@ -119,9 +118,9 @@ export class FirebaseService {
       // send email
       const isSent = await this._httpService.sendEmail({ email, email_type: EmailType.RESET_PASSWORD });
       if (!isSent) {
-        return this._utilService.navigateToInformationComponent('Failed to send email containing password reset link. Please try again.');
+        return this._utilService.navigateToInformationComponent(Labels.PASSWORD_RESET_EMAIL_SENT_FAILED);
       }
-      this._utilService.navigateToInformationComponent('Email containing password reset link has been sent to your email address.');
+      this._utilService.navigateToInformationComponent(Labels.PASSWORD_RESET_EMAIL_SENT_SUCCESS);
     })
   }
 
@@ -130,10 +129,10 @@ export class FirebaseService {
     // TODO: password can be same as old one, not really an issue?
     this._fireAuth.confirmPasswordReset(oobCode, password)
     .then(() => {
-      this._utilService.navigateToInformationComponent('Password updated succesfully. Redirecting to login page...');
+      this._utilService.navigateToInformationComponent(Labels.PASSWORD_UPDATED_SUCCESS);
       setTimeout(() => this._router.navigate(['auth', 'login']), 2000);
     })
-    .catch(() => this._utilService.navigateToInformationComponent('Failed to update password. Please try again.'))
+    .catch(() => this._utilService.navigateToInformationComponent(Labels.PASSWORD_UPDATED_FAILED))
   }
 
   // TODO: change RegisterUser -> User later

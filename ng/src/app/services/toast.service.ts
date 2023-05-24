@@ -27,5 +27,10 @@ export class ToastService extends MatSnackBar {
     super.dismiss();
   }
 
+  // Shows 'Something went wrong. Please try again.' toast message.
+  showDefaultError(): void {
+    this.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+  }
+
   
 }

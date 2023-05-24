@@ -234,7 +234,7 @@ export class ProductPageComponent implements OnInit {
   // after product failed to be added/removed to cart
   handleCartActionFailed(product: Product) {
     product.spinners.showCartActionSpinner = false;
-    this._utilService.showDefaultErrorToast();
+    this._toast.showDefaultError();
   }
 
 }

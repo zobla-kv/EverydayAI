@@ -32,12 +32,12 @@ export class HttpService {
 
   // gets private key from BE
   getPrivateKey(): Promise<string> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this._http
       .get<any>('http://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
-        catchError(async () => '')
+        catchError(async () => reject(''))
       )
       .subscribe(key => resolve(key));
     })

@@ -34,7 +34,7 @@ const responseMessages: messageObject = {
   [FirebaseConstants.REGISTRATION_SUCCESSFUL]:
   'Registration succcessful. Verification mail is sent to your email address.',
   [FirebaseConstants.REGISTRATION_FAILED]:
-  'Registration failed. Please try again.',
+  'Something went wrong. Please try again.',
   [FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED]:
   'The email address is already in use by another account',
   [FirebaseConstants.LOGIN_USER_NOT_FOUND]:
@@ -63,3 +63,74 @@ export enum EmailType {
   ACTIVATION = 'activation',
   RESET_PASSWORD = 'reset password'
 }
+
+// SCENARIOS THAT ARE TESTED WITH AUTH
+// description: is it working?
+
+/* scenarion 1: 
+
+  register with express OFF: OK
+
+*/
+/* scenarion 2: 
+
+  register with express ON: OK
+
+*/
+/* scenarion 3: 
+
+  register with existing user: OK
+
+*/
+/* scenarion 4:
+
+  login with express OFF: N/A - Express not used for this 
+
+*/
+/* scenarion 5:
+
+  login with wrong password or email: OK
+
+*/
+/* scenarion 6: 
+
+  login with unverified email: OK
+
+*/
+/* scenarion 7: 
+
+  email verification: OK
+
+*/
+/* scenarion 8: 
+
+  login after email verification: OK
+
+*/
+/* scenarion 8: 
+
+  reset password unexisting user: OK
+
+*/
+/* scenarion 10: 
+
+  reset password express OFF: OK
+
+*/
+/* scenarion 11: 
+
+  reset password express ON: OK (whole process)
+
+*/
+/* scenarion 12: 
+
+  use already existing email verification code: OK
+
+*/
+/* scenarion 13: 
+
+  use already existing password reset code: OK
+
+*/
+
+// email verification after it is already been verified: allowed (doesn't cause any damage)

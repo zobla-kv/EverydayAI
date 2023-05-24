@@ -8,7 +8,8 @@ import {
   Form,
   FormType,
   FirebaseError,
-  FirebaseConstants
+  FirebaseConstants,
+  ToastConstants
 } from '@app/models';
 
 import {
@@ -142,6 +143,9 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // TODO: go to login from register leads to home page
+  // has to do with routing probably
+
   // handle error based on error type
   handleError(form: FormGroup, error: FirebaseError) {
     let controlName = '';
@@ -151,7 +155,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
       case FirebaseConstants.LOGIN_USER_NOT_FOUND:
       case FirebaseConstants.LOGIN_WRONG_PASSWORD:
         return form.setErrors({ 
-          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: FirebaseError.getMessage(FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
+          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: (FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
         })
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
@@ -159,10 +163,9 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
         controlName = 'email'
         break;
       case FirebaseConstants.REGISTRATION_FAILED:
-        return this._utilService.navigateToInformationComponent(FirebaseError.getMessage(FirebaseConstants.REGISTRATION_FAILED));
+        return this._utilService.navigateToInformationComponent(error.errorMessage);
       default:
-        // return this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG);
-        return this._toast.open(error.errorMessage);
+        return this._toast.showDefaultError();
     }
     form.controls[controlName].setErrors({ [error.errorCode]: error.errorMessage })
   }

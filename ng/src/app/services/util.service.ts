@@ -116,8 +116,8 @@ export class UtilService {
   * @param message string
   * @returns void
   */
-  navigateToInformationComponent(message: string, queryParams?: Params): void {
-    this._router.navigate(['auth', 'verify'], { state: { message }, queryParams });
+  navigateToInformationComponent(message: string): void {
+    this._router.navigate(['auth', 'verify'], { state: { message }, queryParams: { mode: 'info' } });
   }
 
 /**
@@ -163,16 +163,6 @@ export class UtilService {
   */
   getStyleValueWithoutPx(value: string): number {
     return parseInt(value.replace(/px/,''));
-  }
-
-/**
-  * Shows 'Something went wrong. Please try again.' toast message.
-  *
-  * @param object 
-  * @returns void
-  */
-  showDefaultErrorToast(): void {
-    this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
   }
 
 /**

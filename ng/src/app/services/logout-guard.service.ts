@@ -8,7 +8,7 @@ import { ToastConstants } from '../models/Constants';
 @Injectable({
   providedIn: 'root'
 })
-export class LogoutGuardService implements CanActivate {
+export class LogoutGuard implements CanActivate {
 
   constructor(
     private _authService: AuthService,

@@ -12,23 +12,21 @@ import {
 
 import { 
   EmailType,
-  FirebaseError
+  FirebaseError,
+  Labels
 } from '@app/models';
 
 /**
- * Used to display informational message on empty route
- * message is derived from route params
- * 
- * Another functionality is to land from email links like
- * email verification and password reset
+ * Used to handle email verification and password reset
+ * landing from email
  *
  */
 @Component({
-  selector: 'app-information',
-  templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss']
+  selector: 'app-auth-verify',
+  templateUrl: './auth-verify.component.html',
+  styleUrls: ['./auth-verify.component.scss']
 })
-export class InformationComponent implements OnInit {
+export class AuthVerify implements OnInit {
 
   // TODO: verification link redirected to login form
   // THIS SHOULD HAPPEN IF CODE IS VERIFIED WELL BUT PRELOADER FROM EMAIl MAKES IT LOOK LIKE A BUG
@@ -36,13 +34,16 @@ export class InformationComponent implements OnInit {
   message: string = '';
 
   // for firebase functionality (email verification etc.)
-  mode: string | null = null;
+  mode: string;
+
+  // firebase validation code
+  actionCode: string;
 
   // enctypted email
-  encryptedEmail: string | null;
+  encryptedEmail: string;
 
   // user email
-  email: string | null;
+  email: string;
 
   // show resend button
   showResendButton = false;
@@ -53,29 +54,56 @@ export class InformationComponent implements OnInit {
   constructor(
     private _utilService: UtilService,
     private _router: Router,
-    private _http: HttpService
+    private _httpService: HttpService
   ) {}
 
-  // TODO: block /verify route
-  ngOnInit() {
-    const message = window.history.state.message;
-    message && (this.message = message);
-
-    this.mode = this._utilService.getParamFromUrl('mode');
-    if (this.mode) {
-      this.handleMode(this.mode)
+  async ngOnInit() {
+    
+    if (!this.validateUrlParams()) {
+      // block route if params are missing
+      this._router.navigate(['']);
+      return;
     }
 
-    this.encryptedEmail = this._utilService.getParamFromUrl('type');
-
+    if (this.mode !== 'info') {
+      const isDecrypted = await this.decryptEmail();
+      if (!isDecrypted) {
+        this.message = Labels.SOMETHING_WENT_WRONG;
+        return;
+      }
+    }
+  
+    this.handleMode(this.mode);
+  }
+  
+  // validate existence of 'mode', 'code' and 'type'
+  validateUrlParams(): boolean {
+    const mode = this._utilService.getParamFromUrl('mode');
+    if (mode === 'info') {
+      this.mode = mode;
+      return true;
+    }
+    const encryptedEmail = this._utilService.getParamFromUrl('type');
+    const code = this._utilService.getParamFromUrl('code');
+    if (!mode || !encryptedEmail || !code) {
+      return false;
+    }
+    this.mode = mode;
+    this.encryptedEmail = encryptedEmail;
+    this.actionCode = code;
+    return true;
   }
 
+  // handle different modes
   handleMode(mode: string) {
     switch(mode) {
       case 'verifyEmail':
         return this.handleEmailVerificationLink();
       case 'resetPassword':
         return this.handlePasswordResetLink();
+      case 'info':
+        this.message = window.history.state.message;
+        return;
       default:
         this.message = 'Invalid mode.';
     }
@@ -83,10 +111,12 @@ export class InformationComponent implements OnInit {
 
   // read verification code and verify email
   handleEmailVerificationLink() {
+    // TODO: possible to send verification email if it is already verified
+    // no way to retrieve firebase user by email
+    // either leave it as it is or add emailVerified field to customUser
+    // but then those 2 need to be in sync
     this.message = 'Verifying email address...'
-    const auth = getAuth();
-    const actionCode = this._utilService.getParamFromUrl('code') as string;
-    applyActionCode(auth, actionCode)
+    applyActionCode(getAuth(), this.actionCode)
     .then(res => {
       this.message = 'Email verified successfuly. Redirecting to login page...'
       setTimeout(() => this._router.navigate(['auth', 'login']), 2000);
@@ -100,12 +130,10 @@ export class InformationComponent implements OnInit {
   // read verification code and go to reset form
   handlePasswordResetLink() {
     this.message = 'Verifying code...'
-    const auth = getAuth();
-    const actionCode = this._utilService.getParamFromUrl('code') as string;
-    verifyPasswordResetCode(auth, actionCode)
+    verifyPasswordResetCode(getAuth(), this.actionCode)
     .then(res => {
       this.message = 'Code verification succesful. Redirecting to password update form...';
-      setTimeout(() => this._router.navigate(['reset-password'], { state: { phase: 2, code: actionCode }}), 2000);
+      setTimeout(() => this._router.navigate(['reset-password'], { state: { phase: 2, code: this.actionCode }}), 2000);
     })
     .catch(err => {
       // auth/invalid-code
@@ -119,14 +147,8 @@ export class InformationComponent implements OnInit {
     this.showSpinner = true;
     this.message = 'Sending email...';
 
-    const email = await this.getDecryptedEmail();
-    if (!email) {
-      this.handleResendCodeFailed();
-      return;
-    };
-
-    const isSent = await this._http.sendEmail({ 
-      email, 
+    const isSent = await this._httpService.sendEmail({ 
+      email: this.email, 
       email_type: this.mode === 'verifyEmail' ? EmailType.ACTIVATION : EmailType.RESET_PASSWORD 
     });
 
@@ -150,15 +172,20 @@ export class InformationComponent implements OnInit {
     this.message = 'Failed to send email. Please try again.'
   }
 
-  // gets key and decrypts email
-  async getDecryptedEmail() {
-    return this._http.getPrivateKey()
+  // decrypt email and set as property
+  async decryptEmail(): Promise<boolean> {
+    return this._httpService.getPrivateKey()
     .then(key => {
-      const bytes  = CryptoJS.AES.decrypt(this.encryptedEmail as string, key);
+      const bytes = CryptoJS.AES.decrypt(this.encryptedEmail, key);
       const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
-      return decryptedEmail;
+      if (!decryptedEmail) {
+        // if altered
+        throw new Error('');
+      }
+      this.email = decryptedEmail;
+      return true;
     })
-    .catch(err => err);
+    .catch(err => false);
   }
 
 }

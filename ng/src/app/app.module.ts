@@ -35,7 +35,7 @@ import {
   ProductPageComponent,
   AuthFormComponent,
   XFormComponent,
-  InformationComponent,
+  AuthVerify,
   ShoppingCartComponent,
   ToastComponent
 } from '@app/components';
@@ -55,7 +55,7 @@ import {
     ProductPageComponent,
     AuthFormComponent,
     XFormComponent,
-    InformationComponent,
+    AuthVerify,
     ShoppingCartComponent,
 
     // Directives

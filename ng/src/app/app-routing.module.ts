@@ -5,20 +5,21 @@ import {
   HomePageComponent,
   ProductPageComponent,
   AuthFormComponent,
-  InformationComponent,
+  AuthVerify,
   XFormComponent,
   ShoppingCartComponent
 } from '@app/components';
 
 
-import { LoginGuardService } from './services/login-guard.service';
-import { LogoutGuardService } from './services/logout-guard.service';
+import { 
+  LoginGuard,
+  LogoutGuard
+} from '@app/services';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent,
-    // pathMatch: 'full'
+    component: HomePageComponent
   },
   {
     path: 'products',
@@ -26,34 +27,27 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    component: AuthFormComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
-      { path: 'login', component: AuthFormComponent },
-      { path: 'register', component: AuthFormComponent }
+      { path: 'login',    component: AuthFormComponent, canActivate: [LogoutGuard] },
+      { path: 'register', component: AuthFormComponent, canActivate: [LogoutGuard] },
+      { path: 'verify',   component: AuthVerify }
     ],
-    canActivate: [LogoutGuardService]
-  },
-  {
-    // TODO: kako da svaki auth/veirfy bude redirected na auth ako nema mode ili neki parametar
-    path: 'auth/verify',
-    component: InformationComponent,
-    canActivate: [LogoutGuardService]
   },
   { 
     path: 'reset-password', 
     component: XFormComponent,
-    canActivate: [LogoutGuardService]
+    canActivate: [LogoutGuard]
   },
   { 
     path: 'cart', 
     component: ShoppingCartComponent,
-    canActivate: [LoginGuardService]
+    canActivate: [LoginGuard]
   },
   // TODO: 404
   { 
     path: '**', 
-    redirectTo: '' 
+    redirectTo: ''
   }
 
 ];

@@ -4,6 +4,18 @@ export class AppConstants {
   static STORAGE_NUM_OF_ITEMS_IN_CART_KEY = 'xAgketmaT';
 }
 
+export class Labels {
+  static SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
+  static PASSWORD_RESET_EMAIL_SENT_SUCCESS = 'Email containing password reset link has been sent to your email address.';
+  static PASSWORD_RESET_EMAIL_SENT_FAILED = 'Failed to send email containing password reset link. Please try again.';
+  static PASSWORD_UPDATED_SUCCESS = 'Password updated succesfully. Redirecting to login page...';
+  static PASSWORD_UPDATED_FAILED = 'Failed to update password. Please try again.';
+}
+
+// TODO: move firebase constants into firebase model
+// do same with others
+// call it constants inside so access firebasemodel.constants
+
 // TODO: remove auth/ ?
 export class FirebaseConstants {
 
