@@ -5,5 +5,3 @@ export * from './util.service';
 export * from './http.service';
 export * from './toast.service';
 export * from './storage-service.service';
-export * from './login-guard.service';
-export * from './logout-guard.service';

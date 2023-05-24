@@ -10,11 +10,10 @@ import {
   ShoppingCartComponent
 } from '@app/components';
 
-
 import { 
-  LoginGuard,
-  LogoutGuard
-} from '@app/services';
+  LoginGuard, 
+  LogoutGuard 
+} from './app.guard';
 
 const routes: Routes = [
   {
