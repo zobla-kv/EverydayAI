@@ -197,7 +197,7 @@ header.medium-screen {
           content: '';
           position: absolute;
           z-index: 1;
-          top: -$hamburger-menu-size / 6;
+          top: -10px;
           left: 0;
           width: 100%;
           height: $hamburger-menu-line-height;
@@ -206,7 +206,7 @@ header.medium-screen {
         }
         
         &:after {
-          top: $hamburger-menu-size / 6;
+          top: 10px;
         }
       }
     }

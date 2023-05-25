@@ -165,7 +165,7 @@ section .section-header {
     img.big { transform: scale(1.1) rotate(12deg); }
   }
   .experience {
-    padding: 0 4rem 0 0;
+    padding: 0 3rem 0 0;
     margin-top: 5rem;
     img.big { transform: scale(1.1) rotate(12deg); }
   }
@@ -756,7 +756,6 @@ section .section-header {
 .lets-talk-about-your-dog-section {
   flex-wrap: wrap;
   margin-top: 6rem;
-  margin-bottom: 2rem;
   width: 100%;
   border: 1px solid $main-orange-bg-color;
 

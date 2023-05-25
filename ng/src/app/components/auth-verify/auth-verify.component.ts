@@ -66,14 +66,18 @@ export class AuthVerify implements OnInit {
     }
 
     if (this.mode !== 'info') {
+      this.message = 'Verifying...';
+      this.showSpinner = true;
       const isDecrypted = await this.decryptEmail();
       if (!isDecrypted) {
         this.message = Labels.SOMETHING_WENT_WRONG;
+        this.showSpinner = false;
         return;
       }
     }
   
-    this.handleMode(this.mode);
+    await this.handleMode(this.mode);
+    this.showSpinner = false;
   }
   
   // validate existence of 'mode', 'code' and 'type'
@@ -95,7 +99,7 @@ export class AuthVerify implements OnInit {
   }
 
   // handle different modes
-  handleMode(mode: string) {
+  async handleMode(mode: string) {
     switch(mode) {
       case 'verifyEmail':
         return this.handleEmailVerificationLink();
@@ -115,7 +119,6 @@ export class AuthVerify implements OnInit {
     // no way to retrieve firebase user by email
     // either leave it as it is or add emailVerified field to customUser
     // but then those 2 need to be in sync
-    this.message = 'Verifying email address...'
     applyActionCode(getAuth(), this.actionCode)
     .then(res => {
       this.message = 'Email verified successfuly. Redirecting to login page...'
@@ -124,12 +127,11 @@ export class AuthVerify implements OnInit {
     .catch(err => {
       this.message = FirebaseError.getMessage(err.code);
       this.showResendButton = true;
-    })
+    });
   }
 
   // read verification code and go to reset form
   handlePasswordResetLink() {
-    this.message = 'Verifying code...'
     verifyPasswordResetCode(getAuth(), this.actionCode)
     .then(res => {
       this.message = 'Code verification succesful. Redirecting to password update form...';
@@ -139,7 +141,7 @@ export class AuthVerify implements OnInit {
       // auth/invalid-code
       this.message = FirebaseError.getMessage(err.code);
       this.showResendButton = true;
-    })
+    });
   }
 
   // sends new code to email

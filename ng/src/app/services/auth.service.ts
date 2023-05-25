@@ -54,11 +54,9 @@ export class AuthService {
 
   // set custom user (transfer from firebase user to custom user)
   async setUser(user: User | null): Promise<void> {
-    console.log('set user fired');
-    // TODO: what happens if db call fails
-    // two users would be out of sync (fb user is there but custom isn't)
-    // some error handling needed?
     if (user) {
+      // TODO: no error handling
+      // could set user to null and cause problems
       this._user = await this._firebaseService.getUserByUid(user.uid);
     } else {
       this._user = null;
@@ -74,8 +72,11 @@ export class AuthService {
   }
 
   // update user object to be in sync with DB
+  // TODO: add customUser param so it wouldn't rely on db call
   async updateUser(): Promise<CustomUser | void> {
     if (this._user) {
+      // TODO: no error handling
+      // could set user to null and cause problems
       this._user = await this._firebaseService.getUserByUid(this._user.id);
       this.userState$.next(this._user);
       return this._user;

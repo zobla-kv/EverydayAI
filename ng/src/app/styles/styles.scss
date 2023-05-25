@@ -12,18 +12,29 @@ body {
   // TODO: this is only for preloader to have it so it wouldn't appear after (causes page flick)
   overflow-y: scroll;
 
-  .header-wrapper, .page-wrapper, .footer-wrapper {
+  .header-wrapper {
+    // max-width: 1600px;
+    margin: 0;
+  }
+  .page-wrapper {
     max-width: 1600px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
     // TODO: check without it
     overflow: hidden;
+  }
+  .footer-wrapper {
+    margin: 0;
   }
 }
 
 .page-wrapper {
   min-height: 100vh;
   position: relative;
-  padding: 0 2rem 2rem 2rem;
+  // NOTE: 4rem for footer
+  padding: 0 2rem 4rem 2rem;
 
   &:has(.auth-form-page) { min-height: calc(100vh - 3rem); }
 }

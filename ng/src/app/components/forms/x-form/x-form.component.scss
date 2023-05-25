@@ -14,13 +14,11 @@ button[type="submit"] {
   height: auto;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  margin-top: 75px;
 }
 
 .card-3d-wrapper {
   width: 100%;
   height: 100%;
-  position:absolute;
   top: 0;
   left: 0;
   -webkit-transform-style: preserve-3d;
@@ -32,7 +30,6 @@ button[type="submit"] {
   width: 100%;
   height: auto;
   background-color: $main-orange-bg-color;
-  position: absolute;
   border-radius: 6px;
   left: 0;
   top: 0;

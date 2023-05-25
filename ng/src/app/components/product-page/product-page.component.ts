@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router} from '@angular/router';
 import { AnimationEvent } from '@angular/animations';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { map } from 'rxjs/internal/operators/map';
-import { first } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 
 import {
+  CustomUser,
   Product,
   ToastConstants
 } from '@app/models';
@@ -27,7 +28,7 @@ import animations from './product-page.animations';
   encapsulation: ViewEncapsulation.None,
   animations
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('paginator') paginator: MatPaginator;
 
@@ -55,6 +56,12 @@ export class ProductPageComponent implements OnInit {
   // is component loaded from another route (header etc.) or by initial land/refresh page?
   isLoadedFromAnotherRoute: boolean;
 
+  // current user (always this type because loginGuard)
+  user: CustomUser;
+
+  // user sub
+  userStateSub$: Subscription;
+
   constructor(
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
@@ -68,28 +75,27 @@ export class ProductPageComponent implements OnInit {
     this.isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
-
   // TODO: error handling
   // TODO: keep data when routing so it wouldn't reach DB every time
   ngOnInit(): void {
     this.showSpinner = true;
-    if (this.isLoadedFromAnotherRoute) {
-      // fires on change page because user is not emitted in that case
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
+      if (user) {
+        // TODO: use this user to customize html
+        // not used now??
+        this.user = user;
+      }
       this.fetchProducts();
-    } else {
-      // fires on initial load after custom user object is stored
-      // TODO: remove this. variable and unsubscribe if pipe(first()) is enough
-      this._authService.userState$.pipe(first()).subscribe(() => this.fetchProducts());
-    }
-
+    });
   }
 
+  // fetch products from BE
   fetchProducts(): void {
     this._firebaseService.getProducts()
     .pipe(
       first(),
       // if logged in attach front end properties (action spinners, isInCart etc.)
-      map((products: Product[]) => this._authService.getUser() ?
+      map((products: Product[]) => this.user ?
         products.map(product => this.addFrontendProperties(product)) :
         products
       )
@@ -180,14 +186,14 @@ export class ProductPageComponent implements OnInit {
 
   // is product in cart?
   isInCart(product: Product): boolean {
-    const cart = this._authService.getUser()?.cart.items as Product[];
+    const cart = this.user?.cart.items as Product[];
     return cart.findIndex(el => el.id === product.id) > -1;
   }
 
   // handles add to cart
   addToCart(productId: number) {
     // if not logged in
-    if (!this._authService.getUser()) {
+    if (!this.user) {
       this._router.navigate(['auth', 'login']);
       return;
     }
@@ -218,7 +224,6 @@ export class ProductPageComponent implements OnInit {
   // after product was added/removed to cart
   async handleCartActionSucceeded(product: Product, action: string) {
     // this can trigger catch block, for that 'await' is needed
-    // TODO: move updateUser to firebaseService
     await this._authService.updateUser();
     if (action === 'add') {
       product.isInCart = true;
@@ -235,6 +240,10 @@ export class ProductPageComponent implements OnInit {
   handleCartActionFailed(product: Product) {
     product.spinners.showCartActionSpinner = false;
     this._toast.showDefaultError();
+  }
+
+  ngOnDestroy(): void {
+    this.userStateSub$.unsubscribe();
   }
 
 }

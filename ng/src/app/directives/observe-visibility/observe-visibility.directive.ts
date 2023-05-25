@@ -16,6 +16,10 @@ import {
 })
 export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewInit {
 
+  // TODO: BUGS: 
+  // 3. On logout header will sometimes show as logged in until reload (maybe resolved)
+  // cart no min width on area
+
   // object holding hide styles
   @Input('hide') hideStyles: any = { 'opacity': '0' };
   // object holding show styles
@@ -63,15 +67,20 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // start observing
   startObserving() {
+    // TODO: fires without being used in html (shopping cart)
     if (this.appearImmediately) {
       this.animation.play();
       return;
     }
 
     if (!this.isFirstVisit) {
-      // setTimeout to skip landing image load layout shift (flick)
+      this._observer?.observe(this._element.nativeElement);
+      //TODO: setTimeout to skip landing image load layout shift (flick)
       // because this would detect below elements
-      setTimeout(() => this._observer?.observe(this._element.nativeElement), 100)
+      // check if this is needed
+      // setTimeout(() => {
+      //   console.log('set timeout')
+      // }, 100)
       return;
     }
 

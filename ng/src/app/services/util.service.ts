@@ -92,7 +92,7 @@ export class UtilService {
   */
   isFirstVisit(): boolean {
     let isFirstVisit = true;
-    if (document.cookie === 'new_session') {
+    if (document.cookie.includes('new_session')) {
       isFirstVisit = false;
     }
     return isFirstVisit;

@@ -23,7 +23,6 @@ export class FirebaseError {
   // updates messages that aren't fit to be displayed on front end
   public static getMessage(key: string): string {
     const message = responseMessages[key];
-    console.log('message: ', message);
     // TODO: failure is sent to information component after register CHECK IT !!
     return message ? message : 'Something went wrong. Please try again.';
   }
@@ -47,7 +46,9 @@ const responseMessages: messageObject = {
   [FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED]:
   'Email not verified. Please verify your email before loggin in',
   [FirebaseConstants.EMAIL_VERIFY_INVALID_CODE]:
-  'Invalid code. This can happen if the code is malformed, expired, or has already been used. Please request a new one.'
+  'Invalid code. This can happen if the code is malformed, expired, or has already been used. Please request a new one.',
+  [FirebaseConstants.EMAIL_CODE_EXPIRED]:
+  'Code expired. Please request new one.'
 }
 
 type messageObject = {

@@ -25,6 +25,7 @@ export class FirebaseConstants {
   static LOGIN_USER_NOT_FOUND = 'auth/user-not-found';
   static LOGIN_TOO_MANY_REQUESTS = 'auth/too-many-requests';
   static EMAIL_VERIFY_INVALID_CODE = 'auth/invalid-action-code'
+  static EMAIL_CODE_EXPIRED = 'auth/expired-action-code';
   
   /* custom responses */
   static REGISTRATION_SUCCESSFUL = 'registration-successful';
