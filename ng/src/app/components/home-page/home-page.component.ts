@@ -45,7 +45,7 @@ export class HomePageComponent implements AfterViewInit {
     private _renderer: Renderer2
   ) {
     // NOTE: is loaded from another route
-    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
+    // const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
 

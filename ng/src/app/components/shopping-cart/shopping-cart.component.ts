@@ -1,13 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 
 import { 
   ShoppingCart,
   Product,
-  CustomUser,
-  ToastConstants
+  ToastConstants,
+  CustomUser
 } from '@app/models';
 
 import {
@@ -35,30 +34,16 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // only holds current page items
   paginatedCart: Product[];
 
-  // is loaded from another route
-  isLoadedFromAnotherRoute = false;
-
   // custom user state
   customUserState$: Subscription;
   
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
-    private _router: Router,
     private _utilService: UtilService,
     private _firebaseService: FirebaseService
   ) {
-    // TODO: in this case user will be here or route is blocked (block route)
-    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
-    if (isLoadedFromAnotherRoute) {
-      // this is just to avoid spinner when coming from another route
-      const user = this._authService.getUser() as CustomUser;
-      this.cart = user.cart;
-      this.customUserState$ = this._authService.userState$.subscribe(user => this.cart = user!.cart)
-      return;
-    }
-    // if on load/refresh
-    this.customUserState$ = this._authService.userState$.subscribe(user => this.cart = user!.cart)
+    this.customUserState$ = this._authService.userState$.subscribe(user => this.cart = (<CustomUser>user).cart);
   }
 
   // sets cart, cart items spinners and paginated cart
@@ -127,7 +112,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       await this._authService.updateUser();
       this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
     })
-    .catch(err => this._utilService.showDefaultErrorToast())
+    .catch(err => this._toast.showDefaultError())
     .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
   }
 

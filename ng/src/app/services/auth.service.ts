@@ -32,6 +32,8 @@ export class AuthService {
   private _user: CustomUser | null = null;
 
   // subscribe to user state changes (update of cart etc.)
+  // ReplaySubject eliminates the need to have isLoadedFromAnother route
+  // if subscribed too late, get previous value emitted value
   public userState$ = new ReplaySubject<CustomUser | null>(1);
 
   constructor(

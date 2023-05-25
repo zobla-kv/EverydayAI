@@ -52,10 +52,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   // number of loaded images
   numOfloadedImages = 0;
-
-  // is component loaded from another route (header etc.) or by initial land/refresh page?
-  isLoadedFromAnotherRoute: boolean;
-
+  
   // current user (always this type because loginGuard)
   user: CustomUser;
 
@@ -69,10 +66,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     private _toast: ToastService,
     private _router: Router
   ) {
-    // TODO: move variable to util if one can be shared
-    // create service with shared variables?
-    // this variable must be called in construcor, onInit is too late
-    this.isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
   // TODO: error handling

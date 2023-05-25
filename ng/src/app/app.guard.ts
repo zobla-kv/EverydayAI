@@ -26,12 +26,6 @@ export class LoginGuard implements CanActivate {
 
   // can be executed both sync and async
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    // TODO: eliminate isLoadedFromAnotherRoute with replaySubject
-    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
-    if (isLoadedFromAnotherRoute) {
-      return this._authService.getUser() ? true : this._router.navigate(['/']);
-    }
-
     return this._authService.userState$
     .pipe(
       map(user => {
@@ -64,11 +58,6 @@ export class LogoutGuard implements CanActivate {
 
   // can be executed both sync and async
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
-    if (isLoadedFromAnotherRoute) {
-      return this._authService.getUser() ? this._router.navigate(['/']) : true;
-    }
-
     return this._authService.userState$
     .pipe(
       map(user => {

@@ -69,14 +69,14 @@ export class HeaderComponent implements OnDestroy {
       this.isAuthenticated = !!user;
     });
 
+    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.currentScreenSize = size);
+
     this._router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // close hamburger on route leave
         this.closeHamburgerMenu();
       }
-
-    this._utilService.screenSizeChange$.subscribe(size => this.currentScreenSize = size);
-  });
+    });
 
   }
 

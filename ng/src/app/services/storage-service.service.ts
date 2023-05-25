@@ -72,7 +72,7 @@ export class StorageService {
   }
 
   ngOnDestroy() {
-    this.customUserState$.unsubscribe();
+    this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
 }
