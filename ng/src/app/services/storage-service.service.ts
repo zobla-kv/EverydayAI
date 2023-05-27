@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { 
@@ -24,21 +24,16 @@ export class StorageService {
   customUserState$: Subscription;
 
   constructor(
-    private _injector: Injector,
+    private _authService: AuthService
   ) { 
-    // without setTimeout still circular dependency
-    setTimeout(() => {
-      const authService = this._injector.get<AuthService>(AuthService);
-      this.customUserState$ = authService.userState$.subscribe(user => {
-        // TODO: called on every state update (for now only triggered by add/remove to cart)
-        // eliminate with pipe first() ?
-        if (user) {
-          this.setUserToLocalStorage()
-          this.setNumberOfItemsInCart(user.cart.items.length);
-        } else {
-          this.removeUserFromLocalStorage();
-        }
-      })
+    this.customUserState$ = this._authService.userState$
+    .subscribe(user => {
+      if (user) {
+        this.setUserToLocalStorage()
+        this.setNumberOfItemsInCart(user.cart.items.length);
+      } else {
+        this.removeUserFromLocalStorage();
+      }
     })
   }
 

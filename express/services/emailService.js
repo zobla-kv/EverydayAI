@@ -41,7 +41,7 @@ module.exports.sendEmail = async function (email, type) {
   // TODO: figure out what was this for
   // type = type.replace(/ /g, '_');
 
-  // TODO: doesn't look good in ct email, try using inline styles
+  // BUG: doesn't look good in ct email, try using inline styles
   const message =
   ` 
     <div style="${styles.outterWrapper}">

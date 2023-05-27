@@ -46,7 +46,7 @@ export class FirebaseService {
   ) { }
 
   // register new user
-  // TODO: duplicate name allowed?
+  // NOTE: same name allowed for multiple users
   register(user: RegisterUser): Promise<FirebaseError | void> {
     return this._fireAuth.createUserWithEmailAndPassword(user.email, user.password)
     .then(async (res: UserCredential | any) => {
@@ -62,10 +62,7 @@ export class FirebaseService {
       const isWritten = await this.writeUserToDb({ ...user, id: uid });
       /***** SEND VERIFICATION EMAIL *****/
       const isSent = await this._httpService.sendEmail({ email: user.email, email_type: EmailType.ACTIVATION });
-      // get user data to return to auth service (then can be used for passing email to information component)
-      // TODO: this step might not be needed (speed up if deleted)
-      const tempUser: RegisterUser = await this.getUserByEmail(user.email);
-      if (!profileUpdated || !isWritten || !tempUser || !isSent) {
+      if (!profileUpdated || !isWritten || !isSent) {
         // TODO: these 2 return promises, but how to handle?
         // delete firebase user
         res.user.delete();
@@ -124,7 +121,7 @@ export class FirebaseService {
 
   // update password
   updatePassword(oobCode: string, password: string): void {
-    // TODO: password can be same as old one, not really an issue?
+    // NOTE: password can be same as old one, not really an issue?
     this._fireAuth.confirmPasswordReset(oobCode, password)
     .then(() => {
       this._utilService.navigateToInformationComponent(Labels.PASSWORD_UPDATED_SUCCESS);
@@ -193,7 +190,7 @@ export class FirebaseService {
 
   // remove single product from cart
   removeProductFromCart(product: Product): Promise<void> {
-    // TODO: below line will require change if getUser is to become async
+    // NOTE: below line will require change if getUser is to become async
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayRemove(product),

@@ -31,7 +31,7 @@ export class IconService {
     { name: 'open-mind' }
   ]
 
-  // TODO: after deploy probably path will probably be just assets/icons/${icon.name}.svg
+  // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg
   addCustomIcons() {
     this.Icons.forEach(icon => this._matIconRegistry.addSvgIcon(
       icon.name,

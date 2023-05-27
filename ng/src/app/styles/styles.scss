@@ -2,8 +2,7 @@
 @import '../../../../node_modules/bootstrap/scss/bootstrap';
 @import './variables';
 
-// TODO: check responsiveness of <hr> tags
-// not good for now
+// TODO: check responsiveness of everything
 
 body {
   background-color: $main-dark-bg-color;
@@ -18,11 +17,7 @@ body {
   }
   .page-wrapper {
     max-width: 1600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin: auto;
-    // TODO: check without it
     overflow: hidden;
   }
   .footer-wrapper {
@@ -96,9 +91,6 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
   justify-content: center;
 }
 .flex-filler { flex: 1 1 auto; }
-// TODO: maybe this is not only for <hr>
-// it might work for everything
-// removes other margins!!
 .hr-center { margin: 0 auto; }
 .hr-right { margin: 0 0 0 auto; }
 .hr-left { margin: 0 auto 0 0; }
@@ -204,7 +196,6 @@ header,
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: $main-orange-bg-color !important;
 }
-// TODO: find other places and remove them and add 'reverse' class to mat spinners
 .mat-mdc-progress-spinner.reverse .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: $main-dark-bg-color !important;
 }

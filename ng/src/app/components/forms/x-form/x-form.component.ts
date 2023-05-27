@@ -72,7 +72,7 @@ export class XFormComponent {
     }
     // if it returns it has an error, otherwise is handled in firebase service
     if (response) {
-      // TODO: uncomment for prod
+      // PRODUCTION: uncomment for prod
       // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
       return this.handleError(form, response);

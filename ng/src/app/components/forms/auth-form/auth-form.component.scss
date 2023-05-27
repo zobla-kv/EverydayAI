@@ -273,11 +273,7 @@ button[type="submit"] {
   color: white;
   box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
 }
-.btn-reverse:hover {
-  color: $orange-text;
-  // TODO: check this trick
-  // box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
-}
+.btn-reverse:hover { color: $orange-text; }
 
 input[type="password"] { padding-right: 55px; }
 .show-password-toggle {

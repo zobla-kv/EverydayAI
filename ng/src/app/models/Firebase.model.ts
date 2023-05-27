@@ -23,7 +23,6 @@ export class FirebaseError {
   // updates messages that aren't fit to be displayed on front end
   public static getMessage(key: string): string {
     const message = responseMessages[key];
-    // TODO: failure is sent to information component after register CHECK IT !!
     return message ? message : 'Something went wrong. Please try again.';
   }
 

@@ -1,48 +1,9 @@
-<!-- pokazi radulcu (showcase) -->
-<!-- watch out name of class -->
-<!-- <section class="top-section-wrapper-showcase">
-  <div class="container-fluid flex-center g-0">
-    <div class="image-section w-40">
-      <img src="../../../assets/images/img/landing-page-image.jpg" class="img-fluid" alt="dog-bark-banner">
-    </div>
-    <div class="text-section w-60">
-      <h2>Shop All</h2>
-      <p>
-        Everything you need is here!
-        From scalp to ends,
-        you'll find the perfect solution for a
-        good hair day.
-      </p>
-    </div>
-    <div class="square"></div>
-  </div>
-</section> -->
-
-<!-- another -->
-<!-- <section class="product-page-top-section-wrapper mx-auto my-4 d-flex align-items-center text-center rounded overflow-hidden">
-  <div class="text-section w-60 px-2">
-    <h2>Shop All</h2>
-    <p>
-      Everything you need is here!
-      From food to training,
-      you'll find the perfect solution for a
-      making you loved one proud.
-    </p>
-  </div>
-  <div class="image-section w-40 h-100">
-    <img src="../../../assets/images/img/landing-page-image.jpg" class="img-fluid" alt="dog-bark-banner">
-  </div>
-</section> -->
-<!-- https://mahabis.com/ check this product list example -->
+<!--REF: https://mahabis.com/ check this product list example -->
 <section class="product-list-wrapper">
   <div class="container">
-    <div class="row justify-content-center text-center mb-2">
-      <div class="col-md-8 col-lg-6">
-        <div class="header">
-          <h3>Featured</h3>
-          <h2>Popular Courses</h2>
-        </div>
-      </div>
+    <div class="header">
+      <h3>Featured</h3>
+      <h2>Popular Courses</h2>
     </div>
     <div class="overflow-y-hidden inner-list-wrapper">
       <mat-spinner
@@ -59,8 +20,6 @@
       >
         <div class="col-lg-4 col-md-6 col-sm-12 mt-5 mx-auto" *ngFor="let product of productList">
           <div class="single-product position-relative">
-          <!-- // TODO: check and remove -->
-          <!-- <div class="single-product overflow-hidden"> for discout-ribbon-inside -->
             <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
             <div *ngIf="product.information.discount" class="discount-ribbon-outside">
               <span>- {{ product.information.discount.percentage }} %

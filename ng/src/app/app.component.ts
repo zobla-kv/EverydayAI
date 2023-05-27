@@ -25,9 +25,6 @@ import {
       ])
     ]),
   ]),
-  trigger('appLoadSpinner', [
-    state('true', style({ 'opacity': '0' })),
-  ]),
   trigger('liftOnHeaderCollapse', [
     state('false', style({
       'transform': 'translateY(0px)'
@@ -66,7 +63,6 @@ export class AppComponent {
     // custom user set
     // for now this is only deteremining factor for app load
     this._authService.userState$.pipe(first()).subscribe(user => {
-      // TODO: preloader not visible immediately on page land (dark background)
       if (this.isFirstVisit) {
         setTimeout(() => this.runPreloadAnimation = true, 2000);
         return;

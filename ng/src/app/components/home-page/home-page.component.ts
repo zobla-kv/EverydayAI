@@ -1,18 +1,14 @@
 import { AfterViewInit, Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, fromEvent, interval, merge, throttle } from 'rxjs';
 
 import {
   UtilService
 } from '@app/services';
 
-import animations from './home-page.animations';
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss'],
-  animations,
+  styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements AfterViewInit {
 
@@ -40,7 +36,6 @@ export class HomePageComponent implements AfterViewInit {
 
   constructor(
     private _utilService: UtilService,
-    private _router: Router,
     private _el: ElementRef,
     private _renderer: Renderer2
   ) {
@@ -48,7 +43,6 @@ export class HomePageComponent implements AfterViewInit {
     // const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
-// TODO: check todo highlight extension
   ngAfterViewInit() {
     // NOTE: fix for zoom out - required for .viewport-height when dynamic (responsive)
     // first set to 100vh then change to same size in pixels
@@ -74,16 +68,14 @@ export class HomePageComponent implements AfterViewInit {
     // play carousel
     setTimeout(() => this.playCarousel(), this.carouselInterval);
 
-    // same handler for multiple events, with throttle
-    // TODO: save for ref if not needed
-    merge(
-      fromEvent(this.bulletPoints.get(0)!.nativeElement, 'mouseenter', () => 0),
-      fromEvent(this.bulletPoints.get(1)!.nativeElement, 'mouseenter', () => 1),
-      fromEvent(this.bulletPoints.get(2)!.nativeElement, 'mouseenter', () => 2)
-    )
-    // .pipe(throttle(() => interval(500)))
-    // TODO: handler not doing anything
-    .subscribe(data => this.handleHover(data))
+    // REF: same handler for multiple events, with throttle
+    // merge(
+    //   fromEvent(this.bulletPoints.get(0)!.nativeElement, 'mouseenter', () => 0),
+    //   fromEvent(this.bulletPoints.get(1)!.nativeElement, 'mouseenter', () => 1),
+    //   fromEvent(this.bulletPoints.get(2)!.nativeElement, 'mouseenter', () => 2)
+    // )
+    // // .pipe(throttle(() => interval(500)))
+    // .subscribe(data => this.handleHover(data))
   }
 
   // plays carousel
@@ -105,31 +97,6 @@ export class HomePageComponent implements AfterViewInit {
   // stops carousel
   disableCarousel() {
     this.isCarouselPlaying = false;
-  }
-
-  // on bullet hover change carousel image
-  async handleHover(bulletIndex: number) {
-    // // stop carousel
-    // this.isCarouselPlaying = false;
-    // // find img that matches bullet
-    // const targetImg = this.carouselItems.find(item => item.id === bulletIndex) as any;
-
-    // console.log('targetImg: ', targetImg);
-    
-    // if (this.carouselItems[this.carouselItems.length - 1].id !== targetImg.id) {
-    //   // hide
-    //   this._renderer.addClass(targetImg.htmlElement, 'hide');
-    //   // put on last spot (for it to be on top)
-    //   while (this.carouselItems[this.carouselItems.length - 1].id !== targetImg.id) {
-    //     // TODO: ovde negde ne valja
-    //     this.carouselItems = this._utilService.rotateArrayToRight(this.carouselItems);
-    //   }
-    //   // await this._utilService.sleep(0);
-    //   // show
-    //   this._renderer.removeClass(targetImg.htmlElement, 'hide');
-    // }
-
-    // console.log('showing: ', this.carouselItems[this.carouselItems.length - 1].name)
   }
 
 }

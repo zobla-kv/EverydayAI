@@ -86,7 +86,7 @@
   <div class="container-fluid caring-professionals">
     <div class="row justify-content-around">
       <div class="col-img">
-        <img appear [appearImmediately]="true" src="../../../assets/images/img/caring-profesionals.jpg" class="big">
+        <img src="../../../assets/images/img/caring-profesionals.jpg" class="big">
       </div>
       <div class="col-text">
         <h1>
@@ -144,13 +144,13 @@
         </p>
       </div>
       <div class="col-img">
-        <img appear [appearImmediately]="true" src="../../../assets/images/img/experience.jpeg" class="big">
+        <img src="../../../assets/images/img/experience.jpeg" class="big">
       </div>
     </div>
   </div>
   <div class="container-fluid expectance">
     <div class="row justify-content-around">
-      <div class="col-img" appear [appearImmediately]="true">
+      <div class="col-img">
         <img src="../../../assets/images/transparent/many-dogs.png" class="big">
       </div>
       <div class="col-text">
@@ -207,15 +207,6 @@
             alt="{{ img.name }}"
           > 
         </div>
-        <!-- // TODO: ref https://codepen.io/MarkBoots/pen/yLPwvda -->
-        <!-- banner is here, use for something else -->
-        <!-- <div class="banner">
-          <ul>
-            <li>
-              <img src="../../../assets/images/img/cesar-millan.png" class="w-90 h-90 m-auto">
-            </li>
-          </ul>
-        </div> -->
       </div>
       <div class="col-list">
         <ol>
@@ -342,49 +333,6 @@
     </div>
   </div>
 </section>
-
-<!-- TODO: IDEJA ZA ANIMACIJU
-kao kocka na land pocinje, nestaje u desno i pojavljuje se na levoj strani
-zoom in cezara i opacity quote -->
-<!-- <section class="qoute-section">
-  <div class="container-fluid">
-    <div class="row wrapper flex-wrap justify-content-between">
-      <div class="col-img position-relative">
-        <div 
-          class="absolute-filler" 
-          appear 
-          [hide]="{ 'opacity': 0, 'transform': 'translateX(-100px)'}"
-          [show]="{ 'opacity': 1, 'transform': 'translateX(0px)'}"
-          [duration]="400"
-          [threshold]="1"
-        ></div>
-        <img src="../../../assets/images/transparent/caesar-millan.png" alt="caesar millan">
-      </div>
-      <div class="col-text position-relative">
-        <div class="qoute-wrapper mx-auto text-center" 
-          appear 
-          [hide]="{'transform': 'rotateY(90deg)'}"
-          [show]="{'transform': 'rotateY(360deg)'}"
-          [duration]="600"
-          [threshold]="1"
-          [rootMargin]="'-320px'"
-        >
-          <mat-icon svgIcon="qoute" class="absolute-center"></mat-icon>
-          <p class="mb-4">
-            Spiritual fulfillment doesn't have to mean belief
-            in a religion or disbelief in science. ...
-            Whether one believes in an unseen,
-            all-knowing force, or the wonder of science
-            and the universe, or simply the beauty
-            of the human spirit, nearly every one of feels
-            an inner longing to feel part of
-            something bigger than ourselves.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
 
 <section class="lets-talk-about-your-dog-section">
   <div class="container-fluid position-relative p-0">

@@ -16,21 +16,10 @@
   -moz-box-shadow: inset 0px 0px 27px -2px rgba(0,0,0,0.3);
   box-shadow: inset 0px 0px 27px -2px rgba(0,0,0,0.3);
 
-  mat-spinner {
-    overflow: visible;
-    position: fixed;
-    // TODO: add 'reverse' css class and remove this
-    .mdc-circular-progress__indeterminate-circle-graphic { 
-      stroke: $main-dark-bg-color !important; 
-    }
-  }
+  mat-spinner { position: fixed; }
 }
-
 
 // smaller than 576px
 @media only screen and (max-width: 576px) {
   .preloader mat-spinner { transform: translateY(-50px); }
 }
-
-
-
