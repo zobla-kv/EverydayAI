@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "house-of-dogs-ng": {
+    "house-of-dogs": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -21,7 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/house-of-dogs-ng",
+            "outputPath": "dist/house-of-dogs",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -37,7 +37,10 @@
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/app/styles/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "crypto-js"
+            ]
           },
           "configurations": {
             "production": {
@@ -70,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "house-of-dogs-ng:build:production"
+              "browserTarget": "house-of-dogs:build:production"
             },
             "development": {
-              "browserTarget": "house-of-dogs-ng:build:development",
+              "browserTarget": "house-of-dogs:build:development",
               "open": true
             }
           },
@@ -82,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "house-of-dogs-ng:build"
+            "browserTarget": "house-of-dogs:build"
           }
         },
         "test": {

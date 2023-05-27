@@ -85,8 +85,6 @@ export class FirebaseService {
 
   // log in user
   login(user: RegisterUser): Promise<FirebaseError | void> {
-    // loginResponse.user can be used for many things (emailVerified etc.)
-    // TODO: maybe delete, why use signInWithEmailAndPassword if i can directly talk to db
     return this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
     .then(async (userData: any) => {
       if (!userData.user?.emailVerified) {

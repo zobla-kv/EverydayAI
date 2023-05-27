@@ -101,6 +101,8 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     );
   }
 
+
+
   // remove item from cart
   removeFromCart(ev: Event, id: number) {
     const itemIndex = this.cart.items.findIndex(item => item.id === id)!;
@@ -108,7 +110,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     item.spinners.deleteSpinner = true;
     this._firebaseService.removeProductFromCart(this.removeFrontendProperties(item))
     .then(async () => {
-      // TODO: move updateUser to firebaseService
       await this._authService.updateUser();
       this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
     })

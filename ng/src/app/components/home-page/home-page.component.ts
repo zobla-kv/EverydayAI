@@ -48,7 +48,7 @@ export class HomePageComponent implements AfterViewInit {
     // const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
   }
 
-
+// TODO: check todo highlight extension
   ngAfterViewInit() {
     // NOTE: fix for zoom out - required for .viewport-height when dynamic (responsive)
     // first set to 100vh then change to same size in pixels

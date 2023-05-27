@@ -37,10 +37,10 @@ export class LoginGuard implements CanActivate {
         this._toast.open(ToastConstants.MESSAGES.CANNOT_OPEN_PAGE, ToastConstants.TYPE.ERROR.type);
         return false;
       })
-    );
 
-  }
-    
+    );
+  }  
+
 }
 
 
@@ -69,9 +69,8 @@ export class LogoutGuard implements CanActivate {
         }
         return true;
       })
+
     );
+  }    
 
-  }
-    
 }
-

@@ -16,7 +16,6 @@ export class Labels {
 // do same with others
 // call it constants inside so access firebasemodel.constants
 
-// TODO: remove auth/ ?
 export class FirebaseConstants {
 
   /* firebase responses */

@@ -99,16 +99,6 @@ export class UtilService {
   }
 
 /**
-  * Emit auth button clicked event
-  *
-  * @param type string - login/register
-  * @returns void
-  */
-  fireAuthButtonClicked(type: string): void {
-    this.authButtonClick$.next(type);
-  }
-
-/**
   * Navigates to information component
   * and display passed message
   * no mode trigger for now

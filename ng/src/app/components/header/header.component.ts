@@ -97,12 +97,11 @@ export class HeaderComponent implements OnDestroy {
     this.hamburgerToggle && (this.hamburgerToggle.nativeElement.checked = false);
   }
 
-  // TODO: block routes if logged in
   handleAuthButton(type: string) {
     const prevRoute = this._router.url;
     if (prevRoute.includes('auth/login') || prevRoute.includes('auth/register')) {
       // switch between forms when already on that route
-      this._utilService.fireAuthButtonClicked(type);
+      this._utilService.authButtonClick$.next(type);
     } else {
       this._router.navigate(['auth', type]);
     }

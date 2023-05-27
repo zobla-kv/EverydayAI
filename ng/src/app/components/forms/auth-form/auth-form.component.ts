@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -8,8 +8,7 @@ import {
   Form,
   FormType,
   FirebaseError,
-  FirebaseConstants,
-  ToastConstants
+  FirebaseConstants
 } from '@app/models';
 
 import {
@@ -51,7 +50,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private _router: Router,
-    private _activatedRoute: ActivatedRoute,
     private _utilService: UtilService,
     private _authService: AuthService,
     private _toast: ToastService
@@ -109,8 +107,10 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // handle change of form type
   handleTypeChange(type: string) {
     this.activeForm = type === FormType.LOGIN ? this.loginForm : this.registerForm;
-    this._router.navigate([this.activeForm.type], { relativeTo: this._activatedRoute });
+    // just change url without realod, easiest way to keep same instance alive
+    window.history.pushState(null, '', `auth/${this.activeForm.type}`);
     this.displayProperForm();
+    // TODO: use or not?s
     // setTimeout(() => this.activeForm.form.reset(), 200);
   }
 
@@ -142,9 +142,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.handleError(form.form, response);
     }
   }
-
-  // TODO: go to login from register leads to home page
-  // has to do with routing probably
 
   // handle error based on error type
   handleError(form: FormGroup, error: FirebaseError) {
@@ -193,4 +190,5 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.headerAuthButtonSub$.unsubscribe();
   }
+
 }

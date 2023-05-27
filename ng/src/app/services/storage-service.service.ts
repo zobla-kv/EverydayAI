@@ -31,6 +31,7 @@ export class StorageService {
       const authService = this._injector.get<AuthService>(AuthService);
       this.customUserState$ = authService.userState$.subscribe(user => {
         // TODO: called on every state update (for now only triggered by add/remove to cart)
+        // eliminate with pipe first() ?
         if (user) {
           this.setUserToLocalStorage()
           this.setNumberOfItemsInCart(user.cart.items.length);

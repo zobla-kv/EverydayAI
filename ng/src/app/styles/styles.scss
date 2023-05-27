@@ -2,14 +2,14 @@
 @import '../../../../node_modules/bootstrap/scss/bootstrap';
 @import './variables';
 
-// TODO: check responsiveness of <h> tags
+// TODO: check responsiveness of <hr> tags
 // not good for now
 
 body {
   background-color: $main-dark-bg-color;
   color: $white-text;
   box-sizing: border-box;
-  // TODO: this is only for preloader to have it so it wouldn't appear after (causes page flick)
+  // NOTE: this is only for preloader to have it so it wouldn't appear after (causes page flick)
   overflow-y: scroll;
 
   .header-wrapper {

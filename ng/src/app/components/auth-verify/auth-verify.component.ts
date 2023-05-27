@@ -28,9 +28,6 @@ import {
 })
 export class AuthVerify implements OnInit {
 
-  // TODO: verification link redirected to login form
-  // THIS SHOULD HAPPEN IF CODE IS VERIFIED WELL BUT PRELOADER FROM EMAIl MAKES IT LOOK LIKE A BUG
-
   message: string = '';
 
   // for firebase functionality (email verification etc.)
