@@ -1,4 +1,4 @@
-// TODO: change localhost for prod
+// PRODUCTION: change localhost for prod
 module.exports = function cors(req, res, next) {
   const origin = req.header('origin');
   if (origin && origin.includes('localhost')) {
