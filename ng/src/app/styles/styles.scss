@@ -17,21 +17,18 @@ body {
   }
   .page-wrapper {
     max-width: 1600px;
+    min-height: 100vh;
     margin: auto;
     overflow: hidden;
+    position: relative;
+    // NOTE: 4rem for footer
+    padding: 0 2rem 4rem 2rem;
+
+    &:has(.auth-form-page) { min-height: calc(100vh - 3rem); }
   }
   .footer-wrapper {
     margin: 0;
   }
-}
-
-.page-wrapper {
-  min-height: 100vh;
-  position: relative;
-  // NOTE: 4rem for footer
-  padding: 0 2rem 4rem 2rem;
-
-  &:has(.auth-form-page) { min-height: calc(100vh - 3rem); }
 }
 
 img {

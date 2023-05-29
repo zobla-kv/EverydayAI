@@ -69,7 +69,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   // TODO: error handling
-  // TODO: keep data when routing so it wouldn't reach DB every time
+  // TODO: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
     this.showSpinner = true;
     this.userStateSub$ = this._authService.userState$.subscribe(user => {

@@ -30,7 +30,7 @@
               <!-- // TODO: add alt -->
               <img #img src="{{ product.imgPath }}" alt="" (load)="handleImageLoaded()">
               <ul>
-                <!-- // TODO: some don't have tooltip when hovered (download, like etc.) -->
+                <!-- // BUG: some don't have tooltip when hovered (download, like etc.) -->
                 <li>
                   <mat-spinner
                     *ngIf="product.spinners?.showCartActionSpinner; else cartAction"
@@ -100,8 +100,8 @@
       (page)="handlePaginatorNagivation($event)"
     ></mat-paginator>
   </div>
+  <hr>
 </section>
-<hr>
 
 
 

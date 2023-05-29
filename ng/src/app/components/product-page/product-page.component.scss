@@ -1,11 +1,10 @@
 @import '../../styles/variables';
 
-hr { width: 80%; margin: 1rem auto 0 auto; }
 
 .product-list-wrapper {
   margin-top: 25px;
-
   & > .container { max-width: 1000px; }
+  hr { width: 80%; margin: 1rem auto 0 auto; }
 
   .inner-list-wrapper { 
     min-height: 880px;
@@ -354,7 +353,7 @@ hr { width: 80%; margin: 1rem auto 0 auto; }
 /* MEDIA QUERIES */
 // bigger than 1200px
 @media only screen and (max-width: 1200px) {
-  hr { width: 90%; }
+  .product-list-wrapper hr { width: 90% }
 }
 // smaller than 992px
 @media only screen and (max-width: 992px) {
