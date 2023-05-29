@@ -23,7 +23,7 @@
     </div>
     <!-- LOGGED IN -->
     <div class="header-item profile" *ngIf="isAuthenticated">
-      <a routerLink="/cart" routerLinkActive="nav-active" class="me-5">
+      <a routerLink="/cart" routerLinkActive="nav-active" class="me-5 d-flex">
         <mat-icon 
           matBadge="{{ numberOfItemsInCart }}" 
           matBadgePosition="above after" 
@@ -35,7 +35,7 @@
           shopping_cart
         </mat-icon>
       </a>
-      <button (click)="handleLogout()">logout</button>
+      <button class="btn" (click)="handleLogout()">logout</button>
     </div>
     <!-- ********* -->
     <!-- LOGGED OUT -->

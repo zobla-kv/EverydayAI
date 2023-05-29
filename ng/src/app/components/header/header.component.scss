@@ -71,6 +71,10 @@ header {
   .header-item.profile {
     order: 2;
     align-self: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .btn {
       padding: 0.25rem;
