@@ -88,7 +88,6 @@ export class AuthService {
   // register new user
   async register(user: RegisterUser): Promise<FirebaseError | void> {
     const response = await this._firebaseService.register(user);
-    console.log('register response: ', response);
     if (response) {
       return response;
     }
@@ -98,7 +97,6 @@ export class AuthService {
   // login user
   async login(user: RegisterUser): Promise<FirebaseError | void> {
     const response = await this._firebaseService.login(user);
-    console.log('login response: ', response);
     if (response) {
       return response;
     }

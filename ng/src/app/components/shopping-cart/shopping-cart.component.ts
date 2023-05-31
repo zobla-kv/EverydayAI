@@ -12,6 +12,7 @@ import {
 import {
   AuthService, 
   FirebaseService, 
+  PaymentService, 
   ToastService, 
   UtilService
 } from '@app/services';
@@ -36,14 +37,34 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // custom user state
   customUserState$: Subscription;
+
+  // stripe popup window
+  private stripeWindow: any;
   
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
     private _utilService: UtilService,
-    private _firebaseService: FirebaseService
+    private _firebaseService: FirebaseService,
+    private _paymentService: PaymentService
   ) {
     this.customUserState$ = this._authService.userState$.subscribe(user => this.cart = (<CustomUser>user).cart);
+  }
+
+  ngOnInit(): void {
+    this.initializeStripe();
+  }
+
+  initializeStripe() {
+    // const script = document.createElement('script');
+    // script.id = 'stripe-script';
+    // script.type = 'text/javascript';
+    // script.src = 'https://js.stripe.com/v3/';
+    // script.onload = () => {
+    //   this.stripeWindow = StripeCheckout.configure({
+
+    //   })
+    // }
   }
 
   // sets cart, cart items spinners and paginated cart
@@ -101,8 +122,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   // remove item from cart
   removeFromCart(ev: Event, id: number) {
     const itemIndex = this.cart.items.findIndex(item => item.id === id)!;
@@ -117,16 +136,26 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
   }
 
-  // TODO: pagination and delete item not working live, only after refresh
 
-  ngOnInit() {
-    //
+  // handles checkout
+  handleCheckout() {
+    // this.stripeWindow = StripeCheckout.configure({
+    //   key: 'pk_test_51Mye5nBLAjQvm5Arxe8N9A3t7En16y8WyLL4JksjP2C9L875dR8AYKZ7B4EkkEP82UYEEEdKsEMPlZA4INMhvjFz00m9C2NGGF',
+    //   image: 'https://res.cloudinary.com/denyksoss/image/upload/v1680162655/house%20of%20dogs/mock-image_rqblt6.jpg',
+    //   locale: 'auto',
+    //   token: (token: any) => {
+    //     this._paymentService.processPayment(token, 500 * 100/* random-amount * -> 500 = 5$ */);
+    //   }
+    // })
+
+    this._paymentService.processPayment();
   }
 
   ngOnDestroy() {
     this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
+  // TODO: Important! pagination and delete item not working live, only after refresh
   // TODO: add hover class on delete process and also spinner
 
 

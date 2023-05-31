@@ -23,12 +23,15 @@
         "@angular/platform-browser-dynamic": "^15.0.0",
         "@angular/router": "^15.0.0",
         "@types/crypto-js": "^4.1.1",
+        "body-parser": "^1.20.2",
         "bootstrap": "^5.2.3",
         "crypto-js": "^4.1.1",
         "express": "^4.17.1",
         "firebase-admin": "^11.5.0",
+        "node-fetch": "^3.3.1",
         "nodemailer": "^6.4.10",
         "rxjs": "~7.5.0",
+        "stripe": "^12.7.0",
         "tslib": "^2.3.0",
         "zone.js": "~0.12.0"
     },
@@ -48,7 +51,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express, firebase-admin and nodemailer are for express app",
-        "1": "devDependencies dotenv and nodemon are for express app"
+        "0": "Dependencies express, firebase-admin and nodemailer, stripe are for express app",
+        "1": "devDependencies dotenv and nodemon, body-parser are for express app"
     }
 }

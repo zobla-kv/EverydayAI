@@ -68,7 +68,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  // TODO: error handling
+  // TODO: Important! error handling
   // TODO: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
     this.showSpinner = true;
@@ -103,7 +103,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   // TODO: runs on each page
   // TODO: maybe add checks (img.complete && img.naturalWidth ~) ?
-  // TODO: can also fail, do error handling (endpoint will return url but image is not available)
+  // TODO: Important! can also fail, do error handling (endpoint will return url but image is not available)
   handleImageLoaded() {
     if (++this.numOfloadedImages === this.productList.length) {
       this.showSpinner = false;

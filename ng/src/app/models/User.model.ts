@@ -27,7 +27,7 @@ export interface RegisterUser {
 }
 
 // custom user stored in db that is different from frebase user
-// TODO: try implementing auto logout (token into this user)
+// TODO: Important! try implementing auto logout (token into this user)
 // TODO: eliminate password from here
 export class CustomUser {
   id: string;
