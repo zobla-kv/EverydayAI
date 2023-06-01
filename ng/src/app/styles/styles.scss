@@ -17,6 +17,7 @@ body {
   }
   .page-wrapper {
     max-width: 1600px;
+    // NOTE: 100svh for mobile (svh is vh - bottom toolbar on mobile)
     min-height: 100vh;
     margin: auto;
     overflow: hidden;
