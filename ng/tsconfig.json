@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "../express/public/dist/out-tsc",
     "paths": {
       "@app/components": ["./src/app/components/index.ts"],
       "@app/directives": ["./src/app/directives/index.ts"],

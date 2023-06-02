@@ -46,7 +46,11 @@ export class ToastConstants {
     SOMETHING_WENT_WRONG: 'Something went wrong. Please try again.',
     ADDED_TO_CART: 'Product added to cart succesfuly.',
     REMOVED_FROM_CART: 'Product removed from cart succesfuly.',
-    CANNOT_OPEN_PAGE: 'Failed to open page.'
+    CANNOT_OPEN_PAGE: 'Failed to open page.',
+    // TODO: !important update below message
+    PAYMENT_SUCCESSFUL: 'Payment sucessful. Enjoy your new $COURSES$',
+    // TODO: add more descriptive message (wrong cvv or something)
+    PAYMENT_FAILED: 'Something went wrong with payment. Please try again'
   }
   
 }

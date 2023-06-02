@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs';
 
-declare var Stripe: any;
-
 import {
   CustomUser,
   Email, 
@@ -23,7 +21,7 @@ export class HttpService {
     return new Promise((resolve) => {
       this._http
       // PRODUCTION:
-      .post<any>('http://localhost:3000/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>('https://localhost:3000/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -37,7 +35,7 @@ export class HttpService {
     return new Promise((resolve, reject) => {
       this._http
       // PRODUCTION:
-      .get<any>('http://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
+      .get<any>('https://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
         catchError(async () => reject(''))
@@ -52,12 +50,13 @@ export class HttpService {
       this._http
       .post<any>(
         // PRODUCTION:
-        'http://localhost:3000/api/stripe-create-payment-intent',
+        'https://localhost:3000/api/stripe-create-payment-intent',
         { 
           user: {
             id: user.id,
             email: user.email,
             shopping_cart_item_ids: user.cart.items.map(item => item.id),
+            stripeId: user.stripe?.id,
             card: { 
               number: '4242424242424242',
               exp_month: '7',
@@ -71,11 +70,13 @@ export class HttpService {
         },
       )
       .pipe(
-        map(data => {
-          console.log('successful response: ', data);
+        map((response: HttpResponse<any>) => {
+          console.log('http success response: ', response);
+          return response;
         }),
         catchError(async (err) => {
           console.log('failed response: ', err);
+          return err;
         })
       )
       .subscribe(data => resolve(data));

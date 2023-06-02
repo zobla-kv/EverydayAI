@@ -40,4 +40,9 @@ export class CustomUser {
   password?: string;
   registrationDate: Date;
   lastActiveDate: Date;
+  stripe?: UserStripeData;
+}
+
+interface UserStripeData {
+  id: string;
 }

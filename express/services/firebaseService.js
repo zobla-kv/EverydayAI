@@ -1,5 +1,7 @@
 const { appConstants, labels } = require('../constants');
 const admin = require('firebase-admin');
+// TODO: remove?
+// const { fetch } = require('node-fetch');
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -39,10 +41,19 @@ async function generateEmailLink(email, type) {
   return link;
 }
 
-// recalculate prices of items on the BE 
-// to prevent making purchase with user modified price
-async function getRealPrice() {
-
+// update user in db with stripeId
+// TODO: simulate error see what happens
+async function addStripeIdToUser(customUserId, stripeUserId) {
+  await db.collection('Users').doc(customUserId).update({ stripe: { id: stripeUserId } });
+  throw new Error({ message: 'impossible '});
 }
 
-module.exports = { generateEmailLink };
+// recalculate prices of items on the BE 
+// to prevent making purchase with user modified price
+// TODO: stopped here on BE
+async function getPrice(itemIds) {
+  console.log('item ids: ', itemIds);
+  return '999';
+}
+
+module.exports = { generateEmailLink, addStripeIdToUser, getPrice };

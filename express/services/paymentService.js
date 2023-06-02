@@ -1,26 +1,31 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const firebaseService = require('./firebaseService');
 
 async function initiatePayment(customer, card) {
 
-  const stripeCustomer = await createCustomer(customer.email);
-//   console.log('stripeCustomer: ', stripeCustomer);     
+  let stripeCustomer;
+  // use existing or create new stripe customer
+  if (customer.stripeId) {
+    stripeCustomer = await getCustomer(customer.stripeId);
+  } else {
+    stripeCustomer = await createCustomer(customer.email);
+    firebaseService.addStripeIdToUser(customer.id, stripeCustomer.id)
+    .catch(() => deleteCustomer(stripeCustomer.id));
+  }
 
   const paymentMethod = await createPaymentMethod(card);
-//   console.log('paymentMethod: ', paymentMethod);      
-   
-  const paymentIntent = await createPaymentIntent(paymentMethod, customer);
-//   console.log('paymentIntent: ', paymentIntent);   
-
+  const paymentIntent = await createPaymentIntent(paymentMethod, stripeCustomer);
   const paymentConfirm = await confirmPayment(paymentIntent);
-//   console.log('paymentConfirm: ', paymentConfirm);     
 
-  return 'SUCCESFUL RETURN';
+  return paymentConfirm.status;
 }
 
-// does customer exist 
-// boolean
-async function customerExist() {
-  
+// get customer if one exists
+// customer || null
+async function getCustomer(id) {
+  return stripe.customers.retrieve(id)
+  .then(customer => customer)
+  .catch(err => null);
 }
 
 // create new customer
@@ -29,6 +34,12 @@ async function createCustomer(email) {
     email,
     description: 'standard customer',
   });
+}
+
+// delete customer
+async function deleteCustomer(id) {
+  // TODO: error handling
+  return stripe.customers.del(id);
 }
 
 // create payment method object
@@ -50,7 +61,7 @@ async function createPaymentMethod(card) {
 async function createPaymentIntent(paymentMethod, customer) {
   return stripe.paymentIntents.create({
     payment_method: paymentMethod.id,
-    amount: getPrice(customer.shopping_cart_item_ids),
+    amount: firebaseService.getPrice(customer.shopping_cart_item_ids),
     currency: 'usd',
     payment_method_types: ['card'],
     customer: customer.id,
@@ -62,13 +73,6 @@ async function createPaymentIntent(paymentMethod, customer) {
 // returns confirmPayment object
 async function confirmPayment(paymentIntent) {
   return stripe.paymentIntents.confirm(paymentIntent.id);
-}
-
-// recalculate prices of items on the BE 
-// to prevent making purchase with user modified data
-function getPrice(items) {
-    console.log('shopping_cart_item_ids: ', items);
-  return '4200';
 }
 
 module.exports = { initiatePayment };

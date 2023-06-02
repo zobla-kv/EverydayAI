@@ -52,6 +52,6 @@
     },
     "dependenciesComments": {
         "0": "Dependencies express, firebase-admin and nodemailer, stripe are for express app",
-        "1": "devDependencies dotenv and nodemon, body-parser are for express app"
+        "1": "devDependencies dotenv and nodemon, body-parser, node-fetch are for express app"
     }
 }

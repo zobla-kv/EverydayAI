@@ -1,10 +1,7 @@
 const router = require('express').Router();
-const emailService = require('./services/emailService');
 const { labels } = require('./constants');
 const bodyParser = require('body-parser');
-
-// stripe
-// const { fetch } = require('node-fetch');
+const emailService = require('./services/emailService');
 const paymentService = require('./services/paymentService');
 
 // TODO: can be misused from postman, protect!!
@@ -27,13 +24,12 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
   const card = user.card;
   try {
     const response = await paymentService.initiatePayment(user, card);
-    console.log('payment service response: ', response);
 
-    res.json({ message: 'payment successful '});
-
+    res.json({ paymentStatus: response });
+    
   } catch (err) {
-    console.log('error api response: ', err)
-    res.status(500).json({ message: 'payment failed' });
+    console.log('error api response: ', err.message);
+    res.status(500).json({ paymentStatus: 'failed' });
   }
 
 })
@@ -70,7 +66,5 @@ router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), asy
     res.status(400).json({ message: err.message });
   }
 });
-
-
 
 module.exports = router;

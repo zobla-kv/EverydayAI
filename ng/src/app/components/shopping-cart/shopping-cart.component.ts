@@ -139,15 +139,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // handles checkout
   handleCheckout() {
-    // this.stripeWindow = StripeCheckout.configure({
-    //   key: 'pk_test_51Mye5nBLAjQvm5Arxe8N9A3t7En16y8WyLL4JksjP2C9L875dR8AYKZ7B4EkkEP82UYEEEdKsEMPlZA4INMhvjFz00m9C2NGGF',
-    //   image: 'https://res.cloudinary.com/denyksoss/image/upload/v1680162655/house%20of%20dogs/mock-image_rqblt6.jpg',
-    //   locale: 'auto',
-    //   token: (token: any) => {
-    //     this._paymentService.processPayment(token, 500 * 100/* random-amount * -> 500 = 5$ */);
-    //   }
-    // })
-
     this._paymentService.processPayment();
   }
 
