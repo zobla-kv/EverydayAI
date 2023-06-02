@@ -26,6 +26,8 @@
                       in your cart
                     </span>
                   </div>
+
+                  <!-- // TODO: sort commented out -->
                   <!-- <div>
                     <p class="mb-0"><span class="text-muted">Sort by:</span>
                       <a href="#!"class="text-body">
@@ -131,83 +133,123 @@
 
                     </div>
 
-                    <p class="small mb-2">Card type</p>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-mastercard fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-visa fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i
-                        class="fab fa-cc-amex fa-2x me-2"></i></a>
-                    <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                    <p class="small mb-2">Supported cards</p>
+                    <div class="icon-wrapper">
+                      <mat-icon svgIcon="visa"></mat-icon>
+                      <!-- TODO: alt for seo -->
+                      <img src="assets/images/img/mastercard.png" alt="">
+                      <mat-icon svgIcon="american-express"></mat-icon>
+                    </div>
 
-                    <!-- <a href="#!" type="submit" class="text-white">
-                      <mat-icon class="me-2">credit_card</mat-icon>
-                    </a>
-                    <a href="#!" type="submit" class="text-white">
-                      <mat-icon class="me-2">credit_card</mat-icon>
-                    </a>
-                    <a href="#!" type="submit" class="text-white">
-                      <mat-icon class="me-2">credit_card</mat-icon>
-                    </a>
-                    <a href="#!" type="submit" class="text-white">
-                      <mat-icon>credit_card</mat-icon>
-                    </a> -->
-
-                    <form class="mt-4">
-                      <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
-                          placeholder="Cardholder's Name" />
-                        <label class="form-label" for="typeName">Cardholder's Name</label>
+                    <form class="mt-4" [formGroup]="paymentForm" (ngSubmit)="handlePurchase()">
+                      <div class="form-group mb-4">
+                        <input
+                          type="text"
+                          class="form-style white-input"
+                          name="card-holder-name"
+                          formControlName="card_holder_name"
+                          placeholder="Cardholder's name"
+                          autocomplete="off"
+                        />
+                        <span
+                          *ngIf="paymentForm.get('card_holder_name')?.hasError('required') && paymentForm.get('card_holder_name')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Cardholder's name is required
+                        </span>
+                        <span
+                          *ngIf="paymentForm.get('card_holder_name')?.hasError('maxlength') && paymentForm.get('card_holder_name')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Cardholder's name cannot be over 24 characters long
+                        </span>
+                        <!-- <label class="form-label" for="card-holder-name">Cardholder's name</label> -->
                       </div>
 
-                      <div class="form-outline form-white mb-4">
-                        <input type="text" id="typeText1" class="form-control form-control-lg" siez="17"
-                          placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
-                        <label class="form-label" for="typeText1">Card Number</label>
+                      <div class="form-group mb-4">
+                        <input
+                          type="text"
+                          class="form-style white-input"
+                          name="card-number"
+                          formControlName="card_number"
+                          placeholder="Card number"
+                        />
+                        <span
+                          *ngIf="paymentForm.get('card_number')?.hasError('required') && paymentForm.get('card_number')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Card number is required
+                        </span>
+                        <span
+                          *ngIf="paymentForm.get('card_number')?.hasError('maxlength') && paymentForm.get('card_number')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Card number cannot be over 20 characters long
+                        </span>
+                        <!-- <label class="form-label" for="card-number">Card number</label> -->
                       </div>
 
                       <div class="row mb-4">
                         <div class="col-md-6">
-                          <div class="form-outline form-white">
-                            <input type="text" id="typeExp" class="form-control form-control-lg"
-                              placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
-                            <label class="form-label" for="typeExp">Expiration</label>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-style white-input"
+                              name="card-expiration-date"
+                              formControlName="card_expiration_date"
+                              placeholder="Expiration date"
+                            />
+                            <span
+                              *ngIf="paymentForm.get('card_expiration_date')?.hasError('required') && paymentForm.get('card_expiration_date')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card expiration date is required
+                            </span>
+                            <span
+                              *ngIf="paymentForm.get('card_expiration_date')?.hasError('maxlength') && paymentForm.get('card_expiration_date')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card expiration date cannot be over 7 characters long
+                            </span>
+                            <!-- <label class="form-label" for="card-expiration-date">Expiration</label> -->
                           </div>
                         </div>
                         <div class="col-md-6">
-                          <div class="form-outline form-white">
-                            <input type="password" id="typeText2" class="form-control form-control-lg"
-                              placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
-                            <label class="form-label" for="typeText2">Cvv</label>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-style white-input"
+                              name="card-cvv"
+                              formControlName="card_cvc"
+                              placeholder="cvc"
+                            />
+                            <span
+                              *ngIf="paymentForm.get('card_cvc')?.hasError('required') && paymentForm.get('card_cvc')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card cvc is required
+                            </span>
+                            <span
+                              *ngIf="paymentForm.get('card_cvc')?.hasError('minlength') && paymentForm.get('card_cvc')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card cvc must be minimum 3 characters long
+                            </span>
+                            <span
+                              *ngIf="paymentForm.get('card_cvc')?.hasError('maxlength') && paymentForm.get('card_cvc')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card cvc can be maximum 5 characters long
+                            </span>
+                            <!-- <label class="form-label" for="card-cvv">Cvv</label> -->
                           </div>
                         </div>
                       </div>
+                      
+                      <hr class="my-4">
+  
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-2">Subtotal</p>
+                        <p class="mb-2">$4798.00</p>
+                      </div>
+  
+                      <div class="d-flex justify-content-between">
+                        <p class="mb-2">Shipping</p>
+                        <p class="mb-2">$20.00</p>
+                      </div>
+  
+                      <div class="d-flex justify-content-between mb-4">
+                        <p class="mb-2">Total(Incl. taxes)</p>
+                        <p class="mb-2">$4818.00</p>
+                      </div>
+  
+                      <button type="submit" class="btn-reverse submit-form-button d-block btn-lg mx-auto">
+                        Purchase
+                      </button>
 
                     </form>
-
-                    <hr class="my-4">
-
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Subtotal</p>
-                      <p class="mb-2">$4798.00</p>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Shipping</p>
-                      <p class="mb-2">$20.00</p>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-4">
-                      <p class="mb-2">Total(Incl. taxes)</p>
-                      <p class="mb-2">$4818.00</p>
-                    </div>
-
-                    <button type="button" class="btn-reverse d-block btn-lg mx-auto" (click)="handleCheckout()">
-                      <div class="d-flex justify-content-between">
-                        <span>$4818.00</span>
-                        <span>Checkout <mat-icon>arrow_right_alt</mat-icon></span>
-                      </div>
-                    </button>
 
                   </div>
                 </div>

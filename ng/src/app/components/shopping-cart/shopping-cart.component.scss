@@ -46,29 +46,59 @@
         border: 0;
         border-radius: 8px;
         box-shadow: $shadow-lifted;
+        
+        .form-group {
+          input { 
+            padding: 0.5rem 1rem; 
+            // color: black;
+          }
+          input::placeholder { font-size: 1rem; }
+        }
 
-        .secure-payment-wrapper {
-          padding: 0.5rem;
-          background-color: rgb(6, 104, 6);
-          border-radius: 8px;
+        .icon-wrapper {
           display: flex;
-          column-gap: 4px;
+          column-gap: 0.25rem;
 
-          .secure-text-wrapper {
-            line-height: 18px;
-            margin: auto;
+          // svg not encapsulated
+          &::ng-deep .mat-icon { 
+            height: 100%;
+            width: 60px;
 
-            span { 
-              font-family: $secure-payment-font-family;
-              color: #2fe8c9;
-              font-weight: bold;
-              &.secure { font-size: 1.125rem; }
-              &.ssl { font-size: 0.875rem; }
-            }
-
+            svg path { fill: unset; }
           }
 
+          // for mastercard 
+          img { 
+            width: 60px; 
+            border-radius: 2px;
+          }
         }
+
+
+        // TODO: commented out secure payment
+        // .secure-payment-wrapper {
+        //   padding: 0.5rem;
+        //   background-color: rgb(6, 104, 6);
+        //   border-radius: 8px;
+        //   display: flex;
+        //   column-gap: 4px;
+
+
+          // .secure-text-wrapper {
+          //   line-height: 18px;
+          //   margin: auto;
+
+          //   span { 
+          //     font-family: $secure-payment-font-family;
+          //     color: #2fe8c9;
+          //     font-weight: bold;
+          //     &.secure { font-size: 1.125rem; }
+          //     &.ssl { font-size: 0.875rem; }
+          //   }
+
+          // }
+
+        // }
 
       }
     }

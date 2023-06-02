@@ -63,7 +63,7 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Wrong credentials
                       </span>
                     </div>
-                    <button type="submit" class="btn-reverse mt-4">
+                    <button type="submit" class="btn-reverse mt-4 submit-form-button">
                       <mat-spinner
                         *ngIf="showSpinner; else noSpinner"
                         diameter="25"
@@ -189,7 +189,7 @@
                       *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
                       class="form-text ms-1 dark-text fw-bold d-block text-start">Gender is required
                     </span>
-                    <button type="submit" class="btn-reverse mt-4">
+                    <button type="submit" class="btn-reverse mt-4 submit-form-button">
                       <mat-spinner
                         *ngIf="showSpinner; else noSpinner"
                         diameter="25"

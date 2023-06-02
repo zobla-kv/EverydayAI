@@ -28,7 +28,9 @@ export class IconService {
     { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
     { name: 'courage' },
-    { name: 'open-mind' }
+    { name: 'open-mind' },
+    { name: 'visa' },
+    { name: 'american-express' },
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

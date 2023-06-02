@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 
@@ -38,9 +39,9 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // custom user state
   customUserState$: Subscription;
 
-  // stripe popup window
-  private stripeWindow: any;
-  
+  // payment form
+  paymentForm: FormGroup;
+
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
@@ -52,20 +53,28 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initializeStripe();
+    // TODO: !important add regex validation
+    this.paymentForm = new FormGroup({
+      'card_holder_name': new FormControl(null, [
+        Validators.required, 
+        Validators.maxLength(24), 
+      ]),
+      'card_number': new FormControl(null, [
+        Validators.required, 
+        Validators.maxLength(20)
+      ]),
+      'card_expiration_date': new FormControl(null, [
+        Validators.required, 
+        Validators.maxLength(7),
+      ]),
+      'card_cvc': new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(5)
+      ])
+    })
   }
 
-  initializeStripe() {
-    // const script = document.createElement('script');
-    // script.id = 'stripe-script';
-    // script.type = 'text/javascript';
-    // script.src = 'https://js.stripe.com/v3/';
-    // script.onload = () => {
-    //   this.stripeWindow = StripeCheckout.configure({
-
-    //   })
-    // }
-  }
 
   // sets cart, cart items spinners and paginated cart
   // called on each user update (remove from cart etc.)
@@ -138,8 +147,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
 
   // handles checkout
-  handleCheckout() {
-    this._paymentService.processPayment();
+  handlePurchase() {
+    // this._paymentService.processPayment();
+    console.log('paymentForm: ', this.paymentForm);
+    console.log('values: ', this.paymentForm.getRawValue())
   }
 
   ngOnDestroy() {

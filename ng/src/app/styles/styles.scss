@@ -204,6 +204,135 @@ header,
 	background-color: $main-orange-bg-color;
 }
 
+/* forms */
+form {
+  .form-group {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  
+    .form-style {
+      padding: 13px 20px;
+      padding-left: 55px;
+      height: 48px;
+      width: 100%;
+      font-weight: 500;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0.5px;
+      outline: none;
+      color: #c4c3ca;
+      background-color: #1f2029;
+      border: none;
+      -webkit-transition: all 200ms linear;
+      transition: all 200ms linear;
+      box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
+
+      &::placeholder {
+        color: #c4c3ca;
+        opacity: 0.7;
+      }
+
+      // failed validation
+      &.ng-invalid.ng-touched {
+        box-shadow: $error-inset;
+        -webkit-box-shadow: $error-inset;
+        -moz-box-shadow: $error-inset;
+
+        .mat-icon,
+        & ~ .mat-icon {
+          color: $error-color; 
+          svg path { fill: $error-color; }
+        }
+      }
+  
+      &.white-input { 
+        background-color: rgb(226, 226, 226);
+        color: $dark-text;
+  
+        &.ng-invalid.ng-touched {
+          -webkit-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
+          -moz-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
+          box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
+        }
+        
+        &::placeholder {
+          color: $dark-text;
+          opacity: 0.5;
+        }
+      }
+    }
+    .form-style:focus,
+    .form-style:active {
+      border: none;
+      outline: none;
+      box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
+    }
+  
+    .mat-icon {
+      position: absolute;
+      top: 0;
+      left: 18px;
+      height: 48px;
+      font-size: 24px;
+      line-height: 48px;
+      text-align: left;
+      color: $main-orange-bg-color;
+      -webkit-transition: all 200ms linear;
+      transition: all 200ms linear;
+
+      &.show-password-toggle {
+        cursor: pointer;
+        left: calc(100% - 45px) !important;
+        height: 50px;
+        // keep color on failed validation
+        color: $main-orange-bg-color !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  
+  }
+  
+  button.submit-form-button {
+    border-radius: 4px;
+    height: 44px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    -webkit-transition : all 200ms linear;
+    transition: all 200ms linear;
+    padding: 0 30px;
+    letter-spacing: 1px;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    text-align: center;
+    border: none;
+    background-color: $main-dark-bg-color;
+    color: white;
+    box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
+  
+    &:hover { 
+      background-color: $main-dark-bg-color;
+      color: $orange-text; 
+    }
+  }
+}
+
 /* images */
 .main-logo { background-image: $main-logo; }
 
@@ -274,22 +403,6 @@ header,
   color: $main-dark-bg-color;
 }
 
-/* forms */
-// failed validation
-input.ng-invalid.ng-touched,
-.form-group.gender:has(input.ng-invalid.ng-touched),
-.form-group.gender .form-style:has(input.ng-invalid.ng-touched) {
-
-  box-shadow: $error-inset;
-  -webkit-box-shadow: $error-inset;
-  -moz-box-shadow: $error-inset;
-
-  .mat-icon { color: $error-color; }
-  .mat-icon svg path { fill: $error-color; }
-  & ~ .mat-icon { color: $error-color; }
-  & ~ .mat-icon svg path { fill: $error-color; }
-}
-
 /* MEDIA QUERIES */
 // bigger than 976px
 @media only screen and (min-width: 976px) {
@@ -297,8 +410,15 @@ input.ng-invalid.ng-touched,
 // smaller than 976px
 @media only screen and (max-width: 976px) {
 }
-// bigger than 768px
-@media only screen and (min-width: 768px) {
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  .mdc-snackbar {
+    margin: auto !important;
+    top: 50px;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: fixed !important;
+  }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
