@@ -138,66 +138,79 @@
                       <mat-icon svgIcon="visa"></mat-icon>
                       <!-- TODO: alt for seo -->
                       <img src="assets/images/img/mastercard.png" alt="">
-                      <mat-icon svgIcon="american-express"></mat-icon>
+                      <!-- // TODO: not supported by stripe, why? -->
+                      <!-- <mat-icon svgIcon="american-express"></mat-icon> -->
                     </div>
 
                     <form class="mt-4" [formGroup]="paymentForm" (ngSubmit)="handlePurchase()">
-                      <div class="form-group mb-4">
+                      <div class="form-group mb-3">
                         <input
                           type="text"
                           class="form-style white-input"
                           name="card-holder-name"
-                          formControlName="card_holder_name"
+                          formControlName="holder_name"
                           placeholder="Cardholder's name"
                           autocomplete="off"
                         />
                         <span
-                          *ngIf="paymentForm.get('card_holder_name')?.hasError('required') && paymentForm.get('card_holder_name')?.touched"
+                          *ngIf="paymentForm.get('holder_name')?.hasError('required') && paymentForm.get('holder_name')?.touched"
                           class="form-text text-white ms-1 fw-bold d-block">Cardholder's name is required
                         </span>
                         <span
-                          *ngIf="paymentForm.get('card_holder_name')?.hasError('maxlength') && paymentForm.get('card_holder_name')?.touched"
+                          *ngIf="paymentForm.get('holder_name')?.hasError('maxlength') && paymentForm.get('holder_name')?.touched"
                           class="form-text text-white ms-1 fw-bold d-block">Cardholder's name cannot be over 24 characters long
+                        </span>
+                        <span
+                          *ngIf="paymentForm.get('holder_name')?.hasError('pattern') && paymentForm.get('holder_name')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Cardholder's name can only contain alphabetic characters                       
                         </span>
                         <!-- <label class="form-label" for="card-holder-name">Cardholder's name</label> -->
                       </div>
 
-                      <div class="form-group mb-4">
+                      <div class="form-group mb-3">
                         <input
                           type="text"
                           class="form-style white-input"
                           name="card-number"
-                          formControlName="card_number"
+                          formControlName="number"
                           placeholder="Card number"
                         />
                         <span
-                          *ngIf="paymentForm.get('card_number')?.hasError('required') && paymentForm.get('card_number')?.touched"
+                          *ngIf="paymentForm.get('number')?.hasError('required') && paymentForm.get('number')?.touched"
                           class="form-text text-white ms-1 fw-bold d-block">Card number is required
                         </span>
                         <span
-                          *ngIf="paymentForm.get('card_number')?.hasError('maxlength') && paymentForm.get('card_number')?.touched"
+                          *ngIf="paymentForm.get('number')?.hasError('maxlength') && paymentForm.get('number')?.touched"
                           class="form-text text-white ms-1 fw-bold d-block">Card number cannot be over 20 characters long
+                        </span>
+                        <span
+                          *ngIf="paymentForm.get('number')?.hasError('pattern') && paymentForm.get('number')?.touched"
+                          class="form-text text-white ms-1 fw-bold d-block">Card number can only contain numbers and dash (-)                      
                         </span>
                         <!-- <label class="form-label" for="card-number">Card number</label> -->
                       </div>
 
-                      <div class="row mb-4">
+                      <div class="row">
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="form-group mb-3">
                             <input
                               type="text"
                               class="form-style white-input"
                               name="card-expiration-date"
-                              formControlName="card_expiration_date"
-                              placeholder="Expiration date"
+                              formControlName="expiration_date"
+                              placeholder="Exp. (MM/YYYY)"
                             />
                             <span
-                              *ngIf="paymentForm.get('card_expiration_date')?.hasError('required') && paymentForm.get('card_expiration_date')?.touched"
+                              *ngIf="paymentForm.get('expiration_date')?.hasError('required') && paymentForm.get('expiration_date')?.touched"
                               class="form-text text-white ms-1 fw-bold d-block">Card expiration date is required
                             </span>
                             <span
-                              *ngIf="paymentForm.get('card_expiration_date')?.hasError('maxlength') && paymentForm.get('card_expiration_date')?.touched"
+                              *ngIf="paymentForm.get('expiration_date')?.hasError('maxlength') && paymentForm.get('expiration_date')?.touched"
                               class="form-text text-white ms-1 fw-bold d-block">Card expiration date cannot be over 7 characters long
+                            </span>
+                            <span
+                              *ngIf="paymentForm.get('expiration_date')?.hasError('pattern') && paymentForm.get('expiration_date')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card expiration date can only contain numbers and slash (/)                      
                             </span>
                             <!-- <label class="form-label" for="card-expiration-date">Expiration</label> -->
                           </div>
@@ -208,22 +221,26 @@
                               type="text"
                               class="form-style white-input"
                               name="card-cvv"
-                              formControlName="card_cvc"
-                              placeholder="cvc"
+                              formControlName="cvc"
+                              placeholder="Cvc"
                             />
                             <span
-                              *ngIf="paymentForm.get('card_cvc')?.hasError('required') && paymentForm.get('card_cvc')?.touched"
+                              *ngIf="paymentForm.get('cvc')?.hasError('required') && paymentForm.get('cvc')?.touched"
                               class="form-text text-white ms-1 fw-bold d-block">Card cvc is required
                             </span>
                             <span
-                              *ngIf="paymentForm.get('card_cvc')?.hasError('minlength') && paymentForm.get('card_cvc')?.touched"
+                              *ngIf="paymentForm.get('cvc')?.hasError('minlength') && paymentForm.get('cvc')?.touched"
                               class="form-text text-white ms-1 fw-bold d-block">Card cvc must be minimum 3 characters long
                             </span>
                             <span
-                              *ngIf="paymentForm.get('card_cvc')?.hasError('maxlength') && paymentForm.get('card_cvc')?.touched"
+                              *ngIf="paymentForm.get('cvc')?.hasError('maxlength') && paymentForm.get('cvc')?.touched"
                               class="form-text text-white ms-1 fw-bold d-block">Card cvc can be maximum 5 characters long
                             </span>
-                            <!-- <label class="form-label" for="card-cvv">Cvv</label> -->
+                            <span
+                              *ngIf="paymentForm.get('cvc')?.hasError('pattern') && paymentForm.get('cvc')?.touched"
+                              class="form-text text-white ms-1 fw-bold d-block">Card cvc can only contain numbers
+                            </span>
+                            <!-- <label class="form-label" for="card-cvc">Cvc</label> -->
                           </div>
                         </div>
                       </div>
@@ -232,17 +249,19 @@
   
                       <div class="d-flex justify-content-between">
                         <p class="mb-2">Subtotal</p>
-                        <p class="mb-2">$4798.00</p>
+                        <p class="mb-2">${{ cart.totalSum }}</p>
                       </div>
   
+                      <!-- TODO: hardcoded 0, include or remove -->
                       <div class="d-flex justify-content-between">
                         <p class="mb-2">Shipping</p>
-                        <p class="mb-2">$20.00</p>
+                        <p class="mb-2">$0</p>
                       </div>
   
                       <div class="d-flex justify-content-between mb-4">
                         <p class="mb-2">Total(Incl. taxes)</p>
-                        <p class="mb-2">$4818.00</p>
+                        <!-- TODO: hardcoded + 0 for shipping -->
+                        <p class="mb-2">${{ cart.totalSum + 0 }}</p>
                       </div>
   
                       <button type="submit" class="btn-reverse submit-form-button d-block btn-lg mx-auto">

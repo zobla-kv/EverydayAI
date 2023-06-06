@@ -3,8 +3,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs';
 
 import {
-  CustomUser,
   Email, 
+  PaymentObject
 } from '@app/models';
 
 @Injectable({
@@ -45,39 +45,19 @@ export class HttpService {
   }
 
   // initiate payment
-  initiatePayment(user: CustomUser): Promise<any> {0
+  initiatePayment(data: PaymentObject): Promise<any> {
     return new Promise((resolve, reject) => {
       this._http
       .post<any>(
         // PRODUCTION:
         'https://localhost:3000/api/stripe-create-payment-intent',
-        { 
-          user: {
-            id: user.id,
-            email: user.email,
-            shopping_cart_item_ids: user.cart.items.map(item => item.id),
-            stripeId: user.stripe?.id,
-            card: { 
-              number: '4242424242424242',
-              exp_month: '7',
-              exp_year: '2026',
-              cvc: '123'
-            },
-          },
-        },
-        { 
-          headers: { 'Content-type': 'application/json'} 
-        },
+        data,
+        { headers: { 'Content-type': 'application/json'} },
       )
       .pipe(
-        map((response: HttpResponse<any>) => {
-          console.log('http success response: ', response);
-          return response;
-        }),
-        catchError(async (err) => {
-          console.log('failed response: ', err);
-          return err;
-        })
+        map((response: HttpResponse<any>) => response),
+        // NOTE: success response with bad code
+        catchError(async (err) => err)
       )
       .subscribe(data => resolve(data));
     })

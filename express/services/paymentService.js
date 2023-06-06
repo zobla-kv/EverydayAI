@@ -1,21 +1,25 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const firebaseService = require('./firebaseService');
 
-async function initiatePayment(customer, card) {
+// TODO: services should be classes and single same instance returned on every import
 
+async function initiatePayment(user, card) {
   let stripeCustomer;
+
   // use existing or create new stripe customer
-  if (customer.stripeId) {
-    stripeCustomer = await getCustomer(customer.stripeId);
+  if (user.stripeId) {
+    stripeCustomer = await getCustomer(user.stripeId);
   } else {
-    stripeCustomer = await createCustomer(customer.email);
-    firebaseService.addStripeIdToUser(customer.id, stripeCustomer.id)
-    .catch(() => deleteCustomer(stripeCustomer.id));
+    stripeCustomer = await createCustomer(user.email);
   }
 
   const paymentMethod = await createPaymentMethod(card);
-  const paymentIntent = await createPaymentIntent(paymentMethod, stripeCustomer);
+  const paymentIntent = await createPaymentIntent(paymentMethod, user, stripeCustomer);
   const paymentConfirm = await confirmPayment(paymentIntent);
+  
+  // NOTE: doesn't matter if it succeded for now
+  // await because FE reads it after
+  await firebaseService.addPaymentToUser(user, paymentIntent)
 
   return paymentConfirm.status;
 }
@@ -37,8 +41,8 @@ async function createCustomer(email) {
 }
 
 // delete customer
+// not used
 async function deleteCustomer(id) {
-  // TODO: error handling
   return stripe.customers.del(id);
 }
 
@@ -49,23 +53,22 @@ async function createPaymentMethod(card) {
     type: 'card',
     card: {
       number: card.number,
-      exp_month: card.exp_month,
-      exp_year: card.exp_year,
+      exp_month: Number(card.expiration_date_month),
+      exp_year: Number(card.expiration_date_year),
       cvc: card.cvc
     }
   });
 }
 
 // create paymentIntent object
-// returns paymentIntent
-async function createPaymentIntent(paymentMethod, customer) {
+async function createPaymentIntent(paymentMethod, user, stripeCustomer) {
   return stripe.paymentIntents.create({
     payment_method: paymentMethod.id,
-    amount: firebaseService.getPrice(customer.shopping_cart_item_ids),
+    amount: await firebaseService.getPrice(user.shopping_cart_items),
     currency: 'usd',
     payment_method_types: ['card'],
-    customer: customer.id,
-    receipt_email: customer.email,
+    customer: stripeCustomer.id,
+    receipt_email: stripeCustomer.email,
     description: 'Billing for house of dogs services.',
   });
 }

@@ -1,4 +1,5 @@
 export interface Product {
+  // TODO: make id random so it couldn't be manipulated from FE
   id: number;
   title: string;
   description: string;

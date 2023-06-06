@@ -176,6 +176,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // TODO: move to util? (in 3 places now)
   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);

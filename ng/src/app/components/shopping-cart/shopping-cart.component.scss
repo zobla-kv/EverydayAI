@@ -48,10 +48,7 @@
         box-shadow: $shadow-lifted;
         
         .form-group {
-          input { 
-            padding: 0.5rem 1rem; 
-            // color: black;
-          }
+          input { padding: 0.5rem 0.75rem; }
           input::placeholder { font-size: 1rem; }
         }
 

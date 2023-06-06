@@ -30,11 +30,14 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // num of items per page
   pageSize = 4;
 
-  // products in cart
+  // products in cart 
   private _cart: ShoppingCart;
 
   // only holds current page items
   paginatedCart: Product[];
+
+  // custom user
+  user: CustomUser;
 
   // custom user state
   customUserState$: Subscription;
@@ -49,28 +52,34 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     private _firebaseService: FirebaseService,
     private _paymentService: PaymentService
   ) {
-    this.customUserState$ = this._authService.userState$.subscribe(user => this.cart = (<CustomUser>user).cart);
+    this.customUserState$ = this._authService.userState$.subscribe(user => {
+      this.user = <CustomUser>user;
+      this.cart = (<CustomUser>user).cart;
+    });
   }
 
   ngOnInit(): void {
-    // TODO: !important add regex validation
     this.paymentForm = new FormGroup({
-      'card_holder_name': new FormControl(null, [
+      'holder_name': new FormControl(null, [
         Validators.required, 
         Validators.maxLength(24), 
+        Validators.pattern('^[a-zA-Z]*$')
       ]),
-      'card_number': new FormControl(null, [
+      'number': new FormControl(null, [
         Validators.required, 
-        Validators.maxLength(20)
+        Validators.maxLength(20),
+        Validators.pattern('^[0-9-]*$')
       ]),
-      'card_expiration_date': new FormControl(null, [
+      'expiration_date': new FormControl(null, [
         Validators.required, 
         Validators.maxLength(7),
+        Validators.pattern('^[0-9/]*$')
       ]),
-      'card_cvc': new FormControl(null, [
+      'cvc': new FormControl(null, [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(5)
+        Validators.maxLength(5),
+        Validators.pattern('^[0-9]*$')
       ])
     })
   }
@@ -145,20 +154,33 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
   }
 
+  // TODO: Important! pagination and delete item not working live, only after refresh
+  // TODO: add hover class on delete process and also spinner
+  // TODO: disable purchase button if no items in cart and add tooltip showing why
 
-  // handles checkout
+  // handles purchase
   handlePurchase() {
-    // this._paymentService.processPayment();
-    console.log('paymentForm: ', this.paymentForm);
-    console.log('values: ', this.paymentForm.getRawValue())
+    this.validateAllFormFields(this.paymentForm);
+    if (this.paymentForm.valid) {
+      this._paymentService.processPayment(this.user, this.paymentForm.getRawValue());
+    } else {
+      this.validateAllFormFields(this.paymentForm);
+    }
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
   }
 
   ngOnDestroy() {
     this.customUserState$ && this.customUserState$.unsubscribe();
   }
-
-  // TODO: Important! pagination and delete item not working live, only after refresh
-  // TODO: add hover class on delete process and also spinner
-
 
 }

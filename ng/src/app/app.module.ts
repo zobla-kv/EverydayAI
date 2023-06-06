@@ -83,7 +83,7 @@ import {
   ],
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: firebaseConfig },
-    // position for mobile set in css
+    // NOTE: position for mobile set in css
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { 
         horizontalPosition: 'right',
         verticalPosition: 'top',

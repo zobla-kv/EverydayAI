@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { 
-  CustomUser, 
+  CustomUser,
+  PaymentCard,
+  PaymentObject,
   ToastConstants 
 } from '@app/models';
 
@@ -17,32 +18,15 @@ import {
 })
 export class PaymentService {
 
-  // user id
-  user: CustomUser;
-
-  // user state sub
-  userStateSub$: Subscription;
-
   constructor(
     private _authService: AuthService,
     private _http: HttpService,
     private _toast: ToastService
-  ) { 
-    this.userStateSub$ = this._authService.userState$.subscribe(user => {
-      console.log('payment service user: ', user);
-      if (!user) {
-        console.log('THER IS NO USER!')
-        return;
-      }
-      this.user = user;
-    });
-  }
+  ) {}
 
-  async processPayment() {
-    console.log('processing payment');
-    this._http.initiatePayment(this.user)
+  async processPayment(user: CustomUser, card: any) {
+    this._http.initiatePayment(this.createPaymentObject(user, card))
     .then(response => {
-      console.log('payment service success response: ', response);
       // TODO: !important handle other statuses (see official docs)
       if (response.error) {
         this._toast.open(ToastConstants.MESSAGES.PAYMENT_FAILED, ToastConstants.TYPE.ERROR.type);
@@ -57,7 +41,37 @@ export class PaymentService {
     })
   }
 
-  ngOnDestroy() {
-    this.userStateSub$.unsubscribe();
+  // creates payment object that is sent to http
+  createPaymentObject(user: CustomUser, card: PaymentCard): PaymentObject {
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        shopping_cart_items: user.cart.items.map(item => (
+          { id: item.id, title: item.title }
+        )),
+        stripeId: user.stripe?.id,
+        card: {
+          holder_name: card.holder_name,
+          number: card.number,
+          expiration_date: card.expiration_date,
+          expiration_date_month: this.getExpirationDateMonth(card.expiration_date),
+          expiration_date_year: this.getExpirationDateYear(card.expiration_date),
+          cvc: card.cvc
+        }
+      }
+    }
   }
+
+  // returns first part of MM/YYYY
+  getExpirationDateMonth(expirationDate: string): string {
+    const month = expirationDate.split('/')[0];
+    return month;
+  }
+  // returns second part of MM/YYYY
+  getExpirationDateYear(expirationDate: string): string {
+    const year = expirationDate.split('/')[1];
+    return year;
+  }
+
 }

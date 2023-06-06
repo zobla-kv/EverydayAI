@@ -46,3 +46,24 @@ export class CustomUser {
 interface UserStripeData {
   id: string;
 }
+
+// payment object that is sent to BE 
+export interface PaymentObject {
+  user: {
+    id: string;
+    email: string;
+    // TODO: !important update to string once product id is a string in db
+    shopping_cart_items: { id: number, title: string }[],
+    stripeId: string | undefined,
+    card: PaymentCard;
+  },
+}
+
+export interface PaymentCard {
+  holder_name: string;
+  number: string;
+  expiration_date: string;
+  expiration_date_month: string;
+  expiration_date_year: string;
+  cvc: string;
+}

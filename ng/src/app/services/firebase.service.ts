@@ -89,6 +89,7 @@ export class FirebaseService {
         return Promise.resolve(new FirebaseError(FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
       // doesn't matter if it succeeded
+      // TODO: !important this only happens on login button (it should also happen if im logged in and come back to site)
       this.updateLastActiveTime(userData.user);
       // login succeeded
       return Promise.resolve();
@@ -165,7 +166,7 @@ export class FirebaseService {
   // from firebaseAuth get customUser
   async getUserByUid(uid: string): Promise<CustomUser> {
     return firstValueFrom(this._db.collection('Users').doc(uid).get())
-    .then(user => Promise.resolve(user.data() as CustomUser));
+    .then(user => user.data() as CustomUser);
   }
   
   // return all products from db wrapped by observable
