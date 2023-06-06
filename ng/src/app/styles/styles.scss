@@ -181,6 +181,14 @@ header,
 .btn,
 .btn-reverse {
   &:has(mat-spinner) { pointer-events: none; }
+  min-width: 132px;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.btn-reverse.disabled {
+  background-color: $button-reverse-disabled-bg-color;
 }
 
 /* scrollbar */
@@ -354,7 +362,8 @@ form {
 }
 
 .mdc-tooltip {
-  top: -8px;
+  // NOTE: this is suited for position above
+  top: -20px;
   .mdc-tooltip__surface {
     color: $orange-text !important;
     border: 1px solid $main-orange-bg-color !important;

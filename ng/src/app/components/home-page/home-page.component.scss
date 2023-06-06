@@ -27,7 +27,7 @@ section .section-header {
     left: 40px;
 
     &.large-screen { display: flex; }
-    &.small-screen { display: none; }
+    &.small-screen { display: none !important; }
 
     .animation-filler {
       position: absolute;

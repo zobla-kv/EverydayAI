@@ -8,7 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { MatBadgeModule } from '@angular/material/badge'
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -76,7 +77,8 @@ import {
     MatPaginatorModule,
     MatSnackBarModule,
     MatBadgeModule,
-
+    MatTooltipModule,
+    
     // firebase
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore())

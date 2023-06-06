@@ -45,6 +45,9 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // payment form
   paymentForm: FormGroup;
 
+  // show submit button spinner
+  showSubmitButtonSpinner = false;
+
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
@@ -154,15 +157,14 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
   }
 
-  // TODO: Important! pagination and delete item not working live, only after refresh
-  // TODO: add hover class on delete process and also spinner
-  // TODO: disable purchase button if no items in cart and add tooltip showing why
 
   // handles purchase
-  handlePurchase() {
+  async handlePurchase() {
     this.validateAllFormFields(this.paymentForm);
     if (this.paymentForm.valid) {
-      this._paymentService.processPayment(this.user, this.paymentForm.getRawValue());
+      this.showSubmitButtonSpinner = true;
+      await this._paymentService.processPayment(this.user, this.paymentForm.getRawValue());
+      this.showSubmitButtonSpinner = false;
     } else {
       this.validateAllFormFields(this.paymentForm);
     }

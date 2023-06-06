@@ -48,7 +48,8 @@ async function getPrice(items) {
     let price = 0;
     products.docs.forEach(productDoc => {
       const product = productDoc.data();
-      if (product.information.discount && product.information.discount.discountedPrice) {
+      // NOTE: rejects 0 if no typeof check
+      if (product.information.discount && (typeof product.information.discount.discountedPrice === 'number')) {
         // TODO: original price is string, discounted price is a number in db at the moment
         price += product.information.discount.discountedPrice
       } else {
@@ -67,14 +68,16 @@ async function getPrice(items) {
 // suggestion: on FE get owned items from stripe.payments 
 // single source of truth - can still differ from payments in stripe if it fails to write to db
 async function addPaymentToUser(user, paymentIntent) {
-  db.collection('Users').doc(user.id).update({
+  return db.collection('Users').doc(user.id).update({
     'stripe.id': paymentIntent.customer,
     'stripe.payments': FieldValue.arrayUnion({
       id: paymentIntent.id,
       items: user.shopping_cart_items,
       // NOTE: second call, not really an issue?
       amount: '$' + await getPrice(user.shopping_cart_items) / 100 // to get real price
-    })
+    }),
+    'cart.items': [],
+    'cart.totalSum': 0
   })
   .catch (err => {
     console.log('error writing: ', err);

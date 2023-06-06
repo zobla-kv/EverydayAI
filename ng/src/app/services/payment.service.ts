@@ -25,7 +25,7 @@ export class PaymentService {
   ) {}
 
   async processPayment(user: CustomUser, card: any) {
-    this._http.initiatePayment(this.createPaymentObject(user, card))
+    return this._http.initiatePayment(this.createPaymentObject(user, card))
     .then(response => {
       // TODO: !important handle other statuses (see official docs)
       if (response.error) {

@@ -1,5 +1,5 @@
 <section class="h-100" class="shopping-cart-outer-wrapper">
-  <div class="container py-5 h-100">
+  <div class="container pt-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col">
         <div class="card shopping-card-inner-wrapper">
@@ -15,7 +15,7 @@
                 </h5>
                 <hr>
 
-                <div class="d-flex justify-content-flex-start align-items-center mb-4">
+                <div class="d-flex justify-content-flex-start align-items-center mb-2">
                   <div>
                     <p class="mb-1">Shopping cart</p>
                     <span class="mb-0" *ngIf="cart">
@@ -39,16 +39,16 @@
                 </div>
 
                 <mat-spinner
-                  *ngIf="!cart; else noSpinner"
+                  *ngIf="!cart; else cartItems"
                   diameter="50"
                   strokeWidth="5"
                   class="reverse absolute-center"
                 ></mat-spinner>
 
-                <ng-template #noSpinner>
+                <ng-template #cartItems>
                   <div class="cart-items-wrapper">
-                    <div class="card mb-3 cart-item" *ngFor="let item of paginatedCart" [ngClass]="{'hovered' : item.spinners?.deleteSpinner}">
-                      <div class="card-body">
+                    <div class="card cart-item" *ngFor="let item of paginatedCart" [ngClass]="{'hovered' : item.spinners?.deleteSpinner}">
+                      <div class="card-body p-2">
                         <div class="d-flex justify-content-between">
                           <div class="d-flex flex-row align-items-center">
                             <div>
@@ -95,7 +95,7 @@
                   </div>
 
                   <mat-paginator
-                    class="mt-4"
+                    class="mt-1"
                     #paginator
                     *ngIf="cart.items.length > pageSize"
                     [length]="cart.items.length"
@@ -139,6 +139,7 @@
                       <!-- TODO: alt for seo -->
                       <img src="assets/images/img/mastercard.png" alt="">
                       <!-- // TODO: not supported by stripe, why? -->
+                      <!-- Your card is not supported. Please use a Visa, MasterCard, or Carnet card -->
                       <!-- <mat-icon svgIcon="american-express"></mat-icon> -->
                     </div>
 
@@ -264,9 +265,20 @@
                         <p class="mb-2">${{ cart.totalSum + 0 }}</p>
                       </div>
   
-                      <button type="submit" class="btn-reverse submit-form-button d-block btn-lg mx-auto">
-                        Purchase
-                      </button>
+                      <div 
+                        class="tooltip-wrapper d-flex" 
+                        matTooltip="No items in cart" 
+                        matTooltipPosition="above"
+                        [matTooltipDisabled]="cart.items.length > 0"
+                      >
+                        <button type="submit" 
+                          class="btn-reverse submit-form-button btn-lg mx-auto"
+                          [ngClass]="{ 'disabled': cart.items.length === 0 }"
+                        >
+                          <mat-spinner *ngIf="showSubmitButtonSpinner; else purchase" diameter="25" strokeWidth="4"></mat-spinner>
+                          <ng-template #purchase>Purchase</ng-template>
+                        </button>
+                      </div>
 
                     </form>
 

@@ -28,7 +28,7 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
     res.json({ paymentStatus: response });
     
   } catch (err) {
-    console.log('error api response: ', err.message);
+    console.log('error payment response: ', err.message);
     res.status(500).json({ paymentStatus: 'failed' });
   }
 

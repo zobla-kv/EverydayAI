@@ -17,9 +17,11 @@
       }
 
       .cart-items-wrapper {
-        height: 460px;
+        height: 380px;
 
         .cart-item {
+          margin-top: 0.75rem;
+
           background-color: inherit;
           border: none;
           transition: all 1s;
@@ -46,6 +48,7 @@
         border: 0;
         border-radius: 8px;
         box-shadow: $shadow-lifted;
+        height: 100%;
         
         .form-group {
           input { padding: 0.5rem 0.75rem; }
