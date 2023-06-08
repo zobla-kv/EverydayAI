@@ -42,7 +42,6 @@ import {
 } from '@app/components';
 
 import {
-  HighlightDirective,
   ObserveVisibilityDirective
 } from '@app/directives';
 
@@ -60,7 +59,6 @@ import {
     ShoppingCartComponent,
 
     // Directives
-    HighlightDirective,
     ObserveVisibilityDirective,
     ToastComponent
   ],

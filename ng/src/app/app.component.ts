@@ -38,9 +38,6 @@ import {
 })
 export class AppComponent {
 
-  // app title
-  title = 'house-of-dogs';
-
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
 
