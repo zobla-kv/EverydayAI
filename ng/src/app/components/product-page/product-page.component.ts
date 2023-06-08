@@ -4,7 +4,7 @@ import { AnimationEvent } from '@angular/animations';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { map } from 'rxjs/internal/operators/map';
-import { Subscription, first } from 'rxjs';
+import { Subscription, concatMap, first, of, tap } from 'rxjs';
 
 import {
   CustomUser,
@@ -72,14 +72,17 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   // TODO: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
     this.showSpinner = true;
-    this.userStateSub$ = this._authService.userState$.subscribe(user => {
-      if (user) {
-        // TODO: use this user to customize html
-        // not used now??
-        this.user = user;
-      }
-      this.fetchProducts();
-    });
+    this.userStateSub$ = this._authService.userState$
+    .pipe(
+      concatMap((value, index) => {
+        // trigger only on first emission (index 0)
+        if (index === 0) {
+          return of(value).pipe(tap(() => this.fetchProducts()))
+        }
+        return of(value)
+      })
+    )
+    .subscribe(user => user && (this.user = user));
   }
 
   // fetch products from BE

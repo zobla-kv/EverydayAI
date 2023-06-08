@@ -28,7 +28,6 @@
         "crypto-js": "^4.1.1",
         "express": "^4.17.1",
         "firebase-admin": "^11.5.0",
-        "node-fetch": "^3.3.1",
         "nodemailer": "^6.4.10",
         "rxjs": "~7.5.0",
         "stripe": "^12.7.0",
@@ -52,6 +51,6 @@
     },
     "dependenciesComments": {
         "0": "Dependencies express, firebase-admin and nodemailer, stripe are for express app",
-        "1": "devDependencies dotenv and nodemon, body-parser, node-fetch are for express app"
+        "1": "devDependencies dotenv and nodemon, body-parser are for express app"
     }
 }
