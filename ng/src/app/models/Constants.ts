@@ -12,10 +12,6 @@ export class Labels {
   static PASSWORD_UPDATED_FAILED = 'Failed to update password. Please try again.';
 }
 
-// TODO: move firebase constants into firebase model
-// do same with others
-// call it constants inside so access firebasemodel.constants
-
 export class FirebaseConstants {
 
   /* firebase responses */

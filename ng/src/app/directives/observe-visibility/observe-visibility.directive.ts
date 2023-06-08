@@ -16,10 +16,6 @@ import {
 })
 export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewInit {
 
-  // BUG: 
-  // 3. On logout header will sometimes show as logged in until reload (maybe resolved)
-  // cart no min width on area
-
   // object holding hide styles
   @Input('hide') hideStyles: any = { 'opacity': '0' };
   // object holding show styles
@@ -67,7 +63,6 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // start observing
   startObserving() {
-    // TODO: fires without being used in html (shopping cart)
     if (this.appearImmediately) {
       this.animation.play();
       return;

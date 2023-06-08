@@ -445,135 +445,136 @@ section .section-header {
   }
 }
 
-.how-it-works-section {
-  margin-top: 3rem;
-  background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0)), url('../../../assets/images/img/mountain.jpg');
-  // background-image: url('../../../assets/images/img/mountain.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+// NOTE: unused
+// .how-it-works-section {
+//   margin-top: 3rem;
+//   background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0)), url('../../../assets/images/img/mountain.jpg');
+//   // background-image: url('../../../assets/images/img/mountain.jpg');
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   background-attachment: fixed;
 
-  .container-fluid { max-width: 1000px; }
+//   .container-fluid { max-width: 1000px; }
 
-  ol {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    row-gap: 2rem;
-    list-style: none;
-    counter-reset: stepnr;
+//   ol {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: space-around;
+//     row-gap: 2rem;
+//     list-style: none;
+//     counter-reset: stepnr;
 
-    .col-circle {
-      display: flex;
-      justify-content: center;
-    }
+//     .col-circle {
+//       display: flex;
+//       justify-content: center;
+//     }
 
-    .col-text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+//     .col-text {
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
 
-      .inner-wrapper {
-        background-color: $main-orange-bg-color;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 1rem;
-        text-align: center;
-        max-width: 275px;
-        max-height: 144px;
-      }
-    }
-  }
+//       .inner-wrapper {
+//         background-color: $main-orange-bg-color;
+//         border-radius: 8px;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         padding: 0 1rem;
+//         text-align: center;
+//         max-width: 275px;
+//         max-height: 144px;
+//       }
+//     }
+//   }
   
-  ol li {
-    counter-increment: stepnr;
-    width: 15rem;
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 3.5rem;
-    position: relative;
-    background-color: $main-dark-bg-color;
-    border-radius: 50%;
+//   ol li {
+//     counter-increment: stepnr;
+//     width: 15rem;
+//     aspect-ratio: 1;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     padding-left: 3.5rem;
+//     position: relative;
+//     background-color: $main-dark-bg-color;
+//     border-radius: 50%;
 
-    .cover-wrapper {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      border-radius: 50%;
-      overflow: hidden;
-      z-index: 2;
+//     .cover-wrapper {
+//       position: absolute;
+//       width: 100%;
+//       height: 100%;
+//       left: 0;
+//       border-radius: 50%;
+//       overflow: hidden;
+//       z-index: 2;
 
-      .cover { 
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        left: 0;
-        background-color: $main-dark-bg-color;
-        // border-bottom: 1px solid white; 
-        filter: drop-shadow(-0.25rem 0.25rem 0.675rem rgba(0, 0, 0, 1)) blur(0px);
-        filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+//       .cover { 
+//         position: absolute;
+//         height: 100%;
+//         width: 100%;
+//         left: 0;
+//         background-color: $main-dark-bg-color;
+//         // border-bottom: 1px solid white; 
+//         filter: drop-shadow(-0.25rem 0.25rem 0.675rem rgba(0, 0, 0, 1)) blur(0px);
+//         filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
 
-      }
+//       }
       
-    }
+//     }
 
-    & * { z-index: 1; }
+//     & * { z-index: 1; }
     
-    &::before,
-    &::after {
-      inset: 0;
-      position: absolute;
-      border-radius: 50%;
-      border: 25px solid $main-dark-bg-color;
-      line-height: 1.1;
-    }
+//     &::before,
+//     &::after {
+//       inset: 0;
+//       position: absolute;
+//       border-radius: 50%;
+//       border: 25px solid $main-dark-bg-color;
+//       line-height: 1.1;
+//     }
 
-    &::before {
-      content: counter(stepnr);
-      color: $main-orange-bg-color;
-      padding-top: 0.5rem;
-      padding-left: 8.5rem;
-      font-size: 9rem;
-      font-weight: 700;
-      overflow: hidden;
-      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
-      // TODO: check this (remove rings and number), also comment out drop shadow below
-      // display: none;
-    }
+//     &::before {
+//       content: counter(stepnr);
+//       color: $main-orange-bg-color;
+//       padding-top: 0.5rem;
+//       padding-left: 8.5rem;
+//       font-size: 9rem;
+//       font-weight: 700;
+//       overflow: hidden;
+//       filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+//       // TODO: check this (remove rings and number), also comment out drop shadow below
+//       // display: none;
+//     }
 
-    &::after {
-      z-index: 2;
-      content: "";
-      // TODO: choose one
-      // without blur
-      filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
-      // with blur
-      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(5px);
-      // with orange
-      // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem $main-orange-bg-color) blur(0px);
-    }
+//     &::after {
+//       z-index: 2;
+//       content: "";
+//       // TODO: choose one
+//       // without blur
+//       filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
+//       // with blur
+//       // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(5px);
+//       // with orange
+//       // filter: drop-shadow(-0.25rem 0.25rem 0.0675rem $main-orange-bg-color) blur(0px);
+//     }
 
-    &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
+//     &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
 
-  }
+//   }
   
-  ol li > * { width: 7.5rem; }
-  ol li .icon { 
-    text-align: center; 
-    transform: scale(1.5); 
-    position: relative; 
-    left: -12px; 
-    top: 5px;
-  }
-  ol li .title { font-size: 2rem; font-weight: 500; }
-  ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
+//   ol li > * { width: 7.5rem; }
+//   ol li .icon { 
+//     text-align: center; 
+//     transform: scale(1.5); 
+//     position: relative; 
+//     left: -12px; 
+//     top: 5px;
+//   }
+//   ol li .title { font-size: 2rem; font-weight: 500; }
+//   ol li .descr { font-size: 0.8rem; font-weight: 300; height: 15%; }
 
-}
+// }
 
 .lets-talk-about-your-dog-section {
   flex-wrap: wrap;
@@ -940,7 +941,6 @@ section .section-header {
 @media only screen and (max-width: 576px) { 
   .section-header { font-size: 1.75rem !important; }
   .about-us-section {
-    // TODO: in this section fonts are not the same on mobile
     text-align: center;
     .col-text h1 { font-size: 24px; line-height: 32px; }
   }

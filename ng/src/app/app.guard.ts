@@ -7,10 +7,6 @@ import {
   ToastService
 } from '@app/services';
 
-import { 
-  ToastConstants 
-} from '@app/models';
-
 
 // block route if user is logged OUT
 @Injectable({
@@ -33,8 +29,6 @@ export class LoginGuard implements CanActivate {
           return true;
         }
         this._router.navigate(['/']);
-        // TODO: remove this?
-        this._toast.open(ToastConstants.MESSAGES.CANNOT_OPEN_PAGE, ToastConstants.TYPE.ERROR.type);
         return false;
       })
 
@@ -52,8 +46,7 @@ export class LogoutGuard implements CanActivate {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router,
-    private _toast: ToastService
+    private _router: Router
   ) { }
 
   // can be executed both sync and async
@@ -63,8 +56,6 @@ export class LogoutGuard implements CanActivate {
       map(user => {
         if (user) {
           this._router.navigate(['/']);
-        // TODO: remove this?
-          this._toast.open(ToastConstants.MESSAGES.CANNOT_OPEN_PAGE, ToastConstants.TYPE.ERROR.type);
           return false;
         }
         return true;

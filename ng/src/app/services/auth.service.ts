@@ -63,7 +63,6 @@ export class AuthService {
     } else {
       this._user = null;
     }
-    console.log('user state next: ', this._user);
     this.userState$.next(this._user);
   }
 
@@ -74,7 +73,6 @@ export class AuthService {
   }
 
   // update user object to be in sync with DB
-  // TODO: add customUser param so it wouldn't rely on db call
   async updateUser(): Promise<CustomUser | void> {
     if (this._user) {
       // TODO: no error handling

@@ -88,9 +88,7 @@ export class FirebaseService {
         // firebase automatically logs in user even without email verified, prevent that
         return Promise.resolve(new FirebaseError(FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED));
       }
-      // doesn't matter if it succeeded
-      // TODO: !important this only happens on login button (it should also happen if im logged in and come back to site)
-      this.updateLastActiveTime(userData.user);
+
       // login succeeded
       return Promise.resolve();
     })
@@ -141,8 +139,8 @@ export class FirebaseService {
   }
 
   // updates last active time on user
-  async updateLastActiveTime(user: any): Promise<void> {;
-    this._db.collection('Users').doc(user.uid).update({ lastActiveDate: new Date() });
+  async updateLastActiveTime(user: any): Promise<void> {
+    this._db.collection('Users').doc(user.id).update({ lastActiveDate: new Date() });
   }
   
   // return value whether it succeeded

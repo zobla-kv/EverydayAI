@@ -1,5 +1,6 @@
 export interface Product {
   // TODO: make id random so it couldn't be manipulated from FE
+  // now entered manually - create endpoint that would add product to DB and do this from postman for now?
   id: number;
   title: string;
   description: string;

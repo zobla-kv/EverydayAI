@@ -112,10 +112,7 @@ export class AuthVerify implements OnInit {
 
   // read verification code and verify email
   handleEmailVerificationLink() {
-    // TODO: possible to send verification email if it is already verified
-    // no way to retrieve firebase user by email
-    // either leave it as it is or add emailVerified field to customUser
-    // but then those 2 need to be in sync
+    // NOTE: possible to send verification email if it is already verified
     applyActionCode(getAuth(), this.actionCode)
     .then(res => {
       this.message = 'Email verified successfuly. Redirecting to login page...'

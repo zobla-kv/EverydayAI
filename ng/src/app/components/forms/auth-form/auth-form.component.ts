@@ -110,8 +110,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // just change url without realod, easiest way to keep same instance alive
     window.history.pushState(null, '', `auth/${this.activeForm.type}`);
     this.displayProperForm();
-    // TODO: use or not?
-    // setTimeout(() => this.activeForm.form.reset(), 200);
   }
 
   // handle slider value change

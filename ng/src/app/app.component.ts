@@ -6,7 +6,8 @@ import { first } from 'rxjs';
 import {
   IconService,
   AuthService,
-  UtilService
+  UtilService,
+  FirebaseService
 } from '@app/services';
 
 @Component({
@@ -53,7 +54,8 @@ export class AppComponent {
   constructor(
     private _iconService: IconService,
     private _authService: AuthService,
-    private _utilService: UtilService
+    private _utilService: UtilService,
+    private _firebaseService: FirebaseService
   ) {
     this._iconService.addCustomIcons();
     
@@ -65,8 +67,12 @@ export class AppComponent {
         return;
       }
       this._utilService.appLoaded();
-    })
 
+      if (user) {
+        // doesn't matter if it succeeded
+        this._firebaseService.updateLastActiveTime(user);
+      }
+    })
 
     this._utilService.screenSizeChange$.subscribe(size => {
       if (['xl','lg', 'md'].includes(size)) {
