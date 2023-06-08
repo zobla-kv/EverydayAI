@@ -1,5 +1,6 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
+// NOTE: crypto needed so email wont be shown in url (also on FE)
 const CryptoJS = require('crypto-js');
 
 const firebaseService = require('./firebaseService');

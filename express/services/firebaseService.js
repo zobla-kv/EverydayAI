@@ -1,7 +1,5 @@
 const { appConstants, labels } = require('../constants');
 const admin = require('firebase-admin');
-// TODO: remove?
-// const { fetch } = require('node-fetch');
 
 admin.initializeApp({
   credential: admin.credential.cert({

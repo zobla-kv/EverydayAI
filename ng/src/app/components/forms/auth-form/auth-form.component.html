@@ -1,5 +1,5 @@
 <div class="section auth-form-page">
-  <div class="container">
+  <div class="container p-0">
     <div class="row justify-content-center">
       <div class="col-12 text-center py-4">
         <div class="section pt-sm-2 text-center">
@@ -63,7 +63,7 @@
                         class="form-text ms-1 dark-text fw-bold d-block">Wrong credentials
                       </span>
                     </div>
-                    <button type="submit" class="btn-reverse mt-4 submit-form-button">
+                    <button type="submit" class="btn-reverse mx-auto submit-form-button">
                       <mat-spinner
                         *ngIf="showSpinner; else noSpinner"
                         diameter="25"
@@ -71,7 +71,7 @@
                       ></mat-spinner>
                       <ng-template #noSpinner>Submit</ng-template>
                     </button>
-                    <p class="mb-0 mt-4 text-center">
+                    <p class="mb-0 mt-3 text-center">
                       <a routerLink="/reset-password" class="link">Forgot your password?</a>
                     </p>
                   </div>
@@ -189,7 +189,7 @@
                       *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
                       class="form-text ms-1 dark-text fw-bold d-block text-start">Gender is required
                     </span>
-                    <button type="submit" class="btn-reverse mt-4 submit-form-button">
+                    <button type="submit" class="btn-reverse mx-auto mt-4 submit-form-button">
                       <mat-spinner
                         *ngIf="showSpinner; else noSpinner"
                         diameter="25"

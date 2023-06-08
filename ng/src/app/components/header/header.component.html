@@ -76,6 +76,11 @@
                 <span>Products</span>
               </a>
             </li>
+            <li>
+              <a routerLink="/cart" routerLinkActive="nav-active-mobile" *ngIf="isAuthenticated">
+                <span>Cart</span>
+              </a>
+            </li>
             <hr class="orange-line my-0">
             <li *ngIf="!isAuthenticated" class="mb-0">
               <button type="button" class="btn" (click)="handleAuthButton('login')">

@@ -42,6 +42,12 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // custom user state
   customUserState$: Subscription;
 
+  // screen size
+  screenSize: string;
+
+  // screen size sub
+  screenSize$: Subscription;
+
   // payment form
   paymentForm: FormGroup;
 
@@ -59,9 +65,19 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       this.user = <CustomUser>user;
       this.cart = (<CustomUser>user).cart;
     });
+
+    this.screenSize$ = this._utilService.screenSizeChange$.subscribe(size => {
+      if (size === 'xs') {
+        // reset on small screen
+        // this.paginatedCart = this.cart.items;
+        this.paginator && this.paginator.firstPage();
+      }
+      this.screenSize = size;
+    })
   }
 
   ngOnInit(): void {
+
     this.paymentForm = new FormGroup({
       'holder_name': new FormControl(null, [
         Validators.required, 
@@ -87,6 +103,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     })
   }
 
+  // TODO: bug: flick when addint item to cart on product page
 
   // sets cart, cart items spinners and paginated cart
   // called on each user update (remove from cart etc.)
@@ -117,6 +134,15 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   get cart(): ShoppingCart {
     return this._cart;
+  }
+
+  // used to return current cart to template
+  // if 'xs' screen show whole cart else show paginated cart
+  getCurrentCart(): any {
+    if (this.screenSize !== 'xs') {
+      return this.paginatedCart;
+    }
+    return this.cart.items;
   }
 
   // add delete spinner

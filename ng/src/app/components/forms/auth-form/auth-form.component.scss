@@ -18,9 +18,9 @@ h6 span {
   text-transform: uppercase;
   font-weight: 700;
 }
-button[type="submit"] {
-  width: 110px;
+.submit-form-button {
   height: 44px;
+  margin-top: 1.5rem;
 }
 
 .form-group.gender:has(input.ng-invalid.ng-touched),
@@ -174,5 +174,5 @@ input[type="password"] { padding-right: 55px; }
 
 // smaller than 576px 
 @media only screen and (max-width: 576px) {
-  .center-wrap { padding: 3rem 1rem; }
+  .center-wrap { padding: 2rem 1rem; }
 }
