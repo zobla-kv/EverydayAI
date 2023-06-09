@@ -27,8 +27,9 @@ app.get('*', (req, res) => {
 
 // server
 const sslServer = https.createServer({
-  key: fs.readFileSync(path.join(currentDir, 'cert', 'key.pem') || process.env.CERT_KEY),
-  cert: fs.readFileSync(path.join(currentDir, 'cert', 'cert.pem') || process.env.CERT)
+  // NOTE: cert folders unused in production
+  key: fs.readFileSync(process.env.CERT_KEY),
+  cert: fs.readFileSync(process.env.CERT)
 }, app);
 
 // console.log('sslServer: ', sslServer);
