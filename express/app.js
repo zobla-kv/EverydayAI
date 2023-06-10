@@ -22,6 +22,7 @@ app.use('/api', cors, routes);
 
 // '*' for angular routing to work
 app.get('*', (req, res) => {
+  console.log('got request');
   res.sendFile(path.join(currentDir, 'public', 'index.html'));
 })
 
