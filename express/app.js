@@ -35,8 +35,10 @@ const sslServer = https.createServer({
 
 // console.log('sslServer: ', sslServer);
 
-console.log('starting server...')
+console.log('starting server...');
 
-sslServer.listen(PORT, () => {
+const http = require('http');
+
+http.createServer().listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
 });
