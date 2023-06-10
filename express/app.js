@@ -35,6 +35,8 @@ const sslServer = https.createServer({
 
 // console.log('sslServer: ', sslServer);
 
+console.log('starting server...')
+
 sslServer.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
 });
