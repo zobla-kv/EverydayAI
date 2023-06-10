@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 require('dotenv').config();
+
 const PORT = process.env.PORT || 3030;
 
 const currentDir = path.join(__dirname);
@@ -29,8 +30,8 @@ app.get('*', (req, res) => {
 // server
 const sslServer = https.createServer({
   // NOTE: cert folders unused in production
-  key: process.env.CERT_KEY,
-  cert: process.env.CERT
+  key: process.env.CERT_KEY.replace(/\\n/g, '\n'),
+  cert: process.env.CERT.replace(/\\n/g, '\n')
 }, app);
 
 // console.log('sslServer: ', sslServer);
