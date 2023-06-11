@@ -20,8 +20,8 @@ const cors = require('./cors');
 const routes = require('./routes');
 
 // app settings
-app.use(express.static('public'));
-app.use(express.json());
+// app.use(express.static('public'));
+// app.use(express.json());
 app.use('/api', cors, routes);
 
 // '*' for angular routing to work
