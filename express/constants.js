@@ -1,6 +1,5 @@
 const appConstants = {
-  APP_URL: 'https://house-of-dogs.onrender.com/',
-  // APP_URL: 'http://localhost:3030',
+  APP_URL: 'http://house-of-dogs.infinityfreeapp.com/',
   INSTAGRAM_URL: 'https://www.instagram.com/house_of_dogs_ig'
 }
 

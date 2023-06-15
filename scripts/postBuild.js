@@ -7,6 +7,7 @@ const ngDir = path.join(currentDir, 'ng');
 const expressDir = path.join(currentDir, 'express');
 
 /* Copy ng/dist -> express/public */
+// TODO: does not overwrite whole directory (main.js files are stacked)
 const ngDistDir = path.join(ngDir, 'dist');
 const expressPublicDir = path.join(expressDir, 'public');
 try {

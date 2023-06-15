@@ -24,6 +24,7 @@ app.use('/api', cors, routes);
 // '*' for angular routing to work
 app.get('*', (req, res) => {
   console.log('got request');
+  res.set('Content-Type', 'text/html');
   res.sendFile(path.join(currentDir, 'public', 'index.html'));
 })
 
@@ -31,13 +32,12 @@ app.get('*', (req, res) => {
 const sslServer = https.createServer({
   // NOTE: cert folders unused in production
   key: process.env.CERT_KEY.replace(/\\n/g, '\n'),
-  cert: process.env.CERT.replace(/\\n/g, '\n')
+  cert: process.env.CERT.replace(/\\n/g, '\n'),
 }, app);
 
-// console.log('sslServer: ', sslServer);
 
 console.log('starting server...');
 
 sslServer.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
-});
+})
