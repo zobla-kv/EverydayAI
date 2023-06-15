@@ -17,10 +17,10 @@ try {
 }
 
 /* Copy shared package.json into express */
-// const sharedPackageJson = path.join(currentDir, 'package.json');
-// const expressPackageJson = path.join(currentDir, 'express', 'package.json');
-// try {
-//   fse.copySync(sharedPackageJson, expressPackageJson, { overwrite: true })
-// } catch (err) {
-//   throw new Error('postBuild.js failed. New package.json not copied to express')
-// }
+const sharedPackageJson = path.join(currentDir, 'package.json');
+const expressPackageJson = path.join(currentDir, 'express', 'package.json');
+try {
+  fse.copySync(sharedPackageJson, expressPackageJson, { overwrite: true })
+} catch (err) {
+  throw new Error('postBuild.js failed. New package.json not copied to express')
+}
