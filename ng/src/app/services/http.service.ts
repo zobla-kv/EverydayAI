@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs';
 
 import {
-  Email, 
+  Email,
   PaymentObject
 } from '@app/models';
 
@@ -21,7 +21,7 @@ export class HttpService {
     return new Promise((resolve) => {
       this._http
       // PRODUCTION:
-      .post<any>('https://house-of-dogs.onrender.com/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>('https://house-of-dogs-zobla-kv.vercel.app/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -35,7 +35,7 @@ export class HttpService {
     return new Promise((resolve, reject) => {
       this._http
       // PRODUCTION:
-      .get<any>('https://house-of-dogs.onrender.com/api/crypto', { headers: { 'Content-type': 'application/json' } })
+      .get<any>('https://house-of-dogs-zobla-kv.vercel.app/api/crypto', { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
         catchError(async () => reject(''))
@@ -50,7 +50,7 @@ export class HttpService {
       this._http
       .post<any>(
         // PRODUCTION:
-        'https://house-of-dogs.onrender.com/api/stripe-create-payment-intent',
+        'https://house-of-dogs-zobla-kv.vercel.app/api/stripe-create-payment-intent',
         data,
         { headers: { 'Content-type': 'application/json'} },
       )
