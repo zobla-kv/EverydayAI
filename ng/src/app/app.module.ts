@@ -17,7 +17,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 const firebaseConfig = {
   apiKey: "AIzaSyBdBGoR3VvzO59rVahX9oGU5XKNLwAAF2Y",
-  authDomain: "house-of-dogs-11bfb.firebaseapp.com",
+  // authDomain: "house-of-dogs-11bfb.firebaseapp.com",
+  authDomain: "https://house-of-dogs.onrender.com/",
   projectId: "house-of-dogs-11bfb",
   storageBucket: "house-of-dogs-11bfb.appspot.com",
   messagingSenderId: "829869000499",
