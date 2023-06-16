@@ -17,8 +17,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 const firebaseConfig = {
   apiKey: "AIzaSyBdBGoR3VvzO59rVahX9oGU5XKNLwAAF2Y",
-  // authDomain: "house-of-dogs-11bfb.firebaseapp.com",
-  authDomain: "https://house-of-dogs.onrender.com/",
+  authDomain: "house-of-dogs-11bfb.firebaseapp.com",
   projectId: "house-of-dogs-11bfb",
   storageBucket: "house-of-dogs-11bfb.appspot.com",
   messagingSenderId: "829869000499",
@@ -77,7 +76,7 @@ import {
     MatSnackBarModule,
     MatBadgeModule,
     MatTooltipModule,
-    
+
     // firebase
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore())
@@ -85,11 +84,11 @@ import {
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: firebaseConfig },
     // NOTE: position for mobile set in css
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { 
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         duration: 2500
-      } 
+      }
     }
   ],
   bootstrap: [AppComponent]

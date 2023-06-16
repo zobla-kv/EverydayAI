@@ -7,7 +7,7 @@
     },
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "npm run build",
         "build": "cd ng && ng build && node ../scripts/postBuild.js",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
