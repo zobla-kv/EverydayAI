@@ -7,6 +7,7 @@ const paymentService = require('./services/paymentService');
 // TODO: can be misused from postman, protect!!
 router.post('/send-email', async (req, res) => {
   const isEmailSent = await emailService.sendEmail(req.body.email, req.body.email_type);
+  console.log('is sent out: ', isEmailSent);
   if (!isEmailSent) {
     return res.status(500).send({ response: labels.EMAIL_SEND_FAILED })
   }
