@@ -1,14 +1,12 @@
 // app
-const https = require('https');
+
+// NOTE: doesn't work with https in production, why?
+// const https = require('https');
 const http = require('http');
-const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const app = express();
 require('dotenv').config();
-// require('dotenv').config({
-//   path: path.join(__dirname, '.env') }
-// );
 
 const PORT = process.env.PORT || 3000;
 
@@ -22,14 +20,11 @@ const routes = require('./routes');
 
 // app settings
 app.use(express.static(__dirname + '/public'));
-app.use(express.json());
-app.use('/api', cors, routes);
-
+app.use('/api', cors, express.json(), routes);
 
 // '*' for angular routing to work
 app.get('*', (req, res) => {
   console.log('got request');
-  // res.set('Content-Type', 'text/html');
   res.sendFile(path.join(currentDir, 'public', 'index.html'));
 })
 
