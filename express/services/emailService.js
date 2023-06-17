@@ -29,7 +29,7 @@ module.exports.sendEmail = async function (email, type) {
 
   // encrypt email address
   const encryptedEmail = CryptoJS.AES.encrypt(email, process.env.CRYPT_PRIVATE_KEY);
-  console.log('encryptedEmail: ', encryptedEmail);
+  console.log('encryptedEmail: ', encryptedEmail.toString());
 
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
