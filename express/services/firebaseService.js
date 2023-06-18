@@ -28,7 +28,6 @@ async function generateEmailLink(email, type) {
     auth.generateEmailVerificationLink.bind(that) : auth.generatePasswordResetLink.bind(that);
 
   try {
-    console.log('creating link actionCodeSettings: ', actionCodeSettings);
     link = await cb(email, actionCodeSettings);
   } catch(err) {
     console.log('failed to generate email link: ', err);

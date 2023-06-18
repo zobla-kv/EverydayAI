@@ -15,7 +15,6 @@ module.exports.sendEmail = async function (email, type) {
   }
 
   let verificationLink = await firebaseService.generateEmailLink(email, type);
-  console.log('verificationLink generated: ', verificationLink);
   if (!verificationLink) {
     // in case too many requests in small time
     return false;
@@ -29,7 +28,6 @@ module.exports.sendEmail = async function (email, type) {
 
   // encrypt email address
   const encryptedEmail = CryptoJS.AES.encrypt(email, process.env.CRYPT_PRIVATE_KEY);
-  console.log('encryptedEmail: ', encryptedEmail.toString());
 
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
