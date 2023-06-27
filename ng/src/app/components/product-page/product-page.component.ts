@@ -238,6 +238,31 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this._toast.showDefaultError();
   }
 
+  // handle download new
+  handleDownload(event: any, product: Product) {
+    event.preventDefault();
+    if (!this.user) {
+      this._router.navigate(['auth', 'login']);
+      return;
+    }
+    // TODO: move to http service,
+    // TODO: prevent people from going to site where imgs are stored and downloading all, some private + auth?
+    // TODO: error handling
+    fetch(product.imgPath)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const fileName = product.description + '.png';
+      const a = document.createElement('a');
+      a.href = url;
+      // from .jfif to .png
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  }
+
   ngOnDestroy(): void {
     this.userStateSub$.unsubscribe();
   }

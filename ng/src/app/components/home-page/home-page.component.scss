@@ -827,6 +827,7 @@ section .section-header {
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   .top-section {
+    // NOTE: change variable value on screen resize (100vh -> 100svh)
     height: calc(100svh - $header-height - 50px);
 
     .landing-text-wrapper {

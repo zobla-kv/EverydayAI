@@ -43,7 +43,7 @@
                   </ng-template>
                 </li>
                 <!-- // TODO: Important! No handlers for below ones, will they be in prod? -->
-                <li><mat-icon icon="download">download</mat-icon></li>
+                <li><mat-icon icon="download" (click)="handleDownload($event, product)">download</mat-icon></li>
                 <li><mat-icon icon="favorite">favorite</mat-icon></li>
               </ul>
             </div>
