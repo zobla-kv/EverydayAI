@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { catchError, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 
 import {
   Email,
@@ -61,6 +61,19 @@ export class HttpService {
       )
       .subscribe(data => resolve(data));
     })
+  }
+
+  // get image from cross origin as blob
+  // make it downloadable
+  fetchImageUrlAsBlob(imgPath: string): Observable<Blob | void> {
+    return this._http
+    .get<any>(
+      imgPath, 
+      { 
+        headers: { 'Content-Type': 'image/jfif+jpg+jpeg+png' }, 
+        responseType: 'blob' as 'json' 
+      }
+    )
   }
 
   // bypass circular dependency using injector

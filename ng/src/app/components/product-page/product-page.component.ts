@@ -15,6 +15,7 @@ import {
 import {
   AuthService,
   FirebaseService,
+  HttpService,
   ToastService,
   UtilService
 } from '@app/services';
@@ -64,7 +65,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
     private _toast: ToastService,
-    private _router: Router
+    private _router: Router,
+    private _httpService: HttpService
   ) {
   }
 
@@ -240,17 +242,22 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   // handle download new
   handleDownload(event: any, product: Product) {
+    // TODO: add 'ownedItems' to User in db
+    // TODO: remove download button from fist tab
+    // TODO: allow unlogged to access 'owner items' tab
+    // TODO: prevent people from going to site where imgs are stored and downloading all, some private + auth?
+    // TODO: error handling
     event.preventDefault();
     if (!this.user) {
       this._router.navigate(['auth', 'login']);
       return;
     }
-    // TODO: move to http service,
-    // TODO: prevent people from going to site where imgs are stored and downloading all, some private + auth?
-    // TODO: error handling
-    fetch(product.imgPath)
-    .then(response => response.blob())
-    .then(blob => {
+    this._httpService.fetchImageUrlAsBlob(product.imgPath)
+    .pipe(first())
+    .subscribe(blob => {
+      if (!blob) {
+        return;
+      }
       const url = URL.createObjectURL(blob);
       const fileName = product.description + '.png';
       const a = document.createElement('a');
