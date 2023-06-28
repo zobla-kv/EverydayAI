@@ -10,6 +10,7 @@ export interface Product {
     downloadSize: number; 
     // duration required to teach dog (3 days etc.)
     daysToMasterSkill: number;
+    // TODO: keep this in some other form (premium etc.)
     difficulty: 'easy' | 'medium' | 'hard'
     discount?: {
       percentage: number;

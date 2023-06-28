@@ -75,7 +75,8 @@ async function addPaymentToUser(user, paymentIntent) {
       amount: '$' + await getPrice(user.shopping_cart_items) / 100 // to get real price
     }),
     'cart.items': [],
-    'cart.totalSum': 0
+    'cart.totalSum': 0,
+    'ownedItems': FieldValue.arrayUnion(...user.shopping_cart_items.map(item => item.id))
   })
   .catch (err => {
     console.log('error writing: ', err);

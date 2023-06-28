@@ -40,7 +40,10 @@ export class CustomUser {
   password?: string;
   registrationDate: Date;
   lastActiveDate: Date;
+  // TODO: make this too mandatory, set default value on user register
   stripe?: UserStripeData;
+  // ids of owner items TODO: change to string once id is updated in db
+  ownedItems?: number[];
 }
 
 interface UserStripeData {

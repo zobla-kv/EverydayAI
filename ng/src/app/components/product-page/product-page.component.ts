@@ -100,7 +100,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     )
     .subscribe(products => {
       console.log('products: ', products);
-      this.fullProductList = products as unknown as Product[];
+      // filter out owned items
+      this.fullProductList = products.filter(product => !this.user.ownedItems?.includes(product.id));
       this.paginator.length = this.fullProductList.length;
       this.updatePageInfo();
     })
