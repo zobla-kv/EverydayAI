@@ -1,105 +1,33 @@
 <!--REF: https://mahabis.com/ check this product list example -->
-<section class="product-list-wrapper">
-  <div class="container">
-    <div class="header">
-      <h3 class="mb-0">Featured</h3>
-      <h2 class="mb-4">Popular Courses</h2>
-    </div>
-    <div class="overflow-y-hidden inner-list-wrapper">
-      <mat-spinner
-        *ngIf="showSpinner"
-        diameter="200"
-        strokeWidth="15"
-      ></mat-spinner>
-      <div 
-        class="row g-4 gy-5"
-        [ngClass]="{'d-none': showSpinner }"
-        [@productsLoaded]="!showSpinner && 'loaded'"
-        [@changePage]="productVisibilityState" 
-        (@changePage.done)="afterChangePageAnimation($event)"
-      >
-        <div class="col-lg-4 col-md-6 col-sm-12 mt-5 mx-auto" *ngFor="let product of productList">
-          <div class="single-product position-relative">
-            <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
-            <div *ngIf="product.information.discount" class="discount-ribbon-outside">
-              <span>- {{ product.information.discount.percentage }} %
-              <div class="glow"></div>
-              </span>
-            </div>
-            <div class="top-section overflow-hidden">
-              <!-- // TODO: add alt -->
-              <img #img src="{{ product.imgPath }}" alt="" (load)="handleImageLoaded()">
-              <ul>
-                <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->
-                <li>
-                  <mat-spinner
-                    *ngIf="product.spinners?.showCartActionSpinner; else cartAction"
-                    diameter="25"
-                    strokeWidth="5"
-                  ></mat-spinner>
-                  <ng-template #cartAction>
-                    <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart(product.id)"></mat-icon>
-                    <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart" (click)="removeFromCart(product.id)"></mat-icon>
-                  </ng-template>
-                </li>
-                <!-- // TODO: Important! No handlers for below ones, will they be in prod? -->
-                <li><mat-icon icon="download" (click)="handleDownload($event, product)">download</mat-icon></li>
-                <li><mat-icon icon="favorite">favorite</mat-icon></li>
-              </ul>
-            </div>
-            <div class="bottom-section">
-              <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
-              <div class="container product-information">
-                <div class="row gy-3 mx-auto my-0">
-                  <div class="col-4 product-information-item">
-                    <mat-icon svgIcon="dollar"></mat-icon>
-                    <ng-container *ngIf="!product.information.discount">
-                      <span>{{ product.information.price }}</span>
-                    </ng-container>
-                    <ng-container *ngIf="product.information.discount">
-                      <span class="product-old-price">{{ product.information.price }}</span>
-                      <span class="product-discounted-price">{{ product.information.discount.discountedPrice }}</span>
-                    </ng-container>
-                  </div>
-                  <div class="col-4 product-information-item justify-content-center">
-                    <mat-icon svgIcon="video"></mat-icon>
-                    <span class="ms-1">{{ product.information.videoDuration }}h</span>
-                  </div>
-                  <div class="col-4 product-information-item justify-content-end">
-                    <mat-icon icon="download">download</mat-icon>
-                    <span class="ms-1">{{ product.information.downloadSize }}gb</span>
-                  </div>
-                  <div class="col-4 product-information-item text-nowrap">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>{{ product.information.daysToMasterSkill }} days</span>
-                  </div>
-                  <div
-                    [ngClass]="{
-                      'length-1': (product.information.videoDuration).toString().length === 1,
-                      'length-2': (product.information.videoDuration).toString().length === 2,
-                      'length-3': (product.information.videoDuration).toString().length === 3,
-                      'length-4': (product.information.videoDuration).toString().length === 4
-                    }"
-                    class="col-8 product-information-item difficulty position-relative"
-                  >
-                    <mat-icon svgIcon="sweat-drops"></mat-icon>
-                    <span class="ms-1">{{ product.information.difficulty | titlecase }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>  
-        </div>
-      </div>
-    </div>
-    <mat-paginator
-      class="mt-3"
-      #paginator
-      pageSize="{{ pageSize }}"
-      showFirstLastButtons="true"
-      (page)="handlePaginatorNagivation($event)"
-    ></mat-paginator>
-  </div>
+<section class="product-page-wrapper">
+  <mat-tab-group (selectedTabChange)="handleTabChange()">
+    <mat-tab>
+      <ng-template mat-tab-label >
+        <mat-icon>shopping_cart</mat-icon>
+        <span>Shop</span>
+        <div class="active-tab-animation-filler"></div>
+      </ng-template>
+      <app-product-list 
+        [products]="shopProductList" 
+        [pageSize]="6"
+        [actions]="[productActions.CART, productActions.LIKE]"
+        title="Explore new products"
+      ></app-product-list>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon icon="download">download</mat-icon>
+        <span>Owned items</span>
+        <div class="active-tab-animation-filler"></div>
+      </ng-template>
+      <app-product-list 
+        [products]="ownedProductList" 
+        [pageSize]="6"
+        [actions]="[productActions.DOWNLOAD]"
+        title="Download your items"
+      ></app-product-list>
+    </mat-tab>
+  </mat-tab-group>
   <hr>
 </section>
 

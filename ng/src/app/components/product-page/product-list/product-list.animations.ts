@@ -4,7 +4,7 @@ export default [
   trigger('productsLoaded', [
     // good animation but doesnt work well with spinner or image loading (when it needs to be delayed)
     // transition('* <=> *', [
-    //   query(':enter .single-product',
+    //   query(':enter .product-item-wrapper',
     //     [
     //       style({ 'opacity': '0', 'transform': 'translateY(50px)' }),
     //       stagger('100ms', animate('750ms ease-out', style({ 'opacity': '1', 'transform': 'translateY(0px)' })))
@@ -13,11 +13,11 @@ export default [
     //   )
     // ])
 
-    // figured out it 
+    // figured it out
     // animate false => 'loaded' 
     // ignore void => false
     transition('false <=> loaded', [
-      query('.single-product',
+      query('.product-item-wrapper',
         [
           style({ 'opacity': '0', 'transform': 'translateY(50px)' }),
           stagger('100ms', animate('750ms ease-out', style({ 'opacity': '1', 'transform': 'translateY(0px)' })))

@@ -10,6 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs'
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -34,6 +35,8 @@ import {
   FooterComponent,
   HomePageComponent,
   ProductPageComponent,
+  ProductListComponent,
+  ProductItemComponent,
   AuthFormComponent,
   XFormComponent,
   AuthVerify,
@@ -53,14 +56,16 @@ import {
     FooterComponent,
     HomePageComponent,
     ProductPageComponent,
+    ProductItemComponent,
     AuthFormComponent,
     XFormComponent,
     AuthVerify,
+    ToastComponent,
     ShoppingCartComponent,
+    ProductListComponent,
 
     // Directives
-    ObserveVisibilityDirective,
-    ToastComponent
+    ObserveVisibilityDirective
   ],
   imports: [
     BrowserModule,
@@ -76,6 +81,7 @@ import {
     MatSnackBarModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatTabsModule,
 
     // firebase
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

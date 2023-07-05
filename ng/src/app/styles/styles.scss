@@ -357,6 +357,19 @@ form {
 .mat-mdc-paginator {
   border-radius: 8px;
   background-color: $main-orange-bg-color;
+
+  .mat-mdc-paginator-page-size { display: none; }
+  .mat-mdc-paginator-range-actions {
+    .mat-mdc-paginator-range-label { 
+      color: $main-orange-bg-color;
+      font-size: 0.875rem;
+      margin: 0 0.5rem;
+    }
+    button { 
+      background-color: $main-orange-bg-color; 
+      margin-left: 0.5rem;
+    }
+  }
 }
 
 .mdc-tooltip {
@@ -408,6 +421,64 @@ form {
   background-color: $main-orange-bg-color;
   border: 1px solid $main-dark-bg-color;
   color: $main-dark-bg-color;
+}
+
+.mat-mdc-tab-group {
+
+  .mat-mdc-tab {
+    $tab-change-animation-duration: 0.3s;
+
+    flex: 1 !important;
+    top: 0;
+    padding: 0 !important; 
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1px solid $main-orange-bg-color;
+    overflow: hidden;
+    // max-width: 300px;
+    // margin: auto;
+
+    &:first-child { margin-left: 20px; }
+    &:last-child { margin-right: 20px; }
+  
+    .mdc-tab-indicator .mdc-tab-indicator__content { display: none; }
+    .mdc-tab__content { width: 100% }
+    .mdc-tab__text-label { 
+      color: $orange-text; 
+      transition: $tab-change-animation-duration;
+      .mat-icon { 
+        color: $orange-text; 
+        transition: $tab-change-animation-duration; 
+        margin-right: 0.5rem;
+      }
+      .active-tab-animation-filler { 
+        position: absolute; 
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 0;
+        background-color: $main-orange-bg-color;
+        transition: $tab-change-animation-duration;
+        z-index: -1;
+      }
+    }
+  }
+  
+  .mat-mdc-tab.mdc-tab--active {
+    .mdc-tab__text-label { color: $dark-text !important; }
+    .mat-icon { color: $dark-text; }
+    .active-tab-animation-filler { 
+      height: 100%;
+    }
+  }
+
+  .mat-mdc-tab-body-wrapper {
+    position: relative;
+    top: -2px;
+    border-top: 2px solid $main-orange-bg-color;
+    min-height: 700px;
+    border-radius: 20px;
+  }
 }
 
 /* MEDIA QUERIES */

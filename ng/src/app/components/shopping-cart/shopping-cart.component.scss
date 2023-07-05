@@ -7,12 +7,11 @@
     background-color: $main-orange-bg-color;
 
     .cart-items-column-wrapper {
-      // position: relative;
-      // left: 20px;
       mat-spinner { top: 120px; }
       .mat-mdc-paginator {
         color: white;
         font-weight: 500;
+        &::ng-deep.mat-mdc-paginator-range-label { color: $white-text; }
         &::ng-deep button .mat-mdc-paginator-icon  { fill: white; }
       }
 
