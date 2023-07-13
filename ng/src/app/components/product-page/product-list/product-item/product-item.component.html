@@ -1,7 +1,7 @@
 <div class="product-item-wrapper position-relative">
   <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
-  <div *ngIf="product.information.discount && actions.includes(productActions.CART)" class="discount-ribbon-outside">
-    <span>- {{ product.information.discount.percentage }} %
+  <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon-outside">
+    <span>- {{ product.discount }} %
     <div class="glow"></div>
     </span>
   </div>
@@ -24,42 +24,18 @@
   </div>
   <div class="bottom-section">
     <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
-    <div class="container product-information">
-      <div class="row gy-3 mx-auto my-0">
-        <div class="col-4 product-information-item">
-          <mat-icon svgIcon="dollar" icon="dollar"></mat-icon>
-          <ng-container *ngIf="!product.information.discount">
-            <span>{{ product.information.price }}</span>
-          </ng-container>
-          <ng-container *ngIf="product.information.discount">
-            <span class="product-old-price">{{ product.information.price }}</span>
-            <span class="product-discounted-price">{{ product.information.discount.discountedPrice }}</span>
-          </ng-container>
-        </div>
-        <div class="col-4 product-information-item justify-content-center">
-          <mat-icon svgIcon="video"></mat-icon>
-          <span class="ms-1">{{ product.information.videoDuration }}h</span>
-        </div>
-        <div class="col-4 product-information-item justify-content-end">
-          <mat-icon icon="download">download</mat-icon>
-          <span class="ms-1">{{ product.information.downloadSize }}gb</span>
-        </div>
-        <div class="col-4 product-information-item text-nowrap">
-          <mat-icon>check_circle</mat-icon>
-          <span>{{ product.information.daysToMasterSkill }} days</span>
-        </div>
-        <div
-          [ngClass]="{
-            'length-1': (product.information.videoDuration).toString().length === 1,
-            'length-2': (product.information.videoDuration).toString().length === 2,
-            'length-3': (product.information.videoDuration).toString().length === 3,
-            'length-4': (product.information.videoDuration).toString().length === 4
-          }"
-          class="col-8 product-information-item difficulty position-relative"
-        >
-          <mat-icon svgIcon="sweat-drops"></mat-icon>
-          <span class="ms-1">{{ product.information.difficulty | titlecase }}</span>
-        </div>
+    <div class="product-information mt-3">
+      <div 
+        class="product-information-item" 
+        *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
+        [attr.item]="metadata.key"
+      >
+        <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+          {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+        </mat-icon>
+        <!-- price not part of metadata -->
+        <span class="ms-1" *ngIf="metadata.key === 'price'">{{ product.price }}</span>
+        <!-- <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key as keyof ProductResponse] }}</span>  -->
       </div>
     </div>
   </div>

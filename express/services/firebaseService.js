@@ -38,6 +38,7 @@ async function generateEmailLink(email, type) {
 
 // recalculate prices of items on the BE to prevent making purchase with user modified price
 // itemIds: String[]
+// TODO: update discount price to match new Product model
 async function getPrice(items) {
   // TODO: !important remove conversion to number once product item ids become a string in db
   const tempItemIds = items.map(item => Number(item.id))

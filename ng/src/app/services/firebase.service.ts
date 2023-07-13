@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { UserCredential } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, deleteDoc, doc, increment } from '@angular/fire/firestore';
 
 // transform subscription into promise
@@ -14,8 +15,8 @@ import {
   FirebaseError,
   FirebaseConstants,
   EmailType,
-  Product,
   Labels,
+  ProductResponse
 } from '@app/models';
 
 import {
@@ -23,7 +24,6 @@ import {
   HttpService, 
   UtilService
 } from '@app/services';
-import { UserCredential } from '@angular/fire/auth';
 
 
 /**
@@ -168,36 +168,28 @@ export class FirebaseService {
   }
   
   // return all products from db wrapped by observable
-  getProducts(): Observable<Product[]> {
+  getProducts(): Observable<ProductResponse[]> {
     // valueChanges makes it an observable
-    return this._db.collection('Products').valueChanges() as Observable<Product[]>;
+    return this._db.collection('Products').valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add single product to cart
-  addProductToCart(product: Product): Promise<void> {
+  addProductToCart(product: ProductResponse): Promise<void> {
   // .getUser sync version because this can only be triggered if user is logged in
   const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
   return this._db.collection('Users').doc(currentUserId).ref.update({
     'cart.items': arrayUnion(product),
-    'cart.totalSum': increment(
-        product.information.discount ? 
-          product.information.discount.discountedPrice : 
-          product.information.price
-      )
+    'cart.totalSum': increment(product.discount > 0 ? (product.price * product.discount / 100) : product.price)
     })
   }
 
   // remove single product from cart
-  removeProductFromCart(product: Product): Promise<void> {
+  removeProductFromCart(product: ProductResponse): Promise<void> {
     // NOTE: below line will require change if getUser is to become async
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayRemove(product),
-      'cart.totalSum': increment(
-          product.information.discount ? 
-            -product.information.discount.discountedPrice : 
-            -product.information.price
-        )
+      'cart.totalSum': increment(product.discount > 0 ? -(product.price * product.discount / 100) : -product.price)
       })
     }
 

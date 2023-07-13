@@ -54,20 +54,18 @@
                             <div class="cart-item-description ms-0 ms-sm-3">
                               <h5 class="cart-item-title">{{ item.title }}</h5>
                               <div class="d-flex gap-1 align-items-center">
-                                <p class="small mb-0">{{ item.information.downloadSize}}gb</p>
+                                <p class="small mb-0">{{ item.information.downloadSize }}gb</p>
                                 <div class="vr"></div>
-                                <p class="small mb-0">{{ item.information.videoDuration}}h</p>
-                                <div class="vr"></div>
-                                <p class="small mb-0">{{ item.information.difficulty}}</p>
                               </div>
                             </div>
                           </div>
                           <div class="cart-item-price d-flex flex-row align-items-center gap-2 gap-sm-3">
                             <div>
-                              <h5 class="mb-0">
+                              <!-- // TODO: commented out for commit -->
+                              <!-- <h5 class="mb-0">
                                 {{ item.information.discount ? 
                                   item.information.discount.discountedPrice : item.information.price }}&nbsp;$
-                              </h5>
+                              </h5> -->
                             </div>
                             <mat-icon 
                               *ngIf="!item.spinners?.deleteSpinner"

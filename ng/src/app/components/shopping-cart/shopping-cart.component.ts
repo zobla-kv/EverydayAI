@@ -5,9 +5,9 @@ import { Subscription } from 'rxjs';
 
 import { 
   ShoppingCart,
-  Product,
   ToastConstants,
-  CustomUser
+  CustomUser,
+  ProductResponse
 } from '@app/models';
 
 import {
@@ -34,7 +34,8 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   private _cart: ShoppingCart;
 
   // only holds current page items
-  paginatedCart: Product[];
+  // TODO: update to use productMapper
+  paginatedCart: ProductResponse[];
 
   // custom user
   user: CustomUser;
@@ -146,7 +147,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // add delete spinner
-  addFrontendProperties(): Product[] {
+  addFrontendProperties(): ProductResponse[] {
     return this._cart.items.map(item => {
       return { ...item, spinners: { deleteSpinner: false } }
     })
@@ -154,11 +155,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // remove front end properties added by reverse method
   // get original object to store in db
-  removeFrontendProperties(item: Product): Product {
-    const itemCopy = this._utilService.getDeepCopy(item);
-    delete itemCopy.spinners;
-    return itemCopy;
-  }
+  // removeFrontendProperties(item: Product): Product {
+  //   const itemCopy = this._utilService.getDeepCopy(item);
+  //   delete itemCopy.spinners;
+  //   return itemCopy;
+  // }
 
   // change page
   changePage() {
@@ -173,14 +174,14 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   removeFromCart(ev: Event, id: number) {
     const itemIndex = this.cart.items.findIndex(item => item.id === id)!;
     const item = this.cart.items[itemIndex];
-    item.spinners.deleteSpinner = true;
-    this._firebaseService.removeProductFromCart(this.removeFrontendProperties(item))
-    .then(async () => {
-      await this._authService.updateUser();
-      this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
-    })
-    .catch(err => this._toast.showDefaultError())
-    .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
+    // item.spinners.deleteSpinner = true;
+    // this._firebaseService.removeProductFromCart(this.removeFrontendProperties(item))
+    // .then(async () => {
+    //   await this._authService.updateUser();
+    //   this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+    // })
+    // .catch(err => this._toast.showDefaultError())
+    // .finally(() => setTimeout(() => item.spinners.deleteSpinner = false, 1200));
   }
 
 

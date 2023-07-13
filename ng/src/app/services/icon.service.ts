@@ -16,14 +16,8 @@ export class IconService {
   Icons: { name: string }[] = [
     { name: 'planet' },
     { name: 'book' },
-    { name: 'qoute' },
     { name: 'dog-happy' },
-    { name: 'dog-head' },
-    { name: 'home-page-category-food' },
-    { name: 'next-step' },
     { name: 'dollar' },
-    { name: 'video' },
-    { name: 'sweat-drops' },
     { name: 'cart-add' },
     { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
@@ -31,6 +25,9 @@ export class IconService {
     { name: 'open-mind' },
     { name: 'visa' },
     { name: 'american-express' },
+    { name: 'image-resolution' },
+    { name: 'file-type-img' },
+    { name: 'tier-premium' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

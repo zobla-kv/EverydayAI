@@ -8,10 +8,7 @@
         <div class="active-tab-animation-filler"></div>
       </ng-template>
       <app-product-list 
-        [products]="shopProductList" 
-        [pageSize]="6"
-        [actions]="[productActions.CART, productActions.LIKE]"
-        title="Explore new products"
+        [config]="productListConfig.PRODUCT_LIST_PRINTS.TAB_SHOP"
       ></app-product-list>
     </mat-tab>
     <mat-tab>
@@ -21,10 +18,7 @@
         <div class="active-tab-animation-filler"></div>
       </ng-template>
       <app-product-list 
-        [products]="ownedProductList" 
-        [pageSize]="6"
-        [actions]="[productActions.DOWNLOAD]"
-        title="Download your items"
+        [config]="productListConfig.PRODUCT_LIST_PRINTS.TAB_OWNED_ITEMS" 
       ></app-product-list>
     </mat-tab>
   </mat-tab-group>

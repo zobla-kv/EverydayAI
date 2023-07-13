@@ -1,9 +1,7 @@
-import { 
-  Product
-} from '@app/models';
+import { ProductResponse } from "./Product.model";
 
 //TODO: refactor user to match DB model and make this it's property
 export interface ShoppingCart {
-  items: Product[],
+  items: ProductResponse[],
   totalSum: number;
 }

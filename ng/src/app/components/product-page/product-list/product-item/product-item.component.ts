@@ -7,16 +7,17 @@ import {
   AuthService, 
   FirebaseService, 
   HttpService, 
-  ToastService, 
-  UtilService 
+  ToastService
 } from '@app/services';
 
 import { 
   CustomUser,
-  Product, 
   ToastConstants,
-  ProductActions
+  ProductActions,
+  ProductMapper,
+  ProductTypePrint
 } from '@app/models';
+
 
 @Component({
   selector: 'app-product-item',
@@ -29,7 +30,9 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   // use in template
   readonly productActions = ProductActions;
 
-  @Input('product') product: Product;
+  // product
+  @Input('product') product: ProductMapper<ProductTypePrint>;
+
   // actions a product can peform
   @Input('actions') actions: string[];
 
@@ -45,7 +48,6 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   constructor(
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
-    private _utilService: UtilService,
     private _toast: ToastService,
     private _router: Router,
     private _httpService: HttpService
@@ -54,7 +56,6 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-    this.addActionSpinners();
   }
 
   // emit event once img is loaded
@@ -62,20 +63,8 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     this.imgLoaded.emit();
   }
 
-  // add spinner for each action
-  addActionSpinners(): void {
-    this.product.spinners = {};
-    this.actions.forEach(action => this.product.spinners[action] = false)
-  }
-
-  // remove actions spinners added by reverse method
-  // get original object to store in db
-  removeActionSpinners(product: Product): Product {
-    const productCopy = this._utilService.getDeepCopy(product);
-    delete productCopy.spinners;
-    delete productCopy.isInCart;
-    return productCopy;
-  }
+  // used to keep order in keyvalue pipe (it sorts by default)
+  keepOrder() { return 0; }
 
   // handles add to cart
   addToCart() {
@@ -84,7 +73,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
       return;
     }
     this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.addProductToCart(this.removeActionSpinners(this.product))
+    this._firebaseService.addProductToCart(ProductMapper.getOriginalObject(this.product))
     .then(async () => await this.handleCartActionSucceeded())
     .catch(err => this.handleCartActionFailed())
   }
@@ -92,7 +81,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   // handles remove from cart
   removeFromCart() {
     this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.removeProductFromCart(this.removeActionSpinners(this.product))
+    this._firebaseService.removeProductFromCart(ProductMapper.getOriginalObject(this.product))
     .then(async () => await this.handleCartActionSucceeded())
     .catch(err => this.handleCartActionFailed())
   }
@@ -139,11 +128,10 @@ export class ProductItemComponent implements OnInit, OnDestroy {
          return;
        }
        const url = URL.createObjectURL(blob);
-       // TODO: does this really turn img into .png
+       // TODO: does this really turn img into .png (.jfif to .png)
        const fileName = this.product.description + '.png';
        const a = document.createElement('a');
        a.href = url;
-       // from .jfif to .png
        a.download = fileName;
        document.body.appendChild(a);
        a.click();

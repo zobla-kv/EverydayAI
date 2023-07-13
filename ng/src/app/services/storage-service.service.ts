@@ -33,6 +33,7 @@ export class StorageService {
         this.setNumberOfItemsInCart(user.cart.items.length);
       } else {
         this.removeUserFromLocalStorage();
+        this.removeCartFromLocalStorage();
       }
     })
   }
@@ -65,6 +66,13 @@ export class StorageService {
   getNumberOfItemsInCart(): number {
     const numOfItems: any = localStorage.getItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY);
     return numOfItems ? numOfItems : 0;
+  }
+
+  // remove cart from local storage
+  removeCartFromLocalStorage(): void {
+    if (localStorage.getItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY)) {
+      localStorage.removeItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY);
+    }
   }
 
   ngOnDestroy() {

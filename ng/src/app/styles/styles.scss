@@ -23,9 +23,14 @@ body {
     overflow: hidden;
     position: relative;
     // NOTE: 4rem for footer
-    padding: 0 2rem 4rem 2rem;
+    // padding: 0 2rem 4rem 2rem;
+    padding-top: 0;
+    padding-bottom: 4rem;
 
-    &:has(.auth-form-page) { min-height: calc(100vh - 3rem); }
+    &:has(.auth-form-page) { 
+      padding: 0 1rem 4rem 1rem;
+      min-height: calc(100vh - 7rem); 
+    }
   }
   .footer-wrapper {
     margin: 0;

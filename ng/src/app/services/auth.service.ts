@@ -44,7 +44,6 @@ export class AuthService {
   ) {
     // auth coming from firebase
     this._fireAuth.onAuthStateChanged(async user => {
-      console.log('auth state changed: ', user);
       // to counter firebase default auto login behaviour
       if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
         this.logout(false);

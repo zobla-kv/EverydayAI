@@ -106,7 +106,6 @@ export class AppComponent {
   // app loaded and preloader animation done
   handleLoadAnimationDone(event: AnimationEvent) {
     // NOTE: lift up determines load finish, be careful to make this last animation
-    // event.toState == 'true' not working ??
     if (event.toState == '1') {
       this.isPreloadAnimationDone = true;
       this._utilService.appLoadedAnimationComplete$.next();
