@@ -483,6 +483,8 @@ form {
     border-top: 2px solid $main-orange-bg-color;
     min-height: 700px;
     border-radius: 20px;
+
+    .mat-mdc-tab-body-content { overflow: hidden; }
   }
 }
 

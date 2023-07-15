@@ -9,34 +9,51 @@ export interface ProductResponse {
   discount: number;
   imgPath: string;
   imgAlt: string;
-  // anything that extends ProductResponse
-  metadata: ProductTypePrint | ProductTypeShirt;
+  metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
 }
 
-
-// TODO: does it really extend
 export interface ProductTypePrint extends ProductResponse {
-  downloadSize: number; 
-  resolution: string;
-  extension: string;
-  tier: 'classic' | 'premium';
+  metadata: ProductTypePrintMetadata
 }
-export interface ProductTypeShirt extends ProductResponse {
-  size: 'SM' | 'XL' | 'XXL';
-  color: string;
+
+export interface ProductShirtPrint extends ProductResponse {
+  metadata: ProductTypeShirtMetadata
+}
+
+interface ProductTypePrintMetadata {
+  [key: string]: {
+    downloadSize: number; 
+    resolution: string;
+    extension: string;
+    tier: 'classic' | 'premium';
+  }
+}
+
+interface ProductTypeShirtMetadata {
+  [key: string]: {
+    size: 'SM' | 'XL' | 'XXL';
+    color: string;
+  }
 }
 
 // all actions for all products
-enum ProductActions { 
-  CART = 'cart', 
-  DOWNLOAD = 'download', 
+enum ProductActions {
+  CART = 'cart',
+  DOWNLOAD = 'download',
   LIKE = 'like'
 }
+
+export namespace ProductType {
+  export enum PRINTS {
+    SHOP = 'prints_shop',
+    OWNED_ITEMS = 'prints_owned_items'
+  }
+}
+
 export class ProductListConfig {
 
   title: string;
-  actions: ProductActions[];
-  metadata: string[];
+  product: { type: any, actions: ProductActions[], metadata: string[] }
   pageSize: number;
 
   // images to download
@@ -44,15 +61,21 @@ export class ProductListConfig {
     TAB_SHOP: {
       id: 0,
       title: 'Explore new products',
-      actions: [ProductActions.CART, ProductActions.LIKE],
-      metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution'],
+      product: {
+        type: ProductType.PRINTS.SHOP,
+        actions: [ProductActions.CART, ProductActions.LIKE],
+        metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution']
+      },
       pageSize: 6
     },
     TAB_OWNED_ITEMS: {
       id: 1,
       title: 'Download your items',
-      actions: [ProductActions.DOWNLOAD],
-      metadata: ['resolution', 'tier', 'extension'],
+      product: {
+        type: ProductType.PRINTS.OWNED_ITEMS,
+        actions: [ProductActions.DOWNLOAD],
+        metadata: ['resolution', 'tier', 'extension']
+      },
       pageSize: 6
     }
   }
@@ -68,7 +91,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   discount: number;
   imgPath: string;
   imgAlt: string;
-  metadata: ProductTypePrint | ProductTypeShirt;
+  metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   // FE properties that are added
   spinners: any;
   isInCart: boolean;
@@ -84,11 +107,11 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.imgAlt = product.imgAlt;
     this.metadata = product.metadata;
     // spinner for each action
-    this.spinners = Object.assign({}, ...config.actions.map(action => ({ [action]: false })));
-    this.isInCart = !config.actions.includes(ProductActions.CART) ? false : 
+    this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
+    this.isInCart = !config.product.actions.includes(ProductActions.CART) ? false : 
       user?.cart.items.findIndex(item => item.id === product.id) === 1 ? 
       true : false;
-    this.metadataIconMap = ProductMapper._getMetadataMap(config.metadata, product.metadata);
+    this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
   }
 
   // get original object to store in db
@@ -114,22 +137,24 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   
   // what metadata is displayed in the bottom section of single product
   // filter out product list icons to only include passed ones, order is important
-  // productResponse type makes no sense, recheck extension
-  private static _getMetadataMap(metadataList: string[], product: ProductResponse): MetadataIconMap {
+  private static _getMetadataMap(
+    metadataList: string[], 
+    productMetadata: ProductTypePrintMetadata | ProductTypeShirtMetadata
+  ) : MetadataIconMap {
     const map: MetadataIconMap = new Map();
-    metadataList.forEach(metadata => {
+    metadataList.forEach((key: string) => {
       // find by metadata key
-      const icon = ProductMapper._metadataIconMap.get(metadata);
+      const icon = ProductMapper._metadataIconMap.get(key);
       if (!icon) {
         // find by metadata key + '-' + metadata value
-        const sufix = '-' + product[metadata as keyof ProductResponse];
-        const iconBasedOnData = ProductMapper._metadataIconMap.get(metadata + sufix);
+        const sufix = '-' + productMetadata[key];
+        const iconBasedOnData = ProductMapper._metadataIconMap.get(key + sufix);
         if (!iconBasedOnData) {
-          throw new Error(`No icon for the specified metadata item: ${metadata}`)
+          throw new Error(`No icon for the specified metadata item: ${key}`)
         }
-        map.set(metadata, iconBasedOnData);
+        map.set(key, iconBasedOnData);
       } else {
-        map.set(metadata, icon)
+        map.set(key, icon);
       }
     })
     return map;
@@ -142,4 +167,4 @@ interface MetadataIcon {
   type: 'mat-icon' | 'custom';
 }
 
-export interface MetadataIconMap extends Map<string, MetadataIcon> {}
+interface MetadataIconMap extends Map<string, MetadataIcon> {}

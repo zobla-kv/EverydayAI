@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { Subscription, concatMap, first, of, tap } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 
 import {
   CustomUser,
@@ -61,24 +61,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {}
 
   // TODO: Important! error handling
-  // TODO: keep data when routing (reuse strategy) so it wouldn't reach DB every time
+  // NOTE: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
-    this.userStateSub$ = this._authService.userState$
-    .pipe(
-      concatMap((value, index) => {
-        // trigger only on first emission (index 0)
-        if (index === 0) {
-          return of(value).pipe(tap(() => this.fetchProducts()))
-        }
-        return of(value)
-      })
-    )
-    .subscribe(user => user && (this.user = user));
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
+      user && (this.user = user);
+      this.fetchProducts(this.config.product.type);
+    });
   }
-
+  
   // fetch products from BE
-  fetchProducts(): void {
-    this._firebaseService.getProducts().pipe(first()).subscribe(products => {
+  fetchProducts(productType: any): void {
+    this._firebaseService.getProducts(productType, this.user).pipe(first()).subscribe(products => {
       this.fullProductList = products;
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
@@ -113,7 +106,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       (this.paginator.pageIndex + 1) * this.config.pageSize - 1
     );
     this.paginatedList = productsForNextPage.map(product => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
-  }
+  } 
 
   // handle pagination navigation
   handlePaginatorNagivation(event: PageEvent) {

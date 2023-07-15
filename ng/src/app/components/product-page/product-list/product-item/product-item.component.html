@@ -35,7 +35,7 @@
         </mat-icon>
         <!-- price not part of metadata -->
         <span class="ms-1" *ngIf="metadata.key === 'price'">{{ product.price }}</span>
-        <!-- <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key as keyof ProductResponse] }}</span>  -->
+        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span> 
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@
       <div class="col-lg-4 col-md-6 col-sm-12 mt-5" *ngFor="let product of paginatedList">
         <app-product-item
           [product]="product"
-          [actions]="config.actions"
+          [actions]="config.product.actions"
           (imgLoaded)="handleImageLoaded()"
         ></app-product-item>
       </div>

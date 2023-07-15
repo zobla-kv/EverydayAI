@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, deleteDoc, doc, increment } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
 
-// transform subscription into promise
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, of, delay } from 'rxjs';
 
 import {
   CustomUser,
@@ -16,7 +15,9 @@ import {
   FirebaseConstants,
   EmailType,
   Labels,
-  ProductResponse
+  ProductResponse,
+  ProductType,
+  ProductTypePrint
 } from '@app/models';
 
 import {
@@ -168,9 +169,36 @@ export class FirebaseService {
   }
   
   // return all products from db wrapped by observable
-  getProducts(): Observable<ProductResponse[]> {
-    // valueChanges makes it an observable
-    return this._db.collection('Products').valueChanges() as Observable<ProductResponse[]>;
+  getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[]> {
+    let products$: Observable<ProductResponse[]>;
+    switch(productType) {
+      case(ProductType.PRINTS.SHOP):
+        products$ = this.getProductsForTypePrintTabShop(user);
+        break;
+      case(ProductType.PRINTS.OWNED_ITEMS):
+        products$ = this.getProductsForTypePrintTabOwnedItems(user);
+        break;
+      default: 
+        throw new Error('Unable to fetch products. Invalid type: ', productType);
+    }
+    return products$;
+  }
+
+  // get products for type print tab shop
+  getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductTypePrint[]> {
+    if (!user) {
+      // valueChanges makes it an observable
+      return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
+    }
+    return this._db.collection('Products', query => query.where('id', 'not-in', user.ownedItems)).valueChanges() as Observable<ProductTypePrint[]>;
+  }
+
+  // get products for type print tab owned items
+  getProductsForTypePrintTabOwnedItems(user: CustomUser | null): Observable<ProductResponse[] | []> {
+    if (!user) {
+      return of([]).pipe(delay(500))
+    }
+    return this._db.collection('Products', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add single product to cart

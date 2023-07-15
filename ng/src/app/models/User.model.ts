@@ -30,6 +30,7 @@ export interface RegisterUser {
 // TODO: auto logout?
 // TODO: eliminate password from here
 export class CustomUser {
+  // TODO: remove id field because document has id?
   id: string;
   email: string;
   name: string;
