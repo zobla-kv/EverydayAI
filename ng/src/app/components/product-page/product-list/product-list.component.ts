@@ -80,8 +80,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   // TODO: runs on each page
-  // TODO: maybe add checks (img.complete && img.naturalWidth ~) ?
-  // TODO: Important! can also fail, do error handling (endpoint will return url but image is not available)
   handleImageLoaded() {
     if (++this.numOfloadedImages === this.paginatedList.length) {
       this.showSpinner = false;

@@ -63,6 +63,13 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     this.imgLoaded.emit();
   }
 
+  // emit event if img fails to load
+  handleImageLoadError(ev: any) {
+    // TODO: replace src
+    ev.target.src = '../../../../../assets/images/img/cesar-millan.png';
+    this.imgLoaded.emit();
+  }
+
   // used to keep order in keyvalue pipe (it sorts by default)
   keepOrder() { return 0; }
 
