@@ -27,6 +27,7 @@ export class IconService {
     { name: 'american-express' },
     { name: 'image-resolution' },
     { name: 'file-type-img' },
+    { name: 'tier-classic' },
     { name: 'tier-premium' }
   ]
 

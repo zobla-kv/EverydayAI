@@ -50,6 +50,9 @@
           &[icon="favorite"] {
             transform: scale(1.1);
           }
+
+          color: $orange-text;
+          svg path { fill: $orange-text;}
         }
 
         .mat-mdc-progress-spinner { display: inline-block; }
@@ -102,7 +105,6 @@
 
         .mat-icon { 
           color: $main-dark-bg-color; 
-          svg path { fill: $main-dark-bg-color; }
         }
         
         &[item="price"] {
@@ -131,7 +133,6 @@
         .product-old-price {
           position: absolute;
           top: -8px;
-          left: 24px;
           opacity: 0.6;
   
           &::after {

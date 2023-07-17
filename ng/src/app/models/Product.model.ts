@@ -2,6 +2,7 @@
 import { CustomUser } from "./User.model";
 
 export interface ProductResponse {
+  // TODO: set from document as string
   id: number;
   title: string;
   description: string;
@@ -128,7 +129,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   private static _metadataIconMap: MetadataIconMap = new Map([
     ['price',        { iconName: 'dollar',           type: 'custom'   }],       
     ['downloadSize', { iconName: 'download',         type: 'mat-icon' }],
-    ['tier-classic', { iconName: 'tier-premium',     type: 'custom'   }],
+    ['tier-classic', { iconName: 'tier-classic',     type: 'custom'   }],
     ['tier-premium', { iconName: 'tier-premium',     type: 'custom'   }],
     ['resolution',   { iconName: 'image-resolution', type: 'custom'   }],
     ['extension',    { iconName: 'file-type-img',    type: 'custom'   }],

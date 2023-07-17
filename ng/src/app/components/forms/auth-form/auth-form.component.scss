@@ -1,5 +1,8 @@
 @import '../../../styles/variables.scss';
 
+.mat-icon { color: $orange-text; }
+.mat-icon svg path { fill: $orange-text; }
+
 a {
 	cursor: pointer;
   transition: all 200ms linear;

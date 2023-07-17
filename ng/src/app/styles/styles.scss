@@ -348,9 +348,6 @@ form {
 .main-logo { background-image: $main-logo; }
 
 /* material */
-.mat-icon { color: $orange-text; }
-.mat-icon svg path { fill: $orange-text; }
-
 *:has(> mat-spinner) { user-select: none !important; cursor: default !important; }
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: $main-orange-bg-color !important;

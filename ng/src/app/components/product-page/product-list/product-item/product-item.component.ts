@@ -7,7 +7,8 @@ import {
   AuthService, 
   FirebaseService, 
   HttpService, 
-  ToastService
+  ToastService,
+  UtilService
 } from '@app/services';
 
 import { 
@@ -50,7 +51,8 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     private _firebaseService: FirebaseService,
     private _toast: ToastService,
     private _router: Router,
-    private _httpService: HttpService
+    private _httpService: HttpService,
+    public   utilService: UtilService
   ) {
   }
 

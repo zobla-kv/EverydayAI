@@ -1,5 +1,8 @@
 @import '../../styles/variables';
 
+.mat-icon { color: $orange-text; }
+.mat-icon svg path { fill: $orange-text; }
+
 section .section-header {
   text-align: center;
   font-size: 50px;

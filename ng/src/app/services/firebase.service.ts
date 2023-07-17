@@ -207,7 +207,7 @@ export class FirebaseService {
   const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
   return this._db.collection('Users').doc(currentUserId).ref.update({
     'cart.items': arrayUnion(product),
-    'cart.totalSum': increment(product.discount > 0 ? (product.price * product.discount / 100) : product.price)
+    'cart.totalSum': increment(this._utilService.getProductPrice(product))
     })
   }
 
@@ -217,7 +217,7 @@ export class FirebaseService {
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayRemove(product),
-      'cart.totalSum': increment(product.discount > 0 ? -(product.price * product.discount / 100) : -product.price)
+      'cart.totalSum': increment(-this._utilService.getProductPrice(product))
       })
     }
 

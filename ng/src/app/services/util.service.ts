@@ -8,6 +8,7 @@ import { User as FirebaseUser } from '@angular/fire/auth';
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 
 import {
+  ProductResponse,
   ToastConstants
 } from '@app/models';
 
@@ -211,7 +212,12 @@ export class UtilService {
       return true;
     }
 
-    return false;
+    return false;   
+  }
+
+  // get price or discounted price for FE
+  getProductPrice(product: ProductResponse): number {
+    return product.discount > 0 ? (product.price * (100 - product.discount) / 100) : product.price
   }
 
 }
