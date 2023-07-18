@@ -146,14 +146,17 @@ export class FirebaseService {
   
   // return value whether it succeeded
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
-    let successfulWrite = true;
-    // TODO: izbaci sifru odavde (sacuvaj negde drugde)
-    const customUser: CustomUser = { 
+    // desctucture user and omit password
+    const { password, ...customUser } = { 
       ...user, 
-      cart: { items: [], totalSum: 0},
+      cart: { items: [], totalSum: 0 },
       registrationDate: new Date(), 
-      lastActiveDate: new Date()
-    }; 
+      lastActiveDate: new Date(),
+      stripe: { id: null },
+      ownedItems: []
+    };
+    
+    let successfulWrite = true;
     await this._db.collection('Users').doc(user.id).set(customUser)
     .catch(err => {
       this._db.collection('FailedRegisterWrites').doc(user.email).set({ reason: err });
@@ -186,7 +189,7 @@ export class FirebaseService {
 
   // get products for type print tab shop
   getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductTypePrint[]> {
-    if (!user) {
+    if (!user || user.ownedItems.length === 0) {
       // valueChanges makes it an observable
       return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
     }
@@ -195,7 +198,7 @@ export class FirebaseService {
 
   // get products for type print tab owned items
   getProductsForTypePrintTabOwnedItems(user: CustomUser | null): Observable<ProductResponse[] | []> {
-    if (!user) {
+    if (!user || user.ownedItems.length === 0) {
       return of([]).pipe(delay(500))
     }
     return this._db.collection('Products', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;

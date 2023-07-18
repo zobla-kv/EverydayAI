@@ -41,14 +41,21 @@ interface ProductTypeShirtMetadata {
 enum ProductActions {
   CART = 'cart',
   DOWNLOAD = 'download',
-  LIKE = 'like'
+  LIKE = 'like',
+  DELETE = 'delete'
 }
 
 export namespace ProductType {
+  // all
+  export enum ALL {
+    ALL = 'all'
+  }
+
   export enum PRINTS {
     SHOP = 'prints_shop',
     OWNED_ITEMS = 'prints_owned_items'
   }
+
 }
 
 export class ProductListConfig {
@@ -60,7 +67,6 @@ export class ProductListConfig {
   // images to download
   public static PRODUCT_LIST_PRINTS = {
     TAB_SHOP: {
-      id: 0,
       title: 'Explore new products',
       product: {
         type: ProductType.PRINTS.SHOP,
@@ -70,7 +76,6 @@ export class ProductListConfig {
       pageSize: 6
     },
     TAB_OWNED_ITEMS: {
-      id: 1,
       title: 'Download your items',
       product: {
         type: ProductType.PRINTS.OWNED_ITEMS,
@@ -79,6 +84,17 @@ export class ProductListConfig {
       },
       pageSize: 6
     }
+  }
+
+  public static SHOPPING_CART = {
+    title: '',
+    product: {
+      type: ProductType.ALL,
+      actions: [ProductActions.DELETE],
+      // TODO: not all will have same metadata
+      metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution']
+    },
+    pageSize: 4
   }
 
 }
@@ -106,12 +122,12 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.discount = product.discount;
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
-    this.metadata = product.metadata;
+    this.metadata = product.metadata; 
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = !config.product.actions.includes(ProductActions.CART) ? false : 
-      user?.cart.items.findIndex(item => item.id === product.id) === 1 ? 
-      true : false;
+      user?.cart.items.findIndex(item => item.id === product.id) !== -1 ? 
+      false : true;
     this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
   }
 
@@ -120,6 +136,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     const productCopy = JSON.parse(JSON.stringify(product))
     delete productCopy.spinners;
     delete productCopy.isInCart;
+    delete productCopy.metadataIconMap;
     return productCopy;
   }
 

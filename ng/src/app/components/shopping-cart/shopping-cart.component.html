@@ -41,7 +41,7 @@
 
                 <ng-template #cartItems>
                   <div class="cart-items-wrapper">
-                    <div class="card cart-item" *ngFor="let item of getCurrentCart()" [ngClass]="{'hovered' : item.spinners?.deleteSpinner}">
+                    <div class="card cart-item" *ngFor="let item of getCurrentCart()" [ngClass]="{'hovered' : item.spinners.delete}">
                       <div class="card-body p-2">
                         <div class="d-flex justify-content-between">
                           <div class="d-flex flex-column flex-sm-row flex-grow-1 align-items-center">
@@ -54,27 +54,25 @@
                             <div class="cart-item-description ms-0 ms-sm-3">
                               <h5 class="cart-item-title">{{ item.title }}</h5>
                               <div class="d-flex gap-1 align-items-center">
-                                <p class="small mb-0">{{ item.information.downloadSize }}gb</p>
+                                <p class="small mb-0">{{ item.metadata['downloadSize'] }}gb</p>
                                 <div class="vr"></div>
                               </div>
                             </div>
                           </div>
                           <div class="cart-item-price d-flex flex-row align-items-center gap-2 gap-sm-3">
                             <div>
-                              <!-- // TODO: commented out for commit -->
-                              <!-- <h5 class="mb-0">
-                                {{ item.information.discount ? 
-                                  item.information.discount.discountedPrice : item.information.price }}&nbsp;$
-                              </h5> -->
+                              <h5 class="mb-0">
+                                {{ utilService.getProductPrice(item) }}&nbsp;$
+                              </h5>
                             </div>
                             <mat-icon 
-                              *ngIf="!item.spinners?.deleteSpinner"
+                              *ngIf="!item.spinners.delete"
                               class="icon-delete" 
                               (click)="removeFromCart($event, item.id)"
                             >delete_forever
                             </mat-icon>
                             <mat-spinner
-                              *ngIf="item.spinners?.deleteSpinner"
+                              *ngIf="item.spinners.delete"
                               diameter="25"
                               strokeWidth="4"
                               class="reverse"
@@ -87,10 +85,10 @@
 
                   <mat-paginator
                     #paginator
-                    *ngIf="screenSize !== 'xs' && cart.items.length > pageSize"
+                    *ngIf="screenSize !== 'xs' && cart.items.length > config.pageSize"
                     class="mt-1"
                     [length]="cart.items.length"
-                    pageSize="{{ pageSize }}"
+                    pageSize="{{ config.pageSize }}"
                     hidePageSize="true"
                     showFirstLastButtons="true"
                     (page)="changePage()"

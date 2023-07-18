@@ -86,8 +86,6 @@
     }
 
     .product-information {
-      display: flex;
-      flex-wrap: wrap;
       display: grid; 
       justify-items: start;
       grid-template-columns: 95px 110px 100px; 

@@ -1,22 +1,7 @@
 // TODO: remove User class because it is unused
 import { 
-  ShoppingCart
+  ProductResponse
 } from '@app/models';
-
-export class User {
-  constructor(
-    public id: string,
-    private _token: string,
-    private _tokenExpirationDate: Date
-  ) {}
-
-  get token() {
-    if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
-      return null;
-    }
-    return this._token;
-  }
-}
 
 export interface RegisterUser {
   id: string;
@@ -26,29 +11,28 @@ export interface RegisterUser {
   gender: string
 }
 
-// custom user stored in db that is different from frebase user
-// TODO: auto logout?
-// TODO: eliminate password from here
-export class CustomUser {
-  // TODO: remove id field because document has id?
+// custom user stored in db that is different from firebase user
+export interface CustomUser {
   id: string;
   email: string;
   name: string;
   gender: string;
   cart: ShoppingCart;
-  // used for registration and login
-  // TODO: exposed
-  password?: string;
   registrationDate: Date;
   lastActiveDate: Date;
-  // TODO: make this too mandatory, set default value on user register
-  stripe?: UserStripeData;
+  stripe: UserStripeData;
   // ids of owner items TODO: change to string once id is updated in db
-  ownedItems?: number[];
+  ownedItems: number[];
+}
+
+export interface ShoppingCart {
+  items: ProductResponse[],
+  totalSum: number;
 }
 
 interface UserStripeData {
-  id: string;
+  // null until first buy
+  id: string | null;
 }
 
 // payment object that is sent to BE 
@@ -58,9 +42,9 @@ export interface PaymentObject {
     email: string;
     // TODO: !important update to string once product id is a string in db
     shopping_cart_items: { id: number, title: string }[],
-    stripeId: string | undefined,
+    stripeId: string | null,
     card: PaymentCard;
-  },
+  }
 }
 
 export interface PaymentCard {

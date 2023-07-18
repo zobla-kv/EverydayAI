@@ -50,7 +50,7 @@ export class PaymentService {
         shopping_cart_items: user.cart.items.map(item => (
           { id: item.id, title: item.title }
         )),
-        stripeId: user.stripe?.id,
+        stripeId: user.stripe.id,
         card: {
           holder_name: card.holder_name,
           number: card.number,

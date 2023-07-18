@@ -1,7 +1,6 @@
 import { FirebaseConstants } from './Constants';
 
 // customized response, not real one
-// TODO: change RegisterUser -> User later
 export class FirebaseError {
 
   private _errorCode: string;
