@@ -40,9 +40,30 @@
             -webkit-box-orient: vertical;
             font-size: 1.25rem;
           }
+          
+          .cart-item-metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 2px;
 
-          .vr { min-height: 12px; margin: auto 2px; }
-          .icon-delete { color: inherit; cursor: pointer; }
+            .mat-icon { width: 18px; height: 24px; }
+
+            &[item="tier"] {
+              text-transform: capitalize;
+            }
+            &[item="extension"] {
+              text-transform: uppercase;
+            }
+
+            .vr { min-height: 12px; margin: auto 4px;  }
+
+            &:last-child{ 
+              .vr { display: none; }
+            }
+            
+          }
+
+          .icon-delete { color: white; cursor: pointer; }
           mat-spinner { top: 0; }
           img { width: 70px; height: 70px; }
 
@@ -83,33 +104,6 @@
             border-radius: 2px;
           }
         }
-
-
-        // TODO: commented out secure payment
-        // .secure-payment-wrapper {
-        //   padding: 0.5rem;
-        //   background-color: rgb(6, 104, 6);
-        //   border-radius: 8px;
-        //   display: flex;
-        //   column-gap: 4px;
-
-
-          // .secure-text-wrapper {
-          //   line-height: 18px;
-          //   margin: auto;
-
-          //   span { 
-          //     font-family: $secure-payment-font-family;
-          //     color: #2fe8c9;
-          //     font-weight: bold;
-          //     &.secure { font-size: 1.125rem; }
-          //     &.ssl { font-size: 0.875rem; }
-          //   }
-
-          // }
-
-        // }
-
       }
     }
   }
@@ -174,10 +168,27 @@
 
         .cart-item-price { 
           position: absolute; 
-          right: 8px;
-          bottom: 8px;
+          right: 6px;
+          bottom: 12px;
         }
       }
     }
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .card-body > div:first-child {
+    flex-direction: column;
+    align-items: center;
+
+    .cart-item-title { margin-bottom: 0.25rem !important; }
+
+    .cart-item-price { 
+      position: relative !important; 
+      right: unset !important;
+      bottom: unset !important;
+      align-self: flex-end;
+    }
+  }
+}
+

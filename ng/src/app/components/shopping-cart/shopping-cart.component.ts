@@ -113,7 +113,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.paymentForm = new FormGroup({
       'holder_name': new FormControl(null, [
         Validators.required, 
@@ -163,9 +162,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // remove item from cart
-  removeFromCart(ev: Event, id: number) {
-    const itemIndex = this.cart.items.findIndex(item => item.id === id)!;
-    const item = this.cart.items[itemIndex] as ProductMapper<ProductTypePrint>;
+  removeFromCart(ev: Event, item: ProductMapper<ProductTypePrint>) {
     item.spinners['delete'] = true;
     this._firebaseService.removeProductFromCart(ProductMapper.getOriginalObject(item))
     .then(async () => {
@@ -199,6 +196,9 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  // keep order of keyvalue pipe (not DRY)
+  keepOrder() { return 0; }
 
   ngOnDestroy() {
     this.customUserState$ && this.customUserState$.unsubscribe();

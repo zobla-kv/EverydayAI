@@ -92,7 +92,7 @@ export class ProductListConfig {
       type: ProductType.ALL,
       actions: [ProductActions.DELETE],
       // TODO: not all will have same metadata
-      metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution']
+      metadata: ['tier', 'extension', 'resolution']
     },
     pageSize: 4
   }
@@ -127,7 +127,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = !config.product.actions.includes(ProductActions.CART) ? false : 
       user?.cart.items.findIndex(item => item.id === product.id) !== -1 ? 
-      false : true;
+      true : false;
     this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
   }
 

@@ -54,8 +54,19 @@
                             <div class="cart-item-description ms-0 ms-sm-3">
                               <h5 class="cart-item-title">{{ item.title }}</h5>
                               <div class="d-flex gap-1 align-items-center">
-                                <p class="small mb-0">{{ item.metadata['downloadSize'] }}gb</p>
-                                <div class="vr"></div>
+                                <div 
+                                  class="cart-item-metadata-item" 
+                                  *ngFor="let metadata of item.metadataIconMap | keyvalue: keepOrder"
+                                  [attr.item]="metadata.key"
+                                >
+                                  <p class="small mb-0">
+                                    <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+                                      {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+                                    </mat-icon>
+                                  </p>
+                                  <span class="small mb-0">{{ item.metadata[metadata.key] }}</span>
+                                  <div class="vr"></div>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -68,7 +79,7 @@
                             <mat-icon 
                               *ngIf="!item.spinners.delete"
                               class="icon-delete" 
-                              (click)="removeFromCart($event, item.id)"
+                              (click)="removeFromCart($event, item)"
                             >delete_forever
                             </mat-icon>
                             <mat-spinner
@@ -105,21 +116,6 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                       <h5 class="mb-0">Card details</h5>
-                      <!-- TODO: commented out secure payment -->
-                      <!-- <div class="secure-payment-wrapper">
-                        <img src="../../../assets/images/img/secure.png"
-                          class="img-fluid rounded-3" style="width: 45px;" alt="Secure payment"
-                        >
-                        <div class="secure-text-wrapper">
-                          <span class="d-block secure">100% secure</span>
-                          <span class="d-block ssl">SSL Encryption</span>
-                        </div>
-                      </div> -->
-
-                      <!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                        class="img-fluid rounded-3" style="width: 45px;" alt="Avatar"
-                      > -->
-
                     </div>
 
                     <p class="small mb-2">Supported cards</p>
