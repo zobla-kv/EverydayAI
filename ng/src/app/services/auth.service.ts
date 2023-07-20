@@ -14,7 +14,8 @@ import {
 
 import {
   FirebaseService,
-  UtilService
+  UtilService,
+  PreviousRouteService
  } from '@app/services';
 
 /**
@@ -40,13 +41,14 @@ export class AuthService {
     private _fireAuth: AngularFireAuth,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _router: Router
+    private _router: Router,
+    private _previousRouteService: PreviousRouteService
   ) {
     // auth coming from firebase
     this._fireAuth.onAuthStateChanged(async user => {
       // to counter firebase default auto login behaviour
       if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
-        this.logout(false);
+        this.logout();
         return;
       }
       user ? this.setUser(<User>user) : this.setUser(null);
@@ -99,16 +101,19 @@ export class AuthService {
     }
     // skip old value from replaySubject (act as Subject)
     this.userState$.pipe(skip(1), first()).subscribe(() => {
-      this._router.navigate(['/']);
+      const previousRoute = this._previousRouteService.getPreviousUrl();
+      if (previousRoute) {
+        this._router.navigateByUrl(previousRoute)
+      } else {
+        this._router.navigate(['/']);
+      }
     });
   }
 
   // logout user
-  async logout(redirectToHomePage: boolean): Promise<FirebaseError | void> {
+  async logout(): Promise<FirebaseError | void> {
     await this._firebaseService.logout();
-    if (redirectToHomePage) {
-      this._router.navigate(['/']);
-    }
+    window.location.reload();
   }
 
   ngOnDestroy() {

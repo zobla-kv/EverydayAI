@@ -79,7 +79,7 @@
                             <mat-icon 
                               *ngIf="!item.spinners.delete"
                               class="icon-delete" 
-                              (click)="removeFromCart($event, item)"
+                              (click)="removeFromCart(item)"
                             >delete_forever
                             </mat-icon>
                             <mat-spinner

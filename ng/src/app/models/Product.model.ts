@@ -38,7 +38,7 @@ interface ProductTypeShirtMetadata {
 }
 
 // all actions for all products
-enum ProductActions {
+export enum ProductActions {
   CART = 'cart',
   DOWNLOAD = 'download',
   LIKE = 'like',
@@ -125,9 +125,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.metadata = product.metadata; 
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
-    this.isInCart = !config.product.actions.includes(ProductActions.CART) ? false : 
-      user?.cart.items.findIndex(item => item.id === product.id) !== -1 ? 
-      true : false;
+    this.isInCart = ProductMapper.isInCart(product, config, user)
     this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
   }
 
@@ -176,6 +174,14 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
       }
     })
     return map;
+  }
+
+  // set isInCart property
+  public static isInCart(product: ProductResponse, config: ProductListConfig, user: CustomUser | null): boolean {
+    if (!user || !config.product.actions.includes(ProductActions.CART)) {
+      return false;
+    }
+    return user?.cart.items.findIndex(item => item.id === product.id) === -1 ? false : true;
   }
 
 }

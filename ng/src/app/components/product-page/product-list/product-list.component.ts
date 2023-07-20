@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
@@ -26,7 +26,7 @@ import animations from './product-list.animations';
   styleUrls: ['./product-list.component.scss'],
   animations
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
 
   @ViewChild('paginator') paginator: MatPaginator;
 
@@ -63,15 +63,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // TODO: Important! error handling
   // NOTE: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
-    this.userStateSub$ = this._authService.userState$.subscribe(user => {
-      user && (this.user = user);
-      this.fetchProducts(this.config.product.type);
+    this.userStateSub$ = this._authService.userState$.pipe(first()).subscribe(user => {
+      this.user = user;
+      this.fetchProducts(this.config.product.type, this.user);
     });
   }
   
   // fetch products from BE
-  fetchProducts(productType: any): void {
-    this._firebaseService.getProducts(productType, this.user).pipe(first()).subscribe(products => {
+  fetchProducts(productType: any, user: CustomUser | null): void {
+    this._firebaseService.getProducts(productType, user).pipe(first()).subscribe(products => {
       this.fullProductList = products;
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
@@ -138,7 +138,4 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.userStateSub$.unsubscribe();
-  }
 }

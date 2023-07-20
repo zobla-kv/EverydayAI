@@ -6,3 +6,4 @@ export * from './http.service';
 export * from './toast.service';
 export * from './storage-service.service';
 export * from './payment.service';
+export * from './previous-route.service';

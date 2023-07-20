@@ -50,11 +50,3 @@ export class ToastConstants {
   }
   
 }
-
-// actions a product can perform
-export class ProductActions {
-
-  static CART = 'cart';
-  static LIKE = 'like';
-  static DOWNLOAD = 'download';
-}

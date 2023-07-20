@@ -33,8 +33,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // config 
   config = ProductListConfig.SHOPPING_CART;
 
-  // TODO: bug: flick when adding item to cart on product page
-
   // products in cart 
   private _cart: ShoppingCart;
   // sets cart, cart items spinners and paginated cart
@@ -162,7 +160,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // remove item from cart
-  removeFromCart(ev: Event, item: ProductMapper<ProductTypePrint>) {
+  removeFromCart(item: ProductMapper<ProductTypePrint>) {
     item.spinners['delete'] = true;
     this._firebaseService.removeProductFromCart(ProductMapper.getOriginalObject(item))
     .then(async () => {
