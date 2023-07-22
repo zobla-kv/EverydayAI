@@ -7,6 +7,7 @@ import {
   AuthService, 
   FirebaseService, 
   HttpService, 
+  ProductLikeService, 
   ToastService,
   UtilService
 } from '@app/services';
@@ -19,12 +20,11 @@ import {
   ProductTypePrint
 } from '@app/models';
 
-
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ProductItemComponent implements OnInit, OnDestroy {
 
@@ -46,8 +46,15 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   // user sub
   userStateSub$: Subscription;
 
+  // likes sub
+  likesSub$: Subscription;
+
+  // is product liked
+  isLiked: boolean;
+
   constructor(
     private _authService: AuthService,
+    private _productLikeService: ProductLikeService,
     private _firebaseService: FirebaseService,
     private _toast: ToastService,
     private _router: Router,
@@ -58,6 +65,11 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
+    this.likesSub$ = this._productLikeService.likes$.subscribe((likes: number[]) => {
+      if (this.actions.includes(ProductActions.LIKE)) {
+        this.isLiked = likes.includes(this.product.id);
+      }
+    });
   }
 
   // emit event once img is loaded
@@ -115,9 +127,19 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   }
 
   // handle like
-  // TODO: implement
   handleLike() {
+    if (this.isLiked) {
+      return;
+    }
+    this.product.likes++;
+    this._productLikeService.addLike(this.product.id, this.user);
+  }
 
+  getLikeIcon() {
+    if (this.isLiked) {
+      return 'favorite'
+    }
+    return 'favorite_border'
   }
 
   // handle download
@@ -150,6 +172,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userStateSub$.unsubscribe();
+    this.likesSub$.unsubscribe();
   }
 
 }

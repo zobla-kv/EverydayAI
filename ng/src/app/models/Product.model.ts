@@ -10,6 +10,7 @@ export interface ProductResponse {
   discount: number;
   imgPath: string;
   imgAlt: string;
+  likes: number;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
 }
 
@@ -108,6 +109,8 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   discount: number;
   imgPath: string;
   imgAlt: string;
+  // TODO: type
+  likes: number;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   // FE properties that are added
   spinners: any;
@@ -122,10 +125,11 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.discount = product.discount;
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
-    this.metadata = product.metadata; 
+    this.likes = product.likes; 
+    this.metadata = product.metadata;
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
-    this.isInCart = ProductMapper.isInCart(product, config, user)
+    this.isInCart = ProductMapper._isInCart(product, config, user);
     this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
   }
 
@@ -177,7 +181,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   }
 
   // set isInCart property
-  public static isInCart(product: ProductResponse, config: ProductListConfig, user: CustomUser | null): boolean {
+  private static _isInCart(product: ProductResponse, config: ProductListConfig, user: CustomUser | null): boolean {
     if (!user || !config.product.actions.includes(ProductActions.CART)) {
       return false;
     }

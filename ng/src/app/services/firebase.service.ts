@@ -153,7 +153,8 @@ export class FirebaseService {
       registrationDate: new Date(), 
       lastActiveDate: new Date(),
       stripe: { id: null },
-      ownedItems: []
+      ownedItems: [],
+      productLikes: []
     };
     
     let successfulWrite = true;
@@ -223,5 +224,23 @@ export class FirebaseService {
       'cart.totalSum': increment(-this._utilService.getProductPrice(product))
       })
     }
+
+
+  // add product like to user and product
+  // TODO: change type to string when db updated
+  async addProductLike(productId: number, user: CustomUser | null) {
+    this._db.collection('Products', query => query.where('id', '==', productId)).get()
+      .subscribe(res => {
+        const productDoc = res.docs[0];
+        let likes = (res.docs[0].data() as ProductResponse).likes;
+        productDoc.ref.update({ likes: ++likes });
+      });
+    
+    if (user) {
+      this._db.collection('Users').doc(user.id).ref.update({
+        'productLikes': arrayUnion(productId),
+      })
+    }
+  }
 
 }

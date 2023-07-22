@@ -23,6 +23,8 @@ export interface CustomUser {
   stripe: UserStripeData;
   // ids of owner items TODO: change to string once id is updated in db
   ownedItems: number[];
+  // TODO: change to string once id is updated in db
+  productLikes: number[];
 }
 
 export interface ShoppingCart {

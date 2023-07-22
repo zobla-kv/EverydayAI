@@ -115,6 +115,7 @@ export class ProductListComponent implements OnInit {
 
   // updates page number in pagination
   updatePageNumber() {
+    // TODO: bug, page 1/0
     const list = document.getElementsByClassName('mat-mdc-paginator-range-label');
     list[0] && (list[0].innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + this.paginator.getNumberOfPages());
   }

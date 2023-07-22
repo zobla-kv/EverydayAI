@@ -16,7 +16,17 @@
           <!-- hardcoded to avoid implementation issues - two actions in one box, mat-icon type (custom vs mat-icon) -->
           <mat-icon *ngIf="action === productActions.CART && !product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart()"></mat-icon>
           <mat-icon *ngIf="action === productActions.CART && product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
-          <mat-icon *ngIf="action === productActions.LIKE" icon="favorite" (click)="handleLike()">favorite</mat-icon>
+          <mat-icon 
+            *ngIf="action === productActions.LIKE" 
+            #tooltip="matTooltip"
+            matTooltip="{{ product.likes }}" 
+            matTooltipPosition="above"
+            attr.icon="{{ getLikeIcon() }}"
+            (click)="handleLike(); tooltip.show()"
+            [ngClass]="isLiked ? 'pulse' : '' "
+          >
+            {{ getLikeIcon() }}
+          </mat-icon>
           <mat-icon *ngIf="action === productActions.DOWNLOAD" icon="download" (click)="handleDownload()">download</mat-icon>
         </ng-template>
       </li>
