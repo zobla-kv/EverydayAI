@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatTooltip } from '@angular/material/tooltip';
+import { DecimalPipe } from '@angular/common'
 
 import { Subscription, first } from 'rxjs';
 
@@ -26,7 +28,10 @@ import {
   styleUrls: ['./product-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ProductItemComponent implements OnInit, OnDestroy {
+export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  // tooltip that shows number of likes on product
+  @ViewChild('tooltip') likesTooltip: MatTooltip;
 
   // use in template
   readonly productActions = ProductActions;
@@ -59,7 +64,8 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     private _toast: ToastService,
     private _router: Router,
     private _httpService: HttpService,
-    public   utilService: UtilService
+    public   utilService: UtilService,
+    private _decimalPipe: DecimalPipe
   ) {
   }
 
@@ -69,7 +75,11 @@ export class ProductItemComponent implements OnInit, OnDestroy {
       if (this.actions.includes(ProductActions.LIKE)) {
         this.isLiked = likes.includes(this.product.id);
       }
-    });
+    });  
+  }
+
+  ngAfterViewInit() {
+    this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes);
   }
 
   // emit event once img is loaded
@@ -82,6 +92,16 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     // TODO: replace src
     ev.target.src = '../../../../../assets/images/img/cesar-millan.png';
     this.imgLoaded.emit();
+  }
+
+  // because tooltip is on moving element, it can appear too early and cause flick
+  showTooltip() {
+    this.likesTooltip.disabled = false;
+    this.likesTooltip.show();
+  }
+  hideTooltip() {
+    this.likesTooltip.hide();
+    this.likesTooltip.disabled = true;
   }
 
   // used to keep order in keyvalue pipe (it sorts by default)
@@ -131,7 +151,11 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     if (this.isLiked) {
       return;
     }
+    // fix flick on click
+    this.likesTooltip.tooltipClass = 'keep-position';
+    this.likesTooltip.show();
     this.product.likes++;
+    this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes);
     this._productLikeService.addLike(this.product.id, this.user);
   }
 
@@ -142,10 +166,13 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     return 'favorite_border'
   }
 
+  // add thousand separator to number of likes and change to string
+  formatNumberOfLikes(likes: number): string {
+    return this._decimalPipe.transform(likes, '.0')?.replace(',', '.') + '';
+  }
+
   // handle download
   handleDownload() {
-    // TODO: allow unlogged to access 'owner items' tab
-    // TODO: prevent people from going to site where imgs are stored and downloading all, some private + auth?
     // TODO: error handling
     if (!this.user) {
       this._router.navigate(['auth', 'login']);

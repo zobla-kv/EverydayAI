@@ -19,11 +19,13 @@
           <mat-icon 
             *ngIf="action === productActions.LIKE" 
             #tooltip="matTooltip"
-            matTooltip="{{ product.likes }}" 
+            matTooltip
             matTooltipPosition="above"
+            matTooltipDisabled="true"
             attr.icon="{{ getLikeIcon() }}"
-            (click)="handleLike(); tooltip.show()"
+            (click)="handleLike()"
             [ngClass]="isLiked ? 'pulse' : '' "
+            (delayed-hover)="showTooltip()" [delay]="700" (mouseout)="hideTooltip()"
           >
             {{ getLikeIcon() }}
           </mat-icon>

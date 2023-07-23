@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
+import { DecimalPipe } from '@angular/common';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -45,7 +46,8 @@ import {
 } from '@app/components';
 
 import {
-  ObserveVisibilityDirective
+  ObserveVisibilityDirective,
+  DelayedHoverDirective
 } from '@app/directives';
 
 @NgModule({
@@ -65,7 +67,8 @@ import {
     ProductListComponent,
 
     // Directives
-    ObserveVisibilityDirective
+    ObserveVisibilityDirective,
+    DelayedHoverDirective
   ],
   imports: [
     BrowserModule,
@@ -95,7 +98,8 @@ import {
         verticalPosition: 'top',
         duration: 2500
       }
-    }
+    },
+    DecimalPipe
   ],
   bootstrap: [AppComponent]
 })
