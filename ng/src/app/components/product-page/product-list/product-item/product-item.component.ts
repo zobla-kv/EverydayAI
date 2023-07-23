@@ -148,12 +148,12 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // handle like
   handleLike() {
+    this.likesTooltip.show();
     if (this.isLiked) {
       return;
     }
     // fix flick on click
     this.likesTooltip.tooltipClass = 'keep-position';
-    this.likesTooltip.show();
     this.product.likes++;
     this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes);
     this._productLikeService.addLike(this.product.id, this.user);
