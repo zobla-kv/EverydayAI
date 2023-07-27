@@ -2,15 +2,13 @@
 import { CustomUser } from "./User.model";
 
 export interface ProductResponse {
-  // TODO: set from document as string
-  id: number;
+  id: string;
   title: string;
-  description: string;
   price: number;
   discount: number;
   imgPath: string;
   imgAlt: string;
-  likes: number;
+  likes: number; 
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
 }
 
@@ -102,7 +100,7 @@ export class ProductListConfig {
 
 // modify Product from BE to include FE properties
 export class ProductMapper<T extends ProductResponse> implements ProductResponse {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: number;
@@ -120,7 +118,6 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   constructor(product: T, config: ProductListConfig, user: CustomUser | null) {
     this.id = product.id;
     this.title = product.title;
-    this.description = product.description;
     this.price = product.price;
     this.discount = product.discount;
     this.imgPath = product.imgPath;

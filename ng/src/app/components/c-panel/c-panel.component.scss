@@ -1,0 +1,88 @@
+@import '../../styles/variables.scss';
+
+.control-panel-header {
+  font-size: 2.5rem;
+  color: $orange-text;
+  text-align: center;
+  margin: 3rem 0 1.5rem 0;
+}
+
+.table-controls {
+  width: 300px;
+  background-color: $main-orange-bg-color;
+  margin-left: auto; 
+  margin-right: 0;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  padding: 4px;
+
+  .plus {
+    $thickness: 4px;
+    width: 32px;
+    transform: scale(0.8);
+    aspect-ratio: 1;
+    // border: 10px solid $main-orange-bg-color; /* the outer space */
+    background:
+      conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0) 
+      calc(100% + $thickness / 2) calc(100% + $thickness / 2)/
+      calc(50%  + $thickness)   calc(50%  + $thickness);
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  input { padding: 2px 8px; }
+  input:focus { outline: none; }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  position: relative;
+  width: 80%;
+  margin: auto;
+
+  table {
+    min-width: 500px;
+    margin: auto;
+    background-color: $main-orange-bg-color;
+
+    td {
+      padding-top: 0.8rem;
+      padding-bottom: 0.8rem;
+    }
+
+    .product-img { 
+      width: 75px;
+      height: 75px;
+    }
+
+    .mat-column-title {
+      width: 20%;
+    }
+    .mat-column-image {
+      width: 8%;
+    }
+    .mat-column-price {
+      width: 10%;
+    }
+    .mat-column-discount {
+      width: 10%;
+    }
+    .mat-column-likes {
+      width: 5%;
+    }
+    .mat-column-actions {
+      text-align: right;
+
+      .mat-icon {
+        cursor: pointer;
+      }
+    }
+
+  }
+}
+
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  .table-controls { width: unset; gap: 12px; }
+}

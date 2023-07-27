@@ -3,6 +3,7 @@ const { labels } = require('./constants');
 const bodyParser = require('body-parser');
 const emailService = require('./services/emailService');
 const paymentService = require('./services/paymentService');
+const uploadService = require('./services/uploadFileService');
 
 // TODO: can be misused from postman, protect!!
 router.post('/send-email', async (req, res) => {
@@ -31,7 +32,16 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
     console.log('error payment response: ', err.message);
     res.status(500).json({ paymentStatus: 'failed' });
   }
+})
 
+router.post('/upload-file', (req, res) => {
+  uploadService.upload(req, res, (err) => {
+    if (err) {
+      return res.sendStatus(500);
+    }
+    // NOTE: not working with 200
+    res.sendStatus(220)
+  })
 })
 
 // push notifications from firebase

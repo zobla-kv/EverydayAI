@@ -46,7 +46,8 @@ export class ToastConstants {
     // TODO: !important update below message
     PAYMENT_SUCCESSFUL: 'Payment sucessful. Enjoy your new $COURSES$',
     // TODO: add more descriptive message (wrong cvv or something)
-    PAYMENT_FAILED: 'Something went wrong with payment. Please try again'
+    PAYMENT_FAILED: 'Something went wrong with payment. Please try again',
+    NEW_PRODUCT_ADDED_SUCCESSFUL: 'New product added successfuly',
   }
   
 }

@@ -215,9 +215,65 @@ export class UtilService {
     return false;   
   }
 
-  // get price or discounted price for FE
+  /**
+  * get price or discounted price for FE
+  *
+  * @param product - ProductResponse 
+  * @returns number - price
+  */
   getProductPrice(product: ProductResponse): number {
     return product.discount > 0 ? (product.price * (100 - product.discount) / 100) : product.price
+  }
+
+  /**
+  * set 404 image when product fails to load
+  *
+  * @param target - target element (img) 
+  */
+  set404Image(target: any): void {
+    // TODO: replace src
+    target.src = '../../assets/images/img/cesar-millan.png';
+  }
+
+
+  /**
+  * get file extension from file name 
+  *
+  * @param fileName - name of the file
+  */
+  getFileExtension(fileName: string) {
+    return fileName.split('.').pop();
+  }
+
+  /**
+  * get file size in mb with 1 decimal
+  *
+  * @param file - File
+  */
+  getFileSize(file: File) {
+    return (file.size / (1024 * 1024)).toFixed(1);
+  }
+
+  /**
+  * get image resolution from file
+  *
+  * @param file - File
+  */
+  async getImageResolution(file: File): Promise<string> {
+    let resolution = '';
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = async ev => {
+        const image = new Image();
+        image.src = ev.target?.result as string;
+        
+        image.onload = (img: any) => {
+          resolution = `${image.width}x${image.height}`;
+          resolve(resolution);
+        }
+      }
+    })
   }
 
 }

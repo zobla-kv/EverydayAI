@@ -9,6 +9,7 @@ import {
   ToastConstants 
 } from '@app/models';
 
+// TODO: make it a component like dialog
 @Injectable({
   providedIn: 'root'
 })

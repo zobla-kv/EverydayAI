@@ -71,7 +71,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-    this.likesSub$ = this._productLikeService.likes$.subscribe((likes: number[]) => {
+    this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {
         this.isLiked = likes.includes(this.product.id);
       }
@@ -89,8 +89,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // emit event if img fails to load
   handleImageLoadError(ev: any) {
-    // TODO: replace src
-    ev.target.src = '../../../../../assets/images/img/cesar-millan.png';
+    this.utilService.set404Image(ev.target);
     this.imgLoaded.emit();
   }
 
@@ -187,7 +186,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
        }
        const url = URL.createObjectURL(blob);
        // TODO: does this really turn img into .png (.jfif to .png)
-       const fileName = this.product.description + '.png';
+       const fileName = this.product.id + '.png';
        const a = document.createElement('a');
        a.href = url;
        a.download = fileName;

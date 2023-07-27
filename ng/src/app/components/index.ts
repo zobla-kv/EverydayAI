@@ -10,3 +10,5 @@ export * from './forms/x-form/x-form.component';
 export * from './auth-verify/auth-verify.component';
 export * from './shopping-cart/shopping-cart.component';
 export * from './toast/toast.component';
+export * from './c-panel/c-panel.component';
+export * from './modal/modal.component';

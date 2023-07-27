@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, map } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs';
 
 import {
   Email,
@@ -21,7 +21,7 @@ export class HttpService {
     return new Promise((resolve) => {
       this._http
       // PRODUCTION:
-      .post<any>('https://house-of-dogs.onrender.com/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>('http://localhost:3000/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -35,7 +35,7 @@ export class HttpService {
     return new Promise((resolve, reject) => {
       this._http
       // PRODUCTION:
-      .get<any>('https://house-of-dogs.onrender.com/api/crypto', { headers: { 'Content-type': 'application/json' } })
+      .get<any>('http://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
         catchError(async () => reject(''))
@@ -50,7 +50,7 @@ export class HttpService {
       this._http
       .post<any>(
         // PRODUCTION:
-        'https://house-of-dogs.onrender.com/api/stripe-create-payment-intent',
+        'http://localhost:3000/api/stripe-create-payment-intent',
         data,
         { headers: { 'Content-type': 'application/json'} },
       )
@@ -61,6 +61,28 @@ export class HttpService {
       )
       .subscribe(data => resolve(data));
     })
+  }
+
+  // upload file to server
+  uploadFile(file: FormData): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._http
+      .post<any>('http://localhost:3000/api/upload-file', file)
+      .pipe(
+        // NOTE: consider adding first() everywhere
+        first(),
+        map(status => {
+          if (status === 220) {
+            resolve();
+          } else {
+            reject('File not uploaded');
+          }
+        }),
+        catchError(async (err: HttpErrorResponse) => reject(err))
+      )
+      .subscribe();
+    })
+    
   }
 
   // get image from cross origin as blob

@@ -32,6 +32,7 @@
         "express": "^4.17.1",
         "firebase-admin": "^11.5.0",
         "fs-extra": "^11.1.1",
+        "multer": "^1.4.5-lts.1",
         "nodemailer": "^6.4.10",
         "rxjs": "~7.5.0",
         "stripe": "^12.7.0",
@@ -54,7 +55,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express, firebase-admin and nodemailer, stripe are for express app",
+        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer are for express app",
         "1": "devDependencies dotenv and nodemon, body-parser, fs-extra are for express app"
     }
 }

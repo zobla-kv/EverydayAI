@@ -12,11 +12,10 @@ import { CustomUser } from '../models/User.model';
 
 export class ProductLikeService {
 
-  // TODO: update type once db field is changed from num to string
   // products liked by current user (not number of likes on single product)
-  private _likes: number[];
+  private _likes: string[];
 
-  likes$ = new ReplaySubject<number[]>;
+  likes$ = new ReplaySubject<string[]>;
 
   userStateSub$: Subscription;
 
@@ -24,7 +23,7 @@ export class ProductLikeService {
     return this._likes;
   }
 
-  addLike(productId: number, user: CustomUser | null) {
+  addLike(productId: string, user: CustomUser | null) {
     this._likes.push(productId);
     this.likes$.next(this._likes);
 

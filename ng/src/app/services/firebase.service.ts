@@ -176,6 +176,9 @@ export class FirebaseService {
   getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[]> {
     let products$: Observable<ProductResponse[]>;
     switch(productType) {
+      case(ProductType.ALL):
+        products$ = this.getAllProducts();
+        break;
       case(ProductType.PRINTS.SHOP):
         products$ = this.getProductsForTypePrintTabShop(user);
         break;
@@ -188,11 +191,34 @@ export class FirebaseService {
     return products$;
   }
 
+  getAllProducts(): Observable<ProductTypePrint[]> {
+    return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
+  }
+
+  // add new product to db
+  async addProduct(data: ProductResponse): Promise<string> {
+    return this._db.collection('Products').add(data).then(response => response.id)
+  }
+
+  // update product with missing fields
+  async updateProductAfterAdd(productId: string, imgPath: string): Promise<void> {
+    return this._db.collection('Products').doc(productId).ref.update({
+      id: productId,
+      imgPath
+    })
+  }
+
+  // delete product from db
+  removeProduct(productId: string): Promise<void> {
+    console.log('removing product')
+    return this._db.collection('Products').doc(productId).delete();
+  }
+
   // get products for type print tab shop
   getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductTypePrint[]> {
     if (!user || user.ownedItems.length === 0) {
       // valueChanges makes it an observable
-      return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
+      return this.getAllProducts();
     }
     return this._db.collection('Products', query => query.where('id', 'not-in', user.ownedItems)).valueChanges() as Observable<ProductTypePrint[]>;
   }
@@ -227,8 +253,7 @@ export class FirebaseService {
 
 
   // add product like to user and product
-  // TODO: change type to string when db updated
-  async addProductLike(productId: number, user: CustomUser | null) {
+  async addProductLike(productId: string, user: CustomUser | null) {
     this._db.collection('Products', query => query.where('id', '==', productId)).get()
       .subscribe(res => {
         const productDoc = res.docs[0];

@@ -1,0 +1,29 @@
+
+<div 
+  class="modal" 
+  tabIndex="-1" 
+  role="dialog" 
+  aria-labelledby="add product modal" 
+  aria-hidden="true" 
+  [ngStyle]="{ 'display': isOpen ? 'block' : 'none' }"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <mat-icon (click)="close()">close_icon</mat-icon>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="handleConfirm()">
+          <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4" class="reverse"></mat-spinner>
+          <ng-template #action>Add</ng-template>
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>

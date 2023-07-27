@@ -10,6 +10,7 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+package-lock.json
 
 # IDEs and editors
 .idea/
@@ -56,3 +57,4 @@ cert
 #express
 express/public
 express/dist
+express/private

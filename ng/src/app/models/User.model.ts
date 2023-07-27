@@ -21,10 +21,8 @@ export interface CustomUser {
   registrationDate: Date;
   lastActiveDate: Date;
   stripe: UserStripeData;
-  // ids of owner items TODO: change to string once id is updated in db
-  ownedItems: number[];
-  // TODO: change to string once id is updated in db
-  productLikes: number[];
+  ownedItems: string[];
+  productLikes: string[];
 }
 
 export interface ShoppingCart {
@@ -43,7 +41,7 @@ export interface PaymentObject {
     id: string;
     email: string;
     // TODO: !important update to string once product id is a string in db
-    shopping_cart_items: { id: number, title: string }[],
+    shopping_cart_items: { id: string, title: string }[],
     stripeId: string | null,
     card: PaymentCard;
   }

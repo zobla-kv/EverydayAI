@@ -8,6 +8,10 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 
+// create directory for product images
+const uploadFileService = require('./services/uploadFileService');
+uploadFileService.createDirectory();
+
 const PORT = process.env.PORT || 3000;
 
 const currentDir = path.join(__dirname);
@@ -20,11 +24,11 @@ const routes = require('./routes');
 
 // app settings
 app.use(express.static(__dirname + '/public'));
+
 app.use('/api', cors, express.json(), routes);
 
 // '*' for angular routing to work
 app.get('*', (req, res) => {
-  console.log('got request');
   res.sendFile(path.join(currentDir, 'public', 'index.html'));
 })
 

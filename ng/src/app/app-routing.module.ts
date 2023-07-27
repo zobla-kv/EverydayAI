@@ -7,7 +7,8 @@ import {
   AuthFormComponent,
   AuthVerify,
   XFormComponent,
-  ShoppingCartComponent
+  ShoppingCartComponent,
+  CPanelComponent
 } from '@app/components';
 
 import { 
@@ -42,6 +43,12 @@ const routes: Routes = [
     path: 'cart', 
     component: ShoppingCartComponent,
     canActivate: [LoginGuard]
+  },
+  { 
+    // TODO: admin guard
+    path: 'control-panel', 
+    component: CPanelComponent,
+    // canActivate: [AdminGuard]
   },
   // TODO: 404
   { 
