@@ -40,6 +40,12 @@
   position: relative;
   width: 80%;
   margin: auto;
+  min-height: 300px;
+
+  mat-spinner { 
+    position: relative;
+    top: 100px;
+  }
 
   table {
     min-width: 500px;

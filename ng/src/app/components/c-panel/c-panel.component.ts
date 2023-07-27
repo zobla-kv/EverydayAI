@@ -27,7 +27,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // product load spinner
   showSpinner: boolean = true;
   
-  // product list
+  // product list (should be paginated)
   data: ProductResponse[];
 
   // full product list ref
@@ -38,6 +38,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // add product form
   formAddProduct: FormGroup;
+
+  // edit product form
+  formEditProduct: FormGroup;
 
   // current product id
   productId: string;
@@ -84,6 +87,29 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required, 
         Validators.pattern('^[0-9]*$')
       ]),
+    });
+
+    this.formEditProduct = new FormGroup({
+      'id': new FormControl(null, [
+        Validators.required
+      ]),
+      'price': new FormControl(null, [
+        Validators.required, 
+        Validators.pattern('^[0-9]*$')
+      ]),
+      'discount': new FormControl(0, [
+        Validators.required, 
+        Validators.min(0), 
+        Validators.max(100), 
+        Validators.pattern('^[0-9]*$')
+      ]),
+      'tier': new FormControl(null, [
+        Validators.required, 
+      ]),
+      'likes': new FormControl(0, [
+        Validators.required, 
+        Validators.pattern('^[0-9]*$')
+      ]),
     })
   }
 
@@ -107,16 +133,20 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     .subscribe();
   }
 
+  // update list
+  updateProductList() {
+    this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
+      this.fullProductList = data;
+      this.data = data;
+    });
+  }
+
   handleProductImgLoadError(ev: Event) {
     this._utilService.set404Image(ev.target);
   }
 
-  handleDeleteProduct(productId: string) {
-    this._firebaseService.removeProduct(productId);
-  }
-
-  openModal() {
-    this._modalService.open('0');
+  openModal(id: string) {
+    this._modalService.open(id);
   }
 
   // when file changes in add product form
@@ -135,7 +165,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   async handleAddProduct() {
     const productImgFile = this.formAddProduct.get('image')?.value;
 
-    const isValid = this.isFormValid();
+    const isValid = this.isFormValid(this.formAddProduct);
     if (!isValid) {
       this._modalService.actionComplete$.next(false);
       return;
@@ -158,9 +188,65 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       await this._httpService.uploadFile(formData);
 
       this._toast.open(ToastConstants.MESSAGES.NEW_PRODUCT_ADDED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+
+      // update list
+      this.updateProductList();
     })
     .catch(err => {
       this._firebaseService.removeProduct(this.productId);
+      this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+    })
+    .finally(() => {
+      this.formAddProduct.reset();
+      this._modalService.actionComplete$.next(true);
+    });
+  }
+
+  // pre populate edit form
+  populateEditForm(product: ProductResponse) {
+    this.productId = product.id;
+    this.formEditProduct.patchValue({ id: this.productId })
+    Object.keys(this.formEditProduct.controls).forEach(key => {
+      if (product[key as keyof ProductResponse]) {
+        this.formEditProduct.patchValue({ [key]: product[key as keyof ProductResponse] });
+      }
+      if (product.metadata[key]) {
+        this.formEditProduct.patchValue({ [key]: product.metadata[key] });
+      }
+    })
+  }
+
+  // update product
+  handleUpdateProduct() {
+    const isValid = this.isFormValid(this.formEditProduct);
+    if (!isValid) {
+      this._modalService.actionComplete$.next(false);
+      return;
+    }
+
+    this._firebaseService.updateProduct(this.formEditProduct.getRawValue())
+    .then(() => {
+      this.updateProductList();
+      this._toast.open(ToastConstants.MESSAGES.PRODUCT_UPDATED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+    })
+    .catch(err => {
+      this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+    })
+    .finally(() => {
+      this.formEditProduct.reset();
+      this._modalService.actionComplete$.next(true);
+    });
+  }
+
+  // delete product
+  handleDeleteProduct() {
+    console.log('product id delete: ', this.productId);
+    this._firebaseService.removeProduct(this.productId)
+    .then(() => {
+      this.updateProductList();
+      this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+    })
+    .catch(err => {
       this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
     })
     .finally(() => {
@@ -200,8 +286,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   // is form valid
-  isFormValid(): boolean {
-    if (this.formAddProduct.valid) {
+  isFormValid(form: FormGroup): boolean {
+    if (form.valid) {
       return true;
     } else {
       return false;

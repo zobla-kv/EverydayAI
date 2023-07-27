@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -25,7 +26,6 @@ import {
   HttpService, 
   UtilService
 } from '@app/services';
-
 
 /**
  * Firebase related acitivies
@@ -200,11 +200,21 @@ export class FirebaseService {
     return this._db.collection('Products').add(data).then(response => response.id)
   }
 
-  // update product with missing fields
+  // update product with missing fields after creation
   async updateProductAfterAdd(productId: string, imgPath: string): Promise<void> {
     return this._db.collection('Products').doc(productId).ref.update({
       id: productId,
       imgPath
+    })
+  }
+
+  // update product
+  async updateProduct(data: any): Promise<void> {
+    return this._db.collection('Products').doc(data.id).ref.update({
+      price: data.price,
+      discount: data.discount,
+      tier: data.tier,
+      likes: data.likes
     })
   }
 

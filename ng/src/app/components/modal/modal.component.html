@@ -10,7 +10,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">{{ title }}</h5>
         <mat-icon (click)="close()">close_icon</mat-icon>
       </div>
       <div class="modal-body">
@@ -20,7 +20,7 @@
         <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
         <button type="button" class="btn btn-primary" (click)="handleConfirm()">
           <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4" class="reverse"></mat-spinner>
-          <ng-template #action>Add</ng-template>
+          <ng-template #action>{{ actionButtonText }}</ng-template>
         </button>
 
       </div>

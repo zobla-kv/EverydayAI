@@ -2,12 +2,12 @@
 
 <div class="table-wrapper">
 
-  <div class="table-controls">
-    <div class="plus" (click)="openModal()"></div>
+  <div class="table-controls" [ngStyle]="{ 'display': data ? 'flex' : 'none'}">
+    <div class="plus" (click)="openModal('0')"></div>
     <input #searchInput type="text" placeholder="Search">
   </div>
 
-  <mat-spinner *ngIf="!data; else noSpinner" diameter="50" strokeWidth="5" class="absolute-center"></mat-spinner>
+  <mat-spinner *ngIf="showSpinner; else noSpinner" diameter="50" strokeWidth="5" class="absolute-center"></mat-spinner>
 
   <ng-template #noSpinner>
     <table mat-table [dataSource]="data" class="mat-elevation-z8">
@@ -45,8 +45,8 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let product">
-          <mat-icon>edit</mat-icon> 
-          <mat-icon class="ms-3" (click)="handleDeleteProduct(product.id)">delete_forever</mat-icon> 
+          <mat-icon (click)="openModal('1'); populateEditForm(product)">edit</mat-icon> 
+          <mat-icon class="ms-3" (click)="openModal('2'); productId = product.id">delete_forever</mat-icon> 
         </td>
       </ng-container>
   
@@ -59,7 +59,7 @@
   </ng-template>
 </div>
 
-<app-modal id="0" (confirm)="handleAddProduct()">
+<app-modal id="0" (confirm)="handleAddProduct()" title="Add product" actionButtonText="Add">
   <form [formGroup]="formAddProduct" enctype="multipart/form-data">
     <div class="center-wrap">
       <div class="section text-center">
@@ -97,6 +97,7 @@
             class="form-control"
             name="image"
             id="image" 
+            formControlName="image"
             (change)="onFileChange($event)"
           >
             <span
@@ -189,5 +190,101 @@
       </div>
     </div>
   </form>
+</app-modal>
+
+
+<app-modal id="1" (confirm)="handleUpdateProduct()" title="Edit product" actionButtonText="Update">
+  <form [formGroup]="formEditProduct">
+    <div class="center-wrap">
+      <div class="section text-center">
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            type="text"
+            class="form-style"
+            id="price"
+            name="price"
+            formControlName="price"
+            placeholder="Price"
+          >
+          <span
+            *ngIf="formAddProduct.get('price')?.hasError('required') && formAddProduct.get('price')?.touched"
+            class="form-text ms-1 dark-text fw-bold d-block">Price can not be empty
+          </span>
+          <span
+            *ngIf="formAddProduct.get('price')?.hasError('pattern')"
+            class="form-text ms-1 dark-text fw-bold d-block">Only numbers allowed
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="discount">Discount</label>
+          <input
+            type="text"
+            class="form-style"
+            id="discount"
+            name="discount"
+            formControlName="discount"
+            placeholder="Discount"
+          >
+          <span
+            *ngIf="formAddProduct.get('discount')?.hasError('required') && formAddProduct.get('discount')?.touched"
+            class="form-text ms-1 dark-text fw-bold d-block">Discount can not be empty
+          </span>
+          <span
+            *ngIf="formAddProduct.get('discount')?.hasError('min')"
+            class="form-text ms-1 dark-text fw-bold d-block">Discount can't be below 0%
+          </span>
+          <span
+            *ngIf="formAddProduct.get('discount')?.hasError('max')"
+            class="form-text ms-1 dark-text fw-bold d-block">Discount can't be above 100%
+          </span>
+          <span
+            *ngIf="formAddProduct.get('discount')?.hasError('pattern')"
+            class="form-text ms-1 dark-text fw-bold d-block">Only number allowed
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="tier">Tier</label>
+          <select 
+            class="form-control"
+            name="tier"
+            id="tier" 
+            formControlname="tier"
+            (change)="onTierChange($event)" 
+          >
+            <option value="classic">classic</option>
+            <option value="premium">premium</option>
+          </select>
+            <span
+              *ngIf="formAddProduct.get('tier')?.hasError('required') && formAddProduct.get('tier')?.touched"
+              class="form-text ms-1 dark-text fw-bold d-block">Tier is required
+            </span>
+        </div>
+        <div class="form-group">
+          <label for="likes">No. of likes</label>
+          <input
+            type="text"
+            class="form-style"
+            id="likes"
+            name="likes"
+            formControlName="likes"
+            placeholder="No. of Likes"
+          >
+          <span
+            *ngIf="formAddProduct.get('likes')?.hasError('required') && formAddProduct.get('likes')?.touched"
+            class="form-text ms-1 dark-text fw-bold d-block">Number of likes required
+          </span>
+          <span
+            *ngIf="formAddProduct.get('likes')?.hasError('pattern')"
+            class="form-text ms-1 dark-text fw-bold d-block">Only number allowed
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-modal>
+
+<app-modal id="2" (confirm)="handleDeleteProduct()" title="Delete product" actionButtonText="Delete">
+  <span>Are you sure?</span>
 </app-modal>
 

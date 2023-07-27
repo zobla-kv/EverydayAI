@@ -48,6 +48,8 @@ export class ToastConstants {
     // TODO: add more descriptive message (wrong cvv or something)
     PAYMENT_FAILED: 'Something went wrong with payment. Please try again',
     NEW_PRODUCT_ADDED_SUCCESSFUL: 'New product added successfuly',
+    PRODUCT_UPDATED_SUCCESSFUL: 'Product updated successfuly',
+    PRODUCT_REMOVED_SUCCESSFUL: 'Product removed successfuly',
   }
   
 }
