@@ -127,7 +127,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = ProductMapper._isInCart(product, config, user);
-    this.metadataIconMap = ProductMapper._getMetadataMap(config.product.metadata, product.metadata);
+    this.metadataIconMap = ProductMapper.getMetadataIconMap(config.product.metadata, product.metadata);
   }
 
   // get original object to store in db
@@ -155,7 +155,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   
   // what metadata is displayed in the bottom section of single product
   // filter out product list icons to only include passed ones, order is important
-  private static _getMetadataMap(
+  public static getMetadataIconMap(
     metadataList: string[], 
     productMetadata: ProductTypePrintMetadata | ProductTypeShirtMetadata
   ) : MetadataIconMap {
@@ -193,4 +193,4 @@ interface MetadataIcon {
   type: 'mat-icon' | 'custom';
 }
 
-interface MetadataIconMap extends Map<string, MetadataIcon> {}
+export interface MetadataIconMap extends Map<string, MetadataIcon> {}

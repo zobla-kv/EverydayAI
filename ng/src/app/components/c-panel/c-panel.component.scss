@@ -55,6 +55,12 @@
     td {
       padding-top: 0.8rem;
       padding-bottom: 0.8rem;
+
+      div { 
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
     }
 
     .product-img { 
@@ -75,7 +81,10 @@
       width: 10%;
     }
     .mat-column-likes {
-      width: 5%;
+      width: 7%;
+    }
+    .mat-column-metadata {
+      .mat-icon { transform: scale(0.8); }
     }
     .mat-column-actions {
       text-align: right;

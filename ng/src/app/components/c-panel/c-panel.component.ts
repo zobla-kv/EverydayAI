@@ -13,7 +13,10 @@ import {
 } from '@app/services';
 
 import { 
-  ProductResponse, ToastConstants 
+  MetadataIconMap,
+  ProductMapper,
+  ProductResponse, 
+  ToastConstants 
 } from '@app/models';
 
 @Component({
@@ -23,7 +26,7 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: stopped here, pagination, additional field in table(metadata), show discounted price, dropdown caret
+  // TODO: stopped here, show discounted price, dropdown caret
   // TODO: Admin guard
   // TODO: add cpanel to header if user admin
   // TODO: Some stats above table
@@ -47,7 +50,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   pageSize = 4;
 
   // displayed columns
-  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'actions'];
+  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'metadata', 'actions'];
 
   // add product form
   formAddProduct: FormGroup;
@@ -57,6 +60,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // current product id
   productId: string;
+
+  // metadata icon map
+  metadataIconMap: MetadataIconMap;
 
   constructor(
     private _firebaseService: FirebaseService,
@@ -155,6 +161,11 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
       this.fullProductList = data;
       this.paginator.length = this.fullProductList.length;
+      // NOTE: this needs to be done only once
+      this.metadataIconMap = ProductMapper.getMetadataIconMap(
+        ['tier', 'resolution', 'extension', 'downloadSize'],
+        this.fullProductList[0].metadata
+      );
       this.updatePaginatedList();
       this.showSpinner = false;
     });
@@ -352,5 +363,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  // keep order of keyvalue pipe (not DRY)
+  keepOrder() { return 0; }
 
 }
