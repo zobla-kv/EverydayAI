@@ -249,8 +249,9 @@ export class UtilService {
   * get file size in mb with 1 decimal
   *
   * @param file - File
+  * @return size - file size in mb
   */
-  getFileSize(file: File) {
+  getFileSize(file: File): string {
     return (file.size / (1024 * 1024)).toFixed(1);
   }
 

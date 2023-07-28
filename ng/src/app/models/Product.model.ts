@@ -22,7 +22,7 @@ export interface ProductShirtPrint extends ProductResponse {
 
 interface ProductTypePrintMetadata {
   [key: string]: {
-    downloadSize: number; 
+    downloadSize: string; 
     resolution: string;
     extension: string;
     tier: 'classic' | 'premium';
@@ -158,7 +158,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   public static getMetadataIconMap(
     metadataList: string[], 
     productMetadata: ProductTypePrintMetadata | ProductTypeShirtMetadata
-  ) : MetadataIconMap {
+  ): MetadataIconMap {
     const map: MetadataIconMap = new Map();
     metadataList.forEach((key: string) => {
       // find by metadata key

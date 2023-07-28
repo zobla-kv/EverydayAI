@@ -26,7 +26,6 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: stopped here, show discounted price, dropdown caret
   // TODO: Admin guard
   // TODO: add cpanel to header if user admin
   // TODO: Some stats above table
@@ -332,7 +331,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       price: Number(formData.price),
       discount: Number(formData.discount),
       metadata: {
-        downloadSize: this.utilService.getFileSize(this.formAddProduct.get('image')?.value),
+        downloadSize: this.setDownloadSize(this.utilService.getFileSize(this.formAddProduct.get('image')?.value)),
         // TODO: move this to onFileChange
         resolution: await this.utilService.getImageResolution(this.formAddProduct.get('image')?.value),
         extension: this.utilService.getFileExtension(formData.image.name),
@@ -341,6 +340,17 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     };
 
     return product;
+  }
+
+  // add 'mb' and if '0.0' set '0.1'
+  setDownloadSize(size: string) {
+    let newSize = '';
+    if (size === '0.0') {
+      newSize = '0.1'
+    } else {
+      newSize = size;
+    }
+    return newSize + ' mb';
   }
 
   // is form valid
