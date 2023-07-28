@@ -46,7 +46,7 @@ export class XFormComponent {
           Validators.required, 
           Validators.minLength(6),
           Validators.maxLength(16),
-          Validators.pattern('^[a-zA-Z0-9]*$')
+          Validators.pattern('^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$')
         ])
       } : 
       {

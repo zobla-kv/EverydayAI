@@ -111,11 +111,10 @@
             class="form-control"
             name="tier"
             id="tier" 
-            formControlname="tier"
-            (change)="onTierChange($event)" 
+            formControlName="tier"
+            (change)="onTierChange($event)"
           >
-            <option value="classic">classic</option>
-            <option value="premium">premium</option>
+            <option *ngFor="let tier of ['classic', 'premium']" [value]="tier">{{ tier }}</option>
           </select>
             <span
               *ngIf="formAddProduct.get('tier')?.hasError('required') && formAddProduct.get('tier')?.touched"
@@ -138,7 +137,7 @@
           </span>
           <span
             *ngIf="formAddProduct.get('price')?.hasError('pattern')"
-            class="form-text ms-1 dark-text fw-bold d-block">Only numbers allowed
+            class="form-text ms-1 dark-text fw-bold d-block">Only numbers and . allowed
           </span>
         </div>
         <div class="form-group">
@@ -213,7 +212,7 @@
           </span>
           <span
             *ngIf="formAddProduct.get('price')?.hasError('pattern')"
-            class="form-text ms-1 dark-text fw-bold d-block">Only numbers allowed
+            class="form-text ms-1 dark-text fw-bold d-block">Only numbers and . allowed
           </span>
         </div>
         <div class="form-group">
@@ -249,11 +248,10 @@
             class="form-control"
             name="tier"
             id="tier" 
-            formControlname="tier"
+            formControlName="tier"
             (change)="onTierChange($event)" 
           >
-            <option value="classic">classic</option>
-            <option value="premium">premium</option>
+            <option *ngFor="let tier of ['classic', 'premium']" [value]="tier">{{ tier }}</option>
           </select>
             <span
               *ngIf="formAddProduct.get('tier')?.hasError('required') && formAddProduct.get('tier')?.touched"

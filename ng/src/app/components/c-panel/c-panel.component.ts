@@ -22,6 +22,12 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
+  // TODO: stopped here, pagination, additional field in table(metadata), show discounted price, dropdown caret
+  // TODO: Admin guard
+  // TODO: add cpanel to header if user admin
+  // TODO: Some stats above table
+  // TODO: remove 404 images from product list on product page (leave for later?)
+
   @ViewChild('searchInput') searchInput: ElementRef;
 
   // product load spinner
@@ -65,7 +71,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required, 
         Validators.minLength(6), 
         Validators.maxLength(16), 
-        Validators.pattern('^[a-zA-Z]*$')
+        // allow whitespaces between words but not on start and end
+        Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),
       'image': new FormControl(null, [
         Validators.required
@@ -75,7 +82,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       ]),
       'price': new FormControl(null, [
         Validators.required, 
-        Validators.pattern('^[0-9]*$')
+        Validators.pattern('^[0-9.]*$')
       ]),
       'discount': new FormControl(0, [
         Validators.required, 
@@ -95,7 +102,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       ]),
       'price': new FormControl(null, [
         Validators.required, 
-        Validators.pattern('^[0-9]*$')
+        Validators.pattern('^[0-9.]*$')
       ]),
       'discount': new FormControl(0, [
         Validators.required, 
@@ -197,9 +204,18 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
     })
     .finally(() => {
-      this.formAddProduct.reset();
+      this.clearAddProductFormAfterSubmit();
       this._modalService.actionComplete$.next(true);
     });
+  }
+
+  // clear fields and prepare for next 
+  clearAddProductFormAfterSubmit() {
+    this.formAddProduct.reset();
+    this.formAddProduct.patchValue({  image: null     });
+    this.formAddProduct.patchValue({  tier: 'classic' });
+    this.formAddProduct.patchValue({  discount: 0     });
+    this.formAddProduct.patchValue({  likes: 0        });
   }
 
   // pre populate edit form
@@ -207,10 +223,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this.productId = product.id;
     this.formEditProduct.patchValue({ id: this.productId })
     Object.keys(this.formEditProduct.controls).forEach(key => {
-      if (product[key as keyof ProductResponse]) {
+      if (product[key as keyof ProductResponse] !== undefined) {
         this.formEditProduct.patchValue({ [key]: product[key as keyof ProductResponse] });
       }
-      if (product.metadata[key]) {
+      if (product.metadata[key] !== undefined) {
         this.formEditProduct.patchValue({ [key]: product.metadata[key] });
       }
     })
@@ -240,7 +256,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // delete product
   handleDeleteProduct() {
-    console.log('product id delete: ', this.productId);
     this._firebaseService.removeProduct(this.productId)
     .then(() => {
       this.updateProductList();
@@ -273,6 +288,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // depends on patchValue
       imgPath: formData.image.name,
       imgAlt: this.formAddProduct.get('title')?.value,
+      price: Number(formData.price),
+      discount: Number(formData.discount),
       metadata: {
         downloadSize: this._utilService.getFileSize(this.formAddProduct.get('image')?.value),
         // TODO: move this to onFileChange
@@ -290,6 +307,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     if (form.valid) {
       return true;
     } else {
+      this.validateAllFormFields(form);
       return false;
     }
   }

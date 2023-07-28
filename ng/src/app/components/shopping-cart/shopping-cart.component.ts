@@ -115,7 +115,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       'holder_name': new FormControl(null, [
         Validators.required, 
         Validators.maxLength(24), 
-        Validators.pattern('^[a-zA-Z]*$')
+        Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),
       'number': new FormControl(null, [
         Validators.required, 
