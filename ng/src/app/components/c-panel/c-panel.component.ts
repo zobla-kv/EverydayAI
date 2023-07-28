@@ -66,7 +66,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _firebaseService: FirebaseService,
-    private _utilService: UtilService,
+    public  utilService: UtilService,
     private _modalService: ModalService,
     private _httpService: HttpService,
     private _toast: ToastService
@@ -138,14 +138,14 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           if (!this.searchInput.nativeElement.value) {
-            this.paginatedList = this._utilService.getFromRange(this.fullProductList, 0, this.pageSize - 1);
+            this.paginatedList = this.utilService.getFromRange(this.fullProductList, 0, this.pageSize - 1);
             this.paginator.length = this.fullProductList.length;
           } else {
             const filteredList = this.fullProductList.filter(item => {
               return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase())
             })
             this.paginator.firstPage();
-            this.paginatedList = this._utilService.getFromRange(
+            this.paginatedList = this.utilService.getFromRange(
               filteredList, 
               this.paginator.pageIndex * this.pageSize, 
               this.pageSize - 1
@@ -181,12 +181,12 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   handleProductImgLoadError(ev: Event) {
-    this._utilService.set404Image(ev.target);
+    this.utilService.set404Image(ev.target);
   }
 
   // get items for next page
   updatePaginatedList(): void {
-    this.paginatedList = this._utilService.getFromRange(
+    this.paginatedList = this.utilService.getFromRange(
       this.fullProductList,
       this.paginator.pageIndex * this.pageSize,
       (this.paginator.pageIndex + 1) * this.pageSize - 1
@@ -224,7 +224,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     .then(async productId => {
       this.productId = productId;
       // rename
-      const fileName = productId + '.' + this._utilService.getFileExtension(productImgFile.name);
+      const fileName = productId + '.' + this.utilService.getFileExtension(productImgFile.name);
       await this._firebaseService.updateProductAfterAdd(productId, fileName);
 
       // prepare for upload
@@ -316,7 +316,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   async getProductObject(): Promise<ProductResponse> {
     const formData = this.formAddProduct.getRawValue();
 
-    const dataCopy = this._utilService.getDeepCopy(formData);
+    const dataCopy = this.utilService.getDeepCopy(formData);
     delete dataCopy.fileName;
     delete dataCopy.image;
     // set later
@@ -332,10 +332,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       price: Number(formData.price),
       discount: Number(formData.discount),
       metadata: {
-        downloadSize: this._utilService.getFileSize(this.formAddProduct.get('image')?.value),
+        downloadSize: this.utilService.getFileSize(this.formAddProduct.get('image')?.value),
         // TODO: move this to onFileChange
-        resolution: await this._utilService.getImageResolution(this.formAddProduct.get('image')?.value),
-        extension: this._utilService.getFileExtension(formData.image.name),
+        resolution: await this.utilService.getImageResolution(this.formAddProduct.get('image')?.value),
+        extension: this.utilService.getFileExtension(formData.image.name),
         tier: this.formAddProduct.get('tier')?.value
       }
     };

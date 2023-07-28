@@ -76,6 +76,34 @@
     }
     .mat-column-price {
       width: 10%;
+      min-width: 100px;
+      
+      div { 
+        flex-direction: column; 
+        align-items: flex-start;
+      }
+
+      .product-old-price {
+        position: relative;
+        top: 3px;
+        opacity: 0.6;
+
+        &::after {
+          position: absolute;
+          content: "";
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: red;
+          transform: translateY(-50%);
+        }
+      }
+
+      .product-discounted-price {
+        position: relative;
+        top: 6px;
+      }
     }
     .mat-column-discount {
       width: 10%;
@@ -89,6 +117,8 @@
     .mat-column-actions {
       text-align: right;
 
+      div { justify-content: flex-end; }
+
       .mat-icon {
         cursor: pointer;
       }
@@ -97,11 +127,37 @@
   }
 }
 
+.dropdown-caret {
+  position: absolute !important;
+  left: 90% !important;
+  top: 20px !important;
+  color: black !important;
+  z-index: 1;
+}
+
 .mat-mdc-paginator {
   background-color: $main-dark-bg-color;
 }
 
+// smaller than 850px when horizontal scrollbar appears on table
+@media only screen and (max-width: 850px) {
+  // make elements follow vertical table scroll
+  .table-controls {
+    position: fixed;
+    top: 116px;
+    // same as table
+    width: 80%;
+  }
+  .table-wrapper .mat-mdc-paginator::ng-deep .mat-mdc-paginator-range-actions {
+    position: fixed;
+  }
+
+  // adjust because of fixed
+  .control-panel-header { margin-bottom: 60px; }
+  mat-paginator { margin-top: 0.25rem !important; }
+}
+
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  .table-controls { width: unset; gap: 12px; }
+  // .table-controls { width: unset; gap: 12px; }
 }
