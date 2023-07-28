@@ -43,6 +43,9 @@ export class HeaderComponent implements OnDestroy {
   // is user logged in
   isAuthenticated: boolean;
 
+  // is user admin
+  isAdmin: boolean;
+
   // number of items in cart
   numberOfItemsInCart = 0;
 
@@ -67,6 +70,7 @@ export class HeaderComponent implements OnDestroy {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.numberOfItemsInCart = user ? user.cart.items.length : 0;
       this.isAuthenticated = !!user;
+      this.isAdmin = user?.role === 'admin' ? true : false;
     });
 
     this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.currentScreenSize = size);
@@ -110,7 +114,7 @@ export class HeaderComponent implements OnDestroy {
   // log user out
   handleLogout() {
     this.hamburgerToggle && this.closeHamburgerMenu();
-    this._authService.logout();
+    this._authService.logoutWithReload();
   }
 
   ngOnDestroy() {

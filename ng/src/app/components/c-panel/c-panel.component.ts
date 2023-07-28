@@ -26,12 +26,11 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: Admin guard
-  // TODO: add cpanel to header if user admin
-  // TODO: Some stats above table
+  // TODO: fix product page
+  // TODO: sort product and cpanel list by creation date
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: figure out how to display image from db path and update download
-  // TODO: sort product and cpanel list by creation date
+  // TODO: Some stats above table
 
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;

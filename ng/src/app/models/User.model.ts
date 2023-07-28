@@ -16,6 +16,7 @@ export interface CustomUser {
   id: string;
   email: string;
   name: string;
+  role: string;
   gender: string;
   cart: ShoppingCart;
   registrationDate: Date;

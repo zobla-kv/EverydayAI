@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, first, map } from 'rxjs';
 
 import {
-  AuthService,
-  ToastService
+  AuthService
 } from '@app/services';
 
 
@@ -16,14 +15,14 @@ export class LoginGuard implements CanActivate {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router,
-    private _toast: ToastService
+    private _router: Router
   ) { }
 
   // can be executed both sync and async
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this._authService.userState$
     .pipe(
+      first(),
       map(user => {
         if (user) {
           return true;
@@ -53,6 +52,7 @@ export class LogoutGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this._authService.userState$
     .pipe(
+      first(),
       map(user => {
         if (user) {
           this._router.navigate(['/']);
@@ -64,4 +64,31 @@ export class LogoutGuard implements CanActivate {
     );
   }    
 
+}
+
+// block non admin
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminGuard implements CanActivate {
+
+  constructor(
+    private _authService: AuthService,
+    private _router: Router
+  ) { }
+
+  // can be executed both sync and async
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    return this._authService.userState$
+    .pipe(
+      first(),
+      map(user => {
+        if (user && user.role === 'admin') {
+          return true;
+        }
+        this._router.navigate(['/']);
+        return false;
+      })
+    );
+  }   
 }

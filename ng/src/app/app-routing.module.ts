@@ -13,7 +13,8 @@ import {
 
 import { 
   LoginGuard, 
-  LogoutGuard 
+  LogoutGuard,
+  AdminGuard
 } from './app.guard';
 
 const routes: Routes = [
@@ -44,11 +45,10 @@ const routes: Routes = [
     component: ShoppingCartComponent,
     canActivate: [LoginGuard]
   },
-  { 
-    // TODO: admin guard
+  {
     path: 'control-panel', 
     component: CPanelComponent,
-    // canActivate: [AdminGuard]
+    canActivate: [AdminGuard]
   },
   // TODO: 404
   { 

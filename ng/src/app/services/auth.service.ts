@@ -47,8 +47,8 @@ export class AuthService {
     // auth coming from firebase
     this._fireAuth.onAuthStateChanged(async user => {
       // to counter firebase default auto login behaviour
-      if (this._utilService.reverseFirebaseAutoLogin(user as User)) {
-        this.logout();
+      if (this._firebaseService.reverseFirebaseAutoLogin(user as User)) {
+        this.logoutWithoutReload();
         return;
       }
       user ? this.setUser(<User>user) : this.setUser(null);
@@ -102,7 +102,11 @@ export class AuthService {
     // skip old value from replaySubject (act as Subject)
     this.userState$.pipe(skip(1), first()).subscribe(() => {
       const previousRoute = this._previousRouteService.getPreviousUrl();
-      if (previousRoute) {
+      // in case of email verification go back to home page and not previous route
+      if (previousRoute.includes('auth/verify')) {
+        this._router.navigate(['/']);
+      }
+      else if (previousRoute) {
         this._router.navigateByUrl(previousRoute)
       } else {
         this._router.navigate(['/']);
@@ -110,10 +114,15 @@ export class AuthService {
     });
   }
 
-  // logout user
-  async logout(): Promise<FirebaseError | void> {
+  // logout user and reload page
+  async logoutWithReload(): Promise<FirebaseError | void> {
     await this._firebaseService.logout();
     window.location.reload();
+  }
+
+  // logout user
+  async logoutWithoutReload(): Promise<FirebaseError | void> {
+    await this._firebaseService.logout();
   }
 
   ngOnDestroy() {

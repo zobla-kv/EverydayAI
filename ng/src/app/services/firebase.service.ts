@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
+import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
 
 import { firstValueFrom, Observable, of, delay } from 'rxjs';
@@ -26,6 +27,7 @@ import {
   HttpService, 
   UtilService
 } from '@app/services';
+
 
 /**
  * Firebase related acitivies
@@ -61,6 +63,7 @@ export class FirebaseService {
 
       /***** WRITE TO CUSTOM DB *****/
       const isWritten = await this.writeUserToDb({ ...user, id: uid });
+
       /***** SEND VERIFICATION EMAIL *****/
       const isSent = await this._httpService.sendEmail({ email: user.email, email_type: EmailType.ACTIVATION });
       if (!profileUpdated || !isWritten || !isSent) {
@@ -100,6 +103,34 @@ export class FirebaseService {
   // log out user
   async logout(): Promise<void> {
     this._fireAuth.signOut();
+  }
+
+  /**
+  * For dealing with firebase default behaviour of loggin in user automatically 
+  * on register
+  * on login with unverified email
+  *
+  * @param user - firebase user
+  * @returns boolean - should be logged out?
+  */
+  reverseFirebaseAutoLogin(user: FirebaseUser): boolean {
+    if (!user) {
+      return false;
+    }
+
+    // check if user is logged by registration by checking if less than 10 seconds passed since registration
+    const registrationTime = Date.parse(user.metadata.creationTime as string);
+    const timeNow = Date.now();
+    if ((timeNow - registrationTime) / 1000 < 10) {
+      return true;
+    }
+
+    // check if user is logged in by login with unverified email
+    if (!user.emailVerified) {
+      return true;
+    }
+
+    return false;   
   }
 
   // check if user exists and the send email
@@ -148,7 +179,8 @@ export class FirebaseService {
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
     // desctucture user and omit password
     const { password, ...customUser } = { 
-      ...user, 
+      ...user,
+      role: 'basic',
       cart: { items: [], totalSum: 0 },
       registrationDate: new Date(), 
       lastActiveDate: new Date(),
@@ -220,7 +252,6 @@ export class FirebaseService {
 
   // delete product from db
   removeProduct(productId: string): Promise<void> {
-    console.log('removing product')
     return this._db.collection('Products').doc(productId).delete();
   }
 
