@@ -4,7 +4,8 @@
   </h2>
   <div class="product-list-container overflow-y-hidden">
     <mat-spinner *ngIf="showSpinner" diameter="200" strokeWidth="15"></mat-spinner>
-    <div *ngIf="fullProductList.length === 0 && !showSpinner" class="text-center">You don't have any items.</div>
+    <!-- TODO: split between tabs -->
+    <div *ngIf="fullProductList.length === 0 && !showSpinner" class="text-center">No items.</div>
     <div
       class="row g-4 gy-5"
       [ngClass]="{'d-none': showSpinner }"

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { debounceTime, distinctUntilChanged, filter, first, fromEvent, tap } from 'rxjs';
 
@@ -27,17 +28,23 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: add cpanel to header if user admin
   // TODO: Some stats above table
   // TODO: remove 404 images from product list on product page (leave for later?)
+  // TODO: figure out how to display image from db path and update download
+  // TODO: sort product and cpanel list by creation date
 
   @ViewChild('searchInput') searchInput: ElementRef;
+  @ViewChild('paginator') paginator: MatPaginator;
 
   // product load spinner
   showSpinner: boolean = true;
   
-  // product list (should be paginated)
-  data: ProductResponse[];
-
   // full product list ref
   fullProductList: ProductResponse[];
+
+  // paginated list
+  paginatedList: ProductResponse[];
+
+  // page size for pagination
+  pageSize = 4;
 
   // displayed columns
   displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'actions'];
@@ -60,11 +67,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
-      this.fullProductList = data;
-      this.data = data;
-      this.showSpinner = false;
-    });
+    this.fetchProducts();
 
     this.formAddProduct = new FormGroup({
       'title': new FormControl(null, [
@@ -129,28 +132,55 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap(() => {
           if (!this.searchInput.nativeElement.value) {
-            this.data = this.fullProductList;
+            this.paginatedList = this._utilService.getFromRange(this.fullProductList, 0, this.pageSize - 1);
+            this.paginator.length = this.fullProductList.length;
           } else {
-            this.data = this.fullProductList.filter(item => {
+            const filteredList = this.fullProductList.filter(item => {
               return item.title.toLowerCase().includes(this.searchInput.nativeElement.value.toLowerCase())
             })
+            this.paginator.firstPage();
+            this.paginatedList = this._utilService.getFromRange(
+              filteredList, 
+              this.paginator.pageIndex * this.pageSize, 
+              this.pageSize - 1
+            );
+            this.paginator.length = filteredList.length;
           }
         })
     )
     .subscribe();
   }
 
+  fetchProducts() {
+    this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
+      this.fullProductList = data;
+      this.paginator.length = this.fullProductList.length;
+      this.updatePaginatedList();
+      this.showSpinner = false;
+    });
+  }
+
   // update list
   updateProductList() {
     this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
       this.fullProductList = data;
-      this.data = data;
+      this.paginator.length = this.fullProductList.length;
+      this.updatePaginatedList();
     });
   }
 
   handleProductImgLoadError(ev: Event) {
     this._utilService.set404Image(ev.target);
   }
+
+  // get items for next page
+  updatePaginatedList(): void {
+    this.paginatedList = this._utilService.getFromRange(
+      this.fullProductList,
+      this.paginator.pageIndex * this.pageSize,
+      (this.paginator.pageIndex + 1) * this.pageSize - 1
+    );
+  } 
 
   openModal(id: string) {
     this._modalService.open(id);
@@ -191,7 +221,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // set new name
       formData.append('image', productImgFile, fileName);
 
-      // TODO: stopped here, figure out how to display image from db path, fill other metadata
       await this._httpService.uploadFile(formData);
 
       this._toast.open(ToastConstants.MESSAGES.NEW_PRODUCT_ADDED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
@@ -255,6 +284,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   // delete product
+  // NOTE: this will also delete it from those who have bought it, figure out how to remove it from shop only
   handleDeleteProduct() {
     this._firebaseService.removeProduct(this.productId)
     .then(() => {

@@ -88,6 +88,10 @@
   }
 }
 
+.mat-mdc-paginator {
+  background-color: $main-dark-bg-color;
+}
+
 // smaller than 576px
 @media only screen and (max-width: 576px) {
   .table-controls { width: unset; gap: 12px; }

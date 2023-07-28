@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
@@ -57,7 +57,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
-    private _utilService: UtilService
+    private _utilService: UtilService,
+    private _element: ElementRef
   ) {}
 
   // TODO: Important! error handling
@@ -115,8 +116,8 @@ export class ProductListComponent implements OnInit {
 
   // updates page number in pagination
   updatePageNumber() {
-    const list = document.getElementsByClassName('mat-mdc-paginator-range-label');
-    list[0] && (list[0].innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + (this.paginator.getNumberOfPages() + 1));
+    const list = this._element.nativeElement.querySelectorAll('.mat-mdc-paginator-range-label')[0];
+    list && (list.innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + this.paginator.getNumberOfPages());
   }
 
   // trigger show animation

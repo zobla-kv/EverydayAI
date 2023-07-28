@@ -79,7 +79,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes);
+    this.likesTooltip && (this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes));
   }
 
   // emit event once img is loaded

@@ -132,6 +132,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
 
   // get original object to store in db
   static getOriginalObject(product: ProductMapper<ProductResponse>): ProductResponse {
+    // NOTE: be aware of the depth
     const productCopy = JSON.parse(JSON.stringify(product))
     delete productCopy.spinners;
     delete productCopy.isInCart;
