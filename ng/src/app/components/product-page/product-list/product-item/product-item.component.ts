@@ -1,4 +1,8 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, 
+        OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation,
+        SecurityContext,
+        ElementRef
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
 import { DecimalPipe } from '@angular/common'
@@ -20,17 +24,21 @@ import {
   ToastConstants,
   ProductActions,
   ProductMapper,
-  ProductTypePrint
+  ProductTypePrint,
+  ExtensionFromMimeType
 } from '@app/models';
 
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.scss'],
+  // TODO: update to ngdeep and remove this
   encapsulation: ViewEncapsulation.None,
 })
 export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // product img ref
+  @ViewChild('img')     img: ElementRef;
   // tooltip that shows number of likes on product
   @ViewChild('tooltip') likesTooltip: MatTooltip;
 
@@ -58,8 +66,11 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // is product liked
   isLiked: boolean;
 
-  // image url
-  productImageUrl: SafeUrl;
+  // product image blob url
+  blobUrl: string;
+
+  // product image blob safe url
+  productImageBlobUrlSafe: SafeUrl
 
   constructor(
     private _authService: AuthService,
@@ -80,8 +91,14 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     // load image separately. Ideally this would be combined in single call with product from db.
     // when BE is connected to firebase
     this._httpService.getProductImage(this.product.imgPath).pipe(first()).subscribe(image => {
-      const UrlFromBlob = URL.createObjectURL(image);
-      this.productImageUrl = this._sanitizer.bypassSecurityTrustUrl(UrlFromBlob);
+      if (!image) {
+        // will trigger load event
+        this.utilService.set404Image(this.img.nativeElement);
+        return;
+      }
+      const urlFromBlob = URL.createObjectURL(image);
+      this.blobUrl = urlFromBlob;
+      this.productImageBlobUrlSafe = this._sanitizer.bypassSecurityTrustUrl(urlFromBlob);
     });
 
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
@@ -91,18 +108,47 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     });  
   }
 
+  handleDownload() {
+    if (!this.user) {
+      this._router.navigate(['auth', 'login']);
+      return;
+    }
+    this._httpService.downloadImageFromBlob(this.blobUrl)
+    .pipe(first())
+    .subscribe(blob => {
+      if (!blob) {
+       // fetch from BE
+       this._httpService.getProductImage(this.product.imgPath).pipe(first()).subscribe(image => {
+         if (!image) {
+          this._toast.showDefaultError();
+          return;
+         }
+         this.triggerDownload(image);
+       });
+      } else {
+        this.triggerDownload(blob);
+      }
+    });
+  }
+
+  // trigger download
+  triggerDownload(blob: Blob) {
+    const url = URL.createObjectURL(blob);
+    const fileName = this.product.title + '.' + ExtensionFromMimeType[blob.type as keyof typeof ExtensionFromMimeType];
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   ngAfterViewInit() {
     this.likesTooltip && (this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes));
   }
 
   // emit event once img is loaded
   handleImageLoaded() {
-    this.imgLoaded.emit();
-  }
-
-  // emit event if img fails to load
-  handleImageLoadError(ev: any) {
-    this.utilService.set404Image(ev.target);
     this.imgLoaded.emit();
   }
 
@@ -184,30 +230,6 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // handle download
-  handleDownload() {
-    // TODO: error handling
-    if (!this.user) {
-      this._router.navigate(['auth', 'login']);
-      return;
-    }
-    this._httpService.fetchImageUrlAsBlob(this.product.imgPath)
-    .pipe(first())
-    .subscribe(blob => {
-       if (!blob) {
-         this._toast.showDefaultError();
-         return;
-       }
-       const url = URL.createObjectURL(blob);
-       // TODO: does this really turn img into .png (.jfif to .png)
-       const fileName = this.product.id + '.png';
-       const a = document.createElement('a');
-       a.href = url;
-       a.download = fileName;
-       document.body.appendChild(a);
-       a.click();
-       document.body.removeChild(a);
-    });
-  }
 
   ngOnDestroy(): void {
     this.userStateSub$.unsubscribe();

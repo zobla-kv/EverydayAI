@@ -194,3 +194,11 @@ interface MetadataIcon {
 }
 
 export interface MetadataIconMap extends Map<string, MetadataIcon> {}
+
+// get extension from mime type response
+export enum ExtensionFromMimeType {
+  'image/jpg'     = '.jpg',
+  'image/jpeg'    = '.jpg',
+  'image/png'     = '.png',
+  'image/svg+xml' = '.svg'
+}

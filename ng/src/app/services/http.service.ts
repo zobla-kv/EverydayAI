@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { SafeUrl } from '@angular/platform-browser';
+
 import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs';
 
 import {
@@ -87,34 +89,33 @@ export class HttpService {
   }
 
   // get product image from BE
-  getProductImage(imgPath: string) {
+  getProductImage(imgPath: string): Observable<Blob | null> {
     return this._http
     .get<any>(
-      `http://localhost:3000/api/image/${imgPath}`, 
+      `http://localhost:3000/api/image/${imgPath}`,
       {
         headers: { 'Content-Type': 'image' },
         responseType: 'blob' as 'json'
       }
     )
     .pipe(
-      catchError(async (err) => {
-        // TODO: what happens on error in list
-        console.log('catch err: ', err);
-        return err;
-      })
+      catchError(async err => null)
     )
   }
 
-  // get image from cross origin as blob
+  // get image from same origin as blob
   // make it downloadable
-  fetchImageUrlAsBlob(imgPath: string): Observable<Blob | void> {
+  downloadImageFromBlob(blobPath: string): Observable<Blob | null> {
     return this._http
     .get<any>(
-      imgPath, 
+      blobPath, 
       { 
-        headers: { 'Content-Type': 'image/jfif+jpg+jpeg+png' }, 
+        headers: { 'Content-Type': 'image' }, 
         responseType: 'blob' as 'json' 
       }
+    )
+    .pipe(
+      catchError(async (err) => null)
     )
   }
 
