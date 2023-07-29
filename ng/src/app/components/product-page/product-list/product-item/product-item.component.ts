@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 import { Router } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
 import { DecimalPipe } from '@angular/common'
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { Subscription, first } from 'rxjs';
 
@@ -57,6 +58,9 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // is product liked
   isLiked: boolean;
 
+  // image url
+  productImageUrl: SafeUrl;
+
   constructor(
     private _authService: AuthService,
     private _productLikeService: ProductLikeService,
@@ -65,12 +69,21 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _httpService: HttpService,
     public   utilService: UtilService,
-    private _decimalPipe: DecimalPipe
+    private _decimalPipe: DecimalPipe,
+    private _sanitizer: DomSanitizer
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
+
+    // load image separately. Ideally this would be combined in single call with product from db.
+    // when BE is connected to firebase
+    this._httpService.getProductImage(this.product.imgPath).pipe(first()).subscribe(image => {
+      const UrlFromBlob = URL.createObjectURL(image);
+      this.productImageUrl = this._sanitizer.bypassSecurityTrustUrl(UrlFromBlob);
+    });
+
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {
         this.isLiked = likes.includes(this.product.id);

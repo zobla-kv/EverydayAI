@@ -4,7 +4,8 @@ import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs'
 
 import {
   Email,
-  PaymentObject
+  PaymentObject,
+  ProductResponse
 } from '@app/models';
 
 @Injectable({
@@ -83,6 +84,25 @@ export class HttpService {
       .subscribe();
     })
     
+  }
+
+  // get product image from BE
+  getProductImage(imgPath: string) {
+    return this._http
+    .get<any>(
+      `http://localhost:3000/api/image/${imgPath}`, 
+      {
+        headers: { 'Content-Type': 'image' },
+        responseType: 'blob' as 'json'
+      }
+    )
+    .pipe(
+      catchError(async (err) => {
+        // TODO: what happens on error in list
+        console.log('catch err: ', err);
+        return err;
+      })
+    )
   }
 
   // get image from cross origin as blob

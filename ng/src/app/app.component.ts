@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { first } from 'rxjs';
@@ -55,10 +57,9 @@ export class AppComponent {
     private _iconService: IconService,
     private _authService: AuthService,
     private _utilService: UtilService,
-    private _firebaseService: FirebaseService
-  ) {
-    this._iconService.addCustomIcons();
-    
+    private _firebaseService: FirebaseService,
+    private _location: Location
+  ) {    
     // custom user set
     // for now this is only deteremining factor for app load
     this._authService.userState$.pipe(first()).subscribe(user => {
@@ -72,7 +73,9 @@ export class AppComponent {
         // doesn't matter if it succeeded
         this._firebaseService.updateLastActiveTime(user);
       }
-    })
+    });
+
+    this._iconService.addCustomIcons();
 
     this._utilService.screenSizeChange$.subscribe(size => {
       if (['xl','lg', 'md'].includes(size)) {

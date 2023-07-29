@@ -26,6 +26,7 @@ function createDirectory() {
 }
 
 module.exports = {
+  folder,
   upload,
   createDirectory
 }

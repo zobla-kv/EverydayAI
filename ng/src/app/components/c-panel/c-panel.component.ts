@@ -26,11 +26,12 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: fix product page
+  // TODO: fix product page, update tier icons
   // TODO: sort product and cpanel list by creation date
-  // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: figure out how to display image from db path and update download
-  // TODO: Some stats above table
+
+  // TODO: remove 404 images from product list on product page (leave for later?)
+  // TODO: Some stats above table (leave for later?)
 
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;
@@ -293,6 +294,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   // delete product
+  // TODO: delete image from BE
   // NOTE: this will also delete it from those who have bought it, figure out how to remove it from shop only
   handleDeleteProduct() {
     this._firebaseService.removeProduct(this.productId)

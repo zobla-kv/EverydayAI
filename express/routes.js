@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const emailService = require('./services/emailService');
 const paymentService = require('./services/paymentService');
 const uploadService = require('./services/uploadFileService');
+const fileSystemService = require('./services/fileSystemService');
 
 // TODO: can be misused from postman, protect!!
 router.post('/send-email', async (req, res) => {
@@ -40,8 +41,14 @@ router.post('/upload-file', (req, res) => {
       return res.sendStatus(500);
     }
     // NOTE: not working with 200
-    res.sendStatus(220)
+    res.sendStatus(220);
   })
+})
+
+router.get('/image/:name', fileSystemService.getImage, (req, res) => {
+  // TODO: error handling
+  res.status(200).type(res.responseType).write(res.body.buffer);
+  res.end();
 })
 
 // push notifications from firebase
