@@ -1,6 +1,8 @@
 @import '../../../styles/variables.scss';
 
 .product-list-wrapper {
+  max-width: 1040px;
+  margin: auto;
 
   .product-list-header {
     text-align: center;
@@ -11,7 +13,7 @@
   }
 
   .product-list-container { 
-    min-height: 880px;
+    min-height: 800px;
     // only if it has direct child mat spinner  
     &:has(> mat-spinner) {
       display: flex;
@@ -25,6 +27,7 @@
   // classic
   .mat-mdc-paginator {
     background-color: $main-dark-bg-color;
+    padding-right: 1rem;
   }
 
   //TODO: cleanup
@@ -63,6 +66,20 @@
   //     }
   //   }
   // }
+
+  // animation
+  .product-list {
+    $transition-duration: 0.3s;
+    transition: $transition-duration;
+    transform: translateY(0px);
+    opacity: 1;
+  
+    &.fade-out {
+      transition: $transition-duration;
+      transform: translateY(50px);
+      opacity: 0;
+    }
+  }
 
 }
 

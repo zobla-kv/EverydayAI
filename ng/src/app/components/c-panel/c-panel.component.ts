@@ -26,7 +26,7 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: fix product page, shopping cart update img, update tier icons
+  // TODO: shopping cart update img and on, update tier icons, update email text
   // TODO: sort product and cpanel list by creation date
 
   // TODO: remove 404 images from product list on product page (leave for later?)

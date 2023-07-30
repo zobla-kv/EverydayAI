@@ -1,22 +1,22 @@
-<div class="container product-list-wrapper">
+<div class="product-list-wrapper">
   <h2 class="product-list-header">
     {{ config.title }}
   </h2>
-  <div class="product-list-container overflow-y-hidden">
+  <div class="product-list-container container overflow-y-hidden">
     <mat-spinner *ngIf="showSpinner" diameter="200" strokeWidth="15"></mat-spinner>
     <!-- TODO: split between tabs -->
     <div *ngIf="fullProductList.length === 0 && !showSpinner" class="text-center">No items.</div>
     <div
-      class="row g-4 gy-5"
+      class="row g-4 gy-5 product-list"
       [ngClass]="{'d-none': showSpinner }"
       [@productsLoaded]="!showSpinner && 'loaded'"
-      [@changePage]="productVisibilityState" 
-      (@changePage.done)="afterChangePageAnimation($event)"
+      #productList
     >
       <div class="col-lg-4 col-md-6 col-sm-12 mt-5" *ngFor="let product of paginatedList">
         <app-product-item
           [product]="product"
           [actions]="config.product.actions"
+          [type]="config.product.type"
           (imgLoaded)="handleImageLoaded()"
         ></app-product-item>
       </div>

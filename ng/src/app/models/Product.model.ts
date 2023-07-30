@@ -79,7 +79,7 @@ export class ProductListConfig {
       product: {
         type: ProductType.PRINTS.OWNED_ITEMS,
         actions: [ProductActions.DOWNLOAD],
-        metadata: ['resolution', 'tier', 'extension']
+        metadata: ['resolution', 'extension', 'downloadSize', 'tier']
       },
       pageSize: 6
     }

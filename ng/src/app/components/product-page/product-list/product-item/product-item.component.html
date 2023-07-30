@@ -35,7 +35,7 @@
   </div>
   <div class="bottom-section">
     <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
-    <div class="product-information mt-3">
+    <div class="product-information mt-3"  [attr.type]="type">
       <div 
         class="product-information-item" 
         *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"

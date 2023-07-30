@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { AnimationEvent } from '@angular/animations';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
@@ -28,6 +28,8 @@ import animations from './product-list.animations';
 })
 export class ProductListComponent implements OnInit {
 
+  // for animation
+  @ViewChild('productList') productList: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;
 
   // config for list
@@ -38,9 +40,6 @@ export class ProductListComponent implements OnInit {
 
   // paginated list - this is displayed (with added FE properties)
   paginatedList: ProductMapper<ProductTypePrint>[] = [];
-
-  // animate show/hide product items
-  productVisibilityState = 'hide';
 
   // products loading spinner
   showSpinner = true;
@@ -58,7 +57,8 @@ export class ProductListComponent implements OnInit {
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _element: ElementRef
+    private _element: ElementRef,
+    private _renderer: Renderer2
   ) {}
 
   // TODO: Important! error handling
@@ -109,9 +109,7 @@ export class ProductListComponent implements OnInit {
 
   // handle pagination navigation
   handlePaginatorNagivation(event: PageEvent) {
-    // flow: click on pagination navigation -> hide animation -> afterChangePageAnimation
-    const direction = event.pageIndex > event.previousPageIndex! ? 'next' : 'previous';
-    direction === 'next' ? this.hideProductsToTheLeft() : this.hideProductsToTheRight();
+    this.hideProducts();
   }
 
   // updates page number in pagination
@@ -122,21 +120,19 @@ export class ProductListComponent implements OnInit {
 
   // trigger show animation
   showProductItems() {
-    this.productVisibilityState = 'show';
+    this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
   }
-  hideProductsToTheLeft() {
-    this.productVisibilityState = 'hideLeft';
-  }
-  hideProductsToTheRight() {
-    this.productVisibilityState = 'hideRight';
+  hideProducts() {
+    this._renderer.addClass(this.productList.nativeElement, 'fade-out');
+    this.updatePageAfterAnimation();
   }
 
-  // update page after hide animation is complete
-  afterChangePageAnimation(ev: AnimationEvent) {
-    if (ev.fromState === 'show' && ev.toState !== 'void') {
+  updatePageAfterAnimation() {
+    // time should match css transition
+    setTimeout(() => {
       this.updatePage();
-      setTimeout(() => window.scroll({ top: 20, left: 0, behavior: 'smooth' }), 300);
-    }
+      this.showProductItems();
+    }, 300);
   }
 
 }

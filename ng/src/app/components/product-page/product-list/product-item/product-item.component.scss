@@ -3,6 +3,7 @@
 .product-item-wrapper {
   max-width: 300px;
   min-width: 250px;
+  margin: auto;
 
   .mat-icon svg { vertical-align: top; }
 
@@ -102,12 +103,10 @@
     .product-information {
       display: grid; 
       justify-items: start;
-      grid-template-columns: 95px 110px 100px; 
-      grid-template-rows: 1fr 1fr; 
-      gap: 16px 8px; 
       grid-template-areas: 
-        ". . ."
-        ". . ."; 
+      ". . ."
+      ". . ."; 
+      gap: 16px 8px; 
 
       .product-information-item {
         position: relative;
@@ -164,6 +163,15 @@
         }
 
       }
+    }
+
+    .product-information[type="prints_shop"] {
+      grid-template-columns: 95px 110px 100px; 
+      grid-template-rows: 1fr 1fr; 
+    }
+    .product-information[type="prints_owned_items"] {
+      grid-template-columns: 114px 75px 100px; 
+      grid-template-rows: 1fr 1fr; 
     }
   }
 

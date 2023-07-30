@@ -51,6 +51,9 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // actions a product can peform
   @Input('actions') actions: string[];
 
+  // type of product, used for dynamic css table
+  @Input('type') type: string;
+
   // product img loaded event
   @Output() imgLoaded = new EventEmitter<void>();
 
