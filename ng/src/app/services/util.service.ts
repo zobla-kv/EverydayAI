@@ -186,7 +186,7 @@ export class UtilService {
     return array;
   }
 
-  /**
+/**
   * get price or discounted price for FE
   *
   * @param product - ProductResponse 
@@ -196,7 +196,7 @@ export class UtilService {
     return product.discount > 0 ? (product.price * (100 - product.discount) / 100) : product.price
   }
 
-  /**
+/**
   * set 404 image when product fails to load
   *
   * @param target - target element (img) 
@@ -207,7 +207,7 @@ export class UtilService {
   }
 
 
-  /**
+/**
   * get file extension from file name 
   *
   * @param fileName - name of the file
@@ -216,17 +216,21 @@ export class UtilService {
     return fileName.split('.').pop();
   }
 
-  /**
+/**
   * get file size in mb with 1 decimal
   *
   * @param file - File
   * @return size - file size in mb
   */
   getFileSize(file: File): string {
-    return (file.size / (1024 * 1024)).toFixed(1);
+    let fileSize = (file.size / (1024 * 1024)).toFixed(1);
+    if (fileSize === '0.0') {
+      fileSize = '0.1';
+    }
+    return fileSize + ' mb';
   }
 
-  /**
+/**
   * get image resolution from file
   *
   * @param file - File
@@ -246,6 +250,48 @@ export class UtilService {
         }
       }
     })
+  }
+
+/**
+  * get extension rom type mime type
+  *
+  * @param file - File
+  * @return size - file size in mb
+  */
+  getExtensionFromMimeType(mimeType: string): string {
+    switch(mimeType) {
+      case 'image/jpg':
+        return '.jpg';
+      case 'image/jpeg':
+        return '.jpg';
+      case 'image/png':
+        return '.png';
+      case 'image/svg+xml':
+        return '.svg'
+      default:
+        throw new Error('no such mimeType: ' + mimeType);
+    }
+  }
+
+/**
+  * get mime type from extension
+  *
+  * @param file - File
+  * @return size - file size in mb
+  */
+  getMimeTypeFromExtension(extension: string): string {
+    switch(extension) {
+      case 'jpg':
+        return 'jpg';
+      case 'jpeg':
+        return 'jpeg';
+      case 'png':
+        return 'png';
+      case 'svg':
+        return 'svg+xml'
+      default:
+        throw new Error('no such extension: ' + extension);
+    }
   }
 
 }

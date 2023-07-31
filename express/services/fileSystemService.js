@@ -4,15 +4,34 @@ const uploadService = require('./uploadFileService');
 // NOTE: this is relative route (update if changed)
 const { folder } = uploadService;
 
+// get multiple images from fs as buffer
+async function getImages(fileNames) {
+  const images = [];
+  fileNames.forEach(name => {
+    try {
+      const file = fs.readFileSync(folder + name, 'base64');
+      images.push(file);
+    } catch (err) {
+      images.push(null);
+    }
+  })
+  return images;
+}
+
 // retrieve image from FS by imgPath from FE
-// used as middleware
-function getImage(req, res, next) {
-  const buffer = fs.readFileSync(folder + req.params.name);
-  res.body = { buffer };
-  res.responseType = req.params.name.split('.')[1];
-  next();
+async function getImage(fileName) {
+  try {
+    const file = fs.readFileSync(folder + fileName, 'base64');
+    if (file.length === 0) {
+      throw new Error('Empty file');
+    }
+    return file;
+  } catch (err) {
+    return null;
+  }
 }
 
 module.exports = {
+  getImages,
   getImage
 }

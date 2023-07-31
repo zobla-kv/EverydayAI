@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, 
-        OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation,
-        SecurityContext,
-        ElementRef
+         OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -25,7 +23,6 @@ import {
   ProductActions,
   ProductMapper,
   ProductTypePrint,
-  ExtensionFromMimeType
 } from '@app/models';
 
 @Component({
@@ -37,8 +34,6 @@ import {
 })
 export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // product img ref
-  @ViewChild('img')     img: ElementRef;
   // tooltip that shows number of likes on product
   @ViewChild('tooltip') likesTooltip: MatTooltip;
 
@@ -69,9 +64,6 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // is product liked
   isLiked: boolean;
 
-  // product image blob url
-  blobUrl: string;
-
   // product image blob safe url
   productImageBlobUrlSafe: SafeUrl
 
@@ -89,21 +81,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.productImageBlobUrlSafe = this._sanitizer.bypassSecurityTrustUrl(this.product.imgPath);
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-
-    // load image separately. Ideally this would be combined in single call with product from db.
-    // when BE is connected to firebase
-    this._httpService.getProductImage(this.product.imgPath).pipe(first()).subscribe(image => {
-      if (!image) {
-        // will trigger load event
-        this.utilService.set404Image(this.img.nativeElement);
-        return;
-      }
-      const urlFromBlob = URL.createObjectURL(image);
-      this.blobUrl = urlFromBlob;
-      this.productImageBlobUrlSafe = this._sanitizer.bypassSecurityTrustUrl(urlFromBlob);
-    });
-
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {
         this.isLiked = likes.includes(this.product.id);
@@ -116,28 +95,28 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
       this._router.navigate(['auth', 'login']);
       return;
     }
-    this._httpService.downloadImageFromBlob(this.blobUrl)
+
+    if (!this.product.imgPath.includes('assets')) {
+      // for non 404 images
+      this.triggerDownload(this.product.imgPath);
+      return;
+    }
+
+    this._httpService.getProductImage(this.product.fileName)
     .pipe(first())
-    .subscribe(blob => {
-      if (!blob) {
-       // fetch from BE
-       this._httpService.getProductImage(this.product.imgPath).pipe(first()).subscribe(image => {
-         if (!image) {
-          this._toast.showDefaultError();
-          return;
-         }
-         this.triggerDownload(image);
-       });
+    .subscribe(path => {
+      if (!path) {
+        this._toast.showDefaultError();
+        return;
       } else {
-        this.triggerDownload(blob);
+        this.triggerDownload(path);
       }
-    });
+    })
   }
 
   // trigger download
-  triggerDownload(blob: Blob) {
-    const url = URL.createObjectURL(blob);
-    const fileName = this.product.title + '.' + ExtensionFromMimeType[blob.type as keyof typeof ExtensionFromMimeType];
+  triggerDownload(url: string): void {
+    const fileName = this.product.title + '.' + this.utilService.getFileExtension(this.product.fileName);
     const a = document.createElement('a');
     a.href = url;
     a.download = fileName;

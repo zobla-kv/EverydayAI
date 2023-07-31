@@ -6,10 +6,12 @@ export interface ProductResponse {
   title: string;
   price: number;
   discount: number;
-  imgPath: string;
+  fileName: string;
   imgAlt: string;
   likes: number; 
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
+  // set in http request
+  imgPath: string;
 }
 
 export interface ProductTypePrint extends ProductResponse {
@@ -105,6 +107,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   description: string;
   price: number;
   discount: number;
+  fileName: string;
   imgPath: string;
   imgAlt: string;
   // TODO: type
@@ -120,6 +123,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.title = product.title;
     this.price = product.price;
     this.discount = product.discount;
+    this.fileName = product.fileName;
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
     this.likes = product.likes; 
@@ -194,11 +198,3 @@ interface MetadataIcon {
 }
 
 export interface MetadataIconMap extends Map<string, MetadataIcon> {}
-
-// get extension from mime type response
-export enum ExtensionFromMimeType {
-  'image/jpg'     = '.jpg',
-  'image/jpeg'    = '.jpg',
-  'image/png'     = '.png',
-  'image/svg+xml' = '.svg'
-}

@@ -16,6 +16,7 @@ import {
   MetadataIconMap,
   ProductMapper,
   ProductResponse, 
+  ProductType, 
   ToastConstants 
 } from '@app/models';
 
@@ -27,8 +28,11 @@ import {
 export class CPanelComponent implements OnInit, AfterViewInit {
 
   // TODO: shopping cart update img and on, update tier icons, update email text
+  // TODO: delete product delete image from BE
   // TODO: sort product and cpanel list by creation date
-
+  
+  // TODO: cpanel premium displayed as classic
+  // TODO: isInCart bug?
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: Some stats above table (leave for later?)
 
@@ -82,6 +86,15 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),
       'image': new FormControl(null, [
+        Validators.required
+      ]),
+      'fileExtension': new FormControl(null, [
+        Validators.required
+      ]),
+      'fileResolution': new FormControl(null, [
+        Validators.required
+      ]),
+      'fileSize': new FormControl(null, [
         Validators.required
       ]),
       'tier': new FormControl('classic', [
@@ -156,7 +169,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts() {
-    this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
+    this._httpService.getProducts(ProductType.ALL, null).pipe(first()).subscribe((data: any) => {
       this.fullProductList = data;
       this.paginator.length = this.fullProductList.length;
       // NOTE: this needs to be done only once
@@ -171,7 +184,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // update list
   updateProductList() {
-    this._firebaseService.getAllProducts().pipe(first()).subscribe(data => {
+    this._httpService.getProducts(ProductType.ALL, null).pipe(first()).subscribe(data => {
       this.fullProductList = data;
       this.paginator.length = this.fullProductList.length;
       this.updatePaginatedList();
@@ -196,9 +209,13 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   // when file changes in add product form
-  onFileChange(event: any) {
+  async onFileChange(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
+      this.formAddProduct.patchValue({  })
+      this.formAddProduct.patchValue({ fileExtension: this.utilService.getFileExtension(file.name) });
+      this.formAddProduct.patchValue({ fileResolution: await this.utilService.getImageResolution(file) });
+      this.formAddProduct.patchValue({ fileSize: this.utilService.getFileSize(file) });
       this.formAddProduct.patchValue({ image: file });
     }
   }
@@ -218,11 +235,11 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     }
     
     // NOTE: must be before upload to server to get productId
-    this._firebaseService.addProduct(await this.getProductObject())
+    this._firebaseService.addProduct(this.getProductObject())
     .then(async productId => {
       this.productId = productId;
       // rename
-      const fileName = productId + '.' + this.utilService.getFileExtension(productImgFile.name);
+      const fileName = productId + '.' + this.formAddProduct.get('fileExtension')?.value;
       await this._firebaseService.updateProductAfterAdd(productId, fileName);
 
       // prepare for upload
@@ -312,45 +329,35 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // create product object to store in db
   // TODO: move to BE
-  async getProductObject(): Promise<ProductResponse> {
+  getProductObject(): ProductResponse {
     const formData = this.formAddProduct.getRawValue();
-
+    
     const dataCopy = this.utilService.getDeepCopy(formData);
-    delete dataCopy.fileName;
     delete dataCopy.image;
-    // set later
-    delete dataCopy.tier;
+    delete dataCopy.fileExtension;
+    delete dataCopy.fileResolution;
+    delete dataCopy.fileSize;
 
     const product: ProductResponse = { 
       ...dataCopy, 
       // set later
       id: '',
-      // depends on patchValue
-      imgPath: formData.image.name,
-      imgAlt: this.formAddProduct.get('title')?.value,
+      fileName: '',
+      // set in http service
+      imgPath: '',
+      // 
+      imgAlt: formData.title,
       price: Number(formData.price),
       discount: Number(formData.discount),
       metadata: {
-        downloadSize: this.setDownloadSize(this.utilService.getFileSize(this.formAddProduct.get('image')?.value)),
-        // TODO: move this to onFileChange
-        resolution: await this.utilService.getImageResolution(this.formAddProduct.get('image')?.value),
-        extension: this.utilService.getFileExtension(formData.image.name),
-        tier: this.formAddProduct.get('tier')?.value
+        downloadSize: formData.fileSize,
+        resolution: formData.fileResolution,
+        extension: formData.fileExtension,
+        tier: formData.tier
       }
     };
 
     return product;
-  }
-
-  // add 'mb' and if '0.0' set '0.1'
-  setDownloadSize(size: string) {
-    let newSize = '';
-    if (size === '0.0') {
-      newSize = '0.1'
-    } else {
-      newSize = size;
-    }
-    return newSize + ' mb';
   }
 
   // is form valid

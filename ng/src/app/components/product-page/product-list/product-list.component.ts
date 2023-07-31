@@ -14,7 +14,7 @@ import {
 
 import {
   AuthService,
-  FirebaseService,
+  HttpService,
   UtilService
 } from '@app/services';
 
@@ -55,10 +55,10 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private _authService: AuthService,
-    private _firebaseService: FirebaseService,
     private _utilService: UtilService,
     private _element: ElementRef,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
+    private _httpService: HttpService
   ) {}
 
   // TODO: Important! error handling
@@ -72,8 +72,9 @@ export class ProductListComponent implements OnInit {
   
   // fetch products from BE
   fetchProducts(productType: any, user: CustomUser | null): void {
-    this._firebaseService.getProducts(productType, user).pipe(first()).subscribe(products => {
+    this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
       this.fullProductList = products;
+      console.log('full product list: ', this.fullProductList)
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
       this.updatePage();

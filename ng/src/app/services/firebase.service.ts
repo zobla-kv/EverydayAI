@@ -203,25 +203,7 @@ export class FirebaseService {
     return firstValueFrom(this._db.collection('Users').doc(uid).get())
     .then(user => user.data() as CustomUser);
   }
-  
-  // return all products from db wrapped by observable
-  getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[]> {
-    let products$: Observable<ProductResponse[]>;
-    switch(productType) {
-      case(ProductType.ALL):
-        products$ = this.getAllProducts();
-        break;
-      case(ProductType.PRINTS.SHOP):
-        products$ = this.getProductsForTypePrintTabShop(user);
-        break;
-      case(ProductType.PRINTS.OWNED_ITEMS):
-        products$ = this.getProductsForTypePrintTabOwnedItems(user);
-        break;
-      default: 
-        throw new Error('Unable to fetch products. Invalid type: ', productType);
-    }
-    return products$;
-  }
+
 
   getAllProducts(): Observable<ProductTypePrint[]> {
     return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
@@ -233,10 +215,10 @@ export class FirebaseService {
   }
 
   // update product with missing fields after creation
-  async updateProductAfterAdd(productId: string, imgPath: string): Promise<void> {
+  async updateProductAfterAdd(productId: string, fileName: string): Promise<void> {
     return this._db.collection('Products').doc(productId).ref.update({
       id: productId,
-      imgPath
+      fileName
     })
   }
 

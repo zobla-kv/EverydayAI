@@ -45,10 +45,14 @@ router.post('/upload-file', (req, res) => {
   })
 })
 
-router.get('/image/:name', fileSystemService.getImage, (req, res) => {
-  // TODO: error handling
-  res.status(200).type(res.responseType).write(res.body.buffer);
-  res.end();
+router.get('/product-images', async (req, res) => {
+  const images = await fileSystemService.getImages(req.query.fileNames);
+  res.status(200).json(images);
+})
+
+router.get('/product-image/:name', async (req, res) => {
+  const image = await fileSystemService.getImage(req.params.name);
+  res.status(200).json(image);
 })
 
 // push notifications from firebase

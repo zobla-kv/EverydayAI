@@ -1,13 +1,19 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { SafeUrl } from '@angular/platform-browser';
 
-import { Observable, Subscription, catchError, first, map, of, tap } from 'rxjs';
+import { Observable, Subscription, catchError, concatMap, first, map, of, tap } from 'rxjs';
+
+import { 
+  FirebaseService, UtilService 
+} from '@app/services';
 
 import {
+  CustomUser,
   Email,
   PaymentObject,
-  ProductResponse
+  ProductResponse,
+  ProductType
 } from '@app/models';
 
 @Injectable({
@@ -16,7 +22,9 @@ import {
 export class HttpService {
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient,
+    private _injector: Injector,
+    private _utilService: UtilService
   ) { }
 
   // call endpoint for sending email
@@ -88,34 +96,91 @@ export class HttpService {
     
   }
 
-  // get product image from BE
-  getProductImage(imgPath: string): Observable<Blob | null> {
+  // get all products from db
+  // TODO: return type
+  getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[] | []> {
+    const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
+    let products$: Observable<any>;
+    switch(productType) {
+      case(ProductType.ALL):
+        products$ = firebaseService.getAllProducts();
+        break;
+      case(ProductType.PRINTS.SHOP):
+        products$ = firebaseService.getProductsForTypePrintTabShop(user);
+        break;
+      case(ProductType.PRINTS.OWNED_ITEMS):
+        products$ = firebaseService.getProductsForTypePrintTabOwnedItems(user);
+        break;
+      default: 
+        throw new Error('Unable to fetch products. Invalid type: ', productType);
+    }
+
+    // fetch image from BE and then update imgPath field to base64
+    // NOTE: using base64 because unable to stringify a blob on BE
+    return products$
+    .pipe(
+      concatMap((products: ProductResponse[]) => {
+        if (products.length === 0) {
+          return of([]);
+        }
+        return this.getProductImages([...products.map((product: any) => product.fileName)])
+        .pipe(
+          map(images => {
+            products.forEach((product, i) => {
+              if (images[i]) {
+                const extension = this._utilService.getMimeTypeFromExtension(
+                  products[i].fileName.split('.')[1]
+                )
+                product.imgPath = `data:image/${extension};base64, ` + images[i];
+              } else {
+                product.imgPath = '../../assets/images/img/cesar-millan.png';
+              }
+            })
+            return products;
+          })
+        );
+      }),
+      catchError(async err => [])
+    );
+  }
+
+  // get product images from BE
+  getProductImages(fileNames: string[]): Observable<(ArrayBufferLike)[]> {
+    const params = new HttpParams({ 
+      fromObject: { 'fileNames[]': fileNames } 
+    })
     return this._http
     .get<any>(
-      `http://localhost:3000/api/image/${imgPath}`,
-      {
-        headers: { 'Content-Type': 'image' },
-        responseType: 'blob' as 'json'
+      `http://localhost:3000/api/product-images/`,
+      { 
+        responseType: 'json',
+        params
       }
     )
     .pipe(
-      catchError(async err => null)
+      catchError(async err => [])
     )
   }
 
-  // get image from same origin as blob
-  // make it downloadable
-  downloadImageFromBlob(blobPath: string): Observable<Blob | null> {
+  // get product image from BE
+  getProductImage(fileName: string): Observable<string | null> {
     return this._http
     .get<any>(
-      blobPath, 
-      { 
-        headers: { 'Content-Type': 'image' }, 
-        responseType: 'blob' as 'json' 
-      }
+      `http://localhost:3000/api/product-image/${fileName}`,
+      // {
+      //   headers: { 'Content-Type': 'image' },
+      //   responseType: 'blob' as 'json'
+      // }
     )
     .pipe(
-      catchError(async (err) => null)
+      map(buffer => {
+        if (!buffer) {
+          return null;
+        }
+        const extension = this._utilService.getMimeTypeFromExtension(fileName.split('.')[1])
+        return `data:image/${extension};base64, ` + buffer;
+      }),
+      catchError(async err => null)
     )
   }
 
