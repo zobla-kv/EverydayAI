@@ -4,7 +4,7 @@ import { CustomUser } from "./User.model";
 export interface ProductResponse {
   id: string;
   title: string;
-  price: number;
+  price: string;
   discount: number;
   fileName: string;
   imgAlt: string;
@@ -50,6 +50,10 @@ export namespace ProductType {
   // all
   export enum ALL {
     ALL = 'all'
+  }
+
+  export enum SHOPPING_CART {
+    SHOPPING_CART = 'shopping_cart'
   }
 
   export enum PRINTS {
@@ -105,7 +109,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   id: string;
   title: string;
   description: string;
-  price: number;
+  price: string;
   discount: number;
   fileName: string;
   imgPath: string;

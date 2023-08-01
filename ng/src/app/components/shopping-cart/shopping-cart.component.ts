@@ -1,21 +1,22 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, debounceTime, finalize, first } from 'rxjs';
 
 import { 
   ShoppingCart,
   ToastConstants,
   CustomUser,
-  ProductResponse,
   ProductMapper,
   ProductTypePrint,
-  ProductListConfig
+  ProductListConfig,
+  ProductType
 } from '@app/models';
 
 import {
   AuthService, 
   FirebaseService, 
+  HttpService, 
   PaymentService, 
   ToastService, 
   UtilService
@@ -84,21 +85,39 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // payment form
   paymentForm: FormGroup;
 
+  // fetch spinner
+  showLoadSpinner = true;
+
   // show submit button spinner
   showSubmitButtonSpinner = false;
+
+  // product removed
+  productRemoved = false;
+
+  // is remove disabled
+  // this is to prevent multiple deletes in short time. To be improved with debounce
+  isRemoveDisabled = false;
+
 
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
     private _firebaseService: FirebaseService,
     private _paymentService: PaymentService,
-    public utilService: UtilService,
+    private _httpService: HttpService,
+    public   utilService: UtilService
   ) {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
-      // NOTE: auth guard
       this.user = <CustomUser>user;
-      this.cart = (<CustomUser>user).cart;
+      this._httpService.getProducts(ProductType.SHOPPING_CART, this.user).pipe(first()).subscribe(products => {
+        this.cart = { items: products, totalSum: this.user.cart.totalSum };
+        this.showLoadSpinner = false;
+        if (this.productRemoved) {
+          this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+        }
+      })
     });
+
 
     this.screenSize$ = this.utilService.screenSizeChange$.subscribe(size => {
       if (size === 'xs') {
@@ -161,11 +180,19 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // remove item from cart
   removeFromCart(item: ProductMapper<ProductTypePrint>) {
+    if (this.isRemoveDisabled) {
+      return;
+    }
+    this.isRemoveDisabled = true;
     item.spinners['delete'] = true;
-    this._firebaseService.removeProductFromCart(ProductMapper.getOriginalObject(item))
+    this._firebaseService.removeProductFromCart(
+      ProductMapper.getOriginalObject(item),
+      this.user.cart.totalSum
+    )
     .then(async () => {
+      setTimeout(() => this.isRemoveDisabled = false, 1000)
       await this._authService.updateUser();
-      this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+      this.productRemoved = true;
     })
     .catch(err => this._toast.showDefaultError())
     .finally(() => setTimeout(() => item.spinners['delete'] = false, 1200));

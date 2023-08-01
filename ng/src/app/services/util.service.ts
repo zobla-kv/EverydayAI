@@ -5,6 +5,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 
 import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 
+import { Decimal } from 'decimal.js';
+
 import {
   ProductResponse,
   ToastConstants
@@ -190,10 +192,13 @@ export class UtilService {
   * get price or discounted price for FE
   *
   * @param product - ProductResponse 
-  * @returns number - price
+  * @returns Decimal - use decimal because of precision loss
   */
-  getProductPrice(product: ProductResponse): number {
-    return product.discount > 0 ? (product.price * (100 - product.discount) / 100) : product.price
+  getProductPrice(product: ProductResponse): Decimal {
+    const priceAsNumber = Number(product.price);
+    const price = product.discount > 0 ? (priceAsNumber  * (100 - product.discount) / 100) : priceAsNumber;
+    const decimalPrice = new Decimal(price);
+    return decimalPrice;
   }
 
 /**

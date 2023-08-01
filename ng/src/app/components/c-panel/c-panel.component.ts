@@ -347,7 +347,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       imgPath: '',
       // 
       imgAlt: formData.title,
-      price: Number(formData.price),
+      price: Number(formData.price).toFixed(2),
       discount: Number(formData.discount),
       metadata: {
         downloadSize: formData.fileSize,

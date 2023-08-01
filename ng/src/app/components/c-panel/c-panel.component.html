@@ -33,7 +33,7 @@
           <div *ngIf="product.discount > 0">
             <!-- TODO: format in db to 2 decimal -->
             <span class="product-old-price">{{ product.price }} $</span>
-            <span class="product-discounted-price">{{ utilService.getProductPrice(product) | number : '1.2-2' }} $</span>
+            <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
           </div>
           <div *ngIf="product.discount === 0">
             <span>{{ product.price }} $</span>

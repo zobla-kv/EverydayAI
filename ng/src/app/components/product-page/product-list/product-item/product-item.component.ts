@@ -154,7 +154,10 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
     this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.addProductToCart(ProductMapper.getOriginalObject(this.product))
+    this._firebaseService.addProductToCart(
+      ProductMapper.getOriginalObject(this.product), 
+      this.user.cart.totalSum
+    )
     .then(async () => await this.handleCartActionSucceeded())
     .catch(err => this.handleCartActionFailed())
   }
@@ -162,7 +165,10 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // handles remove from cart
   removeFromCart() {
     this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.removeProductFromCart(ProductMapper.getOriginalObject(this.product))
+    this._firebaseService.removeProductFromCart(
+      ProductMapper.getOriginalObject(this.product),
+      (<CustomUser>this.user).cart.totalSum
+    )
     .then(async () => await this.handleCartActionSucceeded())
     .catch(err => this.handleCartActionFailed())
   }

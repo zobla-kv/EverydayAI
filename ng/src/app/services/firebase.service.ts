@@ -8,7 +8,9 @@ import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
 
-import { firstValueFrom, Observable, of, delay } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from } from 'rxjs';
+
+import { Decimal } from 'decimal.js';
 
 import {
   CustomUser,
@@ -27,7 +29,6 @@ import {
   HttpService, 
   UtilService
 } from '@app/services';
-
 
 /**
  * Firebase related acitivies
@@ -204,9 +205,18 @@ export class FirebaseService {
     .then(user => user.data() as CustomUser);
   }
 
-
+  // get all products
   getAllProducts(): Observable<ProductTypePrint[]> {
     return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
+  }
+
+  // get products in cart
+  getProductsInCart(user: CustomUser | null): Observable<ProductResponse[]> {
+    if (user?.cart.items.length === 0) {
+      return of([]);
+    }
+    const itemIds = user?.cart.items.map(item => item.id);
+    return this._db.collection('Products', query => query.where('id', 'in', itemIds)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // add new product to db
@@ -225,7 +235,7 @@ export class FirebaseService {
   // update product
   async updateProduct(data: any): Promise<void> {
     return this._db.collection('Products').doc(data.id).ref.update({
-      price: data.price,
+      price: Number(data.price).toFixed(2),
       discount: data.discount,
       tier: data.tier,
       likes: data.likes
@@ -255,25 +265,26 @@ export class FirebaseService {
   }
 
   // add single product to cart
-  addProductToCart(product: ProductResponse): Promise<void> {
-  // .getUser sync version because this can only be triggered if user is logged in
-  const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
-  return this._db.collection('Users').doc(currentUserId).ref.update({
-    'cart.items': arrayUnion(product),
-    'cart.totalSum': increment(this._utilService.getProductPrice(product))
+  addProductToCart(product: ProductResponse, sum: number): Promise<void> {
+    const updatedSum = new Decimal(sum).plus(this._utilService.getProductPrice(product));
+    // .getUser sync version because this can only be triggered if user is logged in
+    const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
+    return this._db.collection('Users').doc(currentUserId).ref.update({
+      'cart.items': arrayUnion(product),
+      'cart.totalSum': updatedSum.toString()
     })
   }
 
   // remove single product from cart
-  removeProductFromCart(product: ProductResponse): Promise<void> {
+  removeProductFromCart(product: ProductResponse, sum: number): Promise<void> {
+    const updatedSum = new Decimal(sum).minus(this._utilService.getProductPrice(product));
     // NOTE: below line will require change if getUser is to become async
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayRemove(product),
-      'cart.totalSum': increment(-this._utilService.getProductPrice(product))
-      })
-    }
-
+      'cart.totalSum': updatedSum.toString()
+    })
+  }
 
   // add product like to user and product
   async addProductLike(productId: string, user: CustomUser | null) {
