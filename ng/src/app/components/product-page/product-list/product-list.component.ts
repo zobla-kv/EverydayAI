@@ -74,7 +74,6 @@ export class ProductListComponent implements OnInit {
   fetchProducts(productType: any, user: CustomUser | null): void {
     this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
       this.fullProductList = products;
-      console.log('full product list: ', this.fullProductList)
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
       this.updatePage();

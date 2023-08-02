@@ -68,7 +68,7 @@ export class HttpService {
       .pipe(
         map((response: HttpResponse<any>) => response),
         // NOTE: success response with bad code
-        catchError(async (err) => err)
+        catchError(async (err) => reject(err))
       )
       .subscribe(data => resolve(data));
     })
@@ -97,7 +97,6 @@ export class HttpService {
   }
 
   // get all products from db
-  // TODO: return type
   getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[] | []> {
     const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
     let products$: Observable<any>;

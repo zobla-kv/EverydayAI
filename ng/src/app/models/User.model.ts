@@ -41,7 +41,6 @@ export interface PaymentObject {
   user: {
     id: string;
     email: string;
-    // TODO: !important update to string once product id is a string in db
     shopping_cart_items: { id: string, title: string }[],
     stripeId: string | null,
     card: PaymentCard;
