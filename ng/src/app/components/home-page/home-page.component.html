@@ -59,7 +59,7 @@
           <img 
             src="../../../assets/images/transparent/landing-page-image-dog.png" 
             alt="landing image" 
-            class="img-fluid"
+            class="img-fluid pe-none"
             appear 
             [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
             [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
@@ -83,15 +83,13 @@
   <h2 class="section-header mb-3">
     What is <span class="orange-text">House of dogs</span>?
   </h2>
-  <div class="container-fluid caring-professionals">
-    <div class="row justify-content-around">
+  <div class="container-fluid ai-dog-landing">
+    <div class="row">
       <div class="col-img">
-        <img src="../../../assets/images/img/caring-profesionals.jpg" class="big">
+        <img src="../../../assets/images/img/ai-dog-landing.png">
       </div>
       <div class="col-text">
         <h1>
-          Very caring 
-          <br> 
           <span
             appear 
             [hide]="{'color': 'white'}"
@@ -99,8 +97,9 @@
             [duration]="500"
             [rootMargin]="'-120px'"
           >
-            professionals
+            AI
           </span>
+          <span>as art</span>
         </h1>
         <p
           appear 
@@ -108,10 +107,7 @@
           [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
           [duration]="500"
         >
-          With deep level of compassion and empathy towards 
-          the dogs, we will go above and beyond to ensure that they  
-          feel loved, understood, and supported. 
-          Only this way they can respond with kindness, loyality and love.
+          Embrace the future while witnessing the evolution of AI generated art.
         </p>
       </div>
     </div>
@@ -236,12 +232,12 @@
           >
             <div class="icon-area">
               <div class="glow-wrapper"></div>
-              <mat-icon svgIcon="courage" class="courage"></mat-icon>
+              <mat-icon svgIcon="art" class="art"></mat-icon>
             </div>
             <div class="content">
               <!-- <div class="title">Open minded</div> -->
-              <div class="title">Courageous</div>
-              <div class="text">Only those who will risk going too far can possibly find out how far one can go.</div>
+              <div class="title">Art lover</div>
+              <div class="text">You love seeing a quality art.</div>
             </div>
           </li>
           <li
@@ -254,13 +250,11 @@
           >
             <div class="icon-area">
               <div class="glow-wrapper"></div>
-              <mat-icon svgIcon="open-mind" class="open-mind"></mat-icon>
+              <mat-icon svgIcon="graphic-designer" class="graphic-designer"></mat-icon>
             </div>
             <div class="content">
-              <!-- <div class="title">Growth oriented</div> -->
-              <!-- <div class="title">Your glass is half full</div> -->
-              <div class="title">Open minded</div>
-              <div class="text">Don't go through life, grow through life.</div>
+              <div class="title">Graphic creator</div>
+              <div class="text">You enjoy creating amazing art that inspires others.</div>
             </div>
           </li>
         </ol>

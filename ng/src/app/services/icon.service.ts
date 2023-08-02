@@ -21,6 +21,9 @@ export class IconService {
     { name: 'cart-add' },
     { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
+    { name: 'art' },
+    { name: 'graphic-designer' },
+    // unused 2 below
     { name: 'courage' },
     { name: 'open-mind' },
     { name: 'visa' },
