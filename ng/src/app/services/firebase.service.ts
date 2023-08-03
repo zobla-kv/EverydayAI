@@ -237,8 +237,10 @@ export class FirebaseService {
     return this._db.collection('Products').doc(data.id).ref.update({
       price: Number(data.price).toFixed(2),
       discount: data.discount,
-      tier: data.tier,
-      likes: data.likes
+      likes: data.likes,
+      metadata: {
+        tier: data.tier,
+      },
     })
   }
 
