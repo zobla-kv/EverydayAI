@@ -1,7 +1,8 @@
 const multer = require('multer');
 const fs = require('fs');
+const path = require('path');
 
-const folder = './private/productImages/';
+const folder = path.join(__dirname, '..', 'private/productImages/');
 
 const storage = multer.diskStorage(
   {
@@ -14,7 +15,7 @@ const storage = multer.diskStorage(
 const upload = multer({ storage }).single('image');
 
 // NOTE: cause error
-// const upload = multer({ storage, limits: { fileSize: 1} }).single('image');
+// const upload = multer({ storage, limits: { fileSize: 1 } }).single('image');
 
 function createDirectory() {
   try {

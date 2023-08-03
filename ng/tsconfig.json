@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "outDir": "../express/public/dist/out-tsc",
     "paths": {
+      "@app/environment": ["./src/environments/environment.ts"],
       "@app/components": ["./src/app/components/index.ts"],
       "@app/directives": ["./src/app/directives/index.ts"],
       "@app/services": ["./src/app/services/index.ts"],

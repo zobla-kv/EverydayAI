@@ -28,6 +28,8 @@ import {
 export class CPanelComponent implements OnInit, AfterViewInit {
 
   // TODO: payment, update landing page, deploy!
+  // TODO: stopped here, test functionality after split db and deploy (tried once)
+  // TODO: products page price somewhere 100.00 somewhere 80, needs to be same on product page, shopping cart and cp
   // TODO: update tier icons, update email text
   // TODO: delete product delete image from BE
   // TODO: sort product and cpanel list by creation date
@@ -174,12 +176,15 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this.fullProductList = data;
       this.paginator.length = this.fullProductList.length;
       // NOTE: this needs to be done only once
-      this.metadataIconMap = ProductMapper.getMetadataIconMap(
-        ['tier', 'resolution', 'extension', 'downloadSize'],
-        this.fullProductList[0].metadata
-      );
       this.updatePaginatedList();
       this.showSpinner = false;
+      
+      if (this.fullProductList.length > 0) {
+        this.metadataIconMap = ProductMapper.getMetadataIconMap(
+          ['tier', 'resolution', 'extension', 'downloadSize'],
+          this.fullProductList[0].metadata
+        );
+      }
     });
   }
 

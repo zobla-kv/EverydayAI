@@ -2,7 +2,7 @@
   <h2 class="product-list-header">
     {{ config.title }}
   </h2>
-  <div class="product-list-container container overflow-y-hidden">
+  <div class="product-list-container container">
     <mat-spinner *ngIf="showSpinner" diameter="200" strokeWidth="15"></mat-spinner>
     <!-- TODO: split between tabs -->
     <div *ngIf="fullProductList.length === 0 && !showSpinner" class="text-center">No items.</div>

@@ -6,7 +6,7 @@
 .product-page-wrapper {
   margin-top: 25px;
   & > .container { max-width: 1000px; }
-  hr { width: 80%; margin: 1rem auto 0 auto; }
+  hr { width: 93%; margin: 1rem auto 0 auto; }
 
   .mat-mdc-tab-group {
     .mat-icon[icon="download"] {
@@ -18,7 +18,6 @@
 /* MEDIA QUERIES */
 // bigger than 1200px
 @media only screen and (max-width: 1200px) {
-  .product-page-wrapper hr { width: 90% }
 }
 // smaller than 992px
 @media only screen and (max-width: 992px) {

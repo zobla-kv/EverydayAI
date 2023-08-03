@@ -1,12 +1,13 @@
 // app
-
 // NOTE: doesn't work with https in production, why?
 // const https = require('https');
 const http = require('http');
 const path = require('path');
 const express = require('express');
 const app = express();
-require('dotenv').config();
+require('dotenv').config({
+  path: path.resolve(__dirname, `environments/${process.env.ENV}.env`)
+});
 
 // create directory for product images
 const uploadFileService = require('./services/uploadFileService');

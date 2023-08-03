@@ -58,7 +58,6 @@ router.get('/product-image/:name', async (req, res) => {
 // push notifications from firebase
 router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const signature = req.headers['stripe-signature'];
-  console.log('signature: ', signature);
 
   let event;
 

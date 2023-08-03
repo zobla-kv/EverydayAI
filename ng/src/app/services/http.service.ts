@@ -1,8 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
-import { SafeUrl } from '@angular/platform-browser';
 
-import { Observable, Subscription, catchError, concatMap, first, map, of, tap } from 'rxjs';
+import { environment } from '@app/environment';
+
+import { Observable, catchError, concatMap, first, map, of } from 'rxjs';
 
 import { 
   FirebaseService, UtilService 
@@ -31,8 +32,7 @@ export class HttpService {
   sendEmail(body: Email): Promise<boolean> {
     return new Promise((resolve) => {
       this._http
-      // PRODUCTION:
-      .post<any>('http://localhost:3000/api/send-email', body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>(`${environment.API_HOST}/api/send-email`, body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -45,8 +45,7 @@ export class HttpService {
   getPrivateKey(): Promise<string> {
     return new Promise((resolve, reject) => {
       this._http
-      // PRODUCTION:
-      .get<any>('http://localhost:3000/api/crypto', { headers: { 'Content-type': 'application/json' } })
+      .get<any>(`${environment.API_HOST}/api/crypto`, { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
         catchError(async () => reject(''))
@@ -60,8 +59,7 @@ export class HttpService {
     return new Promise((resolve, reject) => {
       this._http
       .post<any>(
-        // PRODUCTION:
-        'http://localhost:3000/api/stripe-create-payment-intent',
+        `${environment.API_HOST}/api/stripe-create-payment-intent`,
         data,
         { headers: { 'Content-type': 'application/json'} },
       )
@@ -78,7 +76,7 @@ export class HttpService {
   uploadFile(file: FormData): Promise<void> {
     return new Promise((resolve, reject) => {
       this._http
-      .post<any>('http://localhost:3000/api/upload-file', file)
+      .post<any>(`${environment.API_HOST}/api/upload-file`, file)
       .pipe(
         // NOTE: consider adding first() everywhere
         first(),
@@ -153,7 +151,10 @@ export class HttpService {
     })
     return this._http
     .get<any>(
-      `http://localhost:3000/api/product-images/`,
+      // TODO: still gets all product images if user already has them
+      // this is then filtered in component
+      // increase speed by reducing images requested
+      `${environment.API_HOST}/api/product-images`,
       { 
         responseType: 'json',
         params
@@ -168,7 +169,7 @@ export class HttpService {
   getProductImage(fileName: string): Observable<string | null> {
     return this._http
     .get<any>(
-      `http://localhost:3000/api/product-image/${fileName}`,
+      `${environment.API_HOST}/api/product-image/${fileName}`,
       // {
       //   headers: { 'Content-Type': 'image' },
       //   responseType: 'blob' as 'json'

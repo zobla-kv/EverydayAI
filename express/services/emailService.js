@@ -47,7 +47,7 @@ module.exports.sendEmail = async function (email, type) {
   ` 
     <div style="${styles.outterWrapper}">
       <div style="${styles.innerWrapper}">
-        <a href="${appConstants.APP_URL}" style="${styles.logoWrapper}">
+        <a href="${process.env.HOST_URL}" style="${styles.logoWrapper}">
           <img src="cid:logo" style="${styles.logo}">
         </a>
         <h2 style="${styles.text}">
@@ -77,7 +77,6 @@ module.exports.sendEmail = async function (email, type) {
   });
 
   let isSent = false;
-  console.log('sending email...')
   await transporter.sendMail({
     from: '"House of dogs" <houseofdogs.online@gmail.com>',
     to: email,

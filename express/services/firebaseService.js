@@ -1,12 +1,12 @@
-const { appConstants, labels } = require('../constants');
 const admin = require('firebase-admin');
+const { labels } = require('../constants');
 const { Decimal } = require('decimal.js');
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    project_id: process.env.PROJECT_ID,
-    private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-    client_email: process.env.CLIENT_EMAIL
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    client_email: process.env.FIREBASE_CLIENT_EMAIL
   })
 });
 
@@ -17,7 +17,7 @@ const { FieldValue } = require('firebase-admin/firestore')
 // must pass something but is overriden later
 // can stay for prod
 const actionCodeSettings = {
-  url: appConstants.APP_URL
+  url: process.env.HOST_URL
 };
 
 async function generateEmailLink(email, type) {

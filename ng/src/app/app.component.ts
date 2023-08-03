@@ -5,6 +5,8 @@ import { animate, group, query, state, style, transition, trigger, AnimationEven
 
 import { first } from 'rxjs';
 
+import { environment } from '@app/environment';
+
 import {
   IconService,
   AuthService,
@@ -60,6 +62,9 @@ export class AppComponent {
     private _firebaseService: FirebaseService,
     private _location: Location
   ) {    
+
+    console.log('environment: ', environment);
+    console.log('api-url: ', environment.API_HOST);
     // custom user set
     // for now this is only deteremining factor for app load
     this._authService.userState$.pipe(first()).subscribe(user => {
