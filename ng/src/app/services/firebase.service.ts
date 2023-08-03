@@ -238,9 +238,7 @@ export class FirebaseService {
       price: Number(data.price).toFixed(2),
       discount: data.discount,
       likes: data.likes,
-      metadata: {
-        tier: data.tier,
-      },
+      'metadata.tier': data.tier
     })
   }
 
