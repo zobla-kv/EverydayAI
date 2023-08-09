@@ -5,9 +5,13 @@ const http = require('http');
 const path = require('path');
 const express = require('express');
 const app = express();
-require('dotenv').config({
-  path: path.resolve(__dirname, `environments/${process.env.ENV}.env`)
-});
+
+require('dotenv').config();
+
+// comment out for onrender prod
+// require('dotenv').config({
+//   path: path.resolve(__dirname, `environments/${process.env.ENV}.env`)
+// });
 
 // create directory for product images
 const uploadFileService = require('./services/uploadFileService');
@@ -30,6 +34,7 @@ app.use('/api', cors, express.json(), routes);
 
 // '*' for angular routing to work
 app.get('*', (req, res) => {
+  console.log('got request')
   res.sendFile(path.join(currentDir, 'public', 'index.html'));
 })
 
