@@ -6,11 +6,11 @@
         "node": "18.12.1"
     },
     "scripts": {
-        "ng": "ng",
-        "start": "npm run build",
-        "build": "cd ng && ng build && node ../scripts/postBuild.js",
+        "start": "npm run build:dev",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
+        "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
+        "build:prod": "npm install && cd ng && ng build --prod --output-hashing none && node ../scripts/postBuild.js",
         "express:dev": "set ENV=development&& npx nodemon express/app.js",
         "express:prod": "set ENV=production&& node express/app.js"
     },

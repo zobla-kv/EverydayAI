@@ -63,6 +63,7 @@ export class AppComponent {
     private _location: Location
   ) {    
 
+    console.log('test for new build')
     console.log('environment: ', environment);
     console.log('api-url: ', environment.API_HOST);
     // custom user set
