@@ -10,7 +10,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
-        "build:prod": "npm install && cd ng && ng build --prod --output-hashing none && node ../scripts/postBuild.js",
+        "build:prod": "cd ng && ng build --prod --output-hashing none && node ../scripts/postBuild.js",
         "express:dev": "set ENV=development&& npx nodemon express/app.js",
         "express:prod": "set ENV=production&& node express/app.js"
     },
