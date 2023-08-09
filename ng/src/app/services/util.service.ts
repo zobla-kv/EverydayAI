@@ -194,10 +194,10 @@ export class UtilService {
   * @param product - ProductResponse 
   * @returns Decimal - use decimal because of precision loss
   */
-  getProductPrice(product: ProductResponse): Decimal {
+  getProductPrice(product: ProductResponse): string {
     const priceAsNumber = Number(product.price);
     const price = product.discount > 0 ? (priceAsNumber  * (100 - product.discount) / 100) : priceAsNumber;
-    const decimalPrice = new Decimal(price);
+    const decimalPrice = new Decimal(price).toFixed(2);
     return decimalPrice;
   }
 

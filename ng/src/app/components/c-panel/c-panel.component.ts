@@ -29,7 +29,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // TODO: payment, update landing page, deploy!
   // TODO: stopped here, test functionality after split db and deploy (tried once)
-  // TODO: products page price somewhere 100.00 somewhere 80, needs to be same on product page, shopping cart and cp
+  
   // TODO: update tier icons, update email text
   // TODO: delete product delete image from BE
   // TODO: sort product and cpanel list by creation date
