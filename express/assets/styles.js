@@ -1,3 +1,10 @@
+const bodyText = `
+  margin: auto;
+  font-size: 12px;
+  display: block;
+  width: 60%;
+`
+
 const outterWrapper = `
   background-color: #F47650;
   border-radius: 50%;
@@ -66,6 +73,7 @@ const instagramLogo = `
 `
 
 module.exports = {
+  bodyText,
   outterWrapper,
   innerWrapper,
   logoWrapper,

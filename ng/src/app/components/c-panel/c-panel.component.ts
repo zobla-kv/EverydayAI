@@ -30,12 +30,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: payment, update landing page, deploy!
   // TODO: stopped here, test functionality after split db and deploy (tried once)
   
-  // TODO: update tier icons, update email text
   // TODO: delete product delete image from BE
   // TODO: sort product and cpanel list by creation date
   
-  // TODO: cpanel premium displayed as classic
-  // TODO: isInCart bug?
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: Some stats above table (leave for later?)
 
@@ -180,6 +177,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this.showSpinner = false;
       
       if (this.fullProductList.length > 0) {
+        // TODO: this causes bug with premium displayed as classic
         this.metadataIconMap = ProductMapper.getMetadataIconMap(
           ['tier', 'resolution', 'extension', 'downloadSize'],
           this.fullProductList[0].metadata

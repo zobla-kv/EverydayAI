@@ -55,7 +55,12 @@
         <th mat-header-cell *matHeaderCellDef>Metadata</th>
         <td mat-cell *matCellDef="let product">
           <div *ngFor="let metadataIcon of metadataIconMap | keyvalue: keepOrder">
-            <mat-icon [svgIcon]="metadataIcon.value.type === 'custom' ? metadataIcon.value.iconName : ''">
+            <!-- NOTE: quick fix for classic icon displayed as premium, can be fixed better in ts -->
+            <mat-icon *ngIf="product.metadata[metadataIcon.key] === 'premium'" [svgIcon]="'tier-premium'"></mat-icon>
+            <mat-icon 
+              *ngIf="product.metadata[metadataIcon.key] !== 'premium'"
+              [svgIcon]="metadataIcon.value.type === 'custom' ? metadataIcon.value.iconName : ''"
+            >
               {{ metadataIcon.value.type === 'custom' ? '' : metadataIcon.value.iconName  }}
             </mat-icon>
             {{ product.metadata[metadataIcon.key] }}

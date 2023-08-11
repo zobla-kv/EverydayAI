@@ -34,7 +34,7 @@ module.exports.sendEmail = async function (email, type) {
   // capitalize first letter
   const subject = `${type[0].toUpperCase() + type.slice(1)} 🐕`;
 
-  const content = getContent(type);
+  const content = getContent(email, type);
 
   // prevent gmail from trimming content
   const random = Date.now();
@@ -45,17 +45,21 @@ module.exports.sendEmail = async function (email, type) {
   // BUG: doesn't look good in ct email, try using inline styles
   const message =
   ` 
+    <div style="text-align:center">
+      <h2>${content.text.header}</h2>
+      <span style="${styles.bodyText}">${content.text.body}</span>
+    </div>
     <div style="${styles.outterWrapper}">
       <div style="${styles.innerWrapper}">
         <a href="${process.env.HOST_URL}" style="${styles.logoWrapper}">
           <img src="cid:logo" style="${styles.logo}">
         </a>
         <h2 style="${styles.text}">
-          ${content.emailText}
+          ${content.logo.text}
         </h2>
         <br>
         <a href="${modifiedUrl}" style="${styles.button}">
-          ${content.buttonText}
+          ${content.logo.buttonText}
         </a>
       </div>
       <span style="${styles.followUs}">Follow us on</span>
@@ -101,16 +105,29 @@ module.exports.sendEmail = async function (email, type) {
   return isSent;
 };
 
-// returns email content based on type
-function getContent(type) {
-  const content = { emailText: '', buttonText: '' };
+function getContent(email, type) {
+  const content = {
+    text: { header: '', body: '' },
+    logo: { text:   '', buttonText: ''}
+  }
   if (type === labels.ACTIVATION) {
-    content.emailText = labels.VERIFY_EMAIL_TEXT;
-    content.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
+    content.text.header =  `Welcome to House of dogs, ${email.split('@')[0]}.`;
+    content.text.body = `Thanks for becoming a part of the House of dogs community. 
+    Let’s embrace the future together where humans and AI join forces to create amazing visual experience, 
+    we hope you will utilize House of dogs to give your brand a new lease on life.
+    <br>
+    If you did not request this email. Please ignore it.`
+    content.logo.text = labels.VERIFY_EMAIL_TEXT;
+    content.logo.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
   }
   if (type === labels.RESET_PASSWORD) {
-    content.emailText = labels.RESET_PASSWORD_EMAIL_TEXT;
-    content.buttonText = labels.RESET_PASSWORD_EMAIL_BUTTON_TEXT;
+    content.text.header =  `Hello ${email.split('@')[0]}. Let us help get back your account.`;
+    content.text.body = `You requested password reset. Click button below and follow instructions.
+    You will have your account back in no time.
+    <br>
+    If you did not request this email. Please ignore it.`
+    content.logo.text = labels.RESET_PASSWORD_EMAIL_TEXT;
+    content.logo.buttonText = labels.RESET_PASSWORD_EMAIL_BUTTON_TEXT;
   }
   return content;
 }
