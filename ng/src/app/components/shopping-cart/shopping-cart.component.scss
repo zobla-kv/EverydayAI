@@ -7,9 +7,9 @@
     min-height: 600px;
     background-color: $main-orange-bg-color;
 
-    mat-spinner { top: 180px; }
-
+    
     .cart-items-column-wrapper {
+      mat-spinner { top: 180px; }
       .mat-mdc-paginator {
         color: white;
         font-weight: 500;

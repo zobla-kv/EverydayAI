@@ -62,7 +62,20 @@ async function getPrice(items) {
 // update user in db with info about the payment
 // TODO: !important what if write is failed but payment succeeds
 async function addPaymentToUser(user, paymentIntent) {
-  return db.collection('Users').doc(user.id).update({
+  // read first to store later updated object
+  const ownedItemsTimeMap = (await db.collection('Users').doc(user.id).get()).get('ownedItemsTimeMap');
+  const newItems = user.shopping_cart_items.map(item => item.id);
+  // combine ownedItemsTimeMap object and newItems array into single object
+  const updated = newItems.reduce(
+    (prev, curr) => {
+        return {
+            ...prev,
+            [curr]: new Date()
+        };
+    },
+    ownedItemsTimeMap
+  );
+  await db.collection('Users').doc(user.id).update({
     'stripe.id': paymentIntent.customer,
     'stripe.payments': FieldValue.arrayUnion({
       id: paymentIntent.id,
@@ -71,11 +84,8 @@ async function addPaymentToUser(user, paymentIntent) {
     }),
     'cart.items': [],
     'cart.totalSum': 0,
-    'ownedItems': FieldValue.arrayUnion(...user.shopping_cart_items.map(item => item.id))
-  })
-  .catch (err => {
-    console.log('error writing: ', err);
-    return err;
+    'ownedItems': FieldValue.arrayUnion(...user.shopping_cart_items.map(item => item.id)),
+    'ownedItemsTimeMap': updated
   })
 } 
 

@@ -9,7 +9,8 @@ import {
   ProductMapper,
   ProductTypePrint,
   ProductResponse,
-  ProductListConfig
+  ProductListConfig,
+  ProductType
 } from '@app/models';
 
 import {
@@ -73,7 +74,7 @@ export class ProductListComponent implements OnInit {
   // fetch products from BE
   fetchProducts(productType: any, user: CustomUser | null): void {
     this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
-      this.fullProductList = products;
+      this.fullProductList = this.sortList(products);
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
       this.updatePage();
@@ -84,6 +85,19 @@ export class ProductListComponent implements OnInit {
   handleImageLoaded() {
     if (++this.numOfloadedImages === this.paginatedList.length) {
       this.showSpinner = false;
+    }
+  }
+
+  // sort list based on type
+  sortList(products: ProductResponse[]): ProductResponse[] {
+    const listType = this.config.product.type;
+    switch(listType) {
+      case ProductType.PRINTS.SHOP:
+        return this._utilService.sortByCreationDate(products);
+      case ProductType.PRINTS.OWNED_ITEMS:
+        return this._utilService.sortByOwnedSince(products, this.user);
+      default:
+        return products;
     }
   }
 

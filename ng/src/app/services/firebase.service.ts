@@ -182,11 +182,12 @@ export class FirebaseService {
     const { password, ...customUser } = { 
       ...user,
       role: 'basic',
-      cart: { items: [], totalSum: 0 },
+      cart: { items: [], totalSum: '0.00' },
       registrationDate: new Date(), 
       lastActiveDate: new Date(),
       stripe: { id: null },
       ownedItems: [],
+      ownedItemsTimeMap: {},
       productLikes: []
     };
     
@@ -221,7 +222,10 @@ export class FirebaseService {
 
   // add new product to db
   async addProduct(data: ProductResponse): Promise<string> {
-    return this._db.collection('Products').add(data).then(response => response.id)
+    return this._db.collection('Products').add({
+      ...data,
+      creationDate: new Date()
+    }).then(response => response.id)
   }
 
   // update product with missing fields after creation
@@ -271,7 +275,7 @@ export class FirebaseService {
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayUnion(product),
-      'cart.totalSum': updatedSum.toString()
+      'cart.totalSum': updatedSum.toFixed(2)
     })
   }
 
@@ -282,7 +286,7 @@ export class FirebaseService {
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
       'cart.items': arrayRemove(product),
-      'cart.totalSum': updatedSum.toString()
+      'cart.totalSum': updatedSum.toFixed(2)
     })
   }
 

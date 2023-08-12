@@ -1,4 +1,6 @@
 // TODO: remove User class because it is unused
+import { Timestamp } from '@angular/fire/firestore';
+
 import { 
   ProductResponse
 } from '@app/models';
@@ -23,6 +25,8 @@ export interface CustomUser {
   lastActiveDate: Date;
   stripe: UserStripeData;
   ownedItems: string[];
+  // for firebase query limitations (map id -> ownedSince)
+  ownedItemsTimeMap: { [id: string]: Timestamp };
   productLikes: string[];
 }
 

@@ -1,5 +1,6 @@
 
 import { CustomUser } from "./User.model";
+import { Timestamp } from '@angular/fire/firestore';
 
 export interface ProductResponse {
   id: string;
@@ -12,6 +13,7 @@ export interface ProductResponse {
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   // set in http request
   imgPath: string;
+  creationDate: Timestamp;
 }
 
 export interface ProductTypePrint extends ProductResponse {
@@ -117,6 +119,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   // TODO: type
   likes: number;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
+  creationDate: Timestamp;
   // FE properties that are added
   spinners: any;
   isInCart: boolean;
@@ -132,6 +135,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.imgAlt = product.imgAlt;
     this.likes = product.likes; 
     this.metadata = product.metadata;
+    this.creationDate = product.creationDate;
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = ProductMapper._isInCart(product, config, user);

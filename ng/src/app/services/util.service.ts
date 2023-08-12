@@ -8,6 +8,7 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { Decimal } from 'decimal.js';
 
 import {
+  CustomUser,
   ProductResponse,
   ToastConstants
 } from '@app/models';
@@ -297,6 +298,43 @@ export class UtilService {
       default:
         throw new Error('no such extension: ' + extension);
     }
+  }
+
+/**
+  * Sort objects by creation date descending
+  *
+  * @param products - ProductResponse[]
+  * @return products - sorted ProductResponse[]
+  */
+  sortByCreationDate(products: ProductResponse[]): ProductResponse[] {
+    return products.sort((a,b) => {
+      if (a.creationDate.toDate().getTime() - b.creationDate.toDate().getTime() < 0) {
+        return 1;
+      } else if (a.creationDate.toDate().getTime() - b.creationDate.toDate().getTime() > 0) {
+        return -1;
+      } 
+      return 0;
+    });
+  }
+
+/**
+  * Sort objects by owned since descending
+  *
+  * @param products - ProductResponse[]
+  * @return products - sorted ProductResponse[]
+  */
+  sortByOwnedSince(products: ProductResponse[], user: CustomUser | null): ProductResponse[] {
+    if (!user) {
+      return products;
+    }
+    return products.sort((a,b) => {
+      if (user.ownedItemsTimeMap[a.id].toDate().getTime() - user.ownedItemsTimeMap[b.id].toDate().getTime() < 0) {
+        return 1;
+      } else if (user.ownedItemsTimeMap[a.id].toDate().getTime() - user.ownedItemsTimeMap[b.id].toDate().getTime() > 0) {
+        return -1;
+      } 
+      return 0;
+    });
   }
 
 }

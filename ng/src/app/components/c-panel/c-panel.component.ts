@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { debounceTime, distinctUntilChanged, filter, first, fromEvent, tap } from 'rxjs';
 
+import { Timestamp } from '@angular/fire/firestore';
+
 import { 
   FirebaseService,
   HttpService,
@@ -31,7 +33,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: stopped here, test functionality after split db and deploy (tried once)
   
   // TODO: delete product delete image from BE
-  // TODO: sort product and cpanel list by creation date
   
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: Some stats above table (leave for later?)
@@ -170,7 +171,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   fetchProducts() {
     this._httpService.getProducts(ProductType.ALL, null).pipe(first()).subscribe((data: any) => {
-      this.fullProductList = data;
+      this.fullProductList = this.utilService.sortByCreationDate(data);
       this.paginator.length = this.fullProductList.length;
       // NOTE: this needs to be done only once
       this.updatePaginatedList();
@@ -189,7 +190,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // update list
   updateProductList() {
     this._httpService.getProducts(ProductType.ALL, null).pipe(first()).subscribe(data => {
-      this.fullProductList = data;
+      this.fullProductList = this.utilService.sortByCreationDate(data);
       this.paginator.length = this.fullProductList.length;
       this.updatePaginatedList();
     });
@@ -206,7 +207,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this.paginator.pageIndex * this.pageSize,
       (this.paginator.pageIndex + 1) * this.pageSize - 1
     );
-  } 
+  }
 
   openModal(id: string) {
     this._modalService.open(id);
