@@ -90,41 +90,6 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     });  
   }
 
-  handleDownload() {
-    if (!this.user) {
-      this._router.navigate(['auth', 'login']);
-      return;
-    }
-
-    if (!this.product.imgPath.includes('assets')) {
-      // for non 404 images
-      this.triggerDownload(this.product.imgPath);
-      return;
-    }
-
-    this._httpService.getProductImage(this.product.fileName)
-    .pipe(first())
-    .subscribe(path => {
-      if (!path) {
-        this._toast.showDefaultError();
-        return;
-      } else {
-        this.triggerDownload(path);
-      }
-    })
-  }
-
-  // trigger download
-  triggerDownload(url: string): void {
-    const fileName = this.product.title + '.' + this.utilService.getFileExtension(this.product.fileName);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-
   ngAfterViewInit() {
     this.likesTooltip && (this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes));
   }
@@ -218,6 +183,40 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // handle download
+  handleDownload() {
+    if (!this.user) {
+      this._router.navigate(['auth', 'login']);
+      return;
+    }
+
+    if (!this.product.imgPath.includes('assets')) {
+      // for non 404 images
+      this.triggerDownload(this.product.imgPath);
+      return;
+    }
+
+    this._httpService.getProductImage(this.product.fileName)
+    .pipe(first())
+    .subscribe(path => {
+      if (!path) {
+        this._toast.showDefaultError();
+        return;
+      } else {
+        this.triggerDownload(path);
+      }
+    })
+  }
+
+  // trigger download
+  triggerDownload(url: string): void {
+    const fileName = this.product.title + '.' + this.utilService.getFileExtension(this.product.fileName);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 
   ngOnDestroy(): void {
     this.userStateSub$.unsubscribe();

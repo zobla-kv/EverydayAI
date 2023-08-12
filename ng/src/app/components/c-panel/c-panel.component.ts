@@ -33,6 +33,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: stopped here, test functionality after split db and deploy (tried once)
   
   // TODO: delete product delete image from BE
+  // TODO: prevent delete of owned items
+
+  // TODO: .toDate() of undefined on prod, check this later
   
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: Some stats above table (leave for later?)

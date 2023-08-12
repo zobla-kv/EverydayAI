@@ -80,7 +80,8 @@ async function addPaymentToUser(user, paymentIntent) {
     'stripe.payments': FieldValue.arrayUnion({
       id: paymentIntent.id,
       items: user.shopping_cart_items,
-      amount: '$' + await getPrice(user.shopping_cart_items) / 100 // to get real price
+      amount: '$' + await getPrice(user.shopping_cart_items) / 100, // to get real price
+      date: new Date()
     }),
     'cart.items': [],
     'cart.totalSum': 0,

@@ -74,7 +74,7 @@ export class ProductListComponent implements OnInit {
   // fetch products from BE
   fetchProducts(productType: any, user: CustomUser | null): void {
     this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
-      this.fullProductList = this.sortList(products);
+      this.fullProductList = this.sortList(this.remove404Products(products));
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
       this.updatePage();
@@ -96,6 +96,21 @@ export class ProductListComponent implements OnInit {
         return this._utilService.sortByCreationDate(products);
       case ProductType.PRINTS.OWNED_ITEMS:
         return this._utilService.sortByOwnedSince(products, this.user);
+      default:
+        return products;
+    }
+  }
+
+  // remove products which image failes to load
+  remove404Products(products: ProductResponse[]): ProductResponse[] {
+    const listType = this.config.product.type;
+    console.log('404 products: ', products);
+    switch(listType) {
+      case ProductType.PRINTS.SHOP:
+        return products.filter(product => !product.imgPath.includes('assets'));
+      case ProductType.PRINTS.OWNED_ITEMS:
+        // display 404 on owned items
+        return products;
       default:
         return products;
     }
