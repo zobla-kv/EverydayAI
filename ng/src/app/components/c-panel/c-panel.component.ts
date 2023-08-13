@@ -2,9 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { debounceTime, distinctUntilChanged, filter, first, fromEvent, tap } from 'rxjs';
-
-import { Timestamp } from '@angular/fire/firestore';
+import { catchError, debounceTime, distinctUntilChanged, filter, first, fromEvent, map, tap } from 'rxjs';
 
 import { 
   FirebaseService,
@@ -32,9 +30,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: payment, update landing page, deploy!
   // TODO: stopped here, test functionality after split db and deploy (tried once)
   
-  // TODO: delete product delete image from BE
   // TODO: prevent delete of owned items
-
   // TODO: .toDate() of undefined on prod, check this later
   
   // TODO: remove 404 images from product list on product page (leave for later?)
@@ -318,20 +314,19 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   // delete product
-  // TODO: delete image from BE
   // NOTE: this will also delete it from those who have bought it, figure out how to remove it from shop only
-  handleDeleteProduct() {
+  async handleDeleteProduct() {
+    const target = this.fullProductList.find(item => item.id === this.productId) as ProductResponse;
+    // remove from db
     this._firebaseService.removeProduct(this.productId)
-    .then(() => {
+    .then(res => {
+      // remove image from server, catch will not catch this but don't care
+      this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
       this.updateProductList();
       this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
     })
-    .catch(err => {
-      this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
-    })
-    .finally(() => {
-      this._modalService.actionComplete$.next(true);
-    });
+    .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
+    .finally(() => this._modalService.actionComplete$.next(true))
   }
 
 

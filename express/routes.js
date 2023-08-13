@@ -38,10 +38,9 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
 router.post('/upload-file', (req, res) => {
   uploadService.upload(req, res, (err) => {
     if (err) {
-      return res.sendStatus(500);
+      return res.status(500).json(false);
     }
-    // NOTE: not working with 200
-    res.sendStatus(220);
+    res.status(200).json(true);
   })
 })
 
@@ -53,6 +52,11 @@ router.get('/product-images', async (req, res) => {
 router.get('/product-image/:name', async (req, res) => {
   const image = await fileSystemService.getImage(req.params.name);
   res.status(200).json(image);
+})
+
+router.delete('/delete-image/:name', async (req, res) => {
+  await fileSystemService.deleteImage(req.params.name);
+  res.status(200).json();
 })
 
 // push notifications from firebase

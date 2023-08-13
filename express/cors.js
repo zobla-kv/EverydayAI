@@ -3,7 +3,7 @@ module.exports = function cors(req, res, next) {
   if (origin && origin.includes(process.env.HOST_URL)) {
     res.set('Access-Control-Allow-Origin', origin);
     res.set('Access-Control-Allow-Headers', 'Content-type');
-    res.set('Access-Control-Allow-Methods', 'GET, POST');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   }
   next();
 };

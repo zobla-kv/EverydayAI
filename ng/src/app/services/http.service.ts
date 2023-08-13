@@ -80,8 +80,8 @@ export class HttpService {
       .pipe(
         // NOTE: consider adding first() everywhere
         first(),
-        map(status => {
-          if (status === 220) {
+        map(isUploaded => {
+          if (isUploaded) {
             resolve();
           } else {
             reject('File not uploaded');
@@ -185,6 +185,11 @@ export class HttpService {
       }),
       catchError(async err => null)
     )
+  }
+
+  // delete item
+  deleteItem(fileName: string): Observable<string | null> {
+    return this._http.delete<any>(`${environment.API_HOST}/api/delete-image/${fileName}`);
   }
 
   // bypass circular dependency using injector

@@ -4,6 +4,8 @@ const uploadService = require('./uploadFileService');
 // NOTE: this is relative route (update if changed)
 const { folder } = uploadService;
 
+const { db } = require('./firebaseService');
+
 // get multiple images from fs as buffer
 async function getImages(fileNames) {
   const images = [];
@@ -31,7 +33,17 @@ async function getImage(fileName) {
   }
 }
 
+// delete image (delete file?)
+async function deleteImage(fileName) {
+  try {
+    fs.unlinkSync(folder + fileName);
+  } catch (err) {
+    db.collection('FailedImageDeletes').doc(fileName).set({ reason: err.message });
+  }
+}
+
 module.exports = {
   getImages,
-  getImage
+  getImage,
+  deleteImage
 }

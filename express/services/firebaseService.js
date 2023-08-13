@@ -90,7 +90,8 @@ async function addPaymentToUser(user, paymentIntent) {
   })
 } 
 
-module.exports = { 
+module.exports = {
+  db,
   generateEmailLink,
   getPrice,
   addPaymentToUser
