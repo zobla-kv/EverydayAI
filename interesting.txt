@@ -1,2 +1,6 @@
 1. Image flash on load/refresh is because image container does not have height set so it increases as image loads.
 This caused IntersectionObserver to detect that element is in view because of that split mili second.
+
+2. Store image on hosting and data in db
+
+3. NODE_ENV set to production in env variables on PC prevents installation of dev dependecies

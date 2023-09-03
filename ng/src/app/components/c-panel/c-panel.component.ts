@@ -4,20 +4,20 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { catchError, debounceTime, distinctUntilChanged, filter, first, fromEvent, map, tap } from 'rxjs';
 
-import { 
+import {
   FirebaseService,
   HttpService,
   ModalService,
   ToastService,
-  UtilService 
+  UtilService
 } from '@app/services';
 
-import { 
+import {
   MetadataIconMap,
   ProductMapper,
-  ProductResponse, 
-  ProductType, 
-  ToastConstants 
+  ProductResponse,
+  ProductType,
+  ToastConstants
 } from '@app/models';
 
 @Component({
@@ -27,12 +27,15 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
+  // TODO: AFTER VACATION: prevent delete of owned items (add .isActive field to each product)
+  // TODO: express environments gone after pc switch (find prod on hosting env)
+
   // TODO: payment, update landing page, deploy!
   // TODO: stopped here, test functionality after split db and deploy (tried once)
-  
+
   // TODO: prevent delete of owned items
   // TODO: .toDate() of undefined on prod, check this later
-  
+
   // TODO: remove 404 images from product list on product page (leave for later?)
   // TODO: Some stats above table (leave for later?)
 
@@ -41,7 +44,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // product load spinner
   showSpinner: boolean = true;
-  
+
   // full product list ref
   fullProductList: ProductResponse[];
 
@@ -79,9 +82,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
     this.formAddProduct = new FormGroup({
       'title': new FormControl(null, [
-        Validators.required, 
-        Validators.minLength(6), 
-        Validators.maxLength(16), 
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(16),
         // allow whitespaces between words but not on start and end
         Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),
@@ -101,17 +104,17 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required
       ]),
       'price': new FormControl(null, [
-        Validators.required, 
+        Validators.required,
         Validators.pattern('^[0-9.]*$')
       ]),
       'discount': new FormControl(0, [
-        Validators.required, 
-        Validators.min(0), 
-        Validators.max(100), 
+        Validators.required,
+        Validators.min(0),
+        Validators.max(100),
         Validators.pattern('^[a-zA-Z0-9]*$')
       ]),
       'likes': new FormControl(0, [
-        Validators.required, 
+        Validators.required,
         Validators.pattern('^[0-9]*$')
       ]),
     });
@@ -121,20 +124,20 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required
       ]),
       'price': new FormControl(null, [
-        Validators.required, 
+        Validators.required,
         Validators.pattern('^[0-9.]*$')
       ]),
       'discount': new FormControl(0, [
-        Validators.required, 
-        Validators.min(0), 
-        Validators.max(100), 
+        Validators.required,
+        Validators.min(0),
+        Validators.max(100),
         Validators.pattern('^[0-9]*$')
       ]),
       'tier': new FormControl(null, [
-        Validators.required, 
+        Validators.required,
       ]),
       'likes': new FormControl(0, [
-        Validators.required, 
+        Validators.required,
         Validators.pattern('^[0-9]*$')
       ]),
     })
@@ -157,8 +160,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
             })
             this.paginator.firstPage();
             this.paginatedList = this.utilService.getFromRange(
-              filteredList, 
-              this.paginator.pageIndex * this.pageSize, 
+              filteredList,
+              this.paginator.pageIndex * this.pageSize,
               this.pageSize - 1
             );
             this.paginator.length = filteredList.length;
@@ -175,7 +178,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // NOTE: this needs to be done only once
       this.updatePaginatedList();
       this.showSpinner = false;
-      
+
       if (this.fullProductList.length > 0) {
         // TODO: this causes bug with premium displayed as classic
         this.metadataIconMap = ProductMapper.getMetadataIconMap(
@@ -237,7 +240,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this._modalService.actionComplete$.next(false);
       return;
     }
-    
+
     // NOTE: must be before upload to server to get productId
     this._firebaseService.addProduct(this.getProductObject())
     .then(async productId => {
@@ -268,7 +271,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // clear fields and prepare for next 
+  // clear fields and prepare for next
   clearAddProductFormAfterSubmit() {
     this.formAddProduct.reset();
     this.formAddProduct.patchValue({  image: null     });
@@ -334,21 +337,21 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // TODO: move to BE
   getProductObject(): ProductResponse {
     const formData = this.formAddProduct.getRawValue();
-    
+
     const dataCopy = this.utilService.getDeepCopy(formData);
     delete dataCopy.image;
     delete dataCopy.fileExtension;
     delete dataCopy.fileResolution;
     delete dataCopy.fileSize;
 
-    const product: ProductResponse = { 
-      ...dataCopy, 
+    const product: ProductResponse = {
+      ...dataCopy,
       // set later
       id: '',
       fileName: '',
       // set in http service
       imgPath: '',
-      // 
+      //
       imgAlt: formData.title,
       price: Number(formData.price).toFixed(2),
       discount: Number(formData.discount),
