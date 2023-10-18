@@ -14,6 +14,10 @@ export class IconService {
 
   // name property needs to match file name
   Icons: { name: string }[] = [
+    { name: 'digital-product' },
+    { name: 'instagram' },
+    { name: 'dog-head'},
+    { name: 'networking'},
     { name: 'planet' },
     { name: 'book' },
     { name: 'dog-happy' },

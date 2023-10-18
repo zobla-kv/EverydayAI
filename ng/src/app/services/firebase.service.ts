@@ -26,7 +26,7 @@ import {
 
 import {
   AuthService,
-  HttpService, 
+  HttpService,
   UtilService
 } from '@app/services';
 
@@ -107,7 +107,7 @@ export class FirebaseService {
   }
 
   /**
-  * For dealing with firebase default behaviour of loggin in user automatically 
+  * For dealing with firebase default behaviour of loggin in user automatically
   * on register
   * on login with unverified email
   *
@@ -131,7 +131,7 @@ export class FirebaseService {
       return true;
     }
 
-    return false;   
+    return false;
   }
 
   // check if user exists and the send email
@@ -175,22 +175,22 @@ export class FirebaseService {
   async updateLastActiveTime(user: any): Promise<void> {
     this._db.collection('Users').doc(user.id).update({ lastActiveDate: new Date() });
   }
-  
+
   // return value whether it succeeded
   private async writeUserToDb(user: RegisterUser): Promise<boolean> {
     // desctucture user and omit password
-    const { password, ...customUser } = { 
+    const { password, ...customUser } = {
       ...user,
       role: 'basic',
       cart: { items: [], totalSum: '0.00' },
-      registrationDate: new Date(), 
+      registrationDate: new Date(),
       lastActiveDate: new Date(),
       stripe: { id: null },
       ownedItems: [],
       ownedItemsTimeMap: {},
       productLikes: []
     };
-    
+
     let successfulWrite = true;
     await this._db.collection('Users').doc(user.id).set(customUser)
     .catch(err => {
@@ -208,7 +208,12 @@ export class FirebaseService {
 
   // get all products
   getAllProducts(): Observable<ProductTypePrint[]> {
-    return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
+    return this._db.collection('Products/Prints/All').valueChanges() as Observable<ProductTypePrint[]>;
+  }
+
+  // get products by id
+  getProductsById(ids: String[]): Observable<ProductTypePrint[]> {
+    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // get products in cart
@@ -217,12 +222,12 @@ export class FirebaseService {
       return of([]);
     }
     const itemIds = user?.cart.items.map(item => item.id);
-    return this._db.collection('Products', query => query.where('id', 'in', itemIds)).valueChanges() as Observable<ProductTypePrint[]>;
+    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', itemIds)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // add new product to db
   async addProduct(data: ProductResponse): Promise<string> {
-    return this._db.collection('Products').add({
+    return this._db.collection('Products/Prints/All').add({
       ...data,
       creationDate: new Date()
     }).then(response => response.id)
@@ -230,7 +235,7 @@ export class FirebaseService {
 
   // update product with missing fields after creation
   async updateProductAfterAdd(productId: string, fileName: string): Promise<void> {
-    return this._db.collection('Products').doc(productId).ref.update({
+    return this._db.collection('Products/Prints/All').doc(productId).ref.update({
       id: productId,
       fileName
     })
@@ -238,7 +243,7 @@ export class FirebaseService {
 
   // update product
   async updateProduct(data: any): Promise<void> {
-    return this._db.collection('Products').doc(data.id).ref.update({
+    return this._db.collection('Products/Prints/All').doc(data.id).ref.update({
       price: Number(data.price).toFixed(2),
       discount: data.discount,
       likes: data.likes,
@@ -248,7 +253,7 @@ export class FirebaseService {
 
   // delete product from db
   removeProduct(productId: string): Promise<void> {
-    return this._db.collection('Products').doc(productId).delete();
+    return this._db.collection('Products/Prints/All').doc(productId).delete();
   }
 
   // get products for type print tab shop
@@ -257,7 +262,7 @@ export class FirebaseService {
       // valueChanges makes it an observable
       return this.getAllProducts();
     }
-    return this._db.collection('Products', query => query.where('id', 'not-in', user.ownedItems)).valueChanges() as Observable<ProductTypePrint[]>;
+    return this._db.collection('Products/Prints/All', query => query.where('id', 'not-in', user.ownedItems)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // get products for type print tab owned items
@@ -265,7 +270,7 @@ export class FirebaseService {
     if (!user || user.ownedItems.length === 0) {
       return of([]).pipe(delay(500))
     }
-    return this._db.collection('Products', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;
+    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add single product to cart
@@ -292,13 +297,13 @@ export class FirebaseService {
 
   // add product like to user and product
   async addProductLike(productId: string, user: CustomUser | null) {
-    this._db.collection('Products', query => query.where('id', '==', productId)).get()
+    this._db.collection('Products/Prints/All', query => query.where('id', '==', productId)).get()
       .subscribe(res => {
         const productDoc = res.docs[0];
         let likes = (res.docs[0].data() as ProductResponse).likes;
         productDoc.ref.update({ likes: ++likes });
       });
-    
+
     if (user) {
       this._db.collection('Users').doc(user.id).ref.update({
         'productLikes': arrayUnion(productId),

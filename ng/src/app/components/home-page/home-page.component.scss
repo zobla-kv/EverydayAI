@@ -1,23 +1,5 @@
 @import '../../styles/variables';
 
-.mat-icon { color: $orange-text; }
-.mat-icon svg path { fill: $orange-text; }
-
-section .section-header {
-  text-align: center;
-  font-size: 50px;
-  font-weight: 600;
-  line-height: 1.5em;
-
-  border-bottom: 2px solid $main-orange-bg-color;
-  width: fit-content;
-  margin: auto;
-}
-
-.section-header.subtext {
-  width: 400px;
-}
-
 .top-section {
   height: $viewport-height-without-header;
 
@@ -40,14 +22,6 @@ section .section-header {
       background-color: $main-orange-bg-color;
       transition: 0.8s;
       border: 1px solid white;
-      // TODO: check it out
-      // border-radius: inherit;
-    }
-
-    &:hover .animation-filler {
-      transition: 0.8s;
-      border: 1px solid $main-orange-bg-color;
-      width: 100%;
     }
   }
   button > .mat-icon {
@@ -75,15 +49,23 @@ section .section-header {
       content: "";
       right: 0;
   }
-  button:hover { background-color: transparent; }
-  button:hover p { color: $dark-text;  transition: 1s; }
-  button:hover > .mat-icon {
-      transform: rotate(-45deg) translate(4px, 4px);
-      border-color: $main-dark-bg-color;
-  }
-  button:hover > .mat-icon::before {
-      opacity: 1;
-      width: 20px;
+
+  button.highlighted {
+    background-color: transparent;
+    p { color: $dark-text;  transition: 1s; }
+    .animation-filler {
+      transition: 0.8s;
+      border: 1px solid $main-orange-bg-color;
+      width: 100%;
+    }
+    .mat-icon {
+        transform: rotate(-45deg) translate(4px, 4px);
+        border-color: $main-dark-bg-color;
+        &::before {
+          opacity: 1;
+          width: 20px;
+        }
+    }
   }
 
   .landing-text-wrapper {
@@ -130,78 +112,201 @@ section .section-header {
 }
 
 .about-us-section {
-  margin-top: 6rem;
+  padding: 7.5rem 0;
+  text-align: center;
 
-  .container-fluid {
-    margin-top: 2rem;
-    .row {
+  .about-us-items {
+
+    ::ng-deep .mat-icon {
+      svg path { fill: $main-orange-bg-color; }
+      width: 100px;
+      height: 100px;
+
+      &.dog-head {
+        svg {
+          transform: scale(1.4);
+          position: relative;
+          left: -12px;
+        }
+      }
+      &.networking {
+        width: 120px;
+        svg {
+          transform: scale(1.5);
+          position: relative;
+          left: -12px;
+        }
+      }
+    }
+  }
+
+}
+
+.inovative-technology-section {
+  background-color: $light-dark-bg-color;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+
+  .row { align-items: center; }
+  .img-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    img { max-width: 420px; }
+  }
+
+  .detail-wrapper {
+    h2 {
+      font-size: 2.25rem;
+      font-weight: bold;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      span {
+        font-weight: bold;
+        font-family: "DM Serif Display";
+        letter-spacing: 1px;
+      }
+      .mat-icon {
+        width: 55px;
+        height: 40px;
+      }
+    }
+
+  }
+}
+
+.our-pick-section {
+  height: 530px;
+  background-color: $main-dark-bg-color;
+  color: white;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  border-top: 12px solid $main-orange-bg-color;
+
+  .product-item {
+		text-align: center;
+		text-decoration: none;
+		display: block;
+		position: relative;
+		padding-bottom: 50px;
+    flex: 1;
+
+    // TODO: for images to be centrally aligned with each other wrap img with this
+    // looks better without, recheck and cleanup
+    .img-wrapper {
+      height: 66%;
+      display: flex;
       justify-content: center;
       align-items: center;
     }
-  }
 
+    $transition: .3s all ease;
+    $if-in-cart-icon-distance: 12px;
 
-  .col-img {
-    // border: 1px solid red;
-    width: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
-      width: 350px;
-      border-radius: 4px;
-    }
-  }
-
-  .col-text {
-    // border: 1px solid yellow;
-    width: 40%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-
-    h1 {
-      font-weight: 700;
-      font-size: 45px;
-      letter-spacing: 0px;
+    .if-in-cart-icon {
+      position: absolute;
+      top: $if-in-cart-icon-distance;
+      left: $if-in-cart-icon-distance;
+      z-index: 1;
+      transition: $transition;
+      transform: scale(1.3);
     }
 
-    p {
-      margin-top: 1rem;
-      width: 500px;
-      letter-spacing: 1px;
-    }
-  }
-
-  .experience {
-    margin-top: 5rem;
-  }
-  .expectance {
-    margin-top: 5rem;
-    // whole column because here this one has manually set bg color
-    // previous ones images have grey bg
-    // .col-img { 
-    //   background-color: #D2CED0; 
-    //   transform: scale(1.1) rotate(-12deg);
-    // }
-  }
+		img {
+      max-width: 250px;
+      max-height: 250px;
+			margin-bottom: 20px;
+			position: relative;
+			top: 0;
+			transition: $transition;
+		}
+		h3 {
+			font-weight: 600;
+			font-size: 16px;
+		}
+		strong {
+			font-weight: 800;
+			font-size: 18px;
+		}
+		h3, strong, p {
+			text-decoration: none;
+      position: relative;
+      z-index: 1;
+      transition: $transition;
+		}
+		button {
+      border: none;
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background: $toast-green-bg-color;
+			bottom: 15px;
+			left: 50%;
+			transform: translateX(-50%);
+			margin-bottom: -17.5px;
+			border-radius: 50%;
+			opacity: 0;
+			visibility: hidden;
+			transition: $transition;
+			.mat-icon {
+        position: relative;
+        color: black;
+        ::ng-deep svg path { fill: black; }
+        &.download { transform: scale(1.4); top: 4px; }
+        &.cart-action { transform: scale(1.3); top: 0px; }
+      }
+		}
+		&:before {
+			bottom: 0;
+			left: 0;
+			right: 0;
+			position: absolute;
+			content: "";
+			background: $main-orange-bg-color;
+			height: 0%;
+			transition: $transition;
+		}
+		&:hover {
+      .if-in-cart-icon {
+        top: calc(-24px + $if-in-cart-icon-distance);
+      }
+			img {
+				top: -24px;
+			}
+      h3, strong, p {
+        color: black;
+      }
+			button {
+				bottom: -8px;
+				opacity: 1;
+				visibility: visible;
+			}
+			&:before {
+				height: 230px;
+			}
+		}
+	}
 }
 
 .who-are-you-section {
   margin-top: 6rem;
 
   //NOTE: use for responsive
-  .inner-wrapper { 
+  .inner-wrapper {
     margin-top: 4rem;
-    max-width: 1100px; 
+    max-width: 1100px;
 
     // because of line that has left -100px;
     position: relative;
     left: 50px;
   }
-  
+
   .col-img {
     position: relative;
     width: 500px;
@@ -211,16 +316,16 @@ section .section-header {
 
     .img-wrapper {
       width: 100%;
-      height: 100%; 
+      height: 100%;
 
-      img { 
+      img {
         position: absolute;
         border-radius: 8px;
         &.hide { opacity: 0; transition: all 2s; }
       }
     }
 
-    .top-bottom-lines { 
+    .top-bottom-lines {
       z-index: -1;
       border-radius: 8px;
       background-color: $main-orange-bg-color;
@@ -289,7 +394,7 @@ section .section-header {
         height: 100%;
         transition: 0.7s;
       }
- 
+
       // NOTE: Avoid setting ViewEncapsulation.None just for this one property
       &::ng-deep mat-icon {
         width: 100%;
@@ -302,9 +407,9 @@ section .section-header {
 
         svg {
           vertical-align: top;
-          stroke: $main-dark-bg-color; 
-          color: black; 
-  
+          stroke: $main-dark-bg-color;
+          color: black;
+
           path, ellipse {
             fill: $main-dark-bg-color;
           }
@@ -312,7 +417,7 @@ section .section-header {
       }
 
     }
-    
+
     ol li .content {
       width: 400px;
       background-color: $main-orange-bg-color;
@@ -363,7 +468,7 @@ section .section-header {
     ol li .content .text {
       grid-area: text;
     }
-    
+
   }
 }
 
@@ -459,6 +564,7 @@ section .section-header {
 }
 
 // NOTE: unused
+// TODO: remove css and mountain image
 .how-it-works-section {
   margin-top: 3rem;
   background: linear-gradient(rgba(255,255,255, 0.1), rgba(255,255,255, 0)), url('../../../assets/images/img/mountain.jpg');
@@ -500,7 +606,7 @@ section .section-header {
       }
     }
   }
-  
+
   ol li {
     counter-increment: stepnr;
     width: 15rem;
@@ -522,22 +628,22 @@ section .section-header {
       overflow: hidden;
       z-index: 2;
 
-      .cover { 
+      .cover {
         position: absolute;
         height: 100%;
         width: 100%;
         left: 0;
         background-color: $main-dark-bg-color;
-        // border-bottom: 1px solid white; 
+        // border-bottom: 1px solid white;
         filter: drop-shadow(-0.25rem 0.25rem 0.675rem rgba(0, 0, 0, 1)) blur(0px);
         filter: drop-shadow(-0.25rem 0.25rem 0.0675rem rgba(0, 0, 0, 1)) blur(0px);
 
       }
-      
+
     }
 
     & * { z-index: 1; }
-    
+
     &::before,
     &::after {
       inset: 0;
@@ -575,13 +681,13 @@ section .section-header {
     &:nth-child(4)::before { padding-left: 8.25rem; padding-top: 0; }
 
   }
-  
+
   ol li > * { width: 7.5rem; }
-  ol li .icon { 
-    text-align: center; 
-    transform: scale(1.5); 
-    position: relative; 
-    left: -12px; 
+  ol li .icon {
+    text-align: center;
+    transform: scale(1.5);
+    position: relative;
+    left: -12px;
     top: 5px;
   }
   ol li .title { font-size: 2rem; font-weight: 500; }
@@ -592,6 +698,7 @@ section .section-header {
 .lets-talk-about-your-dog-section {
   flex-wrap: wrap;
   margin-top: 6rem;
+  margin-bottom: 1.25rem;
   width: 100%;
   border: 1px solid $main-orange-bg-color;
 
@@ -604,7 +711,7 @@ section .section-header {
       position: absolute;
       background-color: $main-orange-bg-color;
       border-radius: 50%;
-  
+
       &.left {
         width: 400px;
         height: 400px;
@@ -632,7 +739,7 @@ section .section-header {
       position: relative;
       top: -19px;
     }
-  } 
+  }
 
   .col-text {
     width: 400px;
@@ -658,8 +765,7 @@ section .section-header {
 /* MEDIA QUERIES */
 // bigger than 1440px
 @media only screen and (min-width: 1440px) {
-  // center vh area vertically on large screens
-  .about-us-section { justify-content: center; }
+
 }
 // smaller than 1200px
 @media only screen and (max-width: 1200px) {
@@ -675,22 +781,9 @@ section .section-header {
     }
   }
 
-  .about-us-section {
-
-
-    .col-img { margin-top: 0.75rem; }
-
-    .col-text {
-      position: relative;
-      width: 385px;
-      h1 { font-size: 36px; } 
-      p { font-size: 14px; width: 100%; }
-    }      
-  }
-
   .who-are-you-section {
-    .col-img { 
-      width: 440px; 
+    .col-img {
+      width: 440px;
       .top-bottom-lines { display: none; }
     }
     .col-list {
@@ -704,10 +797,10 @@ section .section-header {
   }
 
   .offer-section {
-    .mission-item { 
+    .mission-item {
       min-width: unset;
-      width: 290px;  
-      height: 200px; 
+      width: 290px;
+      height: 200px;
       font-size: 0.875rem;
       padding: 60px 1rem 60px 1rem;
 
@@ -716,21 +809,21 @@ section .section-header {
       &:hover {
         .text { transform: none; top: 53px; }
         .text-cover { height: 30px; }
-      } 
+      }
     }
   }
 
   .lets-talk-about-your-dog-section {
-    .col-img { 
-      width: 300px; 
-      height: 300px; 
+    .col-img {
+      width: 300px;
+      height: 300px;
       img { top: -14px; }
     }
   }
 
 }
-// smaller than 976px
-@media only screen and (max-width: 976px) {
+// smaller than 992px
+@media only screen and (max-width: 992px) {
   .top-section {
     .landing-text-wrapper {
       h1 { font-size: 65px; line-height: 65px; }
@@ -744,22 +837,15 @@ section .section-header {
     }
   }
 
-  .about-us-section { 
-    text-align: justify;
-
-    .row { 
-      flex-direction: column-reverse;
-      align-items: center;
-    }
-    
-    .col-text {
-      p { font-size: 14px; }
-    }
-
-    .col-img { 
-      img { width: 80%; }
+  .inovative-technology-section {
+    .detail-wrapper {
+      h2 { font-size: 1.85rem; }
+      p { text-align: justify; }
     }
   }
+
+
+  .our-pick-section { height: auto; }
 
   .who-are-you-section {
     .inner-wrapper { margin-top: 3rem; }
@@ -771,14 +857,14 @@ section .section-header {
       ol {
         padding-left: 0;
 
-        li { 
-          flex-direction: column; 
+        li {
+          flex-direction: column;
           margin-top: 0;
-          .icon-area { 
-            margin: auto; 
+          .icon-area {
+            margin: auto;
             transform: translateY(6px);
           }
-  
+
           .content {
             left: 0;
             width: 370px;
@@ -797,12 +883,12 @@ section .section-header {
 
   .offer-section {
     .section-header-subtext { font-size: 0.875rem; text-align: center; }
-    .mission-item { 
+    .mission-item {
       min-width: unset;
-      width: 100%;  
+      width: 100%;
       max-width: 330px;
       min-width: 300px;
-      height: 200px; 
+      height: 200px;
       font-size: 0.875rem;
 
       mat-icon { height: 36px; transform: scale(1.75); }
@@ -810,7 +896,7 @@ section .section-header {
       &:hover {
         .text { transform: scale(1.1); top: 44px; }
         .text-cover { height: 30px; }
-      } 
+      }
     }
   }
 
@@ -827,19 +913,19 @@ section .section-header {
     .landing-text-wrapper {
       text-align: left;
       padding: 1rem;
-      h1 { 
-        font-size: 2.5rem; 
-        line-height: 3rem; 
+      h1 {
+        font-size: 2.5rem;
+        line-height: 3rem;
         text-align: center;
         margin-top: 1rem;
         margin-bottom: 1rem;
         span { display: inline !important; }
       }
-      p { 
-        font-size: 0.875rem; 
-        text-align: center; 
-        line-height: 1.5rem; 
-        margin-top: 0.5rem; 
+      p {
+        font-size: 0.875rem;
+        text-align: center;
+        line-height: 1.5rem;
+        margin-top: 0.5rem;
         margin-bottom: 0;
       }
     }
@@ -864,8 +950,8 @@ section .section-header {
     .animation-filler { width: 100% !important; z-index: -1; border: 0 !important; }
 
     button.large-screen { display: none !important; }
-    button.small-screen { 
-      display: block !important; 
+    button.small-screen {
+      display: block !important;
       align-self: center;
       left: 0;
       background-color: transparent;
@@ -876,8 +962,8 @@ section .section-header {
 
       p { color: $dark-text; margin-top: 2px !important; }
 
-      .mat-icon { 
-        border-color: $main-dark-bg-color !important; 
+      .mat-icon {
+        border-color: $main-dark-bg-color !important;
         transform: rotate(-45deg) !important;
         overflow: visible;
         margin-top: 0.25rem;
@@ -887,44 +973,56 @@ section .section-header {
     }
   }
 
-  .about-us-section {
-
-    .col-text {
-      left: 0 !important;
-      p { margin-top: 0.5rem; }
+  .inovative-technology-section {
+    .img-wrapper img { max-width: 250px; }
+    .detail-wrapper {
+      h2 {
+        text-align: center;
+        margin-top: 0.5rem;
+      }
     }
-    
+  }
+
+  .our-pick-section {
+    .product-item img { max-width: 325px; }
+    // copy of hover
+    .product-item.highlighted {
+      $if-in-cart-icon-distance: 12px;
+      .if-in-cart-icon {
+        top: calc(-24px + $if-in-cart-icon-distance);
+      }
+			img {
+				top: -24px;
+			}
+      h3, strong, p {
+        color: black;
+      }
+			button {
+				bottom: -8px;
+				opacity: 1;
+				visibility: visible;
+			}
+			&:before {
+				height: 240px;
+			}
+		}
   }
 
   .lets-talk-about-your-dog-section {
-    .col-img { 
-      width: 200px; 
-      height: 200px; 
+    .col-img {
+      width: 200px;
+      height: 200px;
       order: 2;
       img { top: -9px; }
     }
-    .col-text { 
-      width: 100%; 
+    .col-text {
+      width: 100%;
       height: 85px;
     }
   }
 }
 // smaller than 576px
-@media only screen and (max-width: 576px) { 
-  .about-us-section {
-    text-align: center;
-
-    .section-header { 
-      font-size: 28px !important;
-    }
-
-    .col-text h1 { font-size: 24px; }
-
-    .col-img {
-      width: 60%;
-      img { width: 100%; }
-    }
-  }
+@media only screen and (max-width: 576px) {
 
   .who-are-you-section {
     .inner-wrapper { margin-top: 1rem; }
@@ -939,15 +1037,15 @@ section .section-header {
         top: -120px
       }
     }
-    .col-img { 
-      width: 200px; 
-      height: 200px; 
+    .col-img {
+      width: 200px;
+      height: 200px;
       margin: 2rem auto 0;
       img { top: -9px; }
     }
-    .col-text { 
-      width: 100%; 
-      height: auto; 
+    .col-text {
+      width: 100%;
+      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;

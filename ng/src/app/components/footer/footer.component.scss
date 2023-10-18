@@ -1,25 +1,80 @@
 @import '../../styles/variables.scss';
 
+// TODO: cleanup
+// .footer-wrapper {
+//   position: fixed;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   height: 32px;
+//   background-color: $main-orange-bg-color;
+//   color: $dark-text;
+//   font-weight: bold;
+
+//   a {
+//     display: flex;
+//     justify-content: center;
+//     margin-top: 2px;
+//   }
+
+//   img {
+//     margin-left: 0.5rem;
+//     width: 25px;
+//     height: 25px;
+//   }
+// }
+
 .footer-wrapper {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 32px;
-  background-color: $main-orange-bg-color;
-  color: $dark-text;
-  font-weight: bold;
-  
+  background-color: $light-dark-bg-color;
+  padding-top: 2rem;
 
   a {
-    display: flex;
-    justify-content: center;
-    margin-top: 2px;
+    color: white;
+    text-decoration: none;
   }
 
-  img {
-    margin-left: 0.5rem;
-    width: 25px;
-    height: 25px;
+	.footer-heading {
+		font-size: 22px;
+		margin-bottom: 30px;
+		.mat-icon {
+			width: 40px;
+			margin-right: 10px;
+			border-radius: 50%;
+			height: 40px;
+			display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid $main-orange-bg-color;
+
+      &.instagram ::ng-deep svg { transform: scale(0.55); }
+		}
+	}
+
+  .news-wrapper {
+    max-width: 335px;
+    img {
+      height: 170px;
+      border-radius: 3px;
+    }
   }
+  .instagram-wrapper { position: relative; }
+}
+
+// to deal with embed
+@media only screen and (max-width: 1264px) {
+  .instagram-wrapper { left: -50px; }
+}
+@media only screen and (max-width: 1080px) {
+  .instagram-wrapper { left: -93px; }
+}
+
+// smaller than 1200px
+@media only screen and (max-width: 1200px) {
+  .contact-wrapper a { font-size: 0.75rem; }
+}
+
+// smaller than 992px
+@media only screen and (max-width: 992px) {
+  .contact-wrapper a { font-size: 1rem; }
+  .instagram-wrapper { left: 0; }
 }

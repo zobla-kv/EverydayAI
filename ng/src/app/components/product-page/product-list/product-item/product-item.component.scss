@@ -12,8 +12,8 @@
     cursor: pointer;
     height: 260px;
 
-    img { 
-      max-height: inherit; 
+    img {
+      max-height: inherit;
       border-start-end-radius: 8px;
       border-start-start-radius: 8px;
     }
@@ -48,7 +48,7 @@
             transform: scale(1.25);
             top: 1px;
           }
-          &[icon="favorite"], 
+          &[icon="favorite"],
           &[icon="favorite_border"] {
             // take full space for mat tooltip
             width: 100%;
@@ -63,10 +63,10 @@
               100% { transform: scale(1.1); }
             }
           }
-          
+
           color: $orange-text;
           svg path { fill: $orange-text; }
-          
+
         }
 
         .mat-mdc-progress-spinner { display: inline-block; }
@@ -88,9 +88,9 @@
     color: $main-dark-bg-color;
     font-family: 'Cambria', 'Courier New', Courier, monospace;
 
-    .product-title { 
+    .product-title {
       font-size: calc(1rem + 0.5vw);
-      line-height: 24px; 
+      line-height: 24px;
       min-height: 24px;
       text-align: center;
       text-transform: capitalize;
@@ -101,27 +101,30 @@
     }
 
     .product-information {
-      display: grid; 
+      display: grid;
       justify-items: start;
-      grid-template-areas: 
+      grid-template-areas:
       ". . ."
-      ". . ."; 
-      gap: 16px 8px; 
+      ". . .";
+      gap: 16px 8px;
 
+      // TODO: should be shared between this, cart and cpanel
       .product-information-item {
         position: relative;
         display: flex;
-        padding: 0; 
+        padding: 0;
         font-family: $product-metadata-font;
 
-        .mat-icon { 
-          color: $main-dark-bg-color; 
+        .mat-icon {
+          color: $main-dark-bg-color;
+          svg path {
+            fill: $main-dark-bg-color;
+          }
         }
-        
+
         &[item="price"] {
-          .mat-icon svg path { 
-            stroke: $main-dark-bg-color; 
-            fill: none; 
+          .mat-icon svg path {
+            fill: none;
             transform: scale(0.8);
           }
         }
@@ -132,6 +135,7 @@
         }
         &[item="tier"] {
           text-transform: capitalize;
+          .mat-icon svg path { fill: none; }
         }
         &[item="extension"] {
           text-transform: uppercase;
@@ -144,7 +148,7 @@
           position: absolute;
           top: -8px;
           opacity: 0.6;
-  
+
           &::after {
             position: absolute;
             content: "";
@@ -166,12 +170,12 @@
     }
 
     .product-information[type="prints_shop"] {
-      grid-template-columns: 95px 110px 100px; 
-      grid-template-rows: 1fr 1fr; 
+      grid-template-columns: 95px 110px 100px;
+      grid-template-rows: 1fr 1fr;
     }
     .product-information[type="prints_owned_items"] {
-      grid-template-columns: 114px 75px 100px; 
-      grid-template-rows: 1fr 1fr; 
+      grid-template-columns: 114px 75px 100px;
+      grid-template-rows: 1fr 1fr;
     }
   }
 
@@ -272,13 +276,13 @@
     7%  { left: 80px;  opacity: 0.5; }
     15% { left: 170px; opacity: 0;   }
     100%{ left: 100px; opacity: 0;   }
-  } 
-  
-  .glow { 
-    background: rgb(255,255,255); 
-    width: 40px; 
-    height: 100%; 
-    z-index: 2; 
+  }
+
+  .glow {
+    background: rgb(255,255,255);
+    width: 40px;
+    height: 100%;
+    z-index: 2;
     position: absolute;
     top: 0;
     -webkit-animation: flow 10s linear infinite;

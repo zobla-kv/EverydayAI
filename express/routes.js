@@ -6,11 +6,26 @@ const paymentService = require('./services/paymentService');
 const uploadService = require('./services/uploadFileService');
 const fileSystemService = require('./services/fileSystemService');
 
+router.get('/news', async (req, res) => {
+  const url =`https://newsapi.org/v2/everything?q=+ai&pageSize=2&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+  fetch(url)
+  .then(async response => {
+    const data = await response.json();
+    if (data.status === 'error') {
+      return res.sendStatus(400);
+    }
+    res.status(200).send(data);
+  })
+  .catch(err => {
+    return res.sendStatus(500);
+  })
+});
+
 // TODO: can be misused from postman, protect!!
 router.post('/send-email', async (req, res) => {
   const isEmailSent = await emailService.sendEmail(req.body.email, req.body.email_type);
   if (!isEmailSent) {
-    return res.status(500).send({ response: labels.EMAIL_SEND_FAILED })
+    return res.status(500).send({ response: labels.EMAIL_SEND_FAILED });
   }
   res.status(200).send({ response: labels.EMAIL_SEND_SUCCESFUL });
 });
@@ -28,7 +43,7 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
     const response = await paymentService.initiatePayment(user, card);
 
     res.json({ paymentStatus: response });
-    
+
   } catch (err) {
     console.log('error payment response: ', err.message);
     res.status(500).json({ paymentStatus: 'failed' });
@@ -67,7 +82,7 @@ router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), asy
 
   try {
     event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
-    
+
     // Handle the event
     switch (event.type) {
       case 'payment_intent.created':
@@ -84,7 +99,7 @@ router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), asy
 
     // Return a 200 response to acknowledge receipt of the event
     res.json({ message: event.data });
-    
+
   } catch (err) {
     console.log('webhook err: ', err);
     res.status(400).json({ message: err.message });

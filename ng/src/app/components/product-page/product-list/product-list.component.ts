@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { AnimationEvent } from '@angular/animations';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { Subscription, first } from 'rxjs';
@@ -70,10 +69,11 @@ export class ProductListComponent implements OnInit {
       this.fetchProducts(this.config.product.type, this.user);
     });
   }
-  
+
   // fetch products from BE
   fetchProducts(productType: any, user: CustomUser | null): void {
     this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
+      console.log('products: ', products)
       this.fullProductList = this.sortList(this.remove404Products(products));
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
@@ -134,7 +134,7 @@ export class ProductListComponent implements OnInit {
       (this.paginator.pageIndex + 1) * this.config.pageSize - 1
     );
     this.paginatedList = productsForNextPage.map(product => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
-  } 
+  }
 
   // handle pagination navigation
   handlePaginatorNagivation(event: PageEvent) {
@@ -144,6 +144,7 @@ export class ProductListComponent implements OnInit {
   // updates page number in pagination
   updatePageNumber() {
     const list = this._element.nativeElement.querySelectorAll('.mat-mdc-paginator-range-label')[0];
+    // TODO: 1/0 bug from line below
     list && (list.innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + this.paginator.getNumberOfPages());
   }
 

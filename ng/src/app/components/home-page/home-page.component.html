@@ -4,9 +4,9 @@
       <div class="col-md-5 col-sm-12">
         <div class="landing-text-wrapper">
           <h1>
-            <span 
-              class="orange-text d-block" 
-              appear 
+            <span
+              class="orange-text d-block"
+              appear
               [hide]="{'opacity': 0, 'transform': 'translateY(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
@@ -16,7 +16,7 @@
             </span>
             <span
               class="d-block"
-              appear 
+              appear
               [hide]="{'opacity': 0, 'transform': 'translateX(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
               [duration]="300"
@@ -26,7 +26,7 @@
             </span>
             <span
               class="d-block"
-              appear 
+              appear
               [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
@@ -35,16 +35,17 @@
           </h1>
           <div
             class="d-flex flex-column"
-            appear 
+            appear
             [duration]="500"
             [delay]="isFirstVisit ? 1800 : 1200"
+            (intersection)="hightlightCTAButton(cta)"
           >
             <p>
               Welcome
               <br>
               Your dog deserves only the best!
             </p>
-            <button type="button" class="btn-reverse large-screen" routerLink="/products">
+            <button type="button" class="btn-reverse large-screen" routerLink="/products" #cta>
               <div class="animation-filler">
               </div>
               <p class="m-0">Take a look</p>
@@ -56,18 +57,17 @@
       <div class="col-md-7 col-sm-12 d-flex align-items-center flex-wrap">
         <div class="landing-image-wrapper main-orange-bg">
           <!-- NOTE: directive hides flick (cls) -->
-          <img 
-            src="../../../assets/images/transparent/landing-page-image-dog.png" 
-            alt="landing image" 
+          <img
+            src="../../../assets/images/transparent/landing-page-image-dog.png"
+            alt="landing image"
             class="img-fluid pe-none"
-            appear 
+            appear
             [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
             [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
             [duration]="300"
             [delay]="isFirstVisit ? 700 : 100"
           >
         </div>
-        <br>
         <button type="button" class="btn-reverse small-screen" routerLink="/products">
           <div class="animation-filler">
           </div>
@@ -80,135 +80,169 @@
 </section>
 
 <section class="about-us-section">
-  <h2 class="section-header mb-3">
-    What is <span class="orange-text">House of dogs</span>?
-  </h2>
-  <div class="container-fluid ai-dog-landing">
+  <div class="container px-4 px-lg-5">
+      <div class="about-us-heading">
+          <h3 class="mb-0">What is</h3>
+          <h2 class="orange-text mb-5">House of dogs</h2>
+      </div>
+      <div class="about-us-items row gx-4 gx-lg-5">
+          <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
+            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+          >
+              <mat-icon svgIcon="dog-head" class="dog-head"></mat-icon>
+              <h4><strong><span class="orange-text">AI</span> as art</strong></h4>
+              <p class="mb-0">Embrace the future while witnessing the evolution of AI generated art.</p>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
+            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+          >
+              <mat-icon svgIcon="networking" class="networking"></mat-icon>
+              <h4><strong>Join the <span class="orange-text">pack</span></strong></h4>
+              <p class="mb-0">
+                Whether you're an artist seeking inspiration, a dog enthusiast looking for captivating visuals,
+                or simply someone intrigued by the possibilities of AI.
+              </p>
+          </div>
+          <div class="col-lg-4 col-md-6 mx-auto mb-5 mb-md-0"
+            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+          >
+              <mat-icon svgIcon="dog-enthusiast" class="expectance"></mat-icon>
+              <h4><strong>The <span class="orange-text">expectance</span></strong></h4>
+              <p class="mb-0">Look how they are looking at you.</p>
+          </div>
+      </div>
+  </div>
+</section>
+
+<section class="inovative-technology-section px-md-5">
+  <div class="container">
     <div class="row">
-      <div class="col-img">
-        <img src="../../../assets/images/img/ai-dog-landing.png">
-      </div>
-      <div class="col-text">
-        <h1>
-          <span
-            appear 
-            [hide]="{'color': 'white'}"
-            [show]="{'color': '#F47650'}"
-            [duration]="500"
-            [rootMargin]="'-120px'"
-          >
-            AI
-          </span>
-          <span>as art</span>
-        </h1>
-        <p
-          appear 
-          [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
-          [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
-          [duration]="500"
+      <div class="col-md-6">
+        <div class="img-wrapper"
+          appear [hide]="{'opacity': 0, 'transform': 'scale(0.5)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}" [threshold]="0.7"
         >
-          Embrace the future while witnessing the evolution of AI generated art.
-        </p>
+          <!-- TODO: alt -->
+          <img src="../../../assets/images/img/inovative-technology-example.jpg" alt="">
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="container-fluid experience">
-    <div class="row justify-content-around">
-      <div class="col-text">
-        <h1>
-          Experience 
-          <br> 
-          you can
-          <span
-            appear 
-            [hide]="{'color': 'white'}"
-            [show]="{'color': '#F47650'}"
-            [duration]="500"
-            [rootMargin]="'-120px'"
-          >
-            trust
-          </span>
-        </h1>
-        <p
-          appear 
-          [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
-          [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
-          [duration]="500"
+      <div class="col-md-6">
+        <div class="detail-wrapper"
+          appear [hide]="{'opacity': 0, 'transform': 'translateY(50px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1" [delay]="200"
         >
-          Using skills, knowledge, and expertise that we have acquired through out our career, 
-          we do understand that each dog is individual. 
-        </p>
-      </div>
-      <div class="col-img">
-        <img src="../../../assets/images/img/experience.jpeg" class="big">
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid expectance">
-    <div class="row justify-content-around">
-      <div class="col-img">
-        <img src="../../../assets/images/transparent/many-dogs.png" class="big">
-      </div>
-      <div class="col-text">
-        <h1>
-          The
-          <br> 
-          <span
-            appear 
-            [hide]="{'color': 'white'}"
-            [show]="{'color': '#F47650'}"
-            [duration]="500"
-            [rootMargin]="'-120px'"
-          >
-            expectance
-          </span>
-        </h1>
-        <p
-          appear 
-          [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
-          [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
-          [duration]="500"
-        >
-          The love of a dog is a pure thing. He gives you a trust which is total. You must not betray it.
-          Our mission is to enrich the lives of each and every pet in our care.
-          Look how they are looking at you.
-        </p>
+          <h2>Inovative technology</h2>
+          <p>
+            Each piece of AI-generated dog art is a testament to the individuality and spontaneity of our beloved pets,
+            capturing their playful spirit and unique artistic style.
+            This emerging field not only showcases the beauty of AI but also celebrates the wonderful bond between humans and
+            their dogs, revealing new dimensions of our shared creative journey.
+          </p>
+          <div>
+            <mat-icon svgIcon="digital-product"></mat-icon>
+            <span>100% Digital product</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<section class="who-are-you-section mt-5">
+
+<section class="our-pick-section px-md-5">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12 col-lg-3 mb-5 mb-lg-0" appear>
+        <h2 class="mb-4">Crafted with excellent material.</h2>
+        <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
+        <p><a href="shop.html" class="btn">Explore</a></p>
+      </div>
+
+      <mat-spinner
+        *ngIf="!ourPicksLoaded; else ourPicks"
+        class="p-0 mx-auto align-self-center"
+        diameter="48"
+        strokeWidth="6"
+      ></mat-spinner>
+
+      <ng-template #ourPicks>
+
+        <div *ngIf="ourPicksError" class="text-center align-self-center" [ngStyle]="{ flex: 1, height: '48px' }">
+          Failed to load. Please refresh the page.
+        </div>
+
+        <ng-container *ngIf="!ourPicksError">
+
+          <div
+            *ngFor="let product of ourPicksProducts; let i = index"
+            class="col-12 col-md-4 col-lg-3 my-5 my-md-0 d-flex justify-content-center align-items-end"
+            appear
+            [hide]="{'opacity': 0, 'transform': 'translateY(-40px)'}"
+            [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
+            [threshold]="0.8"
+            (intersection)="hightlightProduct(productItem, i * 100)"
+          >
+            <div class="product-item" #productItem>
+              <div class="position-relative w-80 mx-auto">
+                <mat-icon *ngIf="product.isInCart && product.price !== '0.00'" class="if-in-cart-icon">shopping_cart</mat-icon>
+                <img src="{{ product.imgPath }}" class="img-fluid">
+              </div>
+              <h3 class="product-title">{{ product.title }}</h3>
+              <p>{{ product.metadata['resolution'] }}</p>
+              <strong class="product-price">
+                <ng-container *ngIf="product.price == '0.00'; else price">Free</ng-container>
+                <ng-template #price>${{ product.price }}</ng-template>
+              </strong>
+              <button>
+                <mat-spinner  diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
+                <ng-template #action>
+                  <mat-icon class="download" *ngIf="product.price === '0.00'; else action" (click)="productService.download(product)">download</mat-icon>
+                  <ng-template #action>
+                    <mat-icon svgIcon="cart-add" class="cart-action" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
+                    <mat-icon svgIcon="cart-remove" class="cart-action" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
+                  </ng-template>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-template>
+
+    </div>
+  </div>
+</section>
+
+<!-- <section class="who-are-you-section mt-5">
   <h2 class="section-header mb-3">
-    Who are <span class="orange-text">you</span>? 
+    Who are <span class="orange-text">you</span>?
   </h2>
   <div class="container-fluid inner-wrapper">
     <div class="row justify-content-xl-between justify-content-sm-center position-relative">
       <div class="col-img">
         <div class="top-bottom-lines"></div>
-        <div 
+        <div
           #carousel
           class="img-wrapper"
-          appear 
+          appear
           [hide]="{'opacity': 0, 'transform': 'translateX(-40px)'}"
           [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
           [duration]="400"
           [threshold]="0.5"
           (intersection)="setCarousel()"
         >
-          <img 
-            *ngFor="let img of carouselItems" 
+          <img
+            *ngFor="let img of carouselItems"
             #carouselItem
-            class="{{ img.name }}" 
-            src="{{ img.imgSrc }}" 
+            class="{{ img.name }}"
+            src="{{ img.imgSrc }}"
             alt="{{ img.name }}"
-          > 
+          >
         </div>
       </div>
       <div class="col-list">
         <ol>
-          <li 
+          <li
             #bullet
-            appear 
+            appear
             [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
             [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
             [duration]="400"
@@ -224,7 +258,7 @@
           </li>
           <li
             #bullet
-            appear 
+            appear
             [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
             [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
             [duration]="400"
@@ -236,13 +270,13 @@
             </div>
             <div class="content">
               <!-- <div class="title">Open minded</div> -->
-              <div class="title">Art lover</div>
+              <!-- <div class="title">Art lover</div>
               <div class="text">You love seeing a quality art.</div>
             </div>
           </li>
           <li
             #bullet
-            appear 
+            appear
             [hide]="{'opacity': 0, 'transform': 'translateX(40px)'}"
             [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
             [duration]="400"
@@ -261,10 +295,10 @@
       </div>
     </div>
   </div>
-</section>
-<section class="offer-section">
+</section> -->
+<!-- <section class="offer-section">
   <h2 class="section-header mb-3">
-    What we <span class="orange-text">offer</span>? 
+    What we <span class="orange-text">offer</span>?
   </h2>
   <p class="section-header-subtext col-xl-8 col-lg-9 col-sm-11 m-auto">
     Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
@@ -273,10 +307,10 @@
     Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
     Biznis tajne su mastermind grupa uspešnih preduzetnika i onih koji to žele da postanu.
     Sastoje se od 2 dela: Edukativnog dela i Umrežavanja
-  </p>  
+  </p>
   <div class="d-flex justify-content-center gap-2 mt-5 flex-wrap">
-    <div class="mission-item position-relative" 
-      appear 
+    <div class="mission-item position-relative"
+      appear
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
       [duration]="500"
@@ -287,15 +321,15 @@
       <div class="position-relative w-100">
         <span class="text">Chace for every dog</span>
         <!-- <span class="text">AI</span> -->
-      </div>
+      <!-- </div>
       <!-- <span>return pride to dogs that have fallen</span> -->
-      <img src="../../../assets/images/img/dog-chance-1.jpg" alt="new chance" class="background-image infinite-zoom">
+      <!-- <img src="../../../assets/images/img/dog-chance-1.jpg" alt="new chance" class="background-image infinite-zoom">
       <div class="background-cover"></div>
       <div class="text-cover"></div>
-    </div>
+    </div> -->
     <!-- <div class="mission-item col-xl-3 col-md-6" -->
-    <div class="mission-item"
-      appear 
+    <!-- <div class="mission-item"
+      appear
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
       [duration]="500"
@@ -310,8 +344,8 @@
       <div class="background-cover"></div>
       <div class="text-cover"></div>
     </div>
-    <div class="mission-item"
-      appear 
+    < class="mission-item"
+      appear
       [hide]="{'opacity': '0', 'transform': 'translateY(50px)' }"
       [show]="{'opacity': '1', 'transform': 'translateY(0px)'  }"
       [duration]="500"
@@ -322,13 +356,13 @@
       <div class="position-relative w-100">
         <span class="text">The more you know the stronger you are</span>
         <!-- <span class="text">A story</span> -->
-      </div>
+      <!-- </div>
       <img src="../../../assets/images/img/knowledge.jpeg" alt="knowledge" class="background-image infinite-zoom">
       <div class="background-cover"></div>
       <div class="text-cover"></div>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="lets-talk-about-your-dog-section">
   <div class="container-fluid position-relative p-0">
@@ -357,7 +391,7 @@
     </h2>
     <ol class="row px-lg-5 px-md-4 px-3">
       <div class="col-md-6 col-sm-12 col-circle left">
-        <li> 
+        <li>
           <div class="cover-wrapper">
             <div class="cover" appear [hide]="{'transform': 'translateY(0px)' }" [show]="{'transform': 'translateY(-240px)'}" [threshold]="1" [duration]="1200"></div>
           </div>

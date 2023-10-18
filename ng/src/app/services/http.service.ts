@@ -5,8 +5,9 @@ import { environment } from '@app/environment';
 
 import { Observable, catchError, concatMap, first, map, of } from 'rxjs';
 
-import { 
-  FirebaseService, UtilService 
+import {
+  FirebaseService,
+  UtilService
 } from '@app/services';
 
 import {
@@ -27,6 +28,18 @@ export class HttpService {
     private _injector: Injector,
     private _utilService: UtilService
   ) { }
+
+  // TODO: Improper error handling, empty arrays returned on error
+  // Error check in components [].length === 0 should be rewritten when going for fix
+
+  // fetch news for footer
+  fetchNews(): Observable<any> {
+    return this._http
+    .get<any>(`${environment.API_HOST}/api/news`)
+    .pipe(
+      catchError(async err => [])
+    )
+  }
 
   // call endpoint for sending email
   sendEmail(body: Email): Promise<boolean> {
@@ -91,16 +104,24 @@ export class HttpService {
       )
       .subscribe();
     })
-    
+
   }
 
   // get all products from db
-  getProducts(productType: any, user: CustomUser | null): Observable<ProductResponse[] | []> {
+  // TODO: move to firebase service?
+  getProducts(productType: any, user: CustomUser | null, ids?: String[]): Observable<ProductResponse[] | []> {
     const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
     let products$: Observable<any>;
     switch(productType) {
       case(ProductType.ALL):
+        if (ids && ids.length > 0) {
+          products$ = firebaseService.getProductsById(ids);
+          break;
+        }
         products$ = firebaseService.getAllProducts();
+        break;
+      case(ProductType.ALL && ids):
+        products$ = firebaseService.getProductsById(ids as String[]);
         break;
       case(ProductType.SHOPPING_CART):
         products$ = firebaseService.getProductsInCart(user);
@@ -111,7 +132,7 @@ export class HttpService {
       case(ProductType.PRINTS.OWNED_ITEMS):
         products$ = firebaseService.getProductsForTypePrintTabOwnedItems(user);
         break;
-      default: 
+      default:
         throw new Error('Unable to fetch products. Invalid type: ', productType);
     }
 
@@ -120,6 +141,7 @@ export class HttpService {
     return products$
     .pipe(
       concatMap((products: ProductResponse[]) => {
+        console.log('products res: ', products);
         if (products.length === 0) {
           return of([]);
         }
@@ -128,9 +150,7 @@ export class HttpService {
           map(images => {
             products.forEach((product, i) => {
               if (images[i]) {
-                const extension = this._utilService.getMimeTypeFromExtension(
-                  products[i].fileName.split('.')[1]
-                )
+                const extension = this._utilService.getMimeTypeFromExtension(products[i].fileName.split('.')[1])
                 product.imgPath = `data:image/${extension};base64, ` + images[i];
               } else {
                 product.imgPath = '../../assets/images/img/cesar-millan.png';
@@ -146,8 +166,8 @@ export class HttpService {
 
   // get product images from BE
   getProductImages(fileNames: string[]): Observable<(ArrayBufferLike)[]> {
-    const params = new HttpParams({ 
-      fromObject: { 'fileNames[]': fileNames } 
+    const params = new HttpParams({
+      fromObject: { 'fileNames[]': fileNames }
     })
     return this._http
     .get<any>(
@@ -155,7 +175,7 @@ export class HttpService {
       // this is then filtered in component
       // increase speed by reducing images requested
       `${environment.API_HOST}/api/product-images`,
-      { 
+      {
         responseType: 'json',
         params
       }

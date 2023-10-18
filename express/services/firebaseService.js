@@ -41,7 +41,7 @@ async function generateEmailLink(email, type) {
 async function getPrice(items) {
   // TODO: !important remove conversion to number once product item ids become a string in db
   const tempItemIds = items.map(item => item.id)
-  return db.collection('Products').where('id', 'in', tempItemIds).get()
+  return db.collection('Products/Prints/All').where('id', 'in', tempItemIds).get()
   .then(products => {
     let price = new Decimal(0);
     products.docs.forEach(productDoc => {
@@ -88,7 +88,7 @@ async function addPaymentToUser(user, paymentIntent) {
     'ownedItems': FieldValue.arrayUnion(...user.shopping_cart_items.map(item => item.id)),
     'ownedItemsTimeMap': updated
   })
-} 
+}
 
 module.exports = {
   db,

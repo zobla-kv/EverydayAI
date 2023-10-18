@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, 
+import { AfterViewInit, Component, EventEmitter, Input,
          OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,15 +9,16 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription, first } from 'rxjs';
 
 import {
-  AuthService, 
-  FirebaseService, 
-  HttpService, 
-  ProductLikeService, 
+  AuthService,
+  FirebaseService,
+  HttpService,
+  ProductLikeService,
+  ProductService,
   ToastService,
   UtilService
 } from '@app/services';
 
-import { 
+import {
   CustomUser,
   ToastConstants,
   ProductActions,
@@ -76,7 +77,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     private _httpService: HttpService,
     public   utilService: UtilService,
     private _decimalPipe: DecimalPipe,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    private _productService: ProductService
   ) {
   }
 
@@ -87,7 +89,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.actions.includes(ProductActions.LIKE)) {
         this.isLiked = likes.includes(this.product.id);
       }
-    });  
+    });
   }
 
   ngAfterViewInit() {
@@ -114,49 +116,15 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // handles add to cart
   addToCart() {
-    if (!this.user) {
-      this._router.navigate(['auth', 'login']);
-      return;
-    }
-    this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.addProductToCart(
-      ProductMapper.getOriginalObject(this.product), 
-      this.user.cart.totalSum
-    )
-    .then(async () => await this.handleCartActionSucceeded())
-    .catch(err => this.handleCartActionFailed())
+    this._productService.addToCart(this.product);
   }
 
   // handles remove from cart
   removeFromCart() {
-    this.product.spinners[ProductActions.CART] = true;
-    this._firebaseService.removeProductFromCart(
-      ProductMapper.getOriginalObject(this.product),
-      (<CustomUser>this.user).cart.totalSum
-    )
-    .then(async () => await this.handleCartActionSucceeded())
-    .catch(err => this.handleCartActionFailed())
+    this._productService.removeFromCart(this.product);
   }
 
-  // after product was added/removed to cart
-  async handleCartActionSucceeded() {
-    // this can trigger catch block, for that 'await' is needed
-    await this._authService.updateUser();
-    this.product.isInCart = !this.product.isInCart;
-    if (this.product.isInCart) {
-      this._toast.open(ToastConstants.MESSAGES.ADDED_TO_CART, ToastConstants.TYPE.SUCCESS.type);
-    } else {
-      this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
-    }
-    this.product.spinners[ProductActions.CART] = false;
-  }
-
-  // after product failed to be added/removed to cart
-  handleCartActionFailed() {
-    this.product.spinners[ProductActions.CART] = false;
-    this._toast.showDefaultError();
-  }
-
+  // TODO: move likes func. to product service
   // handle like
   handleLike() {
     this.likesTooltip.show();
@@ -184,38 +152,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // handle download
   handleDownload() {
-    if (!this.user) {
-      this._router.navigate(['auth', 'login']);
-      return;
-    }
-
-    if (!this.product.imgPath.includes('assets')) {
-      // for non 404 images
-      this.triggerDownload(this.product.imgPath);
-      return;
-    }
-
-    this._httpService.getProductImage(this.product.fileName)
-    .pipe(first())
-    .subscribe(path => {
-      if (!path) {
-        this._toast.showDefaultError();
-        return;
-      } else {
-        this.triggerDownload(path);
-      }
-    })
-  }
-
-  // trigger download
-  triggerDownload(url: string): void {
-    const fileName = this.product.title + '.' + this.utilService.getFileExtension(this.product.fileName);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    this._productService.download(this.product);
   }
 
   ngOnDestroy(): void {

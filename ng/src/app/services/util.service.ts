@@ -13,8 +13,8 @@ import {
   ToastConstants
 } from '@app/models';
 
-import { 
-  ToastService 
+import {
+  ToastService
 } from './toast.service';
 
 
@@ -57,13 +57,13 @@ export class UtilService {
     private _route: ActivatedRoute,
     private _toast: ToastService,
     private _bo: BreakpointObserver
-  ) { 
+  ) {
 
     this._bo.observe([
-      Breakpoints.XLarge, 
-      Breakpoints.Large, 
-      Breakpoints.Medium, 
-      Breakpoints.Small, 
+      Breakpoints.XLarge,
+      Breakpoints.Large,
+      Breakpoints.Medium,
+      Breakpoints.Small,
       Breakpoints.XSmall
     ])
     .subscribe((bs: BreakpointState) => {
@@ -101,6 +101,22 @@ export class UtilService {
   }
 
 /**
+  * Load script at component level.
+  *
+  * @return boolean
+  */
+loadScript(url: string) {
+  // TODO: error handling
+  const body = document.body;
+  const script = document.createElement('script');
+  script.innerHTML = '';
+  script.src = url;
+  script.async = false;
+  script.defer = true;
+  body.appendChild(script);
+}
+
+/**
   * Navigates to information component
   * and display passed message
   * no mode trigger for now
@@ -125,7 +141,7 @@ export class UtilService {
   }
 
 /**
-  * Gets items in range from an array 
+  * Gets items in range from an array
   * includes last from range (to)
   *
   * @param message string
@@ -139,18 +155,18 @@ export class UtilService {
 /**
   * Returns deep copy of an object.
   *
-  * @param object 
+  * @param object
   * @returns object
   */
   getDeepCopy(object: any): any {
     return JSON.parse(JSON.stringify(object));
   }
-  
+
 
 /**
   * Returns value of css style without 'px'.
   *
-  * @param object 
+  * @param object
   * @returns object
   */
   getStyleValueWithoutPx(value: string): number {
@@ -160,7 +176,7 @@ export class UtilService {
 /**
   * Sleep function.
   *
-  * @param number - milliseconds 
+  * @param number - milliseconds
   * @returns Promise
   */
   sleep(ms: number): Promise<void> {
@@ -192,7 +208,7 @@ export class UtilService {
 /**
   * get price or discounted price for FE
   *
-  * @param product - ProductResponse 
+  * @param product - ProductResponse
   * @returns Decimal - use decimal because of precision loss
   */
   getProductPrice(product: ProductResponse): string {
@@ -205,7 +221,7 @@ export class UtilService {
 /**
   * set 404 image when product fails to load
   *
-  * @param target - target element (img) 
+  * @param target - target element (img)
   */
   set404Image(target: any): void {
     // TODO: replace src
@@ -214,7 +230,7 @@ export class UtilService {
 
 
 /**
-  * get file extension from file name 
+  * get file extension from file name
   *
   * @param fileName - name of the file
   */
@@ -249,7 +265,7 @@ export class UtilService {
       fileReader.onload = async ev => {
         const image = new Image();
         image.src = ev.target?.result as string;
-        
+
         image.onload = (img: any) => {
           resolution = `${image.width}x${image.height}`;
           resolve(resolution);
@@ -312,7 +328,7 @@ export class UtilService {
         return 1;
       } else if (a.creationDate.toDate().getTime() - b.creationDate.toDate().getTime() > 0) {
         return -1;
-      } 
+      }
       return 0;
     });
   }
@@ -332,7 +348,7 @@ export class UtilService {
         return 1;
       } else if (user.ownedItemsTimeMap[a.id].toDate().getTime() - user.ownedItemsTimeMap[b.id].toDate().getTime() > 0) {
         return -1;
-      } 
+      }
       return 0;
     });
   }

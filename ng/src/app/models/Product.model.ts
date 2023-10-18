@@ -9,7 +9,7 @@ export interface ProductResponse {
   discount: number;
   fileName: string;
   imgAlt: string;
-  likes: number; 
+  likes: number;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   // set in http request
   imgPath: string;
@@ -26,7 +26,7 @@ export interface ProductShirtPrint extends ProductResponse {
 
 interface ProductTypePrintMetadata {
   [key: string]: {
-    downloadSize: string; 
+    downloadSize: string;
     resolution: string;
     extension: string;
     tier: 'classic' | 'premium';
@@ -133,7 +133,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.fileName = product.fileName;
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
-    this.likes = product.likes; 
+    this.likes = product.likes;
     this.metadata = product.metadata;
     this.creationDate = product.creationDate;
     // spinner for each action
@@ -149,14 +149,17 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     delete productCopy.spinners;
     delete productCopy.isInCart;
     delete productCopy.metadataIconMap;
+    // TODO: check how this affects cart, if imgPath is stored as base64 and then pulled into cart from db
+    // or is it? (cant think atm) - recheck this logic
+    delete productCopy.imgPath;
     return productCopy;
   }
 
   // all metadata icons
   // forces to add icon if new metadata field is added to db
-  // if icon depends on data, make sure it follows naming convention (key-value) (tier-classic) 
+  // if icon depends on data, make sure it follows naming convention (key-value) (tier-classic)
   private static _metadataIconMap: MetadataIconMap = new Map([
-    ['price',        { iconName: 'dollar',           type: 'custom'   }],       
+    ['price',        { iconName: 'dollar',           type: 'custom'   }],
     ['downloadSize', { iconName: 'download',         type: 'mat-icon' }],
     ['tier-classic', { iconName: 'tier-classic',     type: 'custom'   }],
     ['tier-premium', { iconName: 'tier-premium',     type: 'custom'   }],
@@ -164,11 +167,11 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     ['extension',    { iconName: 'file-type-img',    type: 'custom'   }],
   ])
 
-  
+
   // what metadata is displayed in the bottom section of single product
   // filter out product list icons to only include passed ones, order is important
   public static getMetadataIconMap(
-    metadataList: string[], 
+    metadataList: string[],
     productMetadata: ProductTypePrintMetadata | ProductTypeShirtMetadata
   ): MetadataIconMap {
     const map: MetadataIconMap = new Map();

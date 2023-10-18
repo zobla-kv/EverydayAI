@@ -25,11 +25,10 @@ body {
     // NOTE: 4rem for footer
     // padding: 0 2rem 4rem 2rem;
     padding-top: 0;
-    padding-bottom: 4rem;
 
-    &:has(.auth-form-page) { 
+    &:has(.auth-form-page) {
       padding: 0 1rem 4rem 1rem;
-      min-height: calc(100vh - 7rem); 
+      min-height: calc(100vh - 7rem);
     }
   }
   .footer-wrapper {
@@ -125,15 +124,6 @@ hr.orange-line { border: 1px solid $main-orange-bg-color; opacity: 1; }
 .orange-text { color: $orange-text !important; }
 .gray-text { color: $gray-text !important; }
 
-/* header footer */
-header,
-.footer-wrapper {
-  background-color: $main-dark-bg-color;
-  width: 100%;
-  z-index: 99999;
-  position: sticky;
-}
-
 .custom-border {
   &::before {
     position: absolute;
@@ -223,7 +213,7 @@ form {
     margin: 0;
     padding: 0;
     text-align: left;
-  
+
     .form-style {
       padding: 13px 20px;
       padding-left: 55px;
@@ -255,21 +245,21 @@ form {
 
         .mat-icon,
         & ~ .mat-icon {
-          color: $error-color; 
+          color: $error-color;
           svg path { fill: $error-color; }
         }
       }
-  
-      &.white-input { 
+
+      &.white-input {
         background-color: rgb(226, 226, 226);
         color: $dark-text;
-  
+
         &.ng-invalid.ng-touched {
           -webkit-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
           -moz-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
           box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
         }
-        
+
         &::placeholder {
           color: $dark-text;
           opacity: 0.5;
@@ -282,7 +272,7 @@ form {
       outline: none;
       box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
     }
-  
+
     .mat-icon {
       position: absolute;
       top: 0;
@@ -306,9 +296,9 @@ form {
         align-items: center;
       }
     }
-  
+
   }
-  
+
   button.submit-form-button {
     border-radius: 4px;
     height: 44px;
@@ -336,10 +326,10 @@ form {
     background-color: $main-dark-bg-color;
     color: white;
     box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
-  
-    &:hover { 
+
+    &:hover {
       background-color: $main-dark-bg-color;
-      color: $orange-text; 
+      color: $orange-text;
     }
   }
 }
@@ -356,19 +346,22 @@ form {
   stroke: $main-dark-bg-color !important;
 }
 
+.mat-icon { color: $orange-text; }
+.mat-icon svg path { fill: $orange-text; }
+
 .mat-mdc-paginator {
   border-radius: 8px;
   background-color: $main-orange-bg-color;
 
   .mat-mdc-paginator-page-size { display: none; }
   .mat-mdc-paginator-range-actions {
-    .mat-mdc-paginator-range-label { 
+    .mat-mdc-paginator-range-label {
       color: $main-orange-bg-color;
       font-size: 0.875rem;
       margin: 0 0.5rem;
     }
-    button { 
-      background-color: $main-orange-bg-color; 
+    button {
+      background-color: $main-orange-bg-color;
       margin-left: 0.5rem;
     }
   }
@@ -391,7 +384,7 @@ form {
   }
 
   // for flick in product item
-  &.keep-position { 
+  &.keep-position {
     top: -18px;
   }
 
@@ -445,7 +438,7 @@ form {
 
     flex: 1 !important;
     top: 0;
-    padding: 0 !important; 
+    padding: 0 !important;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border: 1px solid $main-orange-bg-color;
@@ -455,19 +448,19 @@ form {
 
     &:first-child { margin-left: 20px; }
     &:last-child { margin-right: 20px; }
-  
+
     .mdc-tab-indicator .mdc-tab-indicator__content { display: none; }
     .mdc-tab__content { width: 100% }
-    .mdc-tab__text-label { 
-      color: $orange-text; 
+    .mdc-tab__text-label {
+      color: $orange-text;
       transition: $tab-change-animation-duration;
-      .mat-icon { 
-        color: $orange-text; 
-        transition: $tab-change-animation-duration; 
+      .mat-icon {
+        color: $orange-text;
+        transition: $tab-change-animation-duration;
         margin-right: 0.5rem;
       }
-      .active-tab-animation-filler { 
-        position: absolute; 
+      .active-tab-animation-filler {
+        position: absolute;
         left: 0;
         bottom: 0;
         width: 100%;
@@ -478,11 +471,11 @@ form {
       }
     }
   }
-  
+
   .mat-mdc-tab.mdc-tab--active {
     .mdc-tab__text-label { color: $dark-text !important; }
     .mat-icon { color: $dark-text; }
-    .active-tab-animation-filler { 
+    .active-tab-animation-filler {
       height: 100%;
     }
   }

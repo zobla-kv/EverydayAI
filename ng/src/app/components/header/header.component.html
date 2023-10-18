@@ -1,8 +1,8 @@
-<header 
-  *ngIf="['xl', 'lg', 'md'].includes(currentScreenSize)" 
+<header
+  *ngIf="['xl', 'lg', 'md'].includes(currentScreenSize)"
   class="large-screen"
-  role="heading" 
-  [@expand]="expand" 
+  role="heading"
+  [@expand]="expand"
 >
   <div class="header-wrapper d-flex w-100">
     <div class="header-item navigation-wrapper absolute-center">
@@ -12,7 +12,7 @@
         [routerLinkActiveOptions]="{exact: true}"
       >
         {{ 'Home' | uppercase }}
-      </a> 
+      </a>
       <span class="header-item-splitter">|</span>
       <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a>
       <a routerLink="/control-panel" routerLinkActive="nav-active" *ngIf="isAdmin">
@@ -27,11 +27,11 @@
     <!-- LOGGED IN -->
     <div class="header-item profile" *ngIf="isAuthenticated">
       <a routerLink="/cart" routerLinkActive="nav-active" class="me-5 d-flex">
-        <mat-icon 
-          matBadge="{{ numberOfItemsInCart }}" 
-          matBadgePosition="above after" 
-          matBadgeOverlap="true" 
-          matBadgeHidden="false" 
+        <mat-icon
+          matBadge="{{ numberOfItemsInCart }}"
+          matBadgePosition="above after"
+          matBadgeOverlap="true"
+          matBadgeHidden="false"
           matBadgeDescription="number of items in shopping cart"
           matBadgeSize="medium"
         >
@@ -54,11 +54,11 @@
   </div>
 </header>
 
-<header 
-  *ngIf="['sm', 'xs'].includes(currentScreenSize)" 
+<header
+  *ngIf="['sm', 'xs'].includes(currentScreenSize)"
   role="heading"
   class="medium-screen"
-  role="heading" 
+  role="heading"
 >
   <div class="outer-menu">
     <input class="checkbox-toggle" type="checkbox" #hamburgerToggle/>
@@ -72,7 +72,7 @@
             <li>
               <a routerLink="/" routerLinkActive="nav-active-mobile" [routerLinkActiveOptions]="{exact: true}">
                 <span>Home</span>
-              </a> 
+              </a>
             </li>
             <li>
               <a routerLink="/products" routerLinkActive="nav-active-mobile">
@@ -80,7 +80,7 @@
               </a>
             </li>
             <li>
-              <a routerLink="/control-panel" routerLinkActive="nav-active-mobile">
+              <a routerLink="/control-panel" routerLinkActive="nav-active-mobile" *ngIf="isAdmin">
                 <span>Admin</span>
               </a>
             </li>

@@ -1,8 +1,5 @@
 @import '../../../styles/variables.scss';
 
-.mat-icon { color: $orange-text; }
-.mat-icon svg path { fill: $orange-text; }
-
 a {
 	cursor: pointer;
   transition: all 200ms linear;
@@ -34,7 +31,7 @@ h6 span {
 
   .mat-icon,
     & ~ .mat-icon {
-      color: $error-color; 
+      color: $error-color;
       svg path { fill: $error-color; }
     }
 }
@@ -175,7 +172,7 @@ h6 span {
 
 input[type="password"] { padding-right: 55px; }
 
-// smaller than 576px 
+// smaller than 576px
 @media only screen and (max-width: 576px) {
   .center-wrap { padding: 2rem 1rem; }
 }

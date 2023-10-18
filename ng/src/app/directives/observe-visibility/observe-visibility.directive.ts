@@ -21,11 +21,11 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   // object holding show styles
   @Input('show') showStyles: any = { 'opacity': '1' };
   // show animation duration
-  @Input('duration') duration: number = 1000;
+  @Input('duration') duration: number = 500;
   // show animation delay
   @Input('delay') delay: number = 0;
   // what percentage should be visible before triggering
-  @Input('threshold') threshold: number = 0.3;
+  @Input('threshold') threshold: number = 0.6;
   // root margin
   @Input('rootMargin') rootMargin: string = '0px';
   // appear immediately (don't wait to be in view)

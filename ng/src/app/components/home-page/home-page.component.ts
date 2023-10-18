@@ -1,7 +1,19 @@
-import { AfterViewInit, Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { Observable, fromEvent, interval, merge, throttle } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Observable, Subscription, first, fromEvent, interval, merge, throttle } from 'rxjs';
 
 import {
+  CustomUser,
+  ProductActions,
+  ProductMapper,
+  ProductResponse,
+  ProductType,
+  ProductTypePrint
+} from '@app/models';
+
+import {
+  AuthService,
+  HttpService,
+  ProductService,
   UtilService
 } from '@app/services';
 
@@ -10,7 +22,7 @@ import {
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements AfterViewInit {
+export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChildren('carouselItem') carouselItemsRef: QueryList<HTMLImageElement>;
   @ViewChildren('bullet') bulletPoints: QueryList<ElementRef>;
@@ -25,7 +37,7 @@ export class HomePageComponent implements AfterViewInit {
   // is playing
   isCarouselPlaying = false;
 
-  // carousel image change time 
+  // carousel image change time
   carouselInterval = 5000;
 
   // bullet points hover observable
@@ -34,13 +46,55 @@ export class HomePageComponent implements AfterViewInit {
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
 
+  // is logged in
+  user: CustomUser | null;
+
+  // user sub
+  userStateSub$: Subscription;
+
+  // our picks products
+  ourPicksProducts: any[];
+
+  // are our picks loaded
+  ourPicksLoaded = false;
+
+  // are our picks loaded with error
+  ourPicksError = false;
+
   constructor(
+    private _authService: AuthService,
     private _utilService: UtilService,
     private _el: ElementRef,
-    private _renderer: Renderer2
+    private _renderer: Renderer2,
+    private _httpService: HttpService,
+    public   productService: ProductService
   ) {
     // NOTE: is loaded from another route
     // const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
+  }
+
+  ngOnInit() {
+    this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
+    this._httpService.getProducts(ProductType.ALL, null, ['4kRiOacS3BWh2MM5nWU5', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'])
+    .pipe(first())
+    .subscribe(products => {
+      console.log('products HP: ', products);
+      // simplified productMapper
+      // TODO: sorted automatically by id, dont want this
+      this.ourPicksProducts = products.map(product => ({
+        ...product,
+        spinners: { [ProductActions.CART]: false },
+        isInCart: this.user?.cart.items.findIndex((item: any) => item.id === product.id) === -1 ? false : true
+      }));
+      // 404 images allowed to show
+      if (products.length !== 3) {
+        this.ourPicksError = true;
+      }
+      // page lags without this
+      setTimeout(() => {
+        this.ourPicksLoaded = true;
+      }, 1000);
+    })
   }
 
   ngAfterViewInit() {
@@ -52,11 +106,44 @@ export class HomePageComponent implements AfterViewInit {
     landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
     landingSection.style.minHeight = landingSection.offsetHeight + 'px';
 
+    // setTimeout(() => this.showOurPicks(), 3000)
+
     // this.setBulletPointsHover();
     // this.bulletPointsHover$ = merge(
     //   this.bulletPoints.map(bullet => fromEvent(bullet.nativeElement, 'hover'))
     // );
+
   }
+
+  // run hover animation once cta button is displayed to get eyes to focus on that
+  hightlightCTAButton(element: HTMLButtonElement) {
+    // run after animation is done, delay + duration
+    const delay = this.isFirstVisit ? 1800 : 1200 + 600;
+    setTimeout(() => {
+      element.classList.add('highlighted');
+    }, delay);
+  }
+  // copy of above one with different delay
+  // TODO: move to directive because not DRY
+  hightlightProduct(element: HTMLElement, elementDelay: number = 0) {
+    // run after animation is done, delay + duration
+    const delay = 350 + elementDelay;
+    setTimeout(() => {
+      element.classList.add('highlighted');
+    }, delay);
+  }
+
+  // setOurPicks(products: ProductResponse[]) {
+  //   const ourPicks = products.map(product => ({
+  //     ...product,
+  //     // directive
+  //     hideStyles: {'opacity': 0, 'transform': 'translateY(-40px)'},
+  //     showStyles: {'opacity': 1, 'transform': 'translateY(0px)'},
+  //     threshold: 0.8,
+
+  //   }))
+  //   this.ourPicksProducts = products;
+  // }
 
 
   // sets config for carousel
@@ -97,6 +184,10 @@ export class HomePageComponent implements AfterViewInit {
   // stops carousel
   disableCarousel() {
     this.isCarouselPlaying = false;
+  }
+
+  ngOnDestroy() {
+    this.userStateSub$.unsubscribe();
   }
 
 }
