@@ -27,18 +27,6 @@ import {
 })
 export class CPanelComponent implements OnInit, AfterViewInit {
 
-  // TODO: AFTER VACATION: prevent delete of owned items (add .isActive field to each product)
-  // TODO: express environments gone after pc switch (find prod on hosting env)
-
-  // TODO: payment, update landing page, deploy!
-  // TODO: stopped here, test functionality after split db and deploy (tried once)
-
-  // TODO: prevent delete of owned items
-  // TODO: .toDate() of undefined on prod, check this later
-
-  // TODO: remove 404 images from product list on product page (leave for later?)
-  // TODO: Some stats above table (leave for later?)
-
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('paginator') paginator: MatPaginator;
 

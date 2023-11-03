@@ -497,12 +497,6 @@ form {
 }
 
 /* MEDIA QUERIES */
-// bigger than 976px
-@media only screen and (min-width: 976px) {
-}
-// smaller than 976px
-@media only screen and (max-width: 976px) {
-}
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   .mdc-snackbar {
@@ -512,7 +506,4 @@ form {
     transform: translate(-50%, -50%) !important;
     position: fixed !important;
   }
-}
-// smaller than 576px
-@media only screen and (max-width: 576px) {
 }

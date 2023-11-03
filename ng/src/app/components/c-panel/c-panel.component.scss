@@ -10,7 +10,7 @@
 .table-controls {
   width: 300px;
   background-color: $main-orange-bg-color;
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: 0;
   display: flex;
   gap: 24px;
@@ -24,7 +24,7 @@
     aspect-ratio: 1;
     // border: 10px solid $main-orange-bg-color; /* the outer space */
     background:
-      conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0) 
+      conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0)
       calc(100% + $thickness / 2) calc(100% + $thickness / 2)/
       calc(50%  + $thickness)   calc(50%  + $thickness);
     display: inline-block;
@@ -42,7 +42,7 @@
   margin: auto;
   min-height: 300px;
 
-  mat-spinner { 
+  mat-spinner {
     position: relative;
     top: 100px;
   }
@@ -56,14 +56,14 @@
       padding-top: 0.8rem;
       padding-bottom: 0.8rem;
 
-      div { 
+      div {
         display: flex;
         align-items: center;
         gap: 2px;
       }
     }
 
-    .product-img { 
+    .product-img {
       width: 75px;
       height: 75px;
     }
@@ -77,9 +77,9 @@
     .mat-column-price {
       width: 10%;
       min-width: 100px;
-      
-      div { 
-        flex-direction: column; 
+
+      div {
+        flex-direction: column;
         align-items: flex-start;
       }
 
@@ -139,6 +139,7 @@
   background-color: $main-dark-bg-color;
 }
 
+/* MEDIA QUERIES */
 // smaller than 850px when horizontal scrollbar appears on table
 @media only screen and (max-width: 850px) {
   // make elements follow vertical table scroll

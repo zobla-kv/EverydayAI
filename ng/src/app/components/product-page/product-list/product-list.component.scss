@@ -12,15 +12,15 @@
     margin: 1rem 0 2rem 0;
   }
 
-  .product-list-container { 
+  .product-list-container {
     min-height: 800px;
-    // only if it has direct child mat spinner  
+    // only if it has direct child mat spinner
     &:has(> mat-spinner) {
       display: flex;
       justify-content: center;
       align-items: center;
       transform: translateY(-150px);
-    } 
+    }
   }
 
   // TODO: choose pagination
@@ -36,31 +36,31 @@
   //   background-color: $main-dark-bg-color;
 
   //   .mat-mdc-paginator-page-size { display: none; }
-    
+
   //   .mat-mdc-paginator-range-actions {
-  //     .mat-mdc-paginator-range-label { 
+  //     .mat-mdc-paginator-range-label {
   //       color: $main-orange-bg-color;
   //       font-size: 0.875rem;
   //       margin: 0 0.5rem;
   //     }
-  //     button { 
-  //       background-color: $main-orange-bg-color; 
+  //     button {
+  //       background-color: $main-orange-bg-color;
   //       margin-left: 0.5rem;
   //     }
   //   }
-  
+
   //   .mat-mdc-paginator-range-actions {
   //     // border: 1px solid white;
   //     margin: auto;
   //     display: block;
-  //     .mat-mdc-paginator-range-label { 
+  //     .mat-mdc-paginator-range-label {
   //       color: $main-orange-bg-color;
   //       font-size: 0.875rem;
   //       margin: 0 auto 0.5rem auto;
   //       width: fit-content;
   //     }
-  //     button { 
-  //       background-color: $main-orange-bg-color; 
+  //     button {
+  //       background-color: $main-orange-bg-color;
   //       margin-left: 1rem;
   //       &:nth-child(2) { margin-left: 0; }
   //     }
@@ -73,7 +73,7 @@
     transition: $transition-duration;
     transform: translateY(0px);
     opacity: 1;
-  
+
     &.fade-out {
       transition: $transition-duration;
       transform: translateY(50px);
@@ -84,20 +84,12 @@
 }
 
 /* MEDIA QUERIES */
-// bigger than 1200px
-@media only screen and (max-width: 1200px) {
-  //
-}
-// smaller than 976px
-@media only screen and (max-width: 976px) {
-  //
-}
 // smaller than 576px
 @media only screen and (max-width: 576px) {
   .product-list-wrapper {
     &:has(> mat-spinner) .mat-mdc-progress-spinner {
       width: 150px !important;
       height: 150px !important;
-    } 
+    }
   }
 }
