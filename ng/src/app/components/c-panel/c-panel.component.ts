@@ -93,7 +93,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       ]),
       'price': new FormControl(null, [
         Validators.required,
-        Validators.pattern('^[0-9.]*$')
+        Validators.pattern('^[0-9]{1}.*$')
       ]),
       'discount': new FormControl(0, [
         Validators.required,
