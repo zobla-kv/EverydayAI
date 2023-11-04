@@ -15,8 +15,8 @@
           <!-- hardcoded to avoid implementation issues - two actions in one box, mat-icon type (custom vs mat-icon) -->
           <mat-icon *ngIf="action === productActions.CART && !product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart()"></mat-icon>
           <mat-icon *ngIf="action === productActions.CART && product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
-          <mat-icon 
-            *ngIf="action === productActions.LIKE" 
+          <mat-icon
+            *ngIf="action === productActions.LIKE"
             #tooltip="matTooltip"
             matTooltip
             matTooltipPosition="above"
@@ -35,9 +35,9 @@
   </div>
   <div class="bottom-section">
     <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
-    <div class="product-information mt-3"  [attr.type]="type">
-      <div 
-        class="product-information-item" 
+    <div class="product-metadata mt-3"  [attr.type]="type">
+      <div
+        class="product-metadata-item"
         *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
         [attr.item]="metadata.key"
       >
@@ -55,8 +55,8 @@
           </ng-container>
         </span>
 
-        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span> 
+        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span>
       </div>
     </div>
   </div>
-</div>  
+</div>

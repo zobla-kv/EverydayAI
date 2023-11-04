@@ -21,7 +21,7 @@
         height: 387px;
 
         .cart-item {
-          color: white;
+          // TODO: choose text colors of things here
           margin-top: 0.75rem;
           background-color: inherit;
           border: none;
@@ -33,7 +33,10 @@
             transition: all 1s
           }
 
-          .cart-item-title {
+          img { width: 70px; height: 70px; }
+
+          .product-title {
+            color: white;
             max-height: 50px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -43,31 +46,27 @@
             font-size: 1.25rem;
           }
 
-          .cart-item-metadata-item {
-            display: flex;
+          .product-price {
+            color: white;
+          }
+
+          .product-metadata-item {
             align-items: center;
             gap: 2px;
 
-            .mat-icon { width: 18px; height: 24px; }
-
-            &[item="tier"] {
-              text-transform: capitalize;
-            }
+            .mat-icon { height: 26px; }
             &[item="extension"] {
-              text-transform: uppercase;
+              .mat-icon { transform: scale(0.9); }
             }
 
-            .vr { min-height: 12px; margin: auto 4px;  }
+            span { font-size: 14px; }
 
-            &:last-child{
-              .vr { display: none; }
-            }
-
+            .vr { min-height: 16px; margin: auto 4px; }
+            &:last-child .vr { display: none; }
           }
 
           .icon-delete { color: white; cursor: pointer; }
           mat-spinner { top: 0; }
-          img { width: 70px; height: 70px; }
 
         }
       }
@@ -147,10 +146,10 @@
         img { width: 100px !important; height: 100px !important; }
         box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
 
-        .cart-item-description {
+        .product-metadata {
           width: 100%;
 
-          .cart-item-title {
+          .product-title {
             margin-top: 0.25rem;
             margin-bottom: 1rem;
             text-align: center;
@@ -172,7 +171,7 @@
     flex-direction: column;
     align-items: center;
 
-    .cart-item-title { margin-bottom: 0.25rem !important; }
+    .product-title { margin-bottom: 0.25rem !important; }
 
     .cart-item-price {
       position: relative !important;
