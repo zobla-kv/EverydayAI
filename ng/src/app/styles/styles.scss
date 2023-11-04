@@ -390,6 +390,10 @@ form {
 
 }
 
+.cdk-overlay-container {
+  // toast > header
+  z-index: 999999;
+}
 .cdk-overlay-pane { height: 0; }
 .mdc-snackbar {
   margin-top: 130px !important;
