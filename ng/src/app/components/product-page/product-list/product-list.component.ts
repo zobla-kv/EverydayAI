@@ -144,8 +144,9 @@ export class ProductListComponent implements OnInit {
   // updates page number in pagination
   updatePageNumber() {
     const list = this._element.nativeElement.querySelectorAll('.mat-mdc-paginator-range-label')[0];
-    // TODO: 1/0 bug from line below
-    list && (list.innerHTML = 'Page: ' + (this.paginator.pageIndex + 1) + '/' + this.paginator.getNumberOfPages());
+    const currentPage = this.paginator.pageIndex + 1;
+    const totalPages = this.paginator.getNumberOfPages() === 0 ? 1 : this.paginator.getNumberOfPages();
+    list && (list.innerHTML = 'Page: ' + currentPage + '/' + totalPages);
   }
 
   // trigger show animation
