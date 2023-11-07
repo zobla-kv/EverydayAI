@@ -11,8 +11,8 @@ import {
   CPanelComponent
 } from '@app/components';
 
-import { 
-  LoginGuard, 
+import {
+  LoginGuard,
   LogoutGuard,
   AdminGuard
 } from './app.guard';
@@ -35,33 +35,31 @@ const routes: Routes = [
       { path: 'verify',   component: AuthVerify }
     ],
   },
-  { 
-    path: 'reset-password', 
+  {
+    path: 'reset-password',
     component: XFormComponent,
     canActivate: [LogoutGuard]
   },
-  { 
-    path: 'cart', 
+  {
+    path: 'cart',
     component: ShoppingCartComponent,
     canActivate: [LoginGuard]
   },
   {
-    path: 'control-panel', 
+    path: 'control-panel',
     component: CPanelComponent,
     canActivate: [AdminGuard]
   },
   // TODO: 404
-  { 
-    path: '**', 
+  {
+    path: '**',
     redirectTo: ''
   }
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'enabled'
-  })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

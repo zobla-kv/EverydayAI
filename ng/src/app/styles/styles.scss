@@ -4,6 +4,11 @@
 
 // TODO: check responsiveness of everything
 
+html {
+  // required for instant scroll on route change
+  scroll-behavior: auto !important;
+}
+
 body {
   background-color: $main-dark-bg-color;
   color: $white-text;

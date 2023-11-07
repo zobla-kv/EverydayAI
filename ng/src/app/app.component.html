@@ -12,7 +12,7 @@
   <app-header></app-header>
 
   <main class="page-wrapper" [@liftOnHeaderCollapse]="liftPage">
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="window.scrollTo(0, 0)"></router-outlet>
   </main>
 
   <app-footer></app-footer>

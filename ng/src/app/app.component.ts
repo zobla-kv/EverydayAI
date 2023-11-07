@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { first } from 'rxjs';
@@ -24,7 +23,7 @@ import {
     trigger('appLoad', [
     state('true', style({ 'transform': 'translateY(-100vh)' })),
     transition('false => true', [
-      group([ 
+      group([
         query(':self', [ animate('420ms 500ms', style({ 'transform': 'translateY(-100vh)' }))]),
         query('mat-spinner', [ animate('500ms ease-in-out', style({ 'opacity': '0' }))])
       ])
@@ -55,13 +54,16 @@ export class AppComponent {
   // follow header animation
   liftPage = true;
 
+  // access in template
+  get window() { return window; }
+
   constructor(
     private _iconService: IconService,
     private _authService: AuthService,
     private _utilService: UtilService,
     private _firebaseService: FirebaseService,
     private _location: Location
-  ) {    
+  ) {
 
     console.log('test for new build')
     console.log('environment: ', environment);
@@ -86,7 +88,7 @@ export class AppComponent {
     this._utilService.screenSizeChange$.subscribe(size => {
       if (['xl','lg', 'md'].includes(size)) {
         // animate only on larger screens
-        this._utilService.scrolledToTop$.subscribe(scrolledToTop => 
+        this._utilService.scrolledToTop$.subscribe(scrolledToTop =>
           scrolledToTop ? this.animateUp() : this.animateDown()
         );
       } else {
@@ -94,7 +96,7 @@ export class AppComponent {
         this._utilService.scrolledToTop$.complete();
       }
     });
-    
+
   }
 
   // methods for following header animation
