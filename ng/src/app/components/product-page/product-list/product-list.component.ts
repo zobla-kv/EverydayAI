@@ -118,9 +118,8 @@ export class ProductListComponent implements OnInit {
 
   // show items depending on page
   updatePage() {
-    this.updatePaginatedList()
+    this.updatePaginatedList();
     this.updatePageNumber();
-    this.showProductItems();
   }
 
   // get items for next page
@@ -137,8 +136,20 @@ export class ProductListComponent implements OnInit {
   }
 
   // handle pagination navigation
-  handlePaginatorNagivation(event: PageEvent) {
-    this.hideProducts();
+  // attach scroll listener for animation to run once scroll hits top position and remove it afterwards
+  handlePaginatorNagivation() {
+    const handleScroll = () => {
+      if (window.scrollY < 30) {
+        setTimeout(() => this.hideProducts(), 200);
+        setTimeout(() => {
+          this.updatePage();
+          this.showProducts();
+        }, 500);
+        window.removeEventListener('scroll', handleScroll);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+    window.scrollTo({ top: 20, behavior: 'smooth' });
   }
 
   // updates page number in pagination
@@ -149,21 +160,13 @@ export class ProductListComponent implements OnInit {
     list && (list.innerHTML = 'Page: ' + currentPage + '/' + totalPages);
   }
 
-  // trigger show animation
-  showProductItems() {
+  // show products
+  showProducts() {
     this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
   }
+  // hide products
   hideProducts() {
     this._renderer.addClass(this.productList.nativeElement, 'fade-out');
-    this.updatePageAfterAnimation();
-  }
-
-  updatePageAfterAnimation() {
-    // time should match css transition
-    setTimeout(() => {
-      this.updatePage();
-      this.showProductItems();
-    }, 300);
   }
 
 }
