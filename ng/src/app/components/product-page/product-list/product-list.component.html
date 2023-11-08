@@ -23,6 +23,7 @@
     </div>
   </div>
   <mat-paginator
+    [ngClass]="{'d-none': showSpinner }"
     class="mt-3"
     #paginator
     pageSize="{{ config.pageSize }}"
