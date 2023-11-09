@@ -109,19 +109,16 @@ export class HttpService {
 
   // get all products from db
   // TODO: move to firebase service?
-  getProducts(productType: any, user: CustomUser | null, ids?: String[]): Observable<ProductResponse[] | []> {
+  getProducts(productType: any, user: CustomUser | null, ids?: string[]): Observable<ProductResponse[] | []> {
     const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
     let products$: Observable<any>;
     switch(productType) {
       case(ProductType.ALL):
-        if (ids && ids.length > 0) {
+        if (ids) {
           products$ = firebaseService.getProductsById(ids);
           break;
         }
         products$ = firebaseService.getAllProducts();
-        break;
-      case(ProductType.ALL && ids):
-        products$ = firebaseService.getProductsById(ids as String[]);
         break;
       case(ProductType.PRINTS.SHOP):
         products$ = firebaseService.getProductsForTypePrintTabShop(user);

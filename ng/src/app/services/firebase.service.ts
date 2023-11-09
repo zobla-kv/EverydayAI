@@ -212,7 +212,11 @@ export class FirebaseService {
   }
 
   // get products by id
-  getProductsById(ids: String[]): Observable<ProductTypePrint[]> {
+  getProductsById(ids: string[]): Observable<ProductTypePrint[]> {
+    // if added because of user.cart can be empty array
+    if (ids.length === 0) {
+      return of([]);
+    }
     return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
