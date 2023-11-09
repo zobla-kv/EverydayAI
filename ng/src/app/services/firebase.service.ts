@@ -216,15 +216,6 @@ export class FirebaseService {
     return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductTypePrint[]>;
   }
 
-  // get products in cart
-  getProductsInCart(user: CustomUser | null): Observable<ProductResponse[]> {
-    if (user?.cart.items.length === 0) {
-      return of([]);
-    }
-    const itemIds = user?.cart.items.map(item => item.id);
-    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', itemIds)).valueChanges() as Observable<ProductTypePrint[]>;
-  }
-
   // add new product to db
   async addProduct(data: ProductResponse): Promise<string> {
     return this._db.collection('Products/Prints/All').add({
@@ -274,24 +265,20 @@ export class FirebaseService {
   }
 
   // add single product to cart
-  addProductToCart(product: ProductResponse, sum: number): Promise<void> {
-    const updatedSum = new Decimal(sum).plus(this._utilService.getProductPrice(product));
+  addProductToCart(productId: string): Promise<void> {
     // .getUser sync version because this can only be triggered if user is logged in
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
-      'cart.items': arrayUnion(product),
-      'cart.totalSum': updatedSum.toFixed(2)
+      'cart': arrayUnion(productId)
     })
   }
 
   // remove single product from cart
-  removeProductFromCart(product: ProductResponse, sum: number): Promise<void> {
-    const updatedSum = new Decimal(sum).minus(this._utilService.getProductPrice(product));
+  removeProductFromCart(productId: string): Promise<void> {
     // NOTE: below line will require change if getUser is to become async
     const currentUserId = this._injector.get<AuthService>(AuthService).getUser()?.id;
     return this._db.collection('Users').doc(currentUserId).ref.update({
-      'cart.items': arrayRemove(product),
-      'cart.totalSum': updatedSum.toFixed(2)
+      'cart': arrayRemove(productId)
     })
   }
 

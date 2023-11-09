@@ -1,7 +1,7 @@
 // TODO: remove User class because it is unused
 import { Timestamp } from '@angular/fire/firestore';
 
-import { 
+import {
   ProductResponse
 } from '@app/models';
 
@@ -20,7 +20,7 @@ export interface CustomUser {
   name: string;
   role: string;
   gender: string;
-  cart: ShoppingCart;
+  cart: string[];
   registrationDate: Date;
   lastActiveDate: Date;
   stripe: UserStripeData;
@@ -32,7 +32,7 @@ export interface CustomUser {
 
 export interface ShoppingCart {
   items: ProductResponse[],
-  totalSum: number;
+  totalSum: string;
 }
 
 interface UserStripeData {
@@ -40,12 +40,12 @@ interface UserStripeData {
   id: string | null;
 }
 
-// payment object that is sent to BE 
+// payment object that is sent to BE
 export interface PaymentObject {
   user: {
     id: string;
     email: string;
-    shopping_cart_items: { id: string, title: string }[],
+    shopping_cart_items: string[],
     stripeId: string | null,
     card: PaymentCard;
   }

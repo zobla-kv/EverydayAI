@@ -52,26 +52,20 @@ export class ProductService implements OnDestroy {
      this._router.navigate(['auth', 'login']);
      return;
    }
-   this._firebaseService.addProductToCart(
-     ProductMapper.getOriginalObject(product),
-     this.user.cart.totalSum
-   )
+   this._firebaseService.addProductToCart(product.id)
    .then(async () => await this._handleCartActionSucceeded(product))
    .catch(err => this._handleCartActionFailed(product))
   }
 
   // remove product from cart
-  async removeFromCart(product: ProductMapper<ProductTypePrint>) {
+  async removeFromCart(product: ProductMapper<ProductTypePrint>): Promise<void> {
     product.spinners[ProductActions.CART] = true;
-    this._firebaseService.removeProductFromCart(
-      ProductMapper.getOriginalObject(product),
-      (<CustomUser>this.user).cart.totalSum
-    )
+    this._firebaseService.removeProductFromCart(product.id)
     .then(async () => await this._handleCartActionSucceeded(product))
     .catch(err => this._handleCartActionFailed(product))
   }
 
-   // after product was added/removed to cart
+  // after product was added/removed to cart
   private async _handleCartActionSucceeded(product: ProductMapper<ProductTypePrint>) {
     // this can trigger catch block, for that 'await' is needed
     await this._authService.updateUser();
@@ -89,40 +83,40 @@ export class ProductService implements OnDestroy {
     this._toast.showDefaultError();
   }
 
-   // download product
-   async download(product: ProductResponse) {
-    if (!this.user) {
-      this._router.navigate(['auth', 'login']);
-      return;
-    }
-
-    if (!product.imgPath.includes('assets')) {
-      // for non 404 images
-      this._triggerDownload(product, product.imgPath);
-      return;
-    }
-
-    this._httpService.getProductImage(product.fileName)
-    .pipe(first())
-    .subscribe(path => {
-      if (!path) {
-        this._toast.showDefaultError();
-        return;
-      } else {
-        this._triggerDownload(product, path);
-      }
-    })
+  // download product
+  async download(product: ProductResponse) {
+   if (!this.user) {
+     this._router.navigate(['auth', 'login']);
+     return;
    }
 
-   // trigger download action
-   private _triggerDownload(product: ProductResponse, url: string): void {
-    const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+   if (!product.imgPath.includes('assets')) {
+     // for non 404 images
+     this._triggerDownload(product, product.imgPath);
+     return;
+   }
+
+   this._httpService.getProductImage(product.fileName)
+   .pipe(first())
+   .subscribe(path => {
+     if (!path) {
+       this._toast.showDefaultError();
+       return;
+     } else {
+       this._triggerDownload(product, path);
+     }
+   })
+  }
+
+  // trigger download action
+  private _triggerDownload(product: ProductResponse, url: string): void {
+   const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
+   const a = document.createElement('a');
+   a.href = url;
+   a.download = fileName;
+   document.body.appendChild(a);
+   a.click();
+   document.body.removeChild(a);
   }
 
   ngOnDestroy(): void {

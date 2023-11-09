@@ -123,9 +123,6 @@ export class HttpService {
       case(ProductType.ALL && ids):
         products$ = firebaseService.getProductsById(ids as String[]);
         break;
-      case(ProductType.SHOPPING_CART):
-        products$ = firebaseService.getProductsInCart(user);
-        break;
       case(ProductType.PRINTS.SHOP):
         products$ = firebaseService.getProductsForTypePrintTabShop(user);
         break;

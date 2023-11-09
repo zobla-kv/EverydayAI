@@ -84,7 +84,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ourPicksProducts = products.map(product => ({
         ...product,
         spinners: { [ProductActions.CART]: false },
-        isInCart: this.user?.cart.items.findIndex((item: any) => item.id === product.id) === -1 ? false : true
+        isInCart: this.user?.cart.indexOf(product.id) === -1 ? false : true
       }));
       // 404 images allowed to show
       if (products.length !== 3) {

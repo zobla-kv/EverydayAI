@@ -42,7 +42,7 @@
                   </div>
 
                   <div class="cart-items-wrapper">
-                    <div class="card cart-item" *ngFor="let product of getCurrentCart()" [ngClass]="{'hovered' : product.spinners.delete}">
+                    <div class="card cart-item" *ngFor="let product of getCurrentCart()" [ngClass]="{'hovered' : product.spinners.cart}">
                       <div class="card-body p-2">
                         <div class="d-flex justify-content-between">
                           <div class="d-flex flex-column flex-sm-row flex-grow-1 align-items-center">
@@ -74,13 +74,13 @@
                               </h5>
                             </div>
                             <mat-icon
-                              *ngIf="!product.spinners.delete"
+                              *ngIf="!product.spinners.cart"
                               class="icon-delete"
                               (click)="removeFromCart(product)"
                             >delete_forever
                             </mat-icon>
                             <mat-spinner
-                              *ngIf="product.spinners.delete"
+                              *ngIf="product.spinners.cart"
                               diameter="25"
                               strokeWidth="4"
                               class="reverse"

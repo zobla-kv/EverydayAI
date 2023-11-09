@@ -11,8 +11,7 @@ export interface ProductResponse {
   imgAlt: string;
   likes: number;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
-  // set in http request
-  imgPath: string;
+  imgPath: string; // client side only - set in http request
   creationDate: Timestamp;
 }
 
@@ -45,17 +44,12 @@ export enum ProductActions {
   CART = 'cart',
   DOWNLOAD = 'download',
   LIKE = 'like',
-  DELETE = 'delete'
 }
 
 export namespace ProductType {
   // all
   export enum ALL {
     ALL = 'all'
-  }
-
-  export enum SHOPPING_CART {
-    SHOPPING_CART = 'shopping_cart'
   }
 
   export enum PRINTS {
@@ -97,7 +91,7 @@ export class ProductListConfig {
     title: '',
     product: {
       type: ProductType.ALL,
-      actions: [ProductActions.DELETE],
+      actions: [ProductActions.CART],
       // TODO: not all will have same metadata
       metadata: ['tier', 'extension', 'resolution']
     },
@@ -198,7 +192,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     if (!user || !config.product.actions.includes(ProductActions.CART)) {
       return false;
     }
-    return user?.cart.items.findIndex(item => item.id === product.id) === -1 ? false : true;
+    return user.cart.indexOf(product.id) === -1 ? false : true;
   }
 
 }

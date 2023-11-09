@@ -61,9 +61,11 @@ async function getPrice(items) {
 
 // update user in db with info about the payment
 // TODO: !important what if write is failed but payment succeeds
+// TODO: nothing on the backed was updated when cart was changed from whole product object to product id
 async function addPaymentToUser(user, paymentIntent) {
   // read first to store later updated object
   const ownedItemsTimeMap = (await db.collection('Users').doc(user.id).get()).get('ownedItemsTimeMap');
+  // TODO: shopping_cart_items was changed on FE
   const newItems = user.shopping_cart_items.map(item => item.id);
   // combine ownedItemsTimeMap object and newItems array into single object
   const updated = newItems.reduce(

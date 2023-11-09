@@ -21,7 +21,7 @@ export class HeaderComponent implements OnDestroy {
   // hamburger menu toggle
   @ViewChild('hamburgerToggle') hamburgerToggle: ElementRef;
 
-  @HostListener('window:scroll', ['$event']) 
+  @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
     // check if user reached bottom of the page then show footer
     if (window.pageYOffset === 0) {
@@ -68,7 +68,7 @@ export class HeaderComponent implements OnDestroy {
     // ************************
 
     this.customUserState$ = this._authService.userState$.subscribe(user => {
-      this.numberOfItemsInCart = user ? user.cart.items.length : 0;
+      this.numberOfItemsInCart = user ? user.cart.length : 0;
       this.isAuthenticated = !!user;
       this.isAdmin = user?.role === 'admin' ? true : false;
     });

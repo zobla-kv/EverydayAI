@@ -3,22 +3,24 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription, catchError, debounceTime, finalize, first } from 'rxjs';
 
-import { 
-  ShoppingCart,
+import {
   ToastConstants,
   CustomUser,
   ProductMapper,
   ProductTypePrint,
   ProductListConfig,
-  ProductType
+  ProductType,
+  ProductResponse,
+  ShoppingCart
 } from '@app/models';
 
 import {
-  AuthService, 
-  FirebaseService, 
-  HttpService, 
-  PaymentService, 
-  ToastService, 
+  AuthService,
+  FirebaseService,
+  HttpService,
+  PaymentService,
+  ProductService,
+  ToastService,
   UtilService
 } from '@app/services';
 
@@ -31,16 +33,17 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   @ViewChild('paginator') paginator: MatPaginator;
 
-  // config 
+  // config
   config = ProductListConfig.SHOPPING_CART;
 
-  // products in cart 
+  // products in cart
   private _cart: ShoppingCart;
   // sets cart, cart items spinners and paginated cart
   // called on each user update (remove from cart etc.)
   set cart(cart: ShoppingCart) {
     this._cart = cart;
-    this.fullProductList = this._cart.items.map((item: any) => new ProductMapper<ProductTypePrint>(item, ProductListConfig.SHOPPING_CART, this.user))
+
+    this.fullProductList = cart.items.map((item: any) => new ProductMapper<ProductTypePrint>(item, ProductListConfig.SHOPPING_CART, this.user))
 
     // initial
     if (!this.paginator) {
@@ -91,13 +94,9 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // show submit button spinner
   showSubmitButtonSpinner = false;
 
-  // product removed
-  productRemoved = false;
-
   // is remove disabled
   // this is to prevent multiple deletes in short time. To be improved with debounce
   isRemoveDisabled = false;
-
 
   constructor(
     private _authService: AuthService,
@@ -105,16 +104,14 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     private _firebaseService: FirebaseService,
     private _paymentService: PaymentService,
     private _httpService: HttpService,
+    private _productService: ProductService,
     public   utilService: UtilService
   ) {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.user = <CustomUser>user;
-      this._httpService.getProducts(ProductType.SHOPPING_CART, this.user).pipe(first()).subscribe(products => {
-        this.cart = { items: products, totalSum: this.user.cart.totalSum };
+      this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
+        this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
         this.showLoadSpinner = false;
-        if (this.productRemoved) {
-          this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
-        }
       })
     });
 
@@ -132,17 +129,17 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.paymentForm = new FormGroup({
       'holder_name': new FormControl(null, [
-        Validators.required, 
-        Validators.maxLength(24), 
+        Validators.required,
+        Validators.maxLength(24),
         Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),
       'number': new FormControl(null, [
-        Validators.required, 
+        Validators.required,
         Validators.maxLength(20),
         Validators.pattern('^[0-9-]*$')
       ]),
       'expiration_date': new FormControl(null, [
-        Validators.required, 
+        Validators.required,
         Validators.maxLength(7),
         Validators.pattern('^[0-9/]*$')
       ]),
@@ -179,23 +176,13 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // remove item from cart
-  removeFromCart(item: ProductMapper<ProductTypePrint>) {
+  async removeFromCart(item: ProductMapper<ProductTypePrint>) {
     if (this.isRemoveDisabled) {
       return;
     }
     this.isRemoveDisabled = true;
-    item.spinners['delete'] = true;
-    this._firebaseService.removeProductFromCart(
-      ProductMapper.getOriginalObject(item),
-      this.user.cart.totalSum
-    )
-    .then(async () => {
-      setTimeout(() => this.isRemoveDisabled = false, 1000)
-      await this._authService.updateUser();
-      this.productRemoved = true;
-    })
-    .catch(err => this._toast.showDefaultError())
-    .finally(() => setTimeout(() => item.spinners['delete'] = false, 1200));
+    this._productService.removeFromCart(item)
+    .then(async () => setTimeout(() => this.isRemoveDisabled = false, 1000))
   }
 
 

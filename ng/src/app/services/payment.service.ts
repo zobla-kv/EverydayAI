@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { 
+import {
   CustomUser,
   PaymentCard,
   PaymentObject,
-  ToastConstants 
+  ToastConstants
 } from '@app/models';
 
 import {
@@ -47,9 +47,11 @@ export class PaymentService {
       user: {
         id: user.id,
         email: user.email,
-        shopping_cart_items: user.cart.items.map(item => (
-          { id: item.id, title: item.title }
-        )),
+        // TODO: old before rework for ref to later update BE. title wasnt used why did i put it here
+        // shopping_cart_items: user.cart.items.map(item => (
+        //   { id: item.id, title: item.title }
+        // )),
+        shopping_cart_items: user.cart,
         stripeId: user.stripe.id,
         card: {
           holder_name: card.holder_name,

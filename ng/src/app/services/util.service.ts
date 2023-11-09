@@ -219,6 +219,22 @@ loadScript(url: string) {
   }
 
 /**
+  * get total product price sum
+  *
+  * @param products - ProductResponse[]
+  * @returns totalSum - price as string with precision 2
+  */
+  getTotalSum(products: ProductResponse[]): string {
+    let totalSum = new Decimal(0);
+    products.forEach(product => {
+      const priceAsNumber = Number(product.price);
+      const price = product.discount > 0 ? (priceAsNumber  * (100 - product.discount) / 100) : priceAsNumber;
+      totalSum = totalSum.plus(new Decimal(price));
+    })
+    return totalSum.toFixed(2);
+  }
+
+/**
   * set 404 image when product fails to load
   *
   * @param target - target element (img)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { 
+import {
   AppConstants
 } from '@app/models';
 
@@ -25,12 +25,12 @@ export class StorageService {
 
   constructor(
     private _authService: AuthService
-  ) { 
+  ) {
     this.customUserState$ = this._authService.userState$
     .subscribe(user => {
       if (user) {
         this.setUserToLocalStorage()
-        this.setNumberOfItemsInCart(user.cart.items.length);
+        this.setNumberOfItemsInCart(user.cart.length);
       } else {
         this.removeUserFromLocalStorage();
         this.removeCartFromLocalStorage();
@@ -44,7 +44,7 @@ export class StorageService {
       localStorage.setItem(AppConstants.STORAGE_USER_KEY, AppConstants.STORAGE_USER_VALUE);
     }
   }
-  
+
   // for immediately returning user logged in state (avoid flickering)
   getUserFromLocalStorage(): string | null {
     return localStorage.getItem(AppConstants.STORAGE_USER_KEY);
