@@ -98,6 +98,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // this is to prevent multiple deletes in short time. To be improved with debounce
   isRemoveDisabled = false;
 
+  // this exists to prevent new fetch when item is removed from cart
+  // instead of fetch just remove item from cart
+  removedItemId: string | null = null;
+
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,
@@ -109,6 +113,15 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   ) {
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.user = <CustomUser>user;
+
+      if (this.removedItemId) {
+        const filteredCartItems = this.cart.items.filter(item => item.id !== this.removedItemId);
+        const newTotalSum = this.utilService.getTotalSum(filteredCartItems);
+        this.cart = { items: filteredCartItems, totalSum: newTotalSum }
+        this.removedItemId = null;
+        return;
+      }
+
       this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
         this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
         this.showLoadSpinner = false;
@@ -182,7 +195,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     }
     this.isRemoveDisabled = true;
     this._productService.removeFromCart(item)
-    .then(async () => setTimeout(() => this.isRemoveDisabled = false, 1000))
+    .then(async () => {
+      this.removedItemId = item.id;
+      setTimeout(() => this.isRemoveDisabled = false, 1000);
+    })
   }
 
 
