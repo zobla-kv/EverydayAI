@@ -4,7 +4,7 @@
   background-color: $main-dark-bg-color;
 
   .shopping-card-inner-wrapper {
-    min-height: 600px;
+    height: 670px;
     background-color: $main-orange-bg-color;
 
 
@@ -18,7 +18,7 @@
       }
 
       .cart-items-wrapper {
-        height: 387px;
+        height: 416px;
 
         .cart-item {
           // TODO: choose text colors of things here
@@ -130,6 +130,8 @@
 // smaller than 992px
 @media only screen and (max-width: 992px) {
   .shopping-cart-outer-wrapper .shopping-card-inner-wrapper {
+    height: auto;
+    min-height: 780px;
     .cart-items-column-wrapper,
     .payment-column-wrapper { left: 0; }
   }
