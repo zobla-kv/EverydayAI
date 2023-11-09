@@ -544,6 +544,26 @@ form {
     }
   }
 }
+.product-old-price {
+  position: absolute;
+  top: -8px;
+  opacity: 0.6;
+
+  &::after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    transform: translateY(-50%);
+  }
+}
+.product-discounted-price {
+  position: relative;
+  top: 6px;
+}
 
 /* MEDIA QUERIES */
 // smaller than 768px

@@ -209,6 +209,13 @@
     $transition: .3s all ease;
     $if-in-cart-icon-distance: 12px;
 
+    .product-old-price {
+      position: relative;
+      top: 0;
+      left: -10px;
+    }
+    .product-discounted-price { top: 0; }
+
     .if-in-cart-icon {
       position: absolute;
       top: $if-in-cart-icon-distance;

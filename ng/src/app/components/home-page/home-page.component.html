@@ -189,7 +189,13 @@
               <p>{{ product.metadata['resolution'] }}</p>
               <strong class="product-price">
                 <ng-container *ngIf="product.price == '0.00'; else price">Free</ng-container>
-                <ng-template #price>${{ product.price }}</ng-template>
+                <ng-template #price>
+                  <div *ngIf="product.discount > 0">
+                    <span class="product-old-price">{{ product.price }} $</span>
+                    <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
+                  </div>
+                  <span *ngIf="product.discount === 0">{{ product.price }} $</span>
+                </ng-template>
               </strong>
               <button>
                 <mat-spinner  diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>

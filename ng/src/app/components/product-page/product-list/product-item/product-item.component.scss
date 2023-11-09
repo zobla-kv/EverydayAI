@@ -107,33 +107,6 @@
       ". . ."
       ". . .";
       gap: 16px 8px;
-
-      // TODO: should be shared between this, cart and cpanel
-      .product-metadata-item {
-
-        .product-old-price {
-          position: absolute;
-          top: -8px;
-          opacity: 0.6;
-
-          &::after {
-            position: absolute;
-            content: "";
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: red;
-            transform: translateY(-50%);
-          }
-        }
-
-        .product-discounted-price {
-          position: relative;
-          top: 6px;
-        }
-
-      }
     }
 
     .product-metadata[type="prints_shop"] {

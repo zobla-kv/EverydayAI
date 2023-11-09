@@ -67,7 +67,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _el: ElementRef,
     private _renderer: Renderer2,
     private _httpService: HttpService,
-    public   productService: ProductService
+    public   productService: ProductService,
+    public   utilService: UtilService
   ) {
     // NOTE: is loaded from another route
     // const isLoadedFromAnotherRoute = Boolean(this._router.getCurrentNavigation()?.previousNavigation);
