@@ -22,10 +22,6 @@ body {
   }
   .page-wrapper {
     max-width: 1600px;
-    // NOTE: 100svh for mobile (svh is vh - bottom toolbar on mobile)
-    // TODO: commented out because of zoom out issue (pushes footer deep down making page larger than it needs to be)
-    // TODO: put it somewhere else (landing page top section etc.) or remove it altogether
-    // min-height: 100vh;
     margin: auto;
     overflow: hidden;
     position: relative;
@@ -33,9 +29,15 @@ body {
     // padding: 0 2rem 4rem 2rem;
     padding-top: 0;
 
+    // TODO: 100svh on mobile
+    // to keep everything nicely aligned on zoom out (not needed on large pages ie. home page)
+    &:has(.product-page-wrapper) {
+      @extend .flex-center;
+      min-height: calc(100vh - 880px);
+    }
     &:has(.auth-form-page) {
-      padding: 0 1rem 4rem 1rem;
-      // min-height: calc(100vh - 7rem);
+      @extend .flex-center;
+      min-height: calc(100vh - 250px);
     }
   }
   .footer-wrapper {

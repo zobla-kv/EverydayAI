@@ -18,6 +18,7 @@ h6 span {
   text-transform: uppercase;
   font-weight: 700;
 }
+
 .submit-form-button {
   height: 44px;
   margin-top: 1.5rem;
@@ -34,11 +35,6 @@ h6 span {
       color: $error-color;
       svg path { fill: $error-color; }
     }
-}
-.section {
-  position: relative;
-  width: 100%;
-  display: block;
 }
 .slider-checkbox:checked,
 .slider-checkbox:not(:checked) {
