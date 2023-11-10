@@ -135,23 +135,6 @@ export class ProductListComponent implements OnInit {
     this.paginatedList = productsForNextPage.map(product => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
   }
 
-  // handle pagination navigation
-  // attach scroll listener for animation to run once scroll hits top position and remove it afterwards
-  handlePaginatorNagivation() {
-    const handleScroll = () => {
-      if (window.scrollY < 30) {
-        setTimeout(() => this.hideProducts(), 200);
-        setTimeout(() => {
-          this.updatePage();
-          this.showProducts();
-        }, 500);
-        window.removeEventListener('scroll', handleScroll);
-      }
-    }
-    window.addEventListener('scroll', handleScroll);
-    window.scrollTo({ top: 20, behavior: 'smooth' });
-  }
-
   // updates page number in pagination
   updatePageNumber() {
     const list = this._element.nativeElement.querySelectorAll('.mat-mdc-paginator-range-label')[0];
@@ -160,13 +143,31 @@ export class ProductListComponent implements OnInit {
     list && (list.innerHTML = 'Page: ' + currentPage + '/' + totalPages);
   }
 
-  // show products
-  showProducts() {
-    this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
+  // handle pagination navigation
+  // attach scroll listener for animation to run once scroll hits top position and remove it afterwards
+  handlePaginatorNagivation() {
+    const handleScroll = () => {
+      if (window.scrollY < 30) {
+        this.changePage();
+        window.removeEventListener('scroll', handleScroll);
+      }
+    }
+    // fire without scroll
+    if (window.scrollY < 30) {
+      this.changePage();
+      return;
+    }
+    window.addEventListener('scroll', handleScroll);
+    window.scrollTo({ top: 20, behavior: 'smooth' });
   }
-  // hide products
-  hideProducts() {
-    this._renderer.addClass(this.productList.nativeElement, 'fade-out');
+
+  // run change page animation and load new items
+  async changePage() {
+    setTimeout(() => this._renderer.addClass(this.productList.nativeElement, 'fade-out'), 200);
+    setTimeout(() => {
+      this.updatePage();
+      this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
+    }, 500);
   }
 
 }
