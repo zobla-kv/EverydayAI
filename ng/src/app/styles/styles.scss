@@ -23,7 +23,9 @@ body {
   .page-wrapper {
     max-width: 1600px;
     // NOTE: 100svh for mobile (svh is vh - bottom toolbar on mobile)
-    min-height: 100vh;
+    // TODO: commented out because of zoom out issue (pushes footer deep down making page larger than it needs to be)
+    // TODO: put it somewhere else (landing page top section etc.) or remove it altogether
+    // min-height: 100vh;
     margin: auto;
     overflow: hidden;
     position: relative;
@@ -33,7 +35,7 @@ body {
 
     &:has(.auth-form-page) {
       padding: 0 1rem 4rem 1rem;
-      min-height: calc(100vh - 7rem);
+      // min-height: calc(100vh - 7rem);
     }
   }
   .footer-wrapper {
