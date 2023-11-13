@@ -63,6 +63,8 @@
       }
     }
 
+    .mat-icon { color: $main-dark-bg-color; }
+
     .product-img {
       width: 75px;
       height: 75px;
@@ -95,23 +97,31 @@
       width: 7%;
     }
     .mat-column-metadata {
+      width: 10%;
       .mat-icon {
         height: 26px;
         transform: scale(0.8);
       }
       .product-metadata-item[item="downloadSize"] .mat-icon { transform:scale(1); }
     }
+    .mat-column-active {
+      .mat-icon.active { color: $toast-green-bg-color; }
+    }
     .mat-column-actions {
       text-align: right;
 
       div { justify-content: flex-end; }
 
-      .mat-icon {
-        cursor: pointer;
-      }
+      .mat-icon { cursor: pointer; }
     }
 
   }
+}
+
+.form-group input[type="checkbox"] {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .dropdown-caret {

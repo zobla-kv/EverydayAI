@@ -10,6 +10,7 @@ export interface ProductResponse {
   fileName: string;
   imgAlt: string;
   likes: number;
+  isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   imgPath: string; // client side only - set in http request
   creationDate: Timestamp;
@@ -112,6 +113,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   imgAlt: string;
   // TODO: type
   likes: number;
+  isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   creationDate: Timestamp;
   // FE properties that are added
@@ -128,6 +130,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
     this.likes = product.likes;
+    this.isActive = product.isActive;
     this.metadata = product.metadata;
     this.creationDate = product.creationDate;
     // spinner for each action

@@ -242,11 +242,13 @@ export class FirebaseService {
       price: Number(data.price).toFixed(2),
       discount: data.discount,
       likes: data.likes,
-      'metadata.tier': data.tier
+      'metadata.tier': data.tier,
+      isActive: data.isActive
     })
   }
 
   // delete product from db
+  // TODO: dont remove during cleanup
   removeProduct(productId: string): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(productId).delete();
   }

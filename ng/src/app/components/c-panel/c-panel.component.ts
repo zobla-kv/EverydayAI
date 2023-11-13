@@ -43,7 +43,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   pageSize = 4;
 
   // displayed columns
-  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'metadata', 'actions'];
+  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'metadata', 'active', 'actions'];
 
   // add product form
   formAddProduct: FormGroup;
@@ -128,6 +128,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required,
         Validators.pattern('^[0-9]*$')
       ]),
+      'isActive': new FormControl()
     })
   }
 
@@ -306,19 +307,19 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // delete product
   // NOTE: this will also delete it from those who have bought it, figure out how to remove it from shop only
-  async handleDeleteProduct() {
-    const target = this.fullProductList.find(item => item.id === this.productId) as ProductResponse;
-    // remove from db
-    this._firebaseService.removeProduct(this.productId)
-    .then(res => {
-      // remove image from server, catch will not catch this but don't care
-      this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
-      this.updateProductList();
-      this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
-    })
-    .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
-    .finally(() => this._modalService.actionComplete$.next(true))
-  }
+  // async handleDeleteProduct() {
+  //   const target = this.fullProductList.find(item => item.id === this.productId) as ProductResponse;
+  //   // remove from db
+  //   this._firebaseService.removeProduct(this.productId)
+  //   .then(res => {
+  //     // remove image from server, catch will not catch this but don't care
+  //     this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
+  //     this.updateProductList();
+  //     this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+  //   })
+  //   .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
+  //   .finally(() => this._modalService.actionComplete$.next(true))
+  // }
 
 
   // create product object to store in db
@@ -339,10 +340,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       fileName: '',
       // set in http service
       imgPath: '',
-      //
       imgAlt: formData.title,
       price: Number(formData.price).toFixed(2),
       discount: Number(formData.discount),
+      isActive: false,
       metadata: {
         downloadSize: formData.fileSize,
         resolution: formData.fileResolution,
