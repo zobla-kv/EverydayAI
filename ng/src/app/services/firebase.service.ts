@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, increment } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, query, and , increment, collection, where, getDocs } from '@angular/fire/firestore';
 
 import { firstValueFrom, Observable, of, delay, from } from 'rxjs';
 
@@ -254,12 +254,21 @@ export class FirebaseService {
   }
 
   // get products for type print tab shop
-  getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductTypePrint[]> {
+  getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductResponse[] | []> {
+    // logged out or logged in with no owned items
     if (!user || user.ownedItems.length === 0) {
-      // valueChanges makes it an observable
-      return this.getAllProducts();
+      return this._db.collection('Products/Prints/All', query => query.where('isActive', '==', true)).valueChanges() as Observable<ProductTypePrint[]>;
     }
-    return this._db.collection('Products/Prints/All', query => query.where('id', 'not-in', user.ownedItems)).valueChanges() as Observable<ProductTypePrint[]>;
+    // compound query like this doens't work. The working one even requires index to be created in firebase
+    // return this._db.collection('Products/Prints/All', query =>
+    // query.where('id', 'not-in', user.ownedItems).where('isActive', '==', true)).valueChanges() as Observable<ProductTypePrint[]>;
+    const q = query(collection(this._db.firestore, 'Products/Prints/All'),
+      and(
+        where('id', 'not-in', user.ownedItems),
+        where('isActive', '==', true)
+      )
+    );
+    return from(getDocs(q).then(querySnapshot => querySnapshot.docs.map(doc => doc.data() as ProductResponse)));
   }
 
   // get products for type print tab owned items

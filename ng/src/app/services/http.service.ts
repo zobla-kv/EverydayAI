@@ -165,9 +165,6 @@ export class HttpService {
     })
     return this._http
     .get<any>(
-      // TODO: still gets all product images if user already has them
-      // this is then filtered in component
-      // increase speed by reducing images requested
       `${environment.API_HOST}/api/product-images`,
       {
         responseType: 'json',
