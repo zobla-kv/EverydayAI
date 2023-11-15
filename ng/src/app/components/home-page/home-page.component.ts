@@ -76,7 +76,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-    this._httpService.getProducts(ProductType.ALL, null, ['4kRiOacS3BWh2MM5nWU5', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'])
+    this._httpService.getProducts(ProductType.ALL, null, ['fpcPgLSkJGqc5A3jxBjS', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'])
     .pipe(first())
     .subscribe(products => {
       console.log('products HP: ', products);

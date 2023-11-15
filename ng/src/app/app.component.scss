@@ -5,7 +5,7 @@
   height: 100vh;
   background-color: $main-orange-bg-color;
   position: fixed;
-  z-index: 999999;
+  z-index: 99999999; // 8
   top: 0;
   bottom: 0;
   display: flex;

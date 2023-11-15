@@ -4,15 +4,16 @@
   color: black;
   display: none;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 999999; // 6
 
-  .mat-icon { 
-    color: $orange-text; 
+  .mat-icon {
+    color: $orange-text;
     cursor: pointer;
   }
 
   form {
     .form-group .form-style {
-       padding-left: 1rem; 
+       padding-left: 1rem;
     }
   }
 }

@@ -401,7 +401,7 @@ form {
 
 .cdk-overlay-container {
   // toast > header
-  z-index: 999999;
+  z-index: 9999999; // 7
 }
 .cdk-overlay-pane { height: 0; }
 .mdc-snackbar {
