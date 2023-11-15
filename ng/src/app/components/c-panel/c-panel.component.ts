@@ -335,11 +335,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
     const product: ProductResponse = {
       ...dataCopy,
-      // set later
+      // set later in updateProductAfterAdd
       id: '',
       fileName: '',
-      // set in http service
-      imgPath: '',
+      //
       imgAlt: formData.title,
       price: Number(formData.price).toFixed(2),
       discount: Number(formData.discount),

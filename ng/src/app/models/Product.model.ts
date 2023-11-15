@@ -12,7 +12,7 @@ export interface ProductResponse {
   likes: number;
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
-  imgPath: string; // client side only - set in http request
+  imgPath: string; // client side only - set in http request (only client side property not added in productMapper)
   creationDate: Timestamp;
 }
 
@@ -139,15 +139,13 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.metadataIconMap = ProductMapper.getMetadataIconMap(config.product.metadata, product.metadata);
   }
 
-  // get original object to store in db
+  // get original object to store in db (remove all client side properties)
   static getOriginalObject(product: ProductMapper<ProductResponse>): ProductResponse {
     // NOTE: be aware of the depth
     const productCopy = JSON.parse(JSON.stringify(product))
     delete productCopy.spinners;
     delete productCopy.isInCart;
     delete productCopy.metadataIconMap;
-    // TODO: check how this affects cart, if imgPath is stored as base64 and then pulled into cart from db
-    // or is it? (cant think atm) - recheck this logic
     delete productCopy.imgPath;
     return productCopy;
   }
