@@ -240,8 +240,8 @@ export class FirebaseService {
   async updateProduct(data: any): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(data.id).ref.update({
       price: Number(data.price).toFixed(2),
-      discount: data.discount,
-      likes: data.likes,
+      discount: Number(data.discount),
+      likes: Number(data.likes),
       'metadata.tier': data.tier,
       isActive: data.isActive
     })
