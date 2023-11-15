@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { catchError, debounceTime, distinctUntilChanged, filter, first, fromEvent, map, tap } from 'rxjs';
@@ -285,7 +285,12 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // update product
   handleUpdateProduct() {
-    const isValid = this.isFormValid(this.formEditProduct);
+    if (!this.formEditProduct.touched) {
+      this._modalService.actionComplete$.next(true);
+      return;
+    }
+
+    const isValid = this.isFormValid(this.formEditProduct) && this.validateDiscount(this.formEditProduct);
     if (!isValid) {
       this._modalService.actionComplete$.next(false);
       return;
@@ -360,6 +365,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       return true;
     } else {
       this.validateAllFormFields(form);
+      this.validateDiscount(form);
       return false;
     }
   }
@@ -374,6 +380,46 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  // prevent discount of free items
+  validateDiscount(form: FormGroup): boolean {
+    const priceFieldValue = form.get('price')?.value;
+    const discount = Number(form.get('discount')?.value);
+    if (!priceFieldValue && discount > 0) {
+      form.controls['discount'].setErrors({ priceNull: true });
+      return false;
+    }
+    const price = Number(priceFieldValue).toFixed(2);
+    if (priceFieldValue && price === '0.00' && discount > 0) {
+      form.controls['discount'].setErrors({ freeItemDiscounted: true });
+      return false;
+    }
+    return true;
+  }
+
+  // remove cross field validation errors
+  removeDiscountValidationErrors(form: FormGroup) {
+    const discountControl = form.controls['discount'];
+    if (!discountControl.touched) {
+      return;
+    }
+    // form is not reset on close when editing so this is active from start when switching edit forms (no issues)
+    if (discountControl.hasError('priceNull') || discountControl.hasError('freeItemDiscounted')) {
+      discountControl.setErrors(null);
+    }
+  }
+
+  // prevent discount of free items - custom validator - left for ref
+  // discountValidator(form: FormGroup): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     // get value of another field using control.parent
+  //     const price = Number(control.parent?.get('price')?.value).toFixed(2);
+  //     if (price && price === '0.00') {
+  //       return { freeItemDiscounted: true };
+  //     }
+  //     return null;
+  //   }
+  // }
 
   // keep order of keyvalue pipe (not DRY)
   keepOrder() { return 0; }
