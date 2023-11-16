@@ -6,12 +6,15 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
-require('dotenv').config();
+// TODO: is this all i want?
+const dotenv = require('dotenv').config({
+  path: path.resolve(__dirname, `environments/.env.${process.env.ENV ? process.env.ENV : 'development' }`)
+});
 
-// comment out for onrender prod
-// require('dotenv').config({
-//   path: path.resolve(__dirname, `environments/${process.env.ENV}.env`)
-// });
+if (dotenv.error) {
+  console.log('FAILED TO LOAD ENV VARIABLES: ', dotenv.error.message);
+  return;
+}
 
 // create directory for product images
 const uploadFileService = require('./services/uploadFileService');
