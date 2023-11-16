@@ -190,11 +190,15 @@
               <strong class="product-price">
                 <ng-container *ngIf="product.price == '0.00'; else price">Free</ng-container>
                 <ng-template #price>
-                  <div *ngIf="product.discount > 0">
-                    <span class="product-old-price">{{ product.price }} $</span>
-                    <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
+                  <div *ngIf="product.discount > 0" class="d-flex justify-content-center">
+                    <span class="product-old-price flex-center gap-1">{{ product.price }} <mat-icon svgIcon="dollar"></mat-icon></span>
+                    <span class="product-discounted-price flex-center gap-1">
+                      {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
+                    </span>
                   </div>
-                  <span *ngIf="product.discount === 0">{{ product.price }} $</span>
+                  <span *ngIf="product.discount === 0" class="product-discounted-price flex-center gap-1">
+                    {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                  </span>
                 </ng-template>
               </strong>
               <button>

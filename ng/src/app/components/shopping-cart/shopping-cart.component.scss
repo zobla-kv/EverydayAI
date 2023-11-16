@@ -54,7 +54,13 @@
             align-items: center;
             gap: 2px;
 
-            .mat-icon { height: 26px; }
+            .mat-icon {
+              height: 26px;
+              ::ng-deep svg path { stroke-width: 0; }
+            }
+            &[item="tier"] {
+              .mat-icon ::ng-deep svg path { stroke-width: 1px; }
+            }
             &[item="extension"] {
               .mat-icon { transform: scale(0.9); }
             }

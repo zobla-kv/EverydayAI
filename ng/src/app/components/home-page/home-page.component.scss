@@ -209,12 +209,30 @@
     $transition: .3s all ease;
     $if-in-cart-icon-distance: 12px;
 
-    .product-old-price {
-      position: relative;
-      top: 0;
-      left: -10px;
+    .product-price {
+      ::ng-deep .mat-icon {
+        position: relative;
+        top: 1px;
+        svg path {
+          transition: $transition;
+          transform: scale(1.15);
+          fill: white;
+        }
+      }
+      .product-old-price {
+        position: relative;
+        top: 0;
+        // both rules because svg width bigger than content
+        left: 6px;
+        &::after { width: 87% }
+      }
+      .product-discounted-price {
+        top: 0;
+        // same reason as above
+        left: 6px;
+      }
     }
-    .product-discounted-price { top: 0; }
+
 
     .if-in-cart-icon {
       position: absolute;
@@ -288,6 +306,9 @@
 			}
       h3, strong, p {
         color: black;
+      }
+      .product-price ::ng-deep .mat-icon svg path {
+        fill: black;
       }
 			button {
 				bottom: -8px;

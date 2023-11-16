@@ -107,6 +107,25 @@
       ". . ."
       ". . .";
       gap: 16px 8px;
+
+      .product-metadata-item {
+        // because of svg icon not full width
+        &[item="price"] {
+          .mat-icon {
+            position: relative;
+            left: 1px;
+          }
+        }
+        &[item="downloadSize"] {
+          .mat-icon {
+            position: relative;
+            top: 2px;
+          }
+        }
+        &[item="resolution"] {
+          .mat-icon { transform: scale(0.9); }
+        }
+      }
     }
 
     .product-metadata[type="prints_shop"] {
