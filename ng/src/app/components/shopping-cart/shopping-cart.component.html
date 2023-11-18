@@ -69,9 +69,10 @@
                           </div>
                           <div class="cart-item-price d-flex flex-row align-items-center gap-2 gap-sm-3">
                             <div>
-                              <!-- dollar may not show properly if h5 changed because of font family -->
+                              <!-- dollar character may not show properly if h5 changed because of font family -->
                               <h5 class="product-price mb-0">
-                                {{ utilService.getProductPrice(product) }}&nbsp;$
+                                <span *ngIf="product.discount > 0" class="product-old-price">{{ product.price }}&nbsp;$</span>
+                                <span>{{ utilService.getProductPrice(product) }}&nbsp;$</span>
                               </h5>
                             </div>
                             <mat-icon

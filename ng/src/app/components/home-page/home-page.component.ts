@@ -4,6 +4,7 @@ import { Observable, Subscription, first, fromEvent, interval, merge, throttle }
 import {
   CustomUser,
   ProductActions,
+  ProductListConfig,
   ProductMapper,
   ProductResponse,
   ProductType,
@@ -52,12 +53,14 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // user sub
   userStateSub$: Subscription;
 
-  // our picks products
-  ourPicksProducts: any[];
-
+  // our picks list config
+  ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
+  // our products to be fetched
+  ourPicksProductIds = ['iycLUU4ufjjCJJWykcaE', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'];
+  // our picks fetched products
+  ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
   // are our picks loaded
   ourPicksLoaded = false;
-
   // are our picks loaded with error
   ourPicksError = false;
 
@@ -76,26 +79,21 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-    this._httpService.getProducts(ProductType.ALL, null, ['fpcPgLSkJGqc5A3jxBjS', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'])
+    this._httpService.getProducts(ProductType.ALL, null, this.ourPicksProductIds)
     .pipe(first())
     .subscribe(products => {
       console.log('products HP: ', products);
-      // simplified productMapper
       // TODO: sorted automatically by id, dont want this
-      this.ourPicksProducts = products.map(product => ({
-        ...product,
-        spinners: { [ProductActions.CART]: false },
-        isInCart: this.user?.cart.indexOf(product.id) === -1 ? false : true
-      }));
+      this.ourPicksProducts = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.ourPicksListConfig, this.user));
       // 404 images allowed to show
-      if (products.length !== 3) {
+      if (products.length !== this.ourPicksListConfig.pageSize) {
         this.ourPicksError = true;
       }
       // page lags without this
       setTimeout(() => {
         this.ourPicksLoaded = true;
       }, 1000);
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -188,7 +186,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userStateSub$.unsubscribe();
+    this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
 
 }

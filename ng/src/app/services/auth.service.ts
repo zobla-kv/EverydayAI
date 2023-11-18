@@ -35,6 +35,7 @@ export class AuthService {
   // subscribe to user state changes (update of cart etc.)
   // ReplaySubject eliminates the need to have isLoadedFromAnother route
   // if subscribed too late, get previous value emitted value
+  // those for pipe(first()) will NOT react to .updateUser, just on login/logout
   public userState$ = new ReplaySubject<CustomUser | null>(1);
 
   constructor(
@@ -67,13 +68,14 @@ export class AuthService {
     this.userState$.next(this._user);
   }
 
-  // get custom user - sync 
+  // get custom user - sync
   // use if not on load
   getUser(): CustomUser | null {
     return this._user;
   }
 
   // update user object to be in sync with DB
+  // TODO: can be avoided by subscribing to db changes
   async updateUser(): Promise<CustomUser | void> {
     if (this._user) {
       // TODO: no error handling
@@ -126,7 +128,7 @@ export class AuthService {
   }
 
   ngOnDestroy() {
-    this.userState$.complete();
+    this.userState$ && this.userState$.complete();
   }
 
 }

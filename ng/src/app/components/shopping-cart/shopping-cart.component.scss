@@ -48,6 +48,18 @@
 
           .product-price {
             color: white;
+            position: relative;
+            // TODO: on breakpoints, styles are repeated for this. No common place
+            span {
+              display: inline;
+              text-align: right;
+
+              &.product-old-price {
+                position: relative;
+                top: 0;
+                left: -10px;
+              }
+            }
           }
 
           .product-metadata-item {
@@ -133,13 +145,33 @@
 }
 
 /* MEDIA QUERIES */
+// smaller than 1200px
+@media only screen and (max-width: 1200px) {
+  .product-price span {
+    display: block !important;
+    &.product-old-price { left: 0 !important; }
+  }
+}
+
 // smaller than 992px
 @media only screen and (max-width: 992px) {
+  .product-price span {
+    display: inline !important;
+    &.product-old-price { left: -10px !important; }
+  }
   .shopping-cart-outer-wrapper .shopping-card-inner-wrapper {
     height: auto;
     min-height: 780px;
     .cart-items-column-wrapper,
     .payment-column-wrapper { left: 0; }
+  }
+}
+
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  .product-price span {
+    display: block !important;
+    &.product-old-price { left: 0px !important; }
   }
 }
 
@@ -168,6 +200,11 @@
           position: absolute;
           right: 6px;
           bottom: 12px;
+
+          &:has(.product-old-price) .mat-icon {
+            position: relative;
+            top: 12px;
+          }
         }
       }
     }

@@ -86,7 +86,6 @@
     border-end-start-radius: 8px;
     padding: 0.5rem 0.5rem 0.75rem 0.5rem;
     color: $main-dark-bg-color;
-    font-family: 'Cambria', 'Courier New', Courier, monospace;
 
     .product-title {
       font-size: calc(1rem + 0.5vw);
@@ -94,10 +93,9 @@
       min-height: 24px;
       text-align: center;
       text-transform: capitalize;
-      a {
-        text-decoration: none;
-        color: black;
-      }
+      color: black;
+      font-family: $product-metadata-font;
+      font-weight: bold;
     }
 
     .product-metadata {

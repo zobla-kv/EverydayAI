@@ -156,8 +156,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userStateSub$.unsubscribe();
-    this.likesSub$.unsubscribe();
+    this.userStateSub$ && this.userStateSub$.unsubscribe();
+    this.likesSub$ && this.likesSub$.unsubscribe();
   }
 
 }

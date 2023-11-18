@@ -32,7 +32,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   private element: any;
 
   constructor(
-    private _modalService: ModalService, 
+    private _modalService: ModalService,
     private _el: ElementRef
   ) {
     this.element = _el.nativeElement;
@@ -44,7 +44,7 @@ export class ModalComponent implements OnInit, OnDestroy {
         this.showActionSpinner = false;
         this._modalService.close();
         return;
-      } 
+      }
       this.showActionSpinner = false;
     })
 
@@ -63,7 +63,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.actionComplete$.unsubscribe();
+    this.actionComplete$ && this.actionComplete$.unsubscribe();
     // remove self from modal service
     this._modalService.remove(this);
 

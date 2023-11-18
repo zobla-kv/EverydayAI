@@ -73,6 +73,7 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 .w-80 { width: 80% !important; }
 .w-90 { width: 90% !important; }
 .w-100 { width: 100% !important; }
+.fit-content { width: fit-content; }
 
 .h-10 { height: 10% !important; }
 .h-20 { height: 20% !important; }
@@ -516,6 +517,7 @@ form {
     display: flex;
     padding: 0;
     font-family: $product-metadata-font;
+    font-weight: bold;
 
     .mat-icon {
       color: $main-dark-bg-color;

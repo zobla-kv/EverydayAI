@@ -36,6 +36,6 @@ export class DelayedHoverDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-    this.hideShowObs$.unsubscribe();
+    this.hideShowObs$ && this.hideShowObs$.unsubscribe();
   }
 }

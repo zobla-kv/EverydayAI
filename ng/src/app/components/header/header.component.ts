@@ -118,8 +118,8 @@ export class HeaderComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.customUserState$.unsubscribe();
-    this.screenSizeChangeSub$.unsubscribe();
+    this.customUserState$ && this.customUserState$.unsubscribe();
+    this.screenSizeChangeSub$ && this.screenSizeChangeSub$.unsubscribe();
   }
 
 }

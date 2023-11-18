@@ -181,30 +181,47 @@
             (intersection)="hightlightProduct(productItem, i * 100)"
           >
             <div class="product-item" #productItem>
-              <div class="position-relative w-80 mx-auto">
-                <mat-icon *ngIf="product.isInCart && product.price !== '0.00'" class="if-in-cart-icon">shopping_cart</mat-icon>
+              <div class="position-relative mx-auto fit-content">
+                <mat-icon *ngIf="product.isInCart && product.price !== '0.00' && !user?.ownedItems?.includes(product.id)" class="if-in-cart-icon">shopping_cart</mat-icon>
                 <img src="{{ product.imgPath }}" class="img-fluid">
               </div>
               <h3 class="product-title">{{ product.title }}</h3>
               <p>{{ product.metadata['resolution'] }}</p>
               <strong class="product-price">
-                <ng-container *ngIf="product.price == '0.00'; else price">Free</ng-container>
+                <span *ngIf="user?.ownedItems?.includes(product.id); else price">Owned</span>
                 <ng-template #price>
-                  <div *ngIf="product.discount > 0" class="d-flex justify-content-center">
-                    <span class="product-old-price flex-center gap-1">{{ product.price }} <mat-icon svgIcon="dollar"></mat-icon></span>
-                    <span class="product-discounted-price flex-center gap-1">
-                      {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
-                    </span>
+                  <div *ngIf="product.discount > 0">
+                    <div *ngIf="product.discount < 100" class="d-flex justify-content-center">
+                      <span class="product-old-price reposition flex-center gap-1">
+                        {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                      </span>
+                      <span class="product-discounted-price reposition flex-center gap-1">
+                        {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
+                      </span>
+                    </div>
+                    <div *ngIf="product.discount === 100" class="d-flex justify-content-center">
+                      <span class="product-old-price flex-center gap-1">
+                        {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                      </span>
+                      <span>Free</span>
+                    </div>
                   </div>
-                  <span *ngIf="product.discount === 0" class="product-discounted-price flex-center gap-1">
-                    {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
-                  </span>
+                  <div *ngIf="product.discount === 0">
+                    <span *ngIf="product.price !== '0.00'" class="flex-center gap-1">
+                      {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                    </span>
+                    <span *ngIf="product.price === '0.00'">Free</span>
+                  </div>
                 </ng-template>
               </strong>
               <button>
-                <mat-spinner  diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
+                <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart'] || product.spinners['download']; else action"></mat-spinner>
                 <ng-template #action>
-                  <mat-icon class="download" *ngIf="product.price === '0.00'; else action" (click)="productService.download(product)">download</mat-icon>
+                  <!-- TODO: site lags on download -->
+                  <mat-icon class="download"
+                    *ngIf="product.price === '0.00' || product.discount === 100 || user?.ownedItems?.includes(product.id); else action"
+                    (click)="productService.download(product)"
+                  >download</mat-icon>
                   <ng-template #action>
                     <mat-icon svgIcon="cart-add" class="cart-action" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
                     <mat-icon svgIcon="cart-remove" class="cart-action" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>

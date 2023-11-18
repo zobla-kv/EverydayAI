@@ -66,12 +66,23 @@ export class ProductListConfig {
   product: { type: any, actions: ProductActions[], metadata: string[] }
   pageSize: number;
 
-  // images to download
+  public static HOME_PAGE_OUR_PICKS = {
+    title: '',
+    product: {
+      type: ProductType.ALL,
+      // download replaces action so isn't passed
+      actions: [ProductActions.CART],
+      metadata: []
+    },
+    pageSize: 3
+  }
+
   public static PRODUCT_LIST_PRINTS = {
     TAB_SHOP: {
       title: 'Explore new products',
       product: {
         type: ProductType.PRINTS.SHOP,
+        // download action not passed because it replaces cart action
         actions: [ProductActions.CART, ProductActions.LIKE],
         metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution']
       },

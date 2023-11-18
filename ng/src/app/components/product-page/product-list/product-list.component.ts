@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { Subscription, first } from 'rxjs';
+import { Subscription, first, Subject } from 'rxjs';
 
 import {
   CustomUser,
@@ -15,6 +15,7 @@ import {
 import {
   AuthService,
   HttpService,
+  ProductService,
   UtilService
 } from '@app/services';
 
@@ -26,7 +27,7 @@ import animations from './product-list.animations';
   styleUrls: ['./product-list.component.scss'],
   animations
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
 
   // for animation
   @ViewChild('productList') productList: ElementRef;
@@ -64,7 +65,7 @@ export class ProductListComponent implements OnInit {
   // TODO: Important! error handling
   // NOTE: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
-    this.userStateSub$ = this._authService.userState$.pipe(first()).subscribe(user => {
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
       this.user = user;
       this.fetchProducts(this.config.product.type, this.user);
     });
@@ -95,9 +96,7 @@ export class ProductListComponent implements OnInit {
       case ProductType.PRINTS.SHOP:
         return this._utilService.sortByCreationDate(products);
       case ProductType.PRINTS.OWNED_ITEMS:
-        return this._utilService.sortByCreationDate(products);
-        // TODO: enable this, disabled for now because owned item added directly in db, so no ownedSince property
-        // return this._utilService.sortByOwnedSince(products, this.user);
+        return this._utilService.sortByOwnedSince(products, this.user);
       default:
         return products;
     }
@@ -169,6 +168,10 @@ export class ProductListComponent implements OnInit {
       this.updatePage();
       this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
     }, 500);
+  }
+
+  ngOnDestroy() {
+    this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
 
 }

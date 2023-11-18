@@ -64,15 +64,15 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.registerForm = {
       form: new FormGroup({
         'name': new FormControl(null, [
-          Validators.required, 
-          Validators.minLength(6), 
-          Validators.maxLength(16), 
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(16),
           Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
         ]),
         'email': new FormControl(null, [Validators.required, Validators.email]),
         'password': new FormControl(null, [
-          Validators.required, 
-          Validators.minLength(6), 
+          Validators.required,
+          Validators.minLength(6),
           Validators.maxLength(16),
           Validators.pattern('^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$')
         ]),
@@ -149,8 +149,8 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // do not show what exactly is wrong (better security)
       case FirebaseConstants.LOGIN_USER_NOT_FOUND:
       case FirebaseConstants.LOGIN_WRONG_PASSWORD:
-        return form.setErrors({ 
-          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: (FirebaseConstants.LOGIN_WRONG_CREDENTIALS) 
+        return form.setErrors({
+          [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: (FirebaseConstants.LOGIN_WRONG_CREDENTIALS)
         })
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
@@ -187,7 +187,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerAuthButtonSub$.unsubscribe();
+    this.headerAuthButtonSub$ && this.headerAuthButtonSub$.unsubscribe();
   }
 
 }

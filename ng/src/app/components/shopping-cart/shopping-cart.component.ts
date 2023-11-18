@@ -100,6 +100,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // this exists to prevent new fetch when item is removed from cart
   // instead of fetch just remove item from cart
+  // TODO: instead of keeping something like this in every component, move it to product service and sub to that
   removedItemId: string | null = null;
 
   constructor(
@@ -111,6 +112,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     private _productService: ProductService,
     public   utilService: UtilService
   ) {
+
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.user = <CustomUser>user;
 

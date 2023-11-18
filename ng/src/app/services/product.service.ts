@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, first } from 'rxjs';
+import { Subject, Subscription, first } from 'rxjs';
 
 import {
   CustomUser,
@@ -43,18 +43,18 @@ export class ProductService implements OnDestroy {
     private _firebaseService: FirebaseService
   ) {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-   }
+  }
 
   // add product to cart
   async addToCart(product: ProductMapper<ProductTypePrint>) {
-   product.spinners[ProductActions.CART] = true;
-   if (!this.user) {
-     this._router.navigate(['auth', 'login']);
-     return;
-   }
-   this._firebaseService.addProductToCart(product.id)
-   .then(async () => await this._handleCartActionSucceeded(product))
-   .catch(err => this._handleCartActionFailed(product))
+    product.spinners[ProductActions.CART] = true;
+    if (!this.user) {
+      this._router.navigate(['auth', 'login']);
+      return;
+    }
+    this._firebaseService.addProductToCart(product.id)
+    .then(async () => await this._handleCartActionSucceeded(product))
+    .catch(err => this._handleCartActionFailed(product))
   }
 
   // remove product from cart
@@ -84,43 +84,56 @@ export class ProductService implements OnDestroy {
   }
 
   // download product
-  async download(product: ProductResponse) {
-   if (!this.user) {
-     this._router.navigate(['auth', 'login']);
-     return;
-   }
+  async download(product: ProductMapper<ProductTypePrint>) {
+    // download is somewhere triggered from cart action (tab shop), somewhere from download action (tab owned)
+    product.spinners[ProductActions.CART] = true;
+    product.spinners[ProductActions.DOWNLOAD] = true;
 
-   if (!product.imgPath.includes('assets')) {
-     // for non 404 images
-     this._triggerDownload(product, product.imgPath);
-     return;
-   }
+    if (!product.imgPath.includes('assets')) {
+      // for non 404 images
+      this._triggerDownload(product, product.imgPath);
+      return;
+    }
 
-   this._httpService.getProductImage(product.fileName)
-   .pipe(first())
-   .subscribe(path => {
-     if (!path) {
-       this._toast.showDefaultError();
-       return;
-     } else {
-       this._triggerDownload(product, path);
-     }
-   })
+    this._httpService.getProductImage(product.fileName)
+    .pipe(first())
+    .subscribe(path => {
+      if (!path) {
+        this._toast.showDefaultError();
+        return;
+      } else {
+        this._triggerDownload(product, path);
+      }
+    })
   }
 
   // trigger download action
-  private _triggerDownload(product: ProductResponse, url: string): void {
-   const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
-   const a = document.createElement('a');
-   a.href = url;
-   a.download = fileName;
-   document.body.appendChild(a);
-   a.click();
-   document.body.removeChild(a);
+  private _triggerDownload(product: ProductMapper<ProductTypePrint>, url: string): void {
+    // if logged in and item not owned, add to owned and remove from cart if it is there
+    if (this.user && !this.user.ownedItems.includes(product.id)) {
+      this._firebaseService.addProductToUser(product.id, this.user)
+      .subscribe(res => {
+        this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 4000 });
+        this._authService.updateUser();
+      })
+    }
+
+    const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // TODO: capturing download finished event seems complex at this point
+    // so block download for 1.5 seconds to avoid downloading multiple times
+    setTimeout(() => {
+      product.spinners[ProductActions.CART] = false;
+      product.spinners[ProductActions.DOWNLOAD] = false;
+    }, 1500);
   }
 
   ngOnDestroy(): void {
-    console.log('destoyed service')
-    this.userStateSub$.unsubscribe();
+    this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
 }

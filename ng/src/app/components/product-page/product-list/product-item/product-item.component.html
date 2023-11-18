@@ -12,9 +12,18 @@
       <li *ngFor="let action of actions">
         <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
         <ng-template #enableAction>
-          <!-- hardcoded to avoid implementation issues - two actions in one box, mat-icon type (custom vs mat-icon) -->
-          <mat-icon *ngIf="action === productActions.CART && !product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart()"></mat-icon>
-          <mat-icon *ngIf="action === productActions.CART && product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
+          <!-- cart action, use download if item free -->
+          <ng-container *ngIf="action === productActions.CART">
+            <ng-container *ngIf="product.price !== '0.00' && product.discount < 100; else download">
+              <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart()"></mat-icon>
+              <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
+            </ng-container>
+            <ng-template #download>
+              <mat-icon icon="download" (click)="handleDownload()">download</mat-icon>
+            </ng-template>
+          </ng-container>
+
+          <!-- like action -->
           <mat-icon
             *ngIf="action === productActions.LIKE"
             #tooltip="matTooltip"
@@ -28,13 +37,16 @@
           >
             {{ getLikeIcon() }}
           </mat-icon>
+
+          <!-- download action -->
           <mat-icon *ngIf="action === productActions.DOWNLOAD" icon="download" (click)="handleDownload()">download</mat-icon>
+
         </ng-template>
       </li>
     </ul>
   </div>
   <div class="bottom-section">
-    <div class="product-title fw-bold"><a href="#" class="user-select-none">{{ product.title }}</a></div>
+    <div class="product-title">{{ product.title }}</div>
     <div class="product-metadata mt-3"  [attr.type]="type">
       <div
         class="product-metadata-item"
@@ -44,18 +56,26 @@
         <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
           {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
         </mat-icon>
+
         <!-- price not part of metadata -->
+        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span>
         <span class="ms-1" *ngIf="metadata.key === 'price'">
           <ng-container *ngIf="product.discount > 0">
-            <span class="product-old-price">{{ product.price }}</span>
-            <span class="product-discounted-price">{{ utilService.getProductPrice(product) }}</span>
+            <ng-container *ngIf="product.discount < 100">
+              <span class="product-old-price">{{ product.price }}</span>
+              <span class="product-discounted-price">{{ utilService.getProductPrice(product) }}</span>
+            </ng-container>
+            <ng-container *ngIf="product.discount === 100">
+              <span class="product-old-price">{{ product.price }}</span>
+              <span class="product-discounted-price">Free</span>
+            </ng-container>
           </ng-container>
           <ng-container *ngIf="product.discount === 0">
-            {{ product.price }}
+            <span *ngIf="product.price !== '0.00'">{{ product.price }}</span>
+            <span *ngIf="product.price === '0.00'">Free</span>
           </ng-container>
         </span>
 
-        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span>
       </div>
     </div>
   </div>

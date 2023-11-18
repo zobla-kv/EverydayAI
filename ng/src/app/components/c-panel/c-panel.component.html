@@ -31,12 +31,18 @@
         <th mat-header-cell *matHeaderCellDef>Price</th>
         <td mat-cell *matCellDef="let product">
           <div *ngIf="product.discount > 0">
-            <!-- TODO: format in db to 2 decimal -->
-            <span class="product-old-price">{{ product.price }} $</span>
-            <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
+            <div *ngIf="product.discount < 100">
+              <span class="product-old-price">{{ product.price }} $</span>
+              <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
+            </div>
+            <div *ngIf="product.discount === 100">
+              <span class="product-old-price">{{ product.price }} $</span>
+              <span class="lh-1 mt-2">Free on discount</span>
+            </div>
           </div>
           <div *ngIf="product.discount === 0">
-            <span>{{ product.price }} $</span>
+            <span *ngIf="product.price !== '0.00'">{{ product.price }} $</span>
+            <span *ngIf="product.price === '0.00'">Free</span>
           </div>
         </td>
       </ng-container>
