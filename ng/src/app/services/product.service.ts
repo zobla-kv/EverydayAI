@@ -115,7 +115,7 @@ export class ProductService implements OnDestroy {
       .subscribe(res => {
         this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 4000 });
         this._authService.updateUser();
-      })
+      });
     }
 
     const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);

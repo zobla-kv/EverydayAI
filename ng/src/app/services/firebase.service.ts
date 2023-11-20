@@ -324,7 +324,7 @@ export class FirebaseService {
         const ownedItemsTimeMap = (res.data() as CustomUser).ownedItemsTimeMap;
         ownedItemsTimeMap[productId] = Timestamp.fromDate(new Date());
         const filteredCart = user.cart.filter(id => id !== productId);
-        await this._db.collection('Users').doc(user.id).update({
+        return this._db.collection('Users').doc(user.id).update({
           'cart': filteredCart,
           'ownedItems': arrayUnion(productId),
           'ownedItemsTimeMap': ownedItemsTimeMap
