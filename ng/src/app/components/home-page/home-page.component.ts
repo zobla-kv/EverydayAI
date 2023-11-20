@@ -56,7 +56,8 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // our picks list config
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
   // our products to be fetched
-  ourPicksProductIds = ['iycLUU4ufjjCJJWykcaE', 'Uhuui8b3DQvUBUY94VzY', 'BMvzFFlcnLUPK7eiZQCj'];
+  // WARNING: large image size causes page to lag
+  ourPicksProductIds = ['BMvzFFlcnLUPK7eiZQCj', 'Uhuui8b3DQvUBUY94VzY', 'bjwQViG8djMs5tDEzp0I'];
   // our picks fetched products
   ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
   // are our picks loaded
@@ -82,17 +83,15 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this._httpService.getProducts(ProductType.ALL, null, this.ourPicksProductIds)
     .pipe(first())
     .subscribe(products => {
-      console.log('products HP: ', products);
       // TODO: sorted automatically by id, dont want this
       this.ourPicksProducts = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.ourPicksListConfig, this.user));
+
       // 404 images allowed to show
       if (products.length !== this.ourPicksListConfig.pageSize) {
         this.ourPicksError = true;
       }
-      // page lags without this
-      setTimeout(() => {
-        this.ourPicksLoaded = true;
-      }, 1000);
+
+      this.ourPicksLoaded = true;
     });
   }
 

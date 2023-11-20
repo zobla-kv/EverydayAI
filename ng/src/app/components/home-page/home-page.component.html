@@ -215,7 +215,7 @@
                 </ng-template>
               </strong>
               <button>
-                <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart'] || product.spinners['download']; else action"></mat-spinner>
+                <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
                 <ng-template #action>
                   <!-- TODO: site lags on download -->
                   <mat-icon class="download"
