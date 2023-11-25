@@ -1,49 +1,54 @@
+// const fs = require('fs');
 
-const fs = require('fs');
-const uploadService = require('./uploadFileService');
-// NOTE: this is relative route (update if changed)
-const { folder } = uploadService;
+/* OLD WAY - saved for ref */
 
-const { db } = require('./firebaseService');
+// // NOTE: this is relative route (update if changed)
+// const folder = path.join(__dirname, '..', 'private/product-images/');
 
-// get multiple images from fs as buffer
-async function getImages(fileNames) {
-  const images = [];
-  fileNames.forEach(name => {
-    try {
-      const file = fs.readFileSync(folder + name, 'base64');
-      images.push(file);
-    } catch (err) {
-      images.push(null);
-    }
-  })
-  return images;
-}
+// const storage = multer.diskStorage(
+//   {
+//     destination: folder,
+//     filename: (req, file, cb) => cb(null, file.originalname)
+//   }
+// );
 
-// retrieve image from FS by imgPath from FE
-async function getImage(fileName) {
-  try {
-    const file = fs.readFileSync(folder + fileName, 'base64');
-    if (file.length === 0) {
-      throw new Error('Empty file');
-    }
-    return file;
-  } catch (err) {
-    return null;
-  }
-}
+// // single(name of the FormData field on FE) - store uploaded file locally
+// const uploadOld = multer({ storage }).single('image');
 
-// delete image (delete file?)
-async function deleteImage(fileName) {
-  try {
-    fs.unlinkSync(folder + fileName);
-  } catch (err) {
-    db.collection('FailedImageDeletes').doc(fileName).set({ reason: err.message });
-  }
-}
+// // NOTE: cause error
+// // const upload = multer({ storage, limits: { fileSize: 1 } }).single('image');
 
-module.exports = {
-  getImages,
-  getImage,
-  deleteImage
-}
+// module.exports = {
+//   folder,
+//   uploadOld
+// }
+
+// // retrieve image from FS by imgPath from FE
+// async function getImageOld(fileName) {
+//   try {
+//     const file = fs.readFileSync(folder + fileName, 'base64');
+//     if (file.length === 0) {
+//       throw new Error('Empty file');
+//     }
+//     return file;
+//   } catch (err) {
+//     return null;
+//   }
+// }
+
+// // get multiple images from fs as buffer[]
+// async function getImagesOld(fileNames) {
+//   const images = [];
+//   fileNames.forEach(name => {
+//     try {
+//       const file = fs.readFileSync(folder + name, 'base64');
+//       images.push(file);
+//     } catch (err) {
+//       images.push(null);
+//     }
+//   })
+//   return images;
+// }
+
+
+

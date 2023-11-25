@@ -227,15 +227,16 @@ export class FirebaseService {
     return this._db.collection('Products/Prints/All').add({
       ...data,
       creationDate: new Date()
-    }).then(response => response.id)
+    })
+    .then(response => response.id);
   }
 
   // update product with missing fields after creation
-  async updateProductAfterAdd(productId: string, fileName: string): Promise<void> {
+  async updateProductAfterAdd(productId: string, imgPath: string): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(productId).ref.update({
       id: productId,
-      fileName
-    })
+      imgPath
+    });
   }
 
   // update product

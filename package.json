@@ -29,6 +29,7 @@
         "@types/crypto-js": "^4.1.1",
         "body-parser": "^1.20.2",
         "bootstrap": "^5.2.3",
+        "cloudinary": "^1.41.0",
         "crypto-js": "^4.1.1",
         "decimal.js": "^10.4.3",
         "express": "^4.17.1",
@@ -57,7 +58,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer are for express app",
+        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer, cloudinary are for express app",
         "1": "devDependencies dotenv and nodemon, body-parser, fs-extra are for express app"
     }
 }

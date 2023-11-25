@@ -542,7 +542,7 @@ form {
     &[item="extension"] {
       text-transform: uppercase;
     }
-    &[item="downloadSize"] {
+    &[item="fileSizeInMb"] {
       .mat-icon { transform: scale(1.3);}
     }
   }

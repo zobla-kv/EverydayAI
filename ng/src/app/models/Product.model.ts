@@ -7,12 +7,12 @@ export interface ProductResponse {
   title: string;
   price: string;
   discount: number;
-  fileName: string;
+  // fileName: string; replaced by imgPath
+  imgPath: string;
   imgAlt: string;
   likes: number;
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
-  imgPath: string; // client side only - set in http request (only client side property not added in productMapper)
   creationDate: Timestamp;
 }
 
@@ -26,7 +26,9 @@ export interface ProductShirtPrint extends ProductResponse {
 
 interface ProductTypePrintMetadata {
   [key: string]: {
-    downloadSize: string;
+    fileSize: string;
+    // exists only to avoid transforming it every time on FE
+    fileSizeInMb: string;
     resolution: string;
     extension: string;
     tier: 'classic' | 'premium';
@@ -84,7 +86,7 @@ export class ProductListConfig {
         type: ProductType.PRINTS.SHOP,
         // download action not passed because it replaces cart action
         actions: [ProductActions.CART, ProductActions.LIKE],
-        metadata: ['price', 'tier', 'extension', 'downloadSize', 'resolution']
+        metadata: ['price', 'tier', 'extension', 'fileSizeInMb', 'resolution']
       },
       pageSize: 6
     },
@@ -93,7 +95,7 @@ export class ProductListConfig {
       product: {
         type: ProductType.PRINTS.OWNED_ITEMS,
         actions: [ProductActions.DOWNLOAD],
-        metadata: ['resolution', 'extension', 'downloadSize', 'tier']
+        metadata: ['resolution', 'extension', 'fileSizeInMb', 'tier']
       },
       pageSize: 6
     }
@@ -119,7 +121,6 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   description: string;
   price: string;
   discount: number;
-  fileName: string;
   imgPath: string;
   imgAlt: string;
   // TODO: type
@@ -137,7 +138,6 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.title = product.title;
     this.price = product.price;
     this.discount = product.discount;
-    this.fileName = product.fileName;
     this.imgPath = product.imgPath;
     this.imgAlt = product.imgAlt;
     this.likes = product.likes;
@@ -166,7 +166,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   // if icon depends on data, make sure it follows naming convention (key-value) (tier-classic)
   private static _metadataIconMap: MetadataIconMap = new Map([
     ['price',        { iconName: 'dollar',           type: 'custom'   }],
-    ['downloadSize', { iconName: 'download',         type: 'mat-icon' }],
+    ['fileSizeInMb', { iconName: 'download',         type: 'mat-icon' }],
     ['tier-classic', { iconName: 'tier-classic',     type: 'custom'   }],
     ['tier-premium', { iconName: 'tier-premium',     type: 'custom'   }],
     ['resolution',   { iconName: 'image-resolution', type: 'custom'   }],

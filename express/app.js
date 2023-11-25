@@ -14,13 +14,7 @@ if (dotenv.error) {
   console.log('FAILED TO LOAD ENV VARIABLES: ', dotenv.error.message);
 }
 
-// create directory for product images
-const uploadFileService = require('./services/uploadFileService');
-uploadFileService.createDirectory();
-
 const PORT = process.env.PORT || 3000;
-
-const currentDir = path.join(__dirname);
 
 // cors
 const cors = require('./cors');
@@ -33,11 +27,17 @@ app.use(express.static(__dirname + '/public'));
 
 app.use('/api', cors, express.json(), routes);
 
+// const currentDir = path.join(__dirname);
+// TODO: NO REQUESTS BOTH, request immediatelly hits public/index
 // '*' for angular routing to work
-app.get('*', (req, res) => {
-  console.log('got request')
-  res.sendFile(path.join(currentDir, 'public', 'index.html'));
-})
+// app.get('*', (req, res) => {
+//   console.log('got request')
+//   res.sendFile(path.join(currentDir, 'public', 'index.html'));
+// })
+// app.get('/', (req, res) => {
+//   console.log('got request')
+//   res.sendFile(path.join(currentDir, 'public', 'index.html'));
+// })
 
 // server
 // const sslServer = https.createServer({

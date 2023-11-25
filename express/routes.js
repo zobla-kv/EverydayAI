@@ -3,8 +3,8 @@ const { labels } = require('./constants');
 const bodyParser = require('body-parser');
 const emailService = require('./services/emailService');
 const paymentService = require('./services/paymentService');
-const uploadService = require('./services/uploadFileService');
-const fileSystemService = require('./services/fileSystemService');
+const cloudinaryService = require('./services/cloudinaryService');
+const multer = require('multer');
 
 router.get('/news', async (req, res) => {
   const url =`https://newsapi.org/v2/everything?q=+ai&pageSize=2&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;
@@ -50,29 +50,16 @@ router.post('/stripe-create-payment-intent', async (req, res) => {
   }
 })
 
-router.post('/upload-file', (req, res) => {
-  uploadService.upload(req, res, (err) => {
-    if (err) {
-      return res.status(500).json(false);
-    }
-    res.status(200).json(true);
-  })
+router.post('/upload-file', multer().single('image'), cloudinaryService.upload, (req, res) => {
+  if (res.error) {
+    return res.status(res.error['http_code']).json(res.error.message);
+  }
+  res.status(200).json({ imgPath: res.imgPath });
 })
 
-router.get('/product-images', async (req, res) => {
-  const images = await fileSystemService.getImages(req.query.fileNames);
-  res.status(200).json(images);
-})
 
-router.get('/product-image/:name', async (req, res) => {
-  const image = await fileSystemService.getImage(req.params.name);
-  res.status(200).json(image);
-})
-
-router.delete('/delete-image/:name', async (req, res) => {
-  await fileSystemService.deleteImage(req.params.name);
-  res.status(200).json();
-})
+// TODO: validate input params id and uid (check others places for this on server side)
+router.get('/download/:id', cloudinaryService.get);
 
 // push notifications from firebase
 router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
@@ -107,3 +94,23 @@ router.post('/stripe-webhook', bodyParser.raw({ type: 'application/json' }), asy
 });
 
 module.exports = router;
+
+
+
+
+/* OLD WAY - saved for ref */
+
+// router.post('/upload-file-old', (req, res) => {
+//   fileSystemService.uploadOld(req, res, (err) => {
+//     if (err) {
+//       return res.status(500).json(false);
+//     }
+//     res.status(200).json(true);
+//   })
+// })
+
+// router.get('/product-images', async (req, res) => {
+//   const images = await fileSystemService.getImagesOld(req.query.fileNames);
+//   res.status(200).json(images);
+// })
+

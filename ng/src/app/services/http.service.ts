@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angula
 
 import { environment } from '@app/environment';
 
-import { Observable, catchError, concatMap, first, map, of } from 'rxjs';
+import { Observable, catchError, concatMap, first, map, mergeMap, of } from 'rxjs';
 
 import {
   FirebaseService,
@@ -86,21 +86,18 @@ export class HttpService {
   }
 
   // upload file to server
-  uploadFile(file: FormData): Promise<void> {
+  uploadFile(file: FormData): Promise<string> {
     return new Promise((resolve, reject) => {
       this._http
       .post<any>(`${environment.API_HOST}/api/upload-file`, file)
       .pipe(
-        // NOTE: consider adding first() everywhere
+        // TODO: consider adding first() everywhere
         first(),
-        map(isUploaded => {
-          if (isUploaded) {
-            resolve();
-          } else {
-            reject('File not uploaded');
-          }
-        }),
-        catchError(async (err: HttpErrorResponse) => reject(err))
+        map(res => resolve(res.imgPath)),
+        catchError(async err => {
+          err.cloudinary = err.error;
+          reject(err);
+        })
       )
       .subscribe();
     })
@@ -129,82 +126,109 @@ export class HttpService {
       default:
         throw new Error('Unable to fetch products. Invalid type: ', productType);
     }
-
-    // fetch image from BE and then update imgPath field to base64
-    // NOTE: using base64 because unable to stringify a blob on BE
-    return products$
-    .pipe(
-      concatMap((products: ProductResponse[]) => {
-        console.log('products res: ', products);
-        if (products.length === 0) {
-          return of([]);
-        }
-        return this.getProductImages([...products.map((product: any) => product.fileName)])
-        .pipe(
-          map(images => {
-            products.forEach((product, i) => {
-              if (images[i]) {
-                const extension = this._utilService.getMimeTypeFromExtension(products[i].fileName.split('.')[1])
-                product.imgPath = `data:image/${extension};base64, ` + images[i];
-              } else {
-                product.imgPath = '../../assets/images/img/cesar-millan.png';
-              }
-            })
-            return products;
-          })
-        );
-      }),
-      catchError(async err => [])
-    );
-  }
-
-  // get product images from BE
-  getProductImages(fileNames: string[]): Observable<(ArrayBufferLike)[]> {
-    const params = new HttpParams({
-      fromObject: { 'fileNames[]': fileNames }
-    })
-    return this._http
-    .get<any>(
-      `${environment.API_HOST}/api/product-images`,
-      {
-        responseType: 'json',
-        params
-      }
-    )
-    .pipe(
-      catchError(async err => [])
-    )
-  }
-
-  // get product image from BE
-  getProductImage(fileName: string): Observable<string | null> {
-    return this._http
-    .get<any>(
-      `${environment.API_HOST}/api/product-image/${fileName}`,
-      // {
-      //   headers: { 'Content-Type': 'image' },
-      //   responseType: 'blob' as 'json'
-      // }
-    )
-    .pipe(
-      map(buffer => {
-        if (!buffer) {
-          return null;
-        }
-        const extension = this._utilService.getMimeTypeFromExtension(fileName.split('.')[1])
-        return `data:image/${extension};base64, ` + buffer;
-      }),
-      catchError(async err => null)
-    )
-  }
-
-  // delete item
-  deleteItem(fileName: string): Observable<string | null> {
-    return this._http.delete<any>(`${environment.API_HOST}/api/delete-image/${fileName}`);
+    return products$;
   }
 
   // bypass circular dependency using injector
   // private _injector: Injector,
   // this._injector.get<FirebaseService>(FirebaseService);
+
+
+  /* OLD WAY - saved for ref */
+
+  // get all products from db (old way)
+  // getProductsOld(productType: any, user: CustomUser | null, ids?: string[]): Observable<ProductResponse[] | []> {
+  //   const firebaseService = this._injector.get<FirebaseService>(FirebaseService);
+  //   let products$: Observable<any>;
+  //   switch(productType) {
+  //     case(ProductType.ALL):
+  //       if (ids) {
+  //         products$ = firebaseService.getProductsById(ids);
+  //         break;
+  //       }
+  //       products$ = firebaseService.getAllProducts();
+  //       break;
+  //     case(ProductType.PRINTS.SHOP):
+  //       products$ = firebaseService.getProductsForTypePrintTabShop(user);
+  //       break;
+  //     case(ProductType.PRINTS.OWNED_ITEMS):
+  //       products$ = firebaseService.getProductsForTypePrintTabOwnedItems(user);
+  //       break;
+  //     default:
+  //       throw new Error('Unable to fetch products. Invalid type: ', productType);
+  //   }
+
+  //   // fetch image from BE and then update imgPath field to base64
+  //   // NOTE: using base64 because unable to stringify a blob on BE
+  //   return products$
+  //   .pipe(
+  //     concatMap((products: ProductResponse[]) => {
+  //       console.log('products res: ', products);
+  //       if (products.length === 0) {
+  //         return of([]);
+  //       }
+  //       return this.getProductImagesOld([...products.map((product: any) => product.fileName)])
+  //       .pipe(
+  //         map(images => {
+  //           console.log('images: ', images);
+  //           products.forEach((product, i) => {
+  //             if (images[i]) {
+  //               const extension = this._utilService.getMimeTypeFromExtension(products[i].fileName.split('.')[1]);
+  //               product.imgPath = `data:image/${extension};base64, ` + images[i];
+  //             } else {
+  //               product.imgPath = '../../assets/images/img/cesar-millan.png';
+  //             }
+  //           })
+  //           return products;
+  //         })
+  //       );
+  //     }),
+  //     catchError(async err => [])
+  //   );
+  // }
+
+  // // get product images from BE
+  // getProductImagesOld(fileNames: string[]): Observable<(ArrayBufferLike)[]> {
+  //   const params = new HttpParams({
+  //     fromObject: { 'fileNames[]': fileNames }
+  //   })
+  //   return this._http
+  //   .get<any>(
+  //     `${environment.API_HOST}/api/product-images`,
+  //     {
+  //       responseType: 'json',
+  //       params
+  //     }
+  //   )
+  //   .pipe(
+  //     catchError(async err => [])
+  //   )
+  // }
+
+
+  // // get product image from BE with percentage
+  // // NOTE: WHY UNUSED: can't have percentage and avoid showing blob url (below file name) in download manager
+  // // to download create blobUrl from returned chunks and a.href = blobUrl
+  // async getProductImage(id: string): Promise<any> {
+  //   const response = await fetch(`${environment.API_HOST}/api/download-product/${id}`);
+  //   if (response.body) {
+  //     let percentageDownloaded = 0;
+  //     const fileSize = response.headers.get('Content-Length');
+  //     const chunks = [];
+
+  //     const reader = response.body.getReader();
+  //     while (true) {
+  //       const { done, value: chunk } = await reader.read();
+  //       if (done) {
+  //         reader.releaseLock();
+  //         return chunks;
+  //       }
+
+  //       // NOTE: Formula to calculate percentage of something ((portion/total) * 100) + '%'
+  //       percentageDownloaded += (chunk.length/Number(fileSize)) * 100;
+  //       chunks.push(chunk);
+  //     }
+  //   }
+  // }
 
 }

@@ -260,7 +260,7 @@ loadScript(url: string) {
   * @param file - File
   * @return size - file size in mb
   */
-  getFileSize(file: File): string {
+  getFileSizeInMb(file: File): string {
     let fileSize = (file.size / (1024 * 1024)).toFixed(1);
     if (fileSize === '0.0') {
       fileSize = '0.1';

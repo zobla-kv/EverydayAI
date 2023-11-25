@@ -48,14 +48,11 @@ Thumbs.db
 # Salesforce
 .sfdx
 
-# Env variables
-express/.env
-express/environments
-
 # cert
 cert
 
 #express
+express/.env
+express/environments
 express/public
-express/dist
-express/private
+

@@ -49,7 +49,7 @@ export class ToastConstants {
     NEW_PRODUCT_ADDED_SUCCESSFUL: 'New product added successfuly',
     PRODUCT_UPDATED_SUCCESSFUL: 'Product updated successfuly',
     PRODUCT_REMOVED_SUCCESSFUL: 'Product removed successfuly',
-    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Product added to owned items.'
+    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.'
   }
 
 }

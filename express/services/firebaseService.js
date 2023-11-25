@@ -92,9 +92,24 @@ async function addPaymentToUser(user, paymentIntent) {
   })
 }
 
+// get user by id
+async function getUserById(id) {
+  return db.collection('Users').doc(id).get()
+  .then(doc => doc.data())
+  .catch(err => null)
+}
+
+// get product by id
+async function getProductById(id) {
+  return db.collection('Products/Prints/All').doc(id).get()
+  .then(doc => doc.data())
+  .catch(err => null)
+}
+
 module.exports = {
-  db,
   generateEmailLink,
   getPrice,
-  addPaymentToUser
+  addPaymentToUser,
+  getUserById,
+  getProductById
 };

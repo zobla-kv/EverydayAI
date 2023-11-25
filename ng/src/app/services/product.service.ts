@@ -2,6 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription, first } from 'rxjs';
 
+import { environment } from '@app/environment';
+
 import {
   CustomUser,
   ProductActions,
@@ -89,51 +91,60 @@ export class ProductService implements OnDestroy {
     product.spinners[ProductActions.CART] = true;
     product.spinners[ProductActions.DOWNLOAD] = true;
 
-    if (!product.imgPath.includes('assets')) {
-      // for non 404 images
-      this._triggerDownload(product, product.imgPath);
-      return;
-    }
-
-    this._httpService.getProductImage(product.fileName)
-    .pipe(first())
-    .subscribe(path => {
-      if (!path) {
-        this._toast.showDefaultError();
-        return;
-      } else {
-        this._triggerDownload(product, path);
-      }
-    })
-  }
-
-  // trigger download action
-  private _triggerDownload(product: ProductMapper<ProductTypePrint>, url: string): void {
     // if logged in and item not owned, add to owned and remove from cart if it is there
     if (this.user && !this.user.ownedItems.includes(product.id)) {
       this._firebaseService.addProductToUser(product.id, this.user)
       .subscribe(res => {
-        this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 4000 });
+        // TODO: currently the message 'started downloading' depends on update user, what if endpoint fails?
+        this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 6000 });
         this._authService.updateUser();
       });
     }
 
-    const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
+    a.href = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    // TODO: capturing download finished event seems complex at this point
-    // so block download for 1.5 seconds to avoid downloading multiple times
+
     setTimeout(() => {
       product.spinners[ProductActions.CART] = false;
       product.spinners[ProductActions.DOWNLOAD] = false;
     }, 1500);
+
   }
 
   ngOnDestroy(): void {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
 }
+
+
+/* OLD WAY - saved for ref */
+
+// // FE download (the old way)
+// private _triggerDownloadOld(product: ProductMapper<ProductTypePrint>, url: string): void {
+//   // if logged in and item not owned, add to owned and remove from cart if it is there
+//   if (this.user && !this.user.ownedItems.includes(product.id)) {
+//     this._firebaseService.addProductToUser(product.id, this.user)
+//     .subscribe(res => {
+//       this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 4000 });
+//       this._authService.updateUser();
+//     });
+//   }
+
+//   const fileName = product.title + '.' + this._utilService.getFileExtension(product.fileName);
+//   const a = document.createElement('a');
+//   a.href = url;
+//   a.download = fileName;
+//   document.body.appendChild(a);
+//   a.click();
+//   document.body.removeChild(a);
+//   // NOTE: capturing download finished event required BE download
+//   // so block download for 1.5 seconds to avoid downloading multiple times
+//   setTimeout(() => {
+//     product.spinners[ProductActions.CART] = false;
+//     product.spinners[ProductActions.DOWNLOAD] = false;
+//   }, 1500);
+// }
+

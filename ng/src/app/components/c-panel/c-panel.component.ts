@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { catchError, debounceTime, distinctUntilChanged, filter, first, fromEvent, map, tap } from 'rxjs';
 
+import { Timestamp } from '@angular/fire/firestore';
+
 import {
   FirebaseService,
   HttpService,
@@ -86,6 +88,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required
       ]),
       'fileSize': new FormControl(null, [
+        Validators.required
+      ]),
+      'fileSizeInMb': new FormControl(null, [
         Validators.required
       ]),
       'tier': new FormControl('classic', [
@@ -171,7 +176,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       if (this.fullProductList.length > 0) {
         // TODO: this causes bug with premium displayed as classic
         this.metadataIconMap = ProductMapper.getMetadataIconMap(
-          ['tier', 'resolution', 'extension', 'downloadSize'],
+          ['tier', 'resolution', 'extension', 'fileSizeInMb'],
           this.fullProductList[0].metadata
         );
       }
@@ -208,10 +213,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   async onFileChange(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.formAddProduct.patchValue({  })
       this.formAddProduct.patchValue({ fileExtension: this.utilService.getFileExtension(file.name) });
       this.formAddProduct.patchValue({ fileResolution: await this.utilService.getImageResolution(file) });
-      this.formAddProduct.patchValue({ fileSize: this.utilService.getFileSize(file) });
+      this.formAddProduct.patchValue({ fileSize: file.size });
+      this.formAddProduct.patchValue({ fileSizeInMb: this.utilService.getFileSizeInMb(file) });
       this.formAddProduct.patchValue({ image: file });
     }
   }
@@ -222,6 +227,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   async handleAddProduct() {
+    const productTitle = this.formAddProduct.get('title')?.value;
     const productImgFile = this.formAddProduct.get('image')?.value;
 
     const isValid = this.isFormValid(this.formAddProduct);
@@ -234,16 +240,16 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this._firebaseService.addProduct(this.getProductObject())
     .then(async productId => {
       this.productId = productId;
-      // rename
-      const fileName = productId + '.' + this.formAddProduct.get('fileExtension')?.value;
-      await this._firebaseService.updateProductAfterAdd(productId, fileName);
 
+      const fileName = productTitle;
       // prepare for upload
       const formData = new FormData();
       // set new name
       formData.append('image', productImgFile, fileName);
 
-      await this._httpService.uploadFile(formData);
+      const imgPath = await this._httpService.uploadFile(formData);
+
+      await this._firebaseService.updateProductAfterAdd(productId, imgPath);
 
       this._toast.open(ToastConstants.MESSAGES.NEW_PRODUCT_ADDED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
 
@@ -251,8 +257,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this.updateProductList();
     })
     .catch(err => {
+      // err.messsage only exists for cloudinary err, not firebase
+      this._toast.open(err.cloudinary ? err.cloudinary : ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type, { duration: 4000 });
       this._firebaseService.removeProduct(this.productId);
-      this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
     })
     .finally(() => {
       this.clearAddProductFormAfterSubmit();
@@ -310,53 +317,31 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // delete product
-  // NOTE: this will also delete it from those who have bought it, figure out how to remove it from shop only
-  // async handleDeleteProduct() {
-  //   const target = this.fullProductList.find(item => item.id === this.productId) as ProductResponse;
-  //   // remove from db
-  //   this._firebaseService.removeProduct(this.productId)
-  //   .then(res => {
-  //     // remove image from server, catch will not catch this but don't care
-  //     this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
-  //     this.updateProductList();
-  //     this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
-  //   })
-  //   .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
-  //   .finally(() => this._modalService.actionComplete$.next(true))
-  // }
-
-
-  // create product object to store in db
+  // transform formData into ProductResponse
   // TODO: move to BE
   getProductObject(): ProductResponse {
     const formData = this.formAddProduct.getRawValue();
 
-    const dataCopy = this.utilService.getDeepCopy(formData);
-    delete dataCopy.image;
-    delete dataCopy.fileExtension;
-    delete dataCopy.fileResolution;
-    delete dataCopy.fileSize;
-
-    const product: ProductResponse = {
-      ...dataCopy,
-      // set later in updateProductAfterAdd
+    return {
+      // set later
       id: '',
-      fileName: '',
+      imgPath: '',
+      creationDate: Timestamp.fromDate(new Date()),
       //
+      title: formData.title,
       imgAlt: formData.title,
       price: Number(formData.price).toFixed(2),
       discount: Number(formData.discount),
+      likes: Number(formData.likes),
       isActive: false,
       metadata: {
-        downloadSize: formData.fileSize,
+        fileSize: formData.fileSize,
+        fileSizeInMb: formData.fileSizeInMb,
         resolution: formData.fileResolution,
         extension: formData.fileExtension,
         tier: formData.tier
       }
     };
-
-    return product;
   }
 
   // is form valid
@@ -365,8 +350,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       return true;
     } else {
       this.validateAllFormFields(form);
-      this.validateDiscount(form);
-      return false;
+      return this.validateDiscount(form) ? true : false;
     }
   }
 
@@ -419,6 +403,22 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   //     }
   //     return null;
   //   }
+  // }
+
+  // delete product
+  // WARNING: this will also delete it from those who have bought it, figure out how to remove it from shop only
+  // async handleDeleteProduct() {
+  //   const target = this.fullProductList.find(item => item.id === this.productId) as ProductResponse;
+  //   // remove from db
+  //   this._firebaseService.removeProduct(this.productId)
+  //   .then(res => {
+  //     // remove image from server, catch will not catch this but don't care
+  //     this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
+  //     this.updateProductList();
+  //     this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+  //   })
+  //   .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
+  //   .finally(() => this._modalService.actionComplete$.next(true))
   // }
 
   // keep order of keyvalue pipe (not DRY)
