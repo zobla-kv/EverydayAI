@@ -6,7 +6,8 @@
     </span>
   </div>
   <div class="top-section overflow-hidden">
-    <img [src]="productImageBlobUrlSafe" [alt]="product.imgAlt" (load)="handleImageLoaded()" class="pe-none">
+    <!-- <img [src]="productImageBlobUrlSafe" [alt]="product.imgAlt" (load)="handleImageLoaded()" class="pe-none"> -->
+    <img src="{{ product.imgPath }}" alt="{{ product.imgAlt }}" (load)="handleImageLoaded()" (error)="handleImageLoadError()" class="pe-none">
     <ul>
       <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->
       <li *ngFor="let action of actions">

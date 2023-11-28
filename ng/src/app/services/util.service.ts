@@ -235,7 +235,7 @@ loadScript(url: string) {
   }
 
 /**
-  * set 404 image when product fails to load
+  * set 404 image on target element
   *
   * @param target - target element (img)
   */
@@ -244,6 +244,15 @@ loadScript(url: string) {
     target.src = '../../assets/images/img/cesar-millan.png';
   }
 
+/**
+  * set 404 image when product fails to load
+  *
+  * @param product - ProductResponse
+  */
+  setProduct404Image(product: ProductResponse): void {
+    // TODO: replace src
+    product.imgPath = '../../assets/images/img/cesar-millan.png';
+  }
 
 /**
   * get file extension from file name

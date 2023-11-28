@@ -57,7 +57,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
   // our products to be fetched
   // WARNING: large image size causes page to lag
-  ourPicksProductIds = ['BMvzFFlcnLUPK7eiZQCj', 'Uhuui8b3DQvUBUY94VzY', 'bjwQViG8djMs5tDEzp0I'];
+  ourPicksProductIds = ['VmVOY54dGMqj0BxYBw2t', 'MoVQKlpibD7JnehAfmmX', '6wHB0XTG3oIZHBXEmKNo'];
   // our picks fetched products
   ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
   // are our picks loaded
@@ -129,6 +129,10 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => {
       element.classList.add('highlighted');
     }, delay);
+  }
+
+  handleProductImgLoadError(ev: Event) {
+    this.utilService.set404Image(ev.target);
   }
 
   // setOurPicks(products: ProductResponse[]) {

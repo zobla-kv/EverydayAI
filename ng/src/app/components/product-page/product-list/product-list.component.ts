@@ -75,7 +75,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   fetchProducts(productType: any, user: CustomUser | null): void {
     this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
       // console.log('products: ', products)
-      this.fullProductList = this.sortList(this.remove404Products(products));
+      this.fullProductList = this.sortList(products);
       this.paginator.length = this.fullProductList.length;
       this.fullProductList.length === 0 && (this.showSpinner = false);
       this.updatePage();
@@ -85,7 +85,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // TODO: runs on each page
   handleImageLoaded() {
     if (++this.numOfloadedImages === this.paginatedList.length) {
-      this.showSpinner = false;
+      this.paginatedList = this.remove404Products(this.paginatedList);
+      setTimeout(() => {
+        this.showSpinner = false;
+      }, 500);
     }
   }
 
@@ -103,7 +106,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   // remove products which image failes to load
-  remove404Products(products: ProductResponse[]): ProductResponse[] {
+  // TODO: if it is called remove404 why switch inside, call it only if needed
+  remove404Products(products: ProductMapper<ProductTypePrint>[]): ProductMapper<ProductTypePrint>[] {
     const listType = this.config.product.type;
       switch(listType) {
       case ProductType.PRINTS.SHOP:

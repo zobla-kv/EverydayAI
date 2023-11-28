@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input,
-         OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, ElementRef
+import {
+  AfterViewInit, Component, EventEmitter, Input,
+  OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -83,7 +84,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.productImageBlobUrlSafe = this._sanitizer.bypassSecurityTrustUrl(this.product.imgPath);
+    // TODO: check sanitizer when doing validation
+    // this.productImageBlobUrlSafe = this._sanitizer.bypassSecurityTrustUrl(this.product.imgPath);
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {
@@ -98,6 +100,12 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // emit event once img is loaded
   handleImageLoaded() {
+    this.imgLoaded.emit();
+  }
+
+  // emit event once img is loaded
+  handleImageLoadError() {
+    this.utilService.setProduct404Image(this.product);
     this.imgLoaded.emit();
   }
 
