@@ -37,9 +37,6 @@ export class UtilService {
   // log/reg buttons
   authButtonClick$ = new Subject<string>();
 
-  // scrolled to top of the page
-  scrolledToTop$ = new Subject<boolean>();
-
   // screen size
   screenSizeChange$ = new ReplaySubject<string>();
 
@@ -346,6 +343,7 @@ loadScript(url: string) {
   *
   * @param products - ProductResponse[]
   * @return products - sorted ProductResponse[]
+  * NOTE: can be replaced by firebase' orderBy
   */
   sortByCreationDate(products: ProductResponse[]): ProductResponse[] {
     return products.sort((a,b) => {

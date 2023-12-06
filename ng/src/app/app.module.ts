@@ -21,6 +21,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 // ****************************************** //
 
+import { NgxMasonryModule } from 'ngx-masonry';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { environment } from '@app/environment';
@@ -39,12 +41,14 @@ import {
   ShoppingCartComponent,
   ToastComponent,
   CPanelComponent,
-  ModalComponent
+  ModalComponent,
+  LoadingComponent
 } from '@app/components';
 
 import {
   ObserveVisibilityDirective,
-  DelayedHoverDirective
+  DelayedHoverDirective,
+  InfiniteScrollDirective
 } from '@app/directives';
 
 @NgModule({
@@ -64,10 +68,12 @@ import {
     ProductListComponent,
     CPanelComponent,
     ModalComponent,
+    LoadingComponent,
 
     // Directives
     ObserveVisibilityDirective,
-    DelayedHoverDirective
+    DelayedHoverDirective,
+    InfiniteScrollDirective
   ],
   imports: [
     BrowserModule,
@@ -86,6 +92,9 @@ import {
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
+
+    // masonry
+    NgxMasonryModule,
 
     // firebase
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

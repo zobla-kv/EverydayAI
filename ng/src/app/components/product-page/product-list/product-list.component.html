@@ -1,33 +1,9 @@
-<div class="product-list-wrapper">
-  <h2 class="product-list-header">
-    {{ config.title }}
-  </h2>
-  <div class="product-list-container container">
-    <mat-spinner *ngIf="showSpinner" diameter="200" strokeWidth="15"></mat-spinner>
-    <!-- TODO: split between tabs -->
-    <div *ngIf="fullProductList.length === 0 && !showSpinner" class="text-center">No items.</div>
-    <div
-      class="row g-4 gy-5 product-list"
-      [ngClass]="{'d-none': showSpinner }"
-      [@productsLoaded]="!showSpinner && 'loaded'"
-      #productList
-    >
-      <div class="col-lg-4 col-md-6 col-sm-12 mt-5" *ngFor="let product of paginatedList">
-        <app-product-item
-          [product]="product"
-          [actions]="config.product.actions"
-          [type]="config.product.type"
-          (imgLoaded)="handleImageLoaded()"
-        ></app-product-item>
-      </div>
+<div class="product-list-wrapper container" infinite-scroll [threshold]="120" (scrolled)="loadMore()">
+  <app-loading *ngIf="showSpinner" variant="sketch"></app-loading>
+  <ngx-masonry [ordered]="true">
+    <div ngxMasonryItem class="masonry-item col-12 col-sm-6 col-md-4 col-lg-3 px-3 px-sm-1" *ngFor="let product of productList; let i = index">
+      <app-product-item [product]="product" [stagger]="i"></app-product-item>
     </div>
-  </div>
-  <mat-paginator
-    [ngClass]="{'d-none': showSpinner }"
-    class="mt-3"
-    #paginator
-    pageSize="{{ config.pageSize }}"
-    showFirstLastButtons="true"
-    (page)="handlePaginatorNagivation()"
-  ></mat-paginator>
+  </ngx-masonry>
+  <app-loading variant="ellipsis" [ngClass]="{'invisible': !showPaginationLoadingSpinner}"></app-loading>
 </div>

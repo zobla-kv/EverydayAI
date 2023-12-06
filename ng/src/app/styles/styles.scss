@@ -22,17 +22,15 @@ body {
   }
   .page-wrapper {
     max-width: 1600px;
-    margin: auto;
+    // NOTE: margin-top must follow header expanded height
+    margin: 140px auto 0 auto;
     overflow: hidden;
     position: relative;
-    // NOTE: 4rem for footer
-    // padding: 0 2rem 4rem 2rem;
     padding-top: 0;
 
     // TODO: 100svh on mobile
     // to keep everything nicely aligned on zoom out (not needed on large pages ie. home page)
     &:has(.product-page-wrapper) {
-      @extend .flex-center;
       min-height: calc(100vh - 880px);
     }
     &:has(.auth-form-page) {
@@ -569,6 +567,12 @@ form {
 }
 
 /* MEDIA QUERIES */
+// smaller than 976px
+@media only screen and (max-width: 976px) {
+  // when hamburger menu appears
+  body .page-wrapper { margin-top: 90px; }
+}
+
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   .mdc-snackbar {

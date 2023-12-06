@@ -1,0 +1,20 @@
+@import '../../styles/variables';
+
+.product-page-wrapper {
+  margin-top: 25px;
+  & > .container { max-width: 1000px; }
+  hr { width: 93%; margin: 1rem auto 0 auto; }
+
+  .mat-mdc-tab-group {
+    .mat-icon[icon="download"] {
+        transform: scale(1.2);
+    }
+  }
+}
+
+/* MEDIA QUERIES */
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  // TODO: here or in product item
+  // p { font-size: 16px !important; }
+}

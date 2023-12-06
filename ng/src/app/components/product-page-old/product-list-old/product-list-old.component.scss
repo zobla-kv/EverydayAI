@@ -1,0 +1,93 @@
+@import '../../../styles/variables.scss';
+
+.product-list-wrapper {
+  max-width: 1040px;
+  margin: auto;
+
+  .product-list-header {
+    text-align: center;
+    font-size: 2.2rem;
+    color: $main-orange-bg-color;
+    font-weight: 500;
+    margin: 1rem 0 2rem 0;
+  }
+
+  .product-list-container {
+    min-height: 865px;
+    // only if it has direct child mat spinner
+    &:has(> mat-spinner) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(-150px);
+    }
+  }
+
+  // TODO: choose pagination
+  // classic
+  .mat-mdc-paginator {
+    background-color: $main-dark-bg-color;
+    padding-right: 1rem;
+  }
+
+  //TODO: cleanup
+  // pagination center
+  // .mat-mdc-paginator {
+  //   background-color: $main-dark-bg-color;
+
+  //   .mat-mdc-paginator-page-size { display: none; }
+
+  //   .mat-mdc-paginator-range-actions {
+  //     .mat-mdc-paginator-range-label {
+  //       color: $main-orange-bg-color;
+  //       font-size: 0.875rem;
+  //       margin: 0 0.5rem;
+  //     }
+  //     button {
+  //       background-color: $main-orange-bg-color;
+  //       margin-left: 0.5rem;
+  //     }
+  //   }
+
+  //   .mat-mdc-paginator-range-actions {
+  //     // border: 1px solid white;
+  //     margin: auto;
+  //     display: block;
+  //     .mat-mdc-paginator-range-label {
+  //       color: $main-orange-bg-color;
+  //       font-size: 0.875rem;
+  //       margin: 0 auto 0.5rem auto;
+  //       width: fit-content;
+  //     }
+  //     button {
+  //       background-color: $main-orange-bg-color;
+  //       margin-left: 1rem;
+  //       &:nth-child(2) { margin-left: 0; }
+  //     }
+  //   }
+  // }
+
+  // animation
+  .product-list {
+    $transition-duration: 0.3s;
+    transition: $transition-duration;
+    opacity: 1;
+
+    &.fade-out {
+      transition: $transition-duration;
+      opacity: 0;
+    }
+  }
+
+}
+
+/* MEDIA QUERIES */
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  .product-list-wrapper {
+    &:has(> mat-spinner) .mat-mdc-progress-spinner {
+      width: 150px !important;
+      height: 150px !important;
+    }
+  }
+}

@@ -28,17 +28,8 @@ import {
         query('mat-spinner', [ animate('500ms ease-in-out', style({ 'opacity': '0' }))])
       ])
     ]),
-  ]),
-  trigger('liftOnHeaderCollapse', [
-    state('false', style({
-      'transform': 'translateY(0px)'
-    })),
-    state('true', style({
-      'transform': 'translateY(-25px)'
-    })),
-    transition('false <=> true', animate(300))
-  ])
-]
+    ]),
+  ]
 })
 export class AppComponent {
 
@@ -50,9 +41,6 @@ export class AppComponent {
 
   // is preload animation done
   isPreloadAnimationDone = false;
-
-  // follow header animation
-  liftPage = true;
 
   // access in template
   get window() { return window; }
@@ -85,26 +73,6 @@ export class AppComponent {
 
     this._iconService.addCustomIcons();
 
-    this._utilService.screenSizeChange$.subscribe(size => {
-      if (['xl','lg', 'md'].includes(size)) {
-        // animate only on larger screens
-        this._utilService.scrolledToTop$.subscribe(scrolledToTop =>
-          scrolledToTop ? this.animateUp() : this.animateDown()
-        );
-      } else {
-        // clear sub if resize from large to small
-        this._utilService.scrolledToTop$.complete();
-      }
-    });
-
-  }
-
-  // methods for following header animation
-  animateUp() {
-    this.liftPage = true;
-  }
-  animateDown() {
-    this.liftPage = false;
   }
 
   // app loaded and preloader animation started

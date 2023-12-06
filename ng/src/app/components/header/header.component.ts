@@ -87,13 +87,11 @@ export class HeaderComponent implements OnDestroy {
   // trigger header expand animation
   expandHeader() {
     this.expand = true;
-    this._utilService.scrolledToTop$.next(true);
   }
 
   // trigger header collapse animation
   collapseHeader() {
     this.expand = false;
-    this._utilService.scrolledToTop$.next(false);
   }
 
   // close hamburger menu

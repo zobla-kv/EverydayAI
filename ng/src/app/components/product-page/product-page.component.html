@@ -1,28 +1,7 @@
-<!--REF: https://mahabis.com/ check this product list example -->
+<!-- TODO: vertical tabs on the left? -->
 <section class="product-page-wrapper">
-  <mat-tab-group (selectedTabChange)="handleTabChange()">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Shop</span>
-        <div class="active-tab-animation-filler"></div>
-      </ng-template>
-      <app-product-list 
-        [config]="productListConfig.PRODUCT_LIST_PRINTS.TAB_SHOP"
-      ></app-product-list>
-    </mat-tab>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon icon="download">download</mat-icon>
-        <span>Owned items</span>
-        <div class="active-tab-animation-filler"></div>
-      </ng-template>
-      <app-product-list 
-        [config]="productListConfig.PRODUCT_LIST_PRINTS.TAB_OWNED_ITEMS" 
-      ></app-product-list>
-    </mat-tab>
-  </mat-tab-group>
-  <hr>
+  <h1>{{ title }}</h1>
+  <app-product-list></app-product-list>
 </section>
 
 

@@ -12,3 +12,4 @@ export * from './shopping-cart/shopping-cart.component';
 export * from './toast/toast.component';
 export * from './c-panel/c-panel.component';
 export * from './modal/modal.component';
+export * from './loading/loading.component';

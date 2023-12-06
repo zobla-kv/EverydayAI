@@ -1,52 +1,28 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-
-import { Subscription, first, Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, first } from 'rxjs'
 
 import {
   CustomUser,
-  ProductMapper,
-  ProductTypePrint,
-  ProductResponse,
   ProductListConfig,
-  ProductType
+  ProductMapper,
+  ProductTypePrint
 } from '@app/models';
 
 import {
   AuthService,
-  HttpService,
-  ProductService,
-  UtilService
+  FirebaseService
 } from '@app/services';
-
-import animations from './product-list.animations';
+import { response } from 'express';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
-  animations
 })
 export class ProductListComponent implements OnInit, OnDestroy {
 
-  // for animation
-  @ViewChild('productList') productList: ElementRef;
-  @ViewChild('paginator') paginator: MatPaginator;
-
-  // config for list
-  @Input('config') config: ProductListConfig;
-
-  // full product list
-  fullProductList: ProductResponse[] = [];
-
-  // paginated list - this is displayed (with added FE properties)
-  paginatedList: ProductMapper<ProductTypePrint>[] = [];
-
-  // products loading spinner
-  showSpinner = true;
-
-  // number of loaded images
-  numOfloadedImages = 0;
+  // list config - reusing old to avoid rewrite
+  config = ProductListConfig.PRODUCT_LIST_PRINTS.TAB_SHOP;
 
   // current user
   user: CustomUser | null;
@@ -54,128 +30,68 @@ export class ProductListComponent implements OnInit, OnDestroy {
   // user sub
   userStateSub$: Subscription;
 
+  // product list
+  productList: ProductMapper<ProductTypePrint>[] = [];
+
+  // products initial loading spinner
+  showSpinner = true;
+
+  // pagination loading spinner
+  showPaginationLoadingSpinner = false;
+
+  // pagination size
+  paginationSize = 6;
+
+  // are all products loaded?
+  allProductsLoaded = false;
+
   constructor(
     private _authService: AuthService,
-    private _utilService: UtilService,
-    private _element: ElementRef,
-    private _renderer: Renderer2,
-    private _httpService: HttpService
+    private _firebaseService: FirebaseService
   ) {}
 
   // TODO: Important! error handling
   // NOTE: keep data when routing (reuse strategy) so it wouldn't reach DB every time
   ngOnInit(): void {
-    this.userStateSub$ = this._authService.userState$.subscribe(user => {
-      this.user = user;
-      this.fetchProducts(this.config.product.type, this.user);
-    });
-  }
+    this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
+    this._firebaseService.getProductsPaginated(this.paginationSize).pipe(first()).subscribe(products => {
+      if (products.length === 0) {
+        this.showSpinner = false;
+        return;
+      }
 
-  // fetch products from BE
-  fetchProducts(productType: any, user: CustomUser | null): void {
-    this._httpService.getProducts(productType, user).pipe(first()).subscribe((products: any) => {
-      // console.log('products: ', products)
-      this.fullProductList = this.sortList(products);
-      this.paginator.length = this.fullProductList.length;
-      this.fullProductList.length === 0 && (this.showSpinner = false);
-      this.updatePage();
+      // TODO: bug, initial set of images displayed before being fully rendered
+      // not a problem with later ones
+
+      this.showSpinner = false;
+      this.productList = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
     })
   }
 
-  // TODO: runs on each page
-  handleImageLoaded() {
-    if (++this.numOfloadedImages === this.paginatedList.length) {
-      this.paginatedList = this.remove404Products(this.paginatedList);
-      setTimeout(() => {
-        this.showSpinner = false;
-      }, 500);
-    }
-  }
-
-  // sort list based on type
-  sortList(products: ProductResponse[]): ProductResponse[] {
-    const listType = this.config.product.type;
-    switch(listType) {
-      case ProductType.PRINTS.SHOP:
-        return this._utilService.sortByCreationDate(products);
-      case ProductType.PRINTS.OWNED_ITEMS:
-        return this._utilService.sortByOwnedSince(products, this.user);
-      default:
-        return products;
-    }
-  }
-
-  // remove products which image failes to load
-  // TODO: if it is called remove404 why switch inside, call it only if needed
-  remove404Products(products: ProductMapper<ProductTypePrint>[]): ProductMapper<ProductTypePrint>[] {
-    const listType = this.config.product.type;
-      switch(listType) {
-      case ProductType.PRINTS.SHOP:
-        return products.filter(product => !product.imgPath.includes('assets'));
-      case ProductType.PRINTS.OWNED_ITEMS:
-        // display 404 on owned items
-        return products;
-      default:
-        return products;
-    }
-  }
-
-  // show items depending on page
-  updatePage() {
-    this.updatePaginatedList();
-    this.updatePageNumber();
-  }
-
-  // get items for next page
-  updatePaginatedList(): void {
-    // PAGINATION FORMULA
-    // from: currentPageIndex * itemsPerPage
-    // to:   (currentPageIndex + 1) * itemsPerPage - 1
-    const productsForNextPage = this._utilService.getFromRange(
-      this.fullProductList,
-      this.paginator.pageIndex * this.config.pageSize,
-      (this.paginator.pageIndex + 1) * this.config.pageSize - 1
-    );
-    this.paginatedList = productsForNextPage.map(product => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
-  }
-
-  // updates page number in pagination
-  updatePageNumber() {
-    const list = this._element.nativeElement.querySelectorAll('.mat-mdc-paginator-range-label')[0];
-    const currentPage = this.paginator.pageIndex + 1;
-    const totalPages = this.paginator.getNumberOfPages() === 0 ? 1 : this.paginator.getNumberOfPages();
-    list && (list.innerHTML = 'Page: ' + currentPage + '/' + totalPages);
-  }
-
-  // handle pagination navigation
-  // attach scroll listener for animation to run once scroll hits top position and remove it afterwards
-  handlePaginatorNagivation() {
-    const handleScroll = () => {
-      if (window.scrollY < 30) {
-        this.changePage();
-        window.removeEventListener('scroll', handleScroll);
-      }
-    }
-    // fire without scroll
-    if (window.scrollY < 30) {
-      this.changePage();
+  loadMore() {
+    // prevent multiple calls on rapid scroll up and down
+    if (this.showPaginationLoadingSpinner || this.allProductsLoaded) {
       return;
     }
-    window.addEventListener('scroll', handleScroll);
-    window.scrollTo({ top: 20, behavior: 'smooth' });
-  }
-
-  // run change page animation and load new items
-  async changePage() {
-    setTimeout(() => this._renderer.addClass(this.productList.nativeElement, 'fade-out'), 200);
-    setTimeout(() => {
-      this.updatePage();
-      this._renderer.removeClass(this.productList.nativeElement, 'fade-out');
-    }, 500);
+    this.showPaginationLoadingSpinner = true;
+    this._firebaseService.getProductsPaginated(this.paginationSize).pipe(first()).subscribe(products => {
+      // TODO: only for spinner to show longer
+      setTimeout(() => {
+        // products length being 0 or smaller than pagination size means there are no more items
+        if (products.length === 0 || products.length < this.paginationSize) {
+          this.allProductsLoaded = true;
+        }
+        const mapped = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
+        this.showPaginationLoadingSpinner = false;
+        this.productList.push(...mapped)
+      }, 500);
+    })
   }
 
   ngOnDestroy() {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
+    // TODO: check how this behaves with reuse strategy
+    this._firebaseService.lastLoadedWithPagination = null;
   }
 
 }

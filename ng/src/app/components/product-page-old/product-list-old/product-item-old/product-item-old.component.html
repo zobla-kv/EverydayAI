@@ -1,0 +1,83 @@
+<div class="product-item-wrapper position-relative">
+  <mat-icon *ngIf="product.isInCart" class="if-in-cart-icon">shopping_cart</mat-icon>
+  <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon-outside">
+    <span>- {{ product.discount }} %
+    <div class="glow"></div>
+    </span>
+  </div>
+  <div class="top-section overflow-hidden">
+    <!-- <img [src]="productImageBlobUrlSafe" [alt]="product.imgAlt" (load)="handleImageLoaded()" class="pe-none"> -->
+    <img src="{{ product.imgPath }}" alt="{{ product.imgAlt }}" (load)="handleImageLoaded()" (error)="handleImageLoadError()" class="pe-none">
+    <ul>
+      <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->
+      <li *ngFor="let action of actions">
+        <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
+        <ng-template #enableAction>
+          <!-- cart action, use download if item free -->
+          <ng-container *ngIf="action === productActions.CART">
+            <ng-container *ngIf="product.price !== '0.00' && product.discount < 100; else download">
+              <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart()"></mat-icon>
+              <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
+            </ng-container>
+            <ng-template #download>
+              <mat-icon icon="download" (click)="handleDownload()">download</mat-icon>
+            </ng-template>
+          </ng-container>
+
+          <!-- like action -->
+          <mat-icon
+            *ngIf="action === productActions.LIKE"
+            #tooltip="matTooltip"
+            matTooltip
+            matTooltipPosition="above"
+            matTooltipDisabled="true"
+            attr.icon="{{ getLikeIcon() }}"
+            (click)="handleLike()"
+            [ngClass]="isLiked ? 'pulse' : '' "
+            (delayed-hover)="showTooltip()" [delay]="700" (mouseout)="hideTooltip()"
+          >
+            {{ getLikeIcon() }}
+          </mat-icon>
+
+          <!-- download action -->
+          <mat-icon *ngIf="action === productActions.DOWNLOAD" icon="download" (click)="handleDownload()">download</mat-icon>
+
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+  <div class="bottom-section">
+    <div class="product-title">{{ product.title }}</div>
+    <div class="product-metadata mt-3"  [attr.type]="type">
+      <div
+        class="product-metadata-item"
+        *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
+        [attr.item]="metadata.key"
+      >
+        <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+          {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+        </mat-icon>
+
+        <!-- price not part of metadata -->
+        <span class="ms-1" *ngIf="metadata.key !== 'price'">{{ product.metadata[metadata.key] }}</span>
+        <span class="ms-1" *ngIf="metadata.key === 'price'">
+          <ng-container *ngIf="product.discount > 0">
+            <ng-container *ngIf="product.discount < 100">
+              <span class="product-old-price">{{ product.price }}</span>
+              <span class="product-discounted-price">{{ utilService.getProductPrice(product) }}</span>
+            </ng-container>
+            <ng-container *ngIf="product.discount === 100">
+              <span class="product-old-price">{{ product.price }}</span>
+              <span class="product-discounted-price">Free</span>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="product.discount === 0">
+            <span *ngIf="product.price !== '0.00'">{{ product.price }}</span>
+            <span *ngIf="product.price === '0.00'">Free</span>
+          </ng-container>
+        </span>
+
+      </div>
+    </div>
+  </div>
+</div>

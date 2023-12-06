@@ -11,9 +11,9 @@
 <div>
   <app-header></app-header>
 
-  <main class="page-wrapper" [@liftOnHeaderCollapse]="liftPage">
+  <main class="page-wrapper">
     <router-outlet (activate)="window.scrollTo(0, 0)"></router-outlet>
   </main>
 
-  <app-footer></app-footer>
+  <!-- <app-footer></app-footer> -->
 </div>

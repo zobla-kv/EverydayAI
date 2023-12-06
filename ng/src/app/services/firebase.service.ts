@@ -42,6 +42,11 @@ export class FirebaseService {
 
   // TODO: in many methods below im passing user from outside, how about having user here
 
+  // store last item loaded with pagination
+  // NOTE: not to be used from multiple places
+  // make sure to reset when destroying component
+  lastLoadedWithPagination: any;
+
   constructor(
     private _fireAuth: AngularFireAuth,
     private _db: AngularFirestore,
@@ -254,6 +259,20 @@ export class FirebaseService {
   // TODO: dont remove during cleanup
   removeProduct(productId: string): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(productId).delete();
+  }
+
+  // get paginated products
+  getProductsPaginated(limit: number): Observable<ProductResponse[] | []> {
+    let next;
+    if (this.lastLoadedWithPagination) {
+      next = this._db.collection('Products/Prints/All', query =>
+        query.where('isActive', '==', true).orderBy('creationDate').startAfter(this.lastLoadedWithPagination).limit(limit));
+    } else {
+      next = this._db.collection('Products/Prints/All', query =>
+        query.where('isActive', '==', true).orderBy('creationDate').limit(limit));
+    }
+    next.get().subscribe(snapshot => this.lastLoadedWithPagination = snapshot.docs[snapshot.docs.length - 1]);
+    return next.valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // get products for type print tab shop

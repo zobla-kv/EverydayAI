@@ -7,7 +7,7 @@ header {
   background-color: $main-dark-bg-color;
   width: 100%;
   z-index: 99999; // 5
-  position: sticky;
+  position: fixed;
 }
 
 .header-wrapper {
@@ -102,8 +102,6 @@ header.medium-screen {
 
   // visible content on the top of the screen (no header)
   height: 0px;
-  // act as a height to push content
-  margin-bottom: $header-height;
 
   a,
   a:visited,
