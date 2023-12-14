@@ -1,4 +1,8 @@
 <div class="product-item-wrapper" [style]="{'--data-stagger': stagger}">
   <img src="{{ product.imgPath }}" alt="{{ product.imgAlt }}" class="pe-none">
-  <p class="product-price">{{ product.price }}</p>
+  <!-- <p class="product-price">{{ 'p: ' + product.price }}</p>
+    <p class="product-color">{{ product.metadata['color'] }}</p> -->
+    <p class="product-color">{{ product.likes }}</p>
+    <!-- <p class="product-orientation">{{ product.metadata['orientation'] }}</p> -->
+    <p class="product-discount">{{ 'd: ' + product.discount }}</p>
 </div>

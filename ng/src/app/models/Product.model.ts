@@ -5,7 +5,7 @@ import { Timestamp } from '@angular/fire/firestore';
 export interface ProductResponse {
   id: string;
   title: string;
-  price: string;
+  price: number;
   discount: number;
   // fileName: string; replaced by imgPath
   imgPath: string;
@@ -14,6 +14,9 @@ export interface ProductResponse {
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   creationDate: Timestamp;
+  // cant get 'or' and 'and' query to work
+  isFree: boolean;
+  isDiscounted: boolean;
 }
 
 export interface ProductTypePrint extends ProductResponse {
@@ -32,7 +35,39 @@ interface ProductTypePrintMetadata {
     resolution: string;
     extension: string;
     tier: 'classic' | 'premium';
+    color: ProductColor;
+    orientation: 'portrait' | 'landscape';
   }
+}
+
+// TODO: comment out colors that contain no pictures, rather than displaying no results when filtered
+export enum ProductColor {
+  all = 'linear-gradient(70deg, #FF4136  30%, rgba(0,0,0,0) 30%), linear-gradient(30deg, #01FF70 60%, #0074D9 60%)',
+  black = '#111111',
+  blue = '#0074D9',
+  brown = '#654321',
+  green = '#01FF70',
+  grey = '#DDDDDD',
+  orange = '#FF851B',
+  pink = '#F012BE',
+  purple = '#B10DC9',
+  red = '#FF4136',
+  teal = '#39CCCC',
+  white = '#FFFFFF',
+  yellow = '#FFDC00'
+}
+
+export interface ProductFilters {
+  [name: string]: {
+    value: string;
+    default: string;
+    possibleValues: string[];
+  }
+}
+
+export interface FilterEvent {
+  filters: ProductFilters;
+  targetFilter: string;
 }
 
 interface ProductTypeShirtMetadata {
@@ -119,7 +154,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   id: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   discount: number;
   imgPath: string;
   imgAlt: string;
@@ -128,6 +163,8 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   creationDate: Timestamp;
+  isFree: boolean;
+  isDiscounted: boolean;
   // FE properties that are added
   spinners: any;
   isInCart: boolean;
@@ -144,6 +181,8 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.isActive = product.isActive;
     this.metadata = product.metadata;
     this.creationDate = product.creationDate;
+    this.isFree = product.isFree;
+    this.isDiscounted = product.isDiscounted;
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = ProductMapper._isInCart(product, config, user);

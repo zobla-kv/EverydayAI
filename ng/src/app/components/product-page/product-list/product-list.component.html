@@ -6,4 +6,5 @@
     </div>
   </ngx-masonry>
   <app-loading variant="ellipsis" [ngClass]="{'invisible': !showPaginationLoadingSpinner}"></app-loading>
+  <div *ngIf="showFilterNoResults" class="mt-5 text-center">Nothing found!</div>
 </div>

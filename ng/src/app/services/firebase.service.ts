@@ -6,9 +6,10 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, query, and, increment, collection, where, getDocs, Timestamp } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, query, and, increment, collection, where, getDocs, Timestamp, or, Firestore, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, DocumentData, orderBy, OrderByDirection } from '@angular/fire/firestore';
+import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, map, first, mergeMap } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, map, first, mergeMap, Subject } from 'rxjs';
 
 import { Decimal } from 'decimal.js';
 
@@ -21,7 +22,8 @@ import {
   Labels,
   ProductResponse,
   ProductType,
-  ProductTypePrint
+  ProductTypePrint,
+  ProductFilters
 } from '@app/models';
 
 import {
@@ -46,6 +48,8 @@ export class FirebaseService {
   // NOTE: not to be used from multiple places
   // make sure to reset when destroying component
   lastLoadedWithPagination: any;
+  // is product list currently fetching
+  isProductListFetching$ = new Subject<boolean>();
 
   constructor(
     private _fireAuth: AngularFireAuth,
@@ -189,7 +193,7 @@ export class FirebaseService {
     const { password, ...customUser } = {
       ...user,
       role: 'basic',
-      cart: { items: [], totalSum: '0.00' },
+      cart: { items: [], totalSum: 0 },
       registrationDate: new Date(),
       lastActiveDate: new Date(),
       stripe: { id: null },
@@ -247,11 +251,14 @@ export class FirebaseService {
   // update product
   async updateProduct(data: any): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(data.id).ref.update({
-      price: Number(data.price).toFixed(2),
+      price: Number(Number(data.price).toFixed(2)),
       discount: Number(data.discount),
       likes: Number(data.likes),
       'metadata.tier': data.tier,
-      isActive: data.isActive
+      'metadata.color': data.color,
+      isActive: data.isActive,
+      isFree: (Number(data.price) === 0 || Number(data.discount) === 100) ? true : false,
+      isDiscounted: Number(data.discount) > 0 ? true : false
     })
   }
 
@@ -261,15 +268,71 @@ export class FirebaseService {
     return this._db.collection('Products/Prints/All').doc(productId).delete();
   }
 
+
+  // construct filter query
+  private _constructFilterQuery(col: Query<DocumentData>, filters: ProductFilters): Query<DocumentData> {
+    let compoundQuery: Query<DocumentData> = col;
+    const orientationFilter = filters['orientation'];
+    const priceFilter = filters['price'];
+    const colorFilter = filters['color'];
+
+    compoundQuery = compoundQuery.where('isActive', '==', true);
+
+    // orientation filter
+    if (orientationFilter && orientationFilter.value !== orientationFilter.default) {
+      compoundQuery = compoundQuery.where('metadata.orientation', '==', orientationFilter.value);
+    }
+
+    // price filter
+    if (priceFilter && priceFilter.value !== priceFilter.default) {
+      if (priceFilter.value === 'free') {
+        compoundQuery = compoundQuery.where('isFree', '==', true);
+      } else if (priceFilter.value === 'on sale') {
+        compoundQuery = compoundQuery.where('isDiscounted', '==', true);
+      }
+    }
+
+    // color filter
+    if (colorFilter && colorFilter.value !== colorFilter.default) {
+      compoundQuery = compoundQuery.where('metadata.color', '==', colorFilter.value);
+    }
+
+    return this._constructSortQuery(compoundQuery, filters);
+  }
+
+  // construct sort query
+  private _constructSortQuery(compoundQuery: Query<DocumentData>, filters: ProductFilters): Query<DocumentData> {
+    const sortFilter = filters['sort'];
+    const defaultSort = compoundQuery.orderBy('creationDate', 'desc')
+
+    // no sort - default latest
+    if (!sortFilter || sortFilter.value === sortFilter.default) {
+      return defaultSort;
+    }
+
+    // price sort
+    if (sortFilter.value.includes('price')) {
+      const direction = sortFilter.value.split(' ')[1] as OrderByDirection;
+      return compoundQuery.orderBy('price', direction);
+    }
+
+    // popularity sort
+    if (sortFilter.value.includes('popular')) {
+      return compoundQuery.orderBy('likes', 'desc');
+    }
+
+    return defaultSort;
+  }
+
   // get paginated products
-  getProductsPaginated(limit: number): Observable<ProductResponse[] | []> {
+  getProductsPaginated(filters: ProductFilters, limit: number): Observable<ProductResponse[] | []> {
     let next;
     if (this.lastLoadedWithPagination) {
       next = this._db.collection('Products/Prints/All', query =>
-        query.where('isActive', '==', true).orderBy('creationDate').startAfter(this.lastLoadedWithPagination).limit(limit));
+        this._constructFilterQuery(query, filters).startAfter(this.lastLoadedWithPagination).limit(limit));
     } else {
       next = this._db.collection('Products/Prints/All', query =>
-        query.where('isActive', '==', true).orderBy('creationDate').limit(limit));
+      this._constructFilterQuery(query, filters).limit(limit));
     }
     next.get().subscribe(snapshot => this.lastLoadedWithPagination = snapshot.docs[snapshot.docs.length - 1]);
     return next.valueChanges() as Observable<ProductTypePrint[]>;

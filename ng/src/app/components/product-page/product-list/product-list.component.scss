@@ -2,8 +2,8 @@
 
 .product-list-wrapper {
 
-  // to prevent infinite scroll trigger on load
-  min-height: 800px;
+  // better initial feel of infinite scroll
+  // min-height: 600px;
 
   app-loading {
     &[variant="sketch"] {

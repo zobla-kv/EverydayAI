@@ -3,21 +3,47 @@
 
   // ** animation start ** //
   // didn't manage to have staggered animation using built in, this is alternative
-  animation: show 300ms ease forwards;
-  animation-delay: calc(var(--data-stagger) * 100ms);
   opacity: 0;
   transform: translateY(100px);
+  &.show {
+    $delay: calc(var(--data-stagger) * 100ms);
+    opacity: 0;
+    transform: translateY(100px);
+    animation: show 300ms ease $delay forwards;
+  }
+  &.hide {
+    $delay: calc(var(--data-stagger) * 50ms);
+    opacity: 1;
+    transform: scale(1);
+    animation: hide 150ms ease $delay forwards;
+  }
+
   @keyframes show {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes hide {
+    to { transform: scale(0); }
   }
   // ** animation end ** //
 
   .product-price {
     position: absolute;
     bottom: -20px;
+    left: 60px;
+  }
+  .product-discount {
+    position: absolute;
+    bottom: 40px;
+    left: 60px;
+  }
+  .product-color {
+    position: absolute;
+    bottom: -20px;
+  }
+  .product-orientation {
+    position: absolute;
+    bottom: -20px;
+    left: 120px;
   }
 }
 

@@ -31,7 +31,9 @@ body {
     // TODO: 100svh on mobile
     // to keep everything nicely aligned on zoom out (not needed on large pages ie. home page)
     &:has(.product-page-wrapper) {
-      min-height: calc(100vh - 880px);
+      // TODO: recheck this
+      // min-height: calc(100vh - 880px);
+      min-height: 100vh;
     }
     &:has(.auth-form-page) {
       @extend .flex-center;
@@ -570,6 +572,7 @@ form {
 // smaller than 976px
 @media only screen and (max-width: 976px) {
   // when hamburger menu appears
+  // TODO: hamburger appers a little bit later (960px)
   body .page-wrapper { margin-top: 90px; }
 }
 

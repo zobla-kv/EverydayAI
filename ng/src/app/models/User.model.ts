@@ -32,7 +32,7 @@ export interface CustomUser {
 
 export interface ShoppingCart {
   items: ProductResponse[],
-  totalSum: string;
+  totalSum: number;
 }
 
 interface UserStripeData {

@@ -132,6 +132,16 @@ h1 {
   z-index: 1;
 }
 
+// not working but may be on good track
+.color-selector:before {
+  content: '';
+  background-color: var(--bg-c);
+  padding: 30px;
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
 .mat-mdc-paginator {
   background-color: $main-dark-bg-color;
 }

@@ -1,0 +1,126 @@
+@import '../../../styles/variables.scss';
+
+.filter-list-wrapper {
+  position: relative;
+  border-top: 1px solid $gray-border-color;
+  border-bottom: 1px solid $gray-border-color;
+  height: 60px;
+
+  .filter-list {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 100%;
+    position: relative;
+    padding: 0 4rem;
+
+    .filter-item {
+      cursor: default;
+      &.active {
+        color: $main-orange-bg-color !important;
+        mat-icon { color: $main-orange-bg-color !important; }
+      }
+      &[filter="price"] { white-space: nowrap; }
+      &[filter="sort"] {
+        margin-left: auto;
+        mat-icon { color: white; }
+      }
+    }
+
+    .active-filter-arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent $main-orange-bg-color;
+      top: 32px;
+      opacity: 0;
+      transition: .20s ease;
+      pointer-events: none;
+    }
+
+  }
+
+  .filter-dropdown {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 50px;
+    transition: .25s ease;
+    z-index: 1;
+
+    .filter-dropdown-item {
+      position: absolute;
+      transition: .25s ease;
+      background-color: $light-dark-bg-color;
+      border: 1px solid white;
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: -1;
+      text-align: center;
+      opacity: 0;
+
+      ul {
+        margin: 0.25rem 0;
+        &:has(.filter-color) { margin: 1rem 0; }
+        &:has(.filter-sort) { margin: 0.5rem 0; }
+        li {
+          text-align: center;
+          cursor: pointer;
+          user-select: none;
+          &:hover, span.active {
+            background-color: $main-orange-bg-color;
+            mat-icon { color: white; }
+          }
+
+          &:has(.filter-color) {
+            display: flex;
+            justify-content: center;
+            padding: 2px;
+          }
+        }
+      }
+
+      &[filter="orientation"] { width: 150px; }
+      &[filter="price"] { width: 100px; }
+      &[filter="color"] { width: 150px; }
+      &[filter="sort"] {
+        width: 120px;
+        padding: 0 0.75rem;
+      }
+    }
+  }
+
+  // shared
+  .filter-color {
+    position: relative;
+    // longest color text
+    width: 90px;
+    .color-square {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+    span {
+      position: absolute;
+      left: 36px;
+    }
+  }
+  .filter-sort {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+}
+
+// smaller than 576px
+@media only screen and (max-width: 576px) {
+  .filter-list-wrapper {
+    .filter-list {
+      padding: 0 0.5rem;
+      gap: 16px;
+    }
+  }
+}

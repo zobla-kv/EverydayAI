@@ -209,8 +209,7 @@ loadScript(url: string) {
   * @returns Decimal - use decimal because of precision loss
   */
   getProductPrice(product: ProductResponse): string {
-    const priceAsNumber = Number(product.price);
-    const price = product.discount > 0 ? (priceAsNumber  * (100 - product.discount) / 100) : priceAsNumber;
+    const price = product.discount > 0 ? (product.price  * (100 - product.discount) / 100) : product.price;
     const decimalPrice = new Decimal(price).toFixed(2);
     return decimalPrice;
   }
@@ -221,14 +220,13 @@ loadScript(url: string) {
   * @param products - ProductResponse[]
   * @returns totalSum - price as string with precision 2
   */
-  getTotalSum(products: ProductResponse[]): string {
+  getTotalSum(products: ProductResponse[]): number {
     let totalSum = new Decimal(0);
     products.forEach(product => {
-      const priceAsNumber = Number(product.price);
-      const price = product.discount > 0 ? (priceAsNumber  * (100 - product.discount) / 100) : priceAsNumber;
+      const price = product.discount > 0 ? (product.price  * (100 - product.discount) / 100) : product.price;
       totalSum = totalSum.plus(new Decimal(price));
     })
-    return totalSum.toFixed(2);
+    return Number(totalSum.toFixed(2));
   }
 
 /**

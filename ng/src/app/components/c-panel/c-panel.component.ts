@@ -16,6 +16,7 @@ import {
 
 import {
   MetadataIconMap,
+  ProductColor,
   ProductMapper,
   ProductResponse,
   ProductType,
@@ -59,6 +60,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // metadata icon map
   metadataIconMap: MetadataIconMap;
 
+  // filter color map
+  filterColorMap: Map<string, string>;
+
   constructor(
     private _firebaseService: FirebaseService,
     public  utilService: UtilService,
@@ -69,6 +73,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.fetchProducts();
+    this.filterColorMap = new Map(Object.keys(ProductColor).map(key => [key, ProductColor[key as keyof typeof ProductColor]]))
 
     this.formAddProduct = new FormGroup({
       'title': new FormControl(null, [
@@ -94,6 +99,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         Validators.required
       ]),
       'tier': new FormControl('classic', [
+        Validators.required
+      ]),
+      'color': new FormControl(null, [
         Validators.required
       ]),
       'price': new FormControl(null, [
@@ -128,6 +136,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       ]),
       'tier': new FormControl(null, [
         Validators.required,
+      ]),
+      'color': new FormControl(null, [
+        Validators.required
       ]),
       'likes': new FormControl(0, [
         Validators.required,
@@ -192,6 +203,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // handle image loading failure
   handleProductImgLoadError(ev: Event) {
     this.utilService.set404Image(ev.target);
   }
@@ -205,6 +217,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // open modal
   openModal(id: string) {
     this._modalService.open(id);
   }
@@ -219,11 +232,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       this.formAddProduct.patchValue({ fileSizeInMb: this.utilService.getFileSizeInMb(file) });
       this.formAddProduct.patchValue({ image: file });
     }
-  }
-
-  // when tier changes in select
-  onTierChange(ev: any) {
-    this.formAddProduct.patchValue({ tier: ev.target.value });
   }
 
   async handleAddProduct() {
@@ -272,6 +280,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this.formAddProduct.reset();
     this.formAddProduct.patchValue({  image: null     });
     this.formAddProduct.patchValue({  tier: 'classic' });
+    this.formAddProduct.patchValue({  color: null     });
     this.formAddProduct.patchValue({  discount: 0     });
     this.formAddProduct.patchValue({  likes: 0        });
   }
@@ -330,16 +339,20 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       //
       title: formData.title,
       imgAlt: formData.title,
-      price: Number(formData.price).toFixed(2),
+      price: Number(Number(formData.price).toFixed(2)),
       discount: Number(formData.discount),
       likes: Number(formData.likes),
       isActive: false,
+      isFree: (Number(formData.price) === 0 || Number(formData.discount) === 100) ? true : false,
+      isDiscounted: Number(formData.discount) > 0 ? true : false,
       metadata: {
         fileSize: formData.fileSize,
         fileSizeInMb: formData.fileSizeInMb,
         resolution: formData.fileResolution,
         extension: formData.fileExtension,
-        tier: formData.tier
+        tier: formData.tier,
+        color: formData.color,
+        orientation: this.getImageOrientation(formData.fileResolution)
       }
     };
   }
@@ -350,7 +363,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       return true;
     } else {
       this.validateAllFormFields(form);
-      return this.validateDiscount(form) ? true : false;
+      if (this.validateDiscount(form) && form.valid) {
+        return true;
+      }
+      return false;
     }
   }
 
@@ -393,6 +409,20 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // get image orientation based on resolution
+  getImageOrientation(resolution: string): any {
+    const width = resolution.split('x')[0];
+    const height = resolution.split('x')[1];
+    if (width > height) {
+      return 'landscape';
+    }
+    // if equal also portrait
+    return 'portrait';
+  }
+
+  // keep order of keyvalue pipe (not DRY)
+  keepOrder() { return 0; }
+
   // prevent discount of free items - custom validator - left for ref
   // discountValidator(form: FormGroup): ValidatorFn {
   //   return (control: AbstractControl): ValidationErrors | null => {
@@ -420,8 +450,5 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   //   .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
   //   .finally(() => this._modalService.actionComplete$.next(true))
   // }
-
-  // keep order of keyvalue pipe (not DRY)
-  keepOrder() { return 0; }
 
 }
