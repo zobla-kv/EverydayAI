@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const emailService = require('./services/emailService');
 const paymentService = require('./services/paymentService');
 const cloudinaryService = require('./services/cloudinaryService');
+const elasticService = require('./services/elasticService');
 const multer = require('multer');
 
 router.get('/news', async (req, res) => {
@@ -55,6 +56,20 @@ router.post('/upload-file', multer().single('image'), cloudinaryService.upload, 
     return res.status(res.error['http_code']).json(res.error.message);
   }
   res.status(200).json({ imgPath: res.imgPath });
+})
+
+router.put('/products/ingest/:id?', elasticService.ingest, (req, res) => {
+  if (res.error) {
+    return res.status(500).json(res.error.message);
+  }
+  res.status(200).json(res.result);
+})
+
+router.get('/products/search/:text', elasticService.search, (req, res) => {
+  if (res.error) {
+    return res.status(500).json(res.error.message);
+  }
+  res.status(200).json(res.ids);
 })
 
 

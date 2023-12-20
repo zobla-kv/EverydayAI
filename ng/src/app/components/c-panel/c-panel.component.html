@@ -166,6 +166,33 @@
             </span>
         </div>
         <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            class="form-control"
+            name="description"
+            id="description"
+            formControlName="description"
+            rows="2"
+          >
+          </textarea>
+          <span
+            *ngIf="formAddProduct.get('description')?.hasError('required') && formAddProduct.get('description')?.touched"
+            class="form-text ms-1 dark-text fw-bold d-block">Description can not be empty
+          </span>
+          <span
+            *ngIf="formAddProduct.get('description')?.hasError('minlength')"
+            class="form-text ms-1 dark-text fw-bold d-block">Description must have at least 10 characters
+          </span>
+          <span
+            *ngIf="formAddProduct.get('description')?.hasError('maxlength')"
+            class="form-text ms-1 dark-text fw-bold d-block">Description can't be longer than 200 characters
+          </span>
+          <span
+            *ngIf="formAddProduct.get('description')?.hasError('pattern')"
+            class="form-text ms-1 dark-text fw-bold d-block">Only characters allowed
+          </span>
+        </div>
+        <div class="form-group">
           <label for="tier">Tier</label>
           <mat-icon class="dropdown-caret">expand_more</mat-icon>
           <select

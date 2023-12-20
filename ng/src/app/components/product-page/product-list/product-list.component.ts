@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription, first } from 'rxjs'
-
 import { NgxMasonryComponent } from 'ngx-masonry';
 
 import {
@@ -96,9 +95,9 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
     }
   }
 
-  // reset flags that infect infinite scroll;
+  // reset flags that affect infinite scroll;
   resetInfiniteScrollFlags() {
-    this._firebaseService.lastLoadedWithPagination = null;
+    this._firebaseService.resetPagination();
     this.allProductsLoaded = false;
     this.showFilterNoResults = false;
   }
@@ -106,6 +105,7 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
   // handle products fetch
   handleProductsResponse(products: ProductResponse[]) {
     console.log('response: ', products)
+
     if (products.length === 0) {
       this.showSpinner = false;
       this.showFilterNoResults = true;
@@ -174,7 +174,7 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
   ngOnDestroy() {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
     // TODO: check how this behaves with reuse strategy
-    this._firebaseService.lastLoadedWithPagination = null;
+    this._firebaseService.resetPagination();
   }
 
 }

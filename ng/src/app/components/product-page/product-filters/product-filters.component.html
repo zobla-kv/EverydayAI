@@ -1,6 +1,7 @@
 <div class="filter-list-wrapper">
   <div class="filter-list">
-    <span *ngFor="let filter of filters | keyvalue: keepOrder" class="filter-item" [attr.filter]="filter.key">
+    <ng-container *ngFor="let filter of filters | keyvalue: keepOrder" >
+    <span *ngIf="filter.key !== 'search'" class="filter-item" [attr.filter]="filter.key">
       <ng-container *ngIf="filter.value.value === filter.value.default">{{ filter.key | titlecase }}</ng-container>
       <ng-container *ngIf="filter.value.value !== filter.value.default">
         <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'">{{ filter.value.value | titlecase }}</span>
@@ -14,25 +15,28 @@
           <mat-icon>{{ sortIconMap.get(filter.value.value) }}</mat-icon>
         </div>
       </ng-container>
-    </span>
+      </span>
+    </ng-container>
     <span class="active-filter-arrow"></span>
   </div>
   <div class="filter-dropdown">
-    <div *ngFor="let filter of filters | keyvalue: keepOrder" class="filter-dropdown-item" [attr.filter]="filter.key">
-      <ul class="list-unstyled">
-        <li *ngFor="let value of filter.value.possibleValues" (click)="handleFilterSelect(filter.key, value)">
-          <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'" [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
-          <div *ngIf="filter.key === 'color'" class="filter-color">
-            <div class="color-square" [ngStyle]="{'background' : colorFilterMap.get(value)}">
-              <span [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+    <ng-container *ngFor="let filter of filters | keyvalue: keepOrder">
+      <div *ngIf="filter.key !== 'search'" class="filter-dropdown-item" [attr.filter]="filter.key">
+        <ul class="list-unstyled">
+          <li *ngFor="let value of filter.value.possibleValues" (click)="handleFilterSelect(filter.key, value)">
+            <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'" [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+            <div *ngIf="filter.key === 'color'" class="filter-color">
+              <div class="color-square" [ngStyle]="{'background' : colorFilterMap.get(value)}">
+                <span [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+              </div>
             </div>
-          </div>
-          <div *ngIf="filter.key === 'sort'" class="filter-sort">
-            <span [ngClass]="{'active': value === filter.value.value}">{{ value.split(' ')[0] | titlecase }}</span>
-            <mat-icon>{{ sortIconMap.get(value) }}</mat-icon>
-          </div>
-        </li>
-      </ul>
-    </div>
+            <div *ngIf="filter.key === 'sort'" class="filter-sort">
+              <span [ngClass]="{'active': value === filter.value.value}">{{ value.split(' ')[0] | titlecase }}</span>
+              <mat-icon>{{ sortIconMap.get(value) }}</mat-icon>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
   </div>
 </div>

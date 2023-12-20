@@ -7,9 +7,10 @@ export interface ProductResponse {
   title: string;
   price: number;
   discount: number;
+  description: string;
   // fileName: string; replaced by imgPath
   imgPath: string;
-  imgAlt: string;
+  imgAlt: string; // TODO: remove this (description holds it)
   likes: number;
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
@@ -173,6 +174,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   constructor(product: T, config: ProductListConfig, user: CustomUser | null) {
     this.id = product.id;
     this.title = product.title;
+    this.description = product.description;
     this.price = product.price;
     this.discount = product.discount;
     this.imgPath = product.imgPath;

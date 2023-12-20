@@ -44,12 +44,15 @@ export class FirebaseService {
 
   // TODO: in many methods below im passing user from outside, how about having user here
 
-  // store last item loaded with pagination
-  // NOTE: not to be used from multiple places
+  // store last query and item used for pagination
   // make sure to reset when destroying component
+  // NOTE: not to be used from multiple places
+  lastQuery: Query<DocumentData> | null;
   lastLoadedWithPagination: any;
   // is product list currently fetching
   isProductListFetching$ = new Subject<boolean>();
+  // search submitted
+  search$ = new Subject<string>();
 
   constructor(
     private _fireAuth: AngularFireAuth,
@@ -270,13 +273,27 @@ export class FirebaseService {
 
 
   // construct filter query
-  private _constructFilterQuery(col: Query<DocumentData>, filters: ProductFilters): Query<DocumentData> {
+  // private async  _constructFilterQuery(col: CollectionReference<any>, filters: ProductFilters): Query<DocumentData> | Promise<Query<DocumentData>> {
+  private async  _constructFilterQuery(col: CollectionReference<any>, filters: ProductFilters): Promise<Query<DocumentData>> {
     let compoundQuery: Query<DocumentData> = col;
+
+    const searchFilter = filters['search'];
     const orientationFilter = filters['orientation'];
     const priceFilter = filters['price'];
     const colorFilter = filters['color'];
 
     compoundQuery = compoundQuery.where('isActive', '==', true);
+
+    // TODO: move all to elastic and then do error handling for all (error field in filters?)
+    // TODO: move validation to BE when this is implemented
+    // search filter
+    if (searchFilter.value) {
+      const productIds = await this._httpService.getProductsBySearchText(searchFilter.value)
+      // if there are products found
+      if (productIds.length > 0) {
+        compoundQuery = compoundQuery.where('id', 'in', productIds);
+      }
+    }
 
     // orientation filter
     if (orientationFilter && orientationFilter.value !== orientationFilter.default) {
@@ -324,18 +341,27 @@ export class FirebaseService {
     return defaultSort;
   }
 
+  // reset flags that affect pagination
+  resetPagination() {
+    this.lastQuery = null;
+    this.lastLoadedWithPagination = null;
+  }
+
   // get paginated products
   getProductsPaginated(filters: ProductFilters, limit: number): Observable<ProductResponse[] | []> {
-    let next;
-    if (this.lastLoadedWithPagination) {
-      next = this._db.collection('Products/Prints/All', query =>
-        this._constructFilterQuery(query, filters).startAfter(this.lastLoadedWithPagination).limit(limit));
-    } else {
-      next = this._db.collection('Products/Prints/All', query =>
-      this._constructFilterQuery(query, filters).limit(limit));
+    const handle = (snapshot: any, query: any) => {
+      this.lastQuery = query;
+      this.lastLoadedWithPagination = snapshot.docs[snapshot.docs.length - 1];
+      return snapshot.docs.map((doc: any) => doc.data()) as ProductResponse[];
     }
-    next.get().subscribe(snapshot => this.lastLoadedWithPagination = snapshot.docs[snapshot.docs.length - 1]);
-    return next.valueChanges() as Observable<ProductTypePrint[]>;
+
+    if (this.lastQuery && this.lastLoadedWithPagination) {
+      return from(this.lastQuery.startAfter(this.lastLoadedWithPagination).limit(limit).get().then(snapshot => handle(snapshot, this.lastQuery)));
+    } else {
+      const collectionRef = this._db.collection('Products/Prints/All').ref;
+      return from(this._constructFilterQuery(collectionRef, filters)
+      .then(query => query.limit(limit).get().then(snapshot => handle(snapshot, query))))
+    }
   }
 
   // get products for type print tab shop

@@ -8,17 +8,33 @@ header {
   width: 100%;
   z-index: 99999; // 5
   position: fixed;
+
+  input[type="search"] {
+    box-shadow: none;
+    // border-radius: 24px; TODO: decide on this. Try matching all corners of buttons, images etc.
+
+    &::-webkit-search-cancel-button{
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+      -webkit-filter: brightness(50%);
+      filter: brightness(50%);
+      cursor: pointer;
+      background-color: black;
+    }
+
+    &:focus { border-color: $main-orange-bg-color; }
+  }
 }
 
+// large only
 .header-wrapper {
-  justify-content: space-between;
+  max-width: calc($page-max-width - 4.5rem);
+  margin: auto;
   height: 100%;
-  z-index: 998;
-  position: relative;
   padding: 0 2rem;
 
   a {
-    // display: inline-block;
     padding: 0.5rem 1.25rem;
     border-radius: 0;
     position: relative;
@@ -54,41 +70,47 @@ header {
     &:before, &:after { opacity: 1; }
   }
 
-  .header-item.navigation-wrapper {
-    order: 1;
-    align-self: center;
-    z-index: -1;
-    width: fit-content;
-    color: $gray-border-color;
-  }
-  .header-item.logo-wrapper {
-    cursor: pointer;
-    a { padding: 0; }
-
-    img {
-      content: $main-logo;
-      max-height: 100%;
-      width: 120px;
-    }
-  }
-  .header-item.profile {
-    order: 2;
-    align-self: center;
-    height: 100%;
+  .header-item {
     display: flex;
-    justify-content: center;
     align-items: center;
 
-    .btn {
-      padding: 0.25rem;
-      margin: 0.25rem;
-      width: auto;
-      min-width: 100px;
-    }
-    .btn:hover { border: 1px solid $gray-border-color; }
-  }
-  .header-item-splitter { position: relative; top: -2px; }
+    &.logo-wrapper {
+      display: block;
+      cursor: pointer;
+      a { padding: 0; }
 
+      img {
+        content: $main-logo;
+        max-height: 100%;
+        width: 120px;
+      }
+    }
+    &.search {
+      width: 100%;
+      // dont expand during header animation
+      max-width: 488px;
+      min-width: 300px;
+      margin: 0 3.5rem;
+    }
+    &.navigation-wrapper {
+      color: $gray-border-color;
+      min-width: 500px;
+      justify-content: center;
+    }
+    &.profile {
+      margin-left: auto;
+      .btn {
+        padding: 0.25rem;
+        margin: 0.25rem;
+        width: auto;
+        min-width: 100px;
+      }
+      .btn:hover { border: 1px solid $gray-border-color; }
+    }
+
+    &-splitter { position: relative; top: -2px; }
+
+  }
 }
 
 header.medium-screen {
@@ -100,8 +122,7 @@ header.medium-screen {
   $hover-line-height: $hamburger-menu-line-height;
   $hover-color: darken($main-orange-bg-color, 10%);
 
-  // visible content on the top of the screen (no header)
-  height: 0px;
+  height: $hamburger-menu-size + 20px;
 
   a,
   a:visited,
@@ -116,6 +137,11 @@ header.medium-screen {
     font-weight: 400;
     font-size: 3em;
     text-align: center;
+  }
+
+  input[type="search"] {
+    width: calc(100% - 2 * $hamburger-menu-size);
+    margin: 20px 96px 0 auto;
   }
 
   .outer-menu {
@@ -312,3 +338,24 @@ header.medium-screen {
   }
 }
 
+/* MEDIA QUERIES */
+// smaller than 1400px
+@media only screen and (max-width: 1400px) {
+  .header-wrapper {
+    .header-item {
+      &.navigation-wrapper { min-width: 350px; }
+    }
+  }
+}
+// smaller than 1200px
+@media only screen and (max-width: 1200px) {
+  .header-wrapper {
+    .header-item {
+      &.search {
+        min-width: 250px;
+        margin: 0 1.5rem;
+      }
+      &.navigation-wrapper { min-width: unset; }
+    }
+  }
+}

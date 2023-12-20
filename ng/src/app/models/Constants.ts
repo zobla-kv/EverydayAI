@@ -50,7 +50,8 @@ export class ToastConstants {
     PRODUCT_UPDATED_SUCCESSFUL: 'Product updated successfuly',
     PRODUCT_REMOVED_SUCCESSFUL: 'Product removed successfuly',
     PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.',
-    PRODUCT_FILTER_SPAM: 'Please wait for the current filter to finish.'
+    PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
+    SEARCH_INPUT_VALIDATION_ERROR: 'Use alphanumeric characters only.'
   }
 
 }

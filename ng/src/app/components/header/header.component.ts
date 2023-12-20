@@ -1,9 +1,10 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 
 import {
   AuthService,
+  FirebaseService,
   StorageService,
   UtilService
 } from '@app/services';
@@ -55,11 +56,15 @@ export class HeaderComponent implements OnDestroy {
   // subscibe to screen size change
   screenSizeChangeSub$: Subscription;
 
+  // search input value
+  searchValue = '';
+
   constructor(
     private _router: Router,
     private _utilService: UtilService,
     private _authService: AuthService,
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _firebaseService: FirebaseService
   ) {
 
     // *** avoid flickering ***
@@ -80,6 +85,40 @@ export class HeaderComponent implements OnDestroy {
         // close hamburger on route leave
         this.closeHamburgerMenu();
       }
+    });
+
+    this._firebaseService.search$.pipe(first()).subscribe(value => this.searchValue = value);
+
+  }
+
+  // handle search (triggered on x)
+  handleSearch(ev: Event) {
+    const newValue = (ev.target as HTMLInputElement).value;
+    const oldValue = this.searchValue;
+
+    this.searchValue = newValue;
+
+    const currentRoute = this._router.url;
+
+    // if on products page
+    if (currentRoute.includes('products')) {
+      // allow empty search only if there is old value (to reset)
+      if (newValue === '' && !oldValue) {
+        return;
+      }
+      this._firebaseService.search$.next(newValue);
+      return;
+    }
+
+    // dont allow empty if not on products page
+    if (newValue === '') {
+      return;
+    }
+
+    // navigate to products page
+    this._router.navigate(['products'], {
+      queryParams: { 'search': this.searchValue },
+      queryParamsHandling: 'merge',
     });
 
   }

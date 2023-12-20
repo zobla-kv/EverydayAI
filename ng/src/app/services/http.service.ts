@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angula
 
 import { environment } from '@app/environment';
 
-import { Observable, catchError, concatMap, first, map, mergeMap, of } from 'rxjs';
+import { Observable, catchError, concatMap, first, map, mergeMap, of, timeout } from 'rxjs';
 
 import {
   FirebaseService,
@@ -127,6 +127,34 @@ export class HttpService {
         throw new Error('Unable to fetch products. Invalid type: ', productType);
     }
     return products$;
+  }
+
+  // add product to elastic search index
+  addProductToElasticSearch(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._http
+      .put<any>(`${environment.API_HOST}/api/products/ingest/${id}`, {})
+      .pipe(
+        first(),
+        map(res => resolve()),
+        catchError(async err => reject(err))
+      )
+      .subscribe();
+    })
+  }
+
+  // get products by search text
+  getProductsBySearchText(text: string): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      this._http
+      .get<string[]>(`${environment.API_HOST}/api/products/search/${text}`)
+      .pipe(
+        first(),
+        map(res => resolve(res)),
+        catchError(async err => resolve([])) // Don't want failing of search to stop other filters
+      )
+      .subscribe()
+    })
   }
 
   // bypass circular dependency using injector

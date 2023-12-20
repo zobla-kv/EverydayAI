@@ -12,7 +12,8 @@ import {
 
 import {
   FirebaseService,
-  ToastService
+  ToastService,
+  UtilService
 } from '@app/services';
 
 @Component({
@@ -47,17 +48,28 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
   filterDropdown: HTMLElement;
 	closeDropdownTimeout: any;
 
+  // search sub
+  searchSub$: Subscription;
+
   // is product list currently fetching
-  $listFetchingSub$: Subscription;
-  isProductListFetching = true;
+  listFetchingSub$: Subscription;
+  isProductListFetching = false;
 
   constructor(
     private _firebaseService: FirebaseService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _utilService: UtilService
   ) {}
 
   ngOnInit() {
-    this.$listFetchingSub$ = this._firebaseService.isProductListFetching$.subscribe(isFethcing => this.isProductListFetching = isFethcing);
+    this.listFetchingSub$ = this._firebaseService.isProductListFetching$.subscribe(isFethcing => this.isProductListFetching = isFethcing);
+    this.searchSub$ = this._firebaseService.search$.subscribe(value => {
+      if (this._utilService.validateSeachInput(value)) {
+       this.handleFilterSelect('search', value);
+      } else {
+       this._toast.open(ToastConstants.MESSAGES.SEARCH_INPUT_VALIDATION_ERROR, ToastConstants.TYPE.ERROR.type);
+      }
+    });
   }
 
   // handle filter select
@@ -66,7 +78,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
       this.filters[filterName].value = filterValue;
       this.select.emit({ filters: this.filters, targetFilter: filterName });
     } else {
-      this._toast.open(ToastConstants.MESSAGES.PRODUCT_FILTER_SPAM, ToastConstants.TYPE.ERROR.type)
+      this._toast.open(ToastConstants.MESSAGES.PRODUCT_FILTER_SPAM, ToastConstants.TYPE.ERROR.type);
     }
   }
 
@@ -173,7 +185,8 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
   keepOrder() { return 0; }
 
   ngOnDestroy() {
-    this.$listFetchingSub$.unsubscribe();
+    this.listFetchingSub$.unsubscribe();
+    this.searchSub$.unsubscribe();
   }
 
 }

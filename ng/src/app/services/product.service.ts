@@ -96,6 +96,7 @@ export class ProductService implements OnDestroy {
       this._firebaseService.addProductToUser(product.id, this.user)
       .subscribe(res => {
         // TODO: currently the message 'started downloading' depends on update user, what if endpoint fails?
+        // downloads listener on a.click?
         this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 6000 });
         this._authService.updateUser();
       });

@@ -1,5 +1,5 @@
 /* global styles */
-@import '../../../../node_modules/bootstrap/scss/bootstrap';
+@import '../../../../node_modules/bootstrap/scss/bootstrap'; // TODO: is this the place?
 @import './variables';
 
 // TODO: check responsiveness of everything
@@ -16,12 +16,8 @@ body {
   // NOTE: this is only for preloader to have it so it wouldn't appear after (causes page flick)
   overflow-y: scroll;
 
-  .header-wrapper {
-    // max-width: 1600px;
-    margin: 0;
-  }
   .page-wrapper {
-    max-width: 1600px;
+    max-width: $page-max-width;
     // NOTE: margin-top must follow header expanded height
     margin: 140px auto 0 auto;
     overflow: hidden;
@@ -580,7 +576,8 @@ form {
 @media only screen and (max-width: 768px) {
   .mdc-snackbar {
     margin: auto !important;
-    top: 50px;
+    // top: 50px;
+    top: 100px; // TODO: because of search introduction, check what is better with other actions later
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     position: fixed !important;

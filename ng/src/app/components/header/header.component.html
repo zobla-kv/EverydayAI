@@ -5,7 +5,15 @@
   [@expand]="expand"
 >
   <div class="header-wrapper d-flex w-100">
-    <div class="header-item navigation-wrapper absolute-center">
+    <div class="header-item logo-wrapper">
+      <a routerLink="/">
+        <img alt="house of dogs logo" role="img">
+      </a>
+    </div>
+    <form class="header-item search" (submit)="$event.preventDefault()">
+      <input class="form-control" type="search" placeholder="Search" name="search" [value]="searchValue" (search)="handleSearch($event)">
+    </form>
+    <div class="header-item navigation-wrapper">
       <a
         routerLink="/"
         routerLinkActive="nav-active"
@@ -17,11 +25,6 @@
       <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a>
       <a routerLink="/control-panel" routerLinkActive="nav-active" *ngIf="isAdmin">
         {{ 'Admin' | uppercase }}
-      </a>
-    </div>
-    <div class="header-item logo-wrapper">
-      <a routerLink="/">
-        <img alt="house of dogs logo" role="img">
       </a>
     </div>
     <!-- LOGGED IN -->
@@ -60,6 +63,9 @@
   class="medium-screen"
   role="heading"
 >
+  <form class="header-item search" (submit)="$event.preventDefault()">
+    <input class="form-control" type="search" placeholder="Search" name="search" [value]="searchValue" (search)="handleSearch($event)">
+  </form>
   <div class="outer-menu">
     <input class="checkbox-toggle" type="checkbox" #hamburgerToggle/>
     <div class="hamburger flex-center">

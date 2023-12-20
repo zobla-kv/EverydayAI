@@ -106,10 +106,21 @@ async function getProductById(id) {
   .catch(err => null)
 }
 
+// get all products
+async function getAllProducts() {
+  return db.collection('Products/Prints/All').get()
+  .then(res => {
+    const products = res.docs.map(res => ({ ...res.data() }));
+    return products;
+  })
+}
+
+
 module.exports = {
   generateEmailLink,
   getPrice,
   addPaymentToUser,
   getUserById,
-  getProductById
+  getProductById,
+  getAllProducts
 };

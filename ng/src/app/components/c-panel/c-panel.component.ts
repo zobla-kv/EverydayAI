@@ -86,6 +86,12 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       'image': new FormControl(null, [
         Validators.required
       ]),
+      'description': new FormControl(null, [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(200),
+        Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
+      ]),
       'fileExtension': new FormControl(null, [
         Validators.required
       ]),
@@ -259,6 +265,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
       await this._firebaseService.updateProductAfterAdd(productId, imgPath);
 
+      await this._httpService.addProductToElasticSearch(productId);
+
       this._toast.open(ToastConstants.MESSAGES.NEW_PRODUCT_ADDED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
 
       // update list
@@ -278,11 +286,12 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // clear fields and prepare for next
   clearAddProductFormAfterSubmit() {
     this.formAddProduct.reset();
-    this.formAddProduct.patchValue({  image: null     });
-    this.formAddProduct.patchValue({  tier: 'classic' });
-    this.formAddProduct.patchValue({  color: null     });
-    this.formAddProduct.patchValue({  discount: 0     });
-    this.formAddProduct.patchValue({  likes: 0        });
+    this.formAddProduct.patchValue({  image: null       });
+    this.formAddProduct.patchValue({  description: null });
+    this.formAddProduct.patchValue({  tier: 'classic'   });
+    this.formAddProduct.patchValue({  color: null       });
+    this.formAddProduct.patchValue({  discount: 0       });
+    this.formAddProduct.patchValue({  likes: 0          });
   }
 
   // pre populate edit form
@@ -335,9 +344,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // set later
       id: '',
       imgPath: '',
-      creationDate: Timestamp.fromDate(new Date()),
       //
+      creationDate: Timestamp.fromDate(new Date()),
       title: formData.title,
+      description: formData.description,
       imgAlt: formData.title,
       price: Number(Number(formData.price).toFixed(2)),
       discount: Number(formData.discount),
