@@ -6,6 +6,8 @@ export * from './product-page/product-page.component';
 export * from './product-page/product-list/product-list.component';
 export * from './product-page/product-filters/product-filters.component';
 export * from './product-page/product-list/product-item/product-item.component';
+export * from './product-page/product-list/product-item/product-details/product-details.component';
+export * from './product-page/product-list/product-item/product-price/product-price.component';
 export * from './forms/auth-form/auth-form.component';
 export * from './forms/x-form/x-form.component';
 export * from './auth-verify/auth-verify.component';

@@ -1,0 +1,7 @@
+@import '../../../../../styles/variables.scss';
+
+.price-icon {
+  ::ng-deep svg path { fill: $main-dark-bg-color; }
+}
+
+.product-old-price { right: 0; }

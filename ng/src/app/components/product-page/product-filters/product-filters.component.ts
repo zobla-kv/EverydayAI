@@ -88,6 +88,9 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
     this.dropdownArrow       = document.querySelector('.active-filter-arrow') as HTMLElement;
     this.filterDropdown      = document.querySelector('.filter-dropdown') as HTMLElement;
 
+    // make dropdown unclickable at start
+    this._setHideStyles(this.filterDropdown);
+
     // bind event to each filter item
     this.filterItems.forEach(el => {
     	el.addEventListener('mouseenter', (ev: any) => {
@@ -114,6 +117,9 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	openDropdown(el: HTMLElement) {
+    // make dropdown clickable
+    this._setShowStyles(this.filterDropdown);
+
 		// set filter id
 		this.activeFilter = el.getAttribute('filter') as string;
 
@@ -132,16 +138,9 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 		el.classList.add('active');
 
 		// hide inactive dropdown items
-		this.filterDropdownItems.forEach(el => {
-      el.style.opacity = '0';
-      // because of absolute positioning
-      el.style.zIndex = '-1';
-      el.style.pointerEvents = 'none';
-    });
+		this.filterDropdownItems.forEach(el => this._setHideStyles(el));
     // show current active one
-		activeFilterDropdown.style.opacity = '1';
-    activeFilterDropdown.style.zIndex = '1'
-    activeFilterDropdown.style.pointerEvents = 'auto';
+    this._setShowStyles(activeFilterDropdown)
 
     let dropdownPositionLeft: any = el.offsetLeft - (( dropdownItemRectangle!.width / 2 ) - targetElement.width / 2 );
 
@@ -170,16 +169,25 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 		// remove active class from all filter items
 		this.filterItems.forEach(el => el.classList.remove('active'));
 		// hide all dropdowns
-		this.filterDropdownItems.forEach (el => {
-      el.style.opacity = '0';
-      el.style.zIndex = '-1';
-      el.style.pointerEvents = 'none';
-    })
+		this.filterDropdownItems.forEach (el => this._setHideStyles(el))
 		// hide arrow
 		this.dropdownArrow.style.opacity = '0';
 		// unset selected menu
 		this.activeFilter = null;
 	};
+
+  private _setShowStyles(el: HTMLElement) {
+		el.style.opacity = '1';
+    el.style.zIndex = '1'
+    el.style.pointerEvents = 'auto';
+  }
+
+  private _setHideStyles(el: HTMLElement) {
+    el.style.opacity = '0';
+    // because of absolute positioning
+    el.style.zIndex = '-1';
+    el.style.pointerEvents = 'none';
+  }
 
   // keep order of keyvalue pipe (not DRY)
   keepOrder() { return 0; }

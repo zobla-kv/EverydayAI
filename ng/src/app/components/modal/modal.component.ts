@@ -16,9 +16,13 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() title: string;
   // action button text
   @Input() actionButtonText: string;
+  // hide footer?
+  @Input() hideFooter = false;
 
-  // confirm action
+  // confirm
   @Output() confirm = new EventEmitter<void>();
+  // close
+  @Output() close = new EventEmitter<void>();
 
   // is modal open
   isOpen = false;
@@ -57,18 +61,9 @@ export class ModalComponent implements OnInit, OnDestroy {
     // close modal on background click
     this.element.addEventListener('click', (el: any) => {
         if (el.target.className === 'modal') {
-            this.close();
+          this.closeModal();
         }
     });
-  }
-
-  ngOnDestroy() {
-    this.actionComplete$ && this.actionComplete$.unsubscribe();
-    // remove self from modal service
-    this._modalService.remove(this);
-
-    // remove modal element from html
-    this.element.remove();
   }
 
   // open modal
@@ -79,15 +74,24 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   // close modal
-  close() {
+  closeModal() {
     this.element.style.display = 'none';
     document.body.classList.remove('modal-open');
     this.isOpen = false;
+    this.close.emit();
   }
 
   // handle confirm button
   handleConfirm() {
     this.showActionSpinner = true;
     this.confirm.emit();
+  }
+
+  ngOnDestroy() {
+    this.actionComplete$ && this.actionComplete$.unsubscribe();
+    // remove self from modal service
+    this._modalService.remove(this);
+    // remove modal element from html
+    this.element.remove();
   }
 }

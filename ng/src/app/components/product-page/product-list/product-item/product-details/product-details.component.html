@@ -1,0 +1,46 @@
+
+<app-modal id="{{modalName}}" [title]="product.title" [hideFooter]="true" (close)="handleClose()" *ngIf="product">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-md-8 px-0">
+        <!-- TODO: alt for seo -->
+        <img src="{{ product.imgPath }}" alt="" class="d-block mx-auto">
+      </div>
+
+      <div class="col-12 col-md-4 px-0 d-flex flex-column justify-content-center">
+        <div class="product-price-wrapper flex-center mt-3 mt-md-0">
+          <app-product-price [product]="product"></app-product-price>
+        </div>
+
+        <div class="product-metadata mt-3 mt-md-5">
+          <ng-container *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder">
+            <div class="product-metadata-item" [attr.item]="metadata.key" *ngIf="metadata.key !=='price'">
+              <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+                {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+              </mat-icon>
+              <!-- likes not part of metadata -->
+              <span class="ms-1 text-nowrap" *ngIf="metadata.key === 'likes'">{{ product[metadata.key] }}</span>
+              <span class="ms-1 text-nowrap" *ngIf="metadata.key !== 'likes'">{{ product.metadata[metadata.key] }}</span>
+            </div>
+          </ng-container>
+        </div>
+
+        <button class="btn-reverse dark-rounded-button mx-auto mt-3 mt-md-5">
+          <mat-spinner *ngIf="product.spinners['cart' || 'download']; else action" diameter="25" strokeWidth="4"></mat-spinner>
+          <ng-template #action>
+            <ng-container *ngIf="!user?.ownedItems?.includes(product.id) || (product.price > 0 && product.discount < 100); else download">
+              <span *ngIf="!product.isInCart" (click)="addToCart()"> Add <mat-icon class="mb-1" svgIcon="cart-add"></mat-icon> </span>
+              <span *ngIf="product.isInCart" (click)="removeFromCart()"> Remove <mat-icon class="mb-1" svgIcon="cart-remove"></mat-icon> </span>
+            </ng-container>
+            <ng-template #download >
+              <span (click)="handleDownload()"> Download <mat-icon>download</mat-icon> </span>
+            </ng-template>
+          </ng-template>
+        </button>
+      </div>
+    </div>
+  </div>
+</app-modal>
+
+
+

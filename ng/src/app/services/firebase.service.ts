@@ -9,7 +9,7 @@ import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, query, and, increment, collection, where, getDocs, Timestamp, or, Firestore, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, DocumentData, orderBy, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, map, first, mergeMap, Subject } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, map, first, mergeMap, Subject, throwError } from 'rxjs';
 
 import { Decimal } from 'decimal.js';
 
@@ -226,12 +226,13 @@ export class FirebaseService {
   }
 
   // get products by id
-  getProductsById(ids: string[]): Observable<ProductTypePrint[]> {
+  getProductsById(ids: string[]): Observable<ProductResponse[]> {
+    // return throwError('no way') TODO: remove this
     // if added because of user.cart can be empty array
     if (ids.length === 0) {
       return of([]);
     }
-    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductTypePrint[]>;
+    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add new product to db

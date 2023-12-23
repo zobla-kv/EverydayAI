@@ -30,7 +30,7 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
   @Input() filters: ProductFilters;
 
   // list config - reusing old to avoid rewrite
-  config = ProductListConfig.PRODUCT_LIST_PRINTS.TAB_SHOP;
+  config = ProductListConfig.PRODUCT_LIST;
 
   // current user
   user: CustomUser | null;

@@ -79,7 +79,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       'title': new FormControl(null, [
         Validators.required,
         Validators.minLength(6),
-        Validators.maxLength(16),
+        Validators.maxLength(24),
         // allow whitespaces between words but not on start and end
         Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
       ]),

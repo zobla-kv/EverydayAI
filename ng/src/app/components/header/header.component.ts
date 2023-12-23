@@ -22,6 +22,7 @@ export class HeaderComponent implements OnDestroy {
   // hamburger menu toggle
   @ViewChild('hamburgerToggle') hamburgerToggle: ElementRef;
 
+  // TODO: remove scroll listener on mobile, no issues for now because mobile header has no animation
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
     // check if user reached bottom of the page then show footer

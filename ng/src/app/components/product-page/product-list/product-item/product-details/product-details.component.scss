@@ -1,0 +1,118 @@
+@import '../../../../../styles/variables.scss';
+
+// global (either use it here or in modal)
+::ng-deep .modal#product_details {
+
+    .modal-dialog {
+      max-width: 800px;
+      // col-md-8 width
+      img { max-width: 520px; }
+
+      .modal-content {
+        background-color: $main-orange-bg-color;
+
+        .modal-header {
+          padding: 10px 40px;
+          border-color: transparent;
+          text-align: center;
+
+          .modal-title {
+            width: 100%;
+            font-size: 24px;
+            line-height: 28px;
+          }
+
+          .mat-icon {
+            position: absolute;
+            right: 1rem;
+            color: $main-dark-bg-color;
+          }
+        }
+
+        .modal-body { padding: 0rem 0 1rem 1rem; }
+      }
+    }
+
+  }
+
+.product-price-wrapper {
+  height: 40px;
+  font-family: $product-metadata-font;
+  font-weight: bold;
+
+  // for child component
+  ::ng-deep {
+    mat-icon {
+      transform: scale(3);
+      svg path { transform: translate(75px, 60px); }
+    }
+
+    span { margin-left: 0.75rem; }
+  }
+
+}
+
+.product-metadata {
+  display: grid;
+  justify-content: center;
+  grid-template-areas:
+  ". ."
+  ". .";
+  gap: 16px 32px;
+  padding: 0 16px;
+
+  .product-metadata-item {
+    .mat-icon { width: 27px; height: 27px; }
+
+    &[item="fileSizeInMb"] {
+      .mat-icon {
+        position: relative;
+        top: 3px;
+        transform: scale(1.4);
+      }
+    }
+    &[item="resolution"] {
+      .mat-icon { transform: scale(0.9); }
+    }
+  }
+}
+
+// make span take full button size because of 1 button 3 actions
+button {
+  padding: 0;
+  span {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+}
+
+/* MEDIA QUERIES */
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  ::ng-deep .modal#product_details {
+    .modal-dialog {
+      max-width: 500px;
+      .modal-content .modal-body { padding-right: 1rem; }
+    }
+  }
+
+  .product-price-wrapper {
+    // for child component
+    ::ng-deep {
+      mat-icon { transform: scale(2.5); }
+      span { margin-left: 0.5rem; }
+    }
+  }
+
+  .product-metadata {
+    justify-content: center;
+    padding: 0;
+    gap: 16px 50px;
+  }
+}

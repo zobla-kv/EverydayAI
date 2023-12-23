@@ -8,7 +8,8 @@ import {
   AuthVerify,
   XFormComponent,
   ShoppingCartComponent,
-  CPanelComponent
+  CPanelComponent,
+  ProductDetailsComponent
 } from '@app/components';
 
 import {
@@ -24,7 +25,10 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    component: ProductPageComponent
+    component: ProductPageComponent,
+    children: [
+      { path: ':id', component: ProductDetailsComponent }
+    ]
   },
   {
     path: 'auth',

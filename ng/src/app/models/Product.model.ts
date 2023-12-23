@@ -98,6 +98,8 @@ export namespace ProductType {
 
 }
 
+// TODO: refactor
+// title not needed, type always the same with after list refactor, is pageSize needed?
 export class ProductListConfig {
 
   title: string;
@@ -115,6 +117,20 @@ export class ProductListConfig {
     pageSize: 3
   }
 
+  public static PRODUCT_LIST = {
+    title: '',
+    product: {
+      type: ProductType.ALL,
+      // download replaces action so isn't passed
+      actions: [ProductActions.CART, ProductActions.LIKE],
+      // what is to be showed in metadata in product details
+      metadata: ['price', 'tier', 'resolution', 'extension', 'fileSizeInMb', 'likes']
+    },
+    // TODO: set pagination size from this?
+    pageSize: 6
+  }
+
+  // old (used only in old component)
   public static PRODUCT_LIST_PRINTS = {
     TAB_SHOP: {
       title: 'Explore new products',
@@ -151,6 +167,7 @@ export class ProductListConfig {
 }
 
 // modify Product from BE to include FE properties
+// TODO: remove 'extends ProductResponse', see types when calling new
 export class ProductMapper<T extends ProductResponse> implements ProductResponse {
   id: string;
   title: string;
@@ -212,6 +229,7 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     ['tier-premium', { iconName: 'tier-premium',     type: 'custom'   }],
     ['resolution',   { iconName: 'image-resolution', type: 'custom'   }],
     ['extension',    { iconName: 'file-type-img',    type: 'custom'   }],
+    ['likes',        { iconName: 'favorite',         type: 'mat-icon'   }],
   ])
 
 

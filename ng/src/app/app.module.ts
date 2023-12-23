@@ -43,7 +43,9 @@ import {
   ToastComponent,
   CPanelComponent,
   ModalComponent,
-  LoadingComponent
+  LoadingComponent,
+  ProductDetailsComponent,
+  ProductPriceComponent
 } from '@app/components';
 
 import {
@@ -71,6 +73,8 @@ import {
     CPanelComponent,
     ModalComponent,
     LoadingComponent,
+    ProductDetailsComponent,
+    ProductPriceComponent,
 
     // Directives
     ObserveVisibilityDirective,

@@ -6,10 +6,11 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 999999; // 6
 
-  .mat-icon {
-    color: $orange-text;
-    cursor: pointer;
+  .modal-header {
+    .modal-title { font-size: 22px; }
+    .mat-icon { cursor: pointer ;}
   }
+
 
   form {
     .form-group .form-style {
@@ -18,10 +19,11 @@
   }
 }
 
+// TODO: ng deep and turn off view encapsulation?
 body.modal-open {
   /* body overflow is hidden to hide main scrollbar when modal window is open */
   overflow: hidden;
 
   // prevent modal from closing on click outside
-  .modal { pointer-events: none; }
+  // .modal { pointer-events: none; }
 }

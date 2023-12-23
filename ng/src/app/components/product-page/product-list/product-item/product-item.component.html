@@ -1,8 +1,48 @@
 <div class="product-item-wrapper" [style]="{'--data-stagger': stagger}">
+  <a class="product-link" [routerLink]="product.id" [state]="product"></a>
+  <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon-outside">
+    <span>- {{ product.discount }} %
+      <div class="glow"></div>
+    </span>
+  </div>
+  <div *ngIf="product.isInCart" class="in-cart-icon-wrapper flex-center">
+    <mat-icon class="in-cart-icon">shopping_cart</mat-icon>
+  </div>
   <img src="{{ product.imgPath }}" alt="{{ product.imgAlt }}" class="pe-none">
-  <!-- <p class="product-price">{{ 'p: ' + product.price }}</p>
-    <p class="product-color">{{ product.metadata['color'] }}</p> -->
-    <p class="product-color">{{ product.likes }}</p>
-    <!-- <p class="product-orientation">{{ product.metadata['orientation'] }}</p> -->
-    <p class="product-discount">{{ 'd: ' + product.discount }}</p>
+  <p class="product-title">{{ product.title }}</p>
+  <ul>
+    <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->
+    <li *ngFor="let action of actions">
+      <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
+      <ng-template #enableAction>
+        <!-- cart action, use download if item free -->
+        <ng-container *ngIf="action === productActions.CART">
+          <ng-container *ngIf="product.price !== 0 && product.discount < 100; else download">
+            <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart(); $event.stopImmediatePropagation()"></mat-icon>
+            <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
+          </ng-container>
+          <ng-template #download>
+            <!-- TODO: this should also show if user owns it -->
+            <mat-icon icon="download" (click)="handleDownload()">download</mat-icon>
+          </ng-template>
+        </ng-container>
+
+        <!-- like action -->
+        <mat-icon
+          *ngIf="action === productActions.LIKE"
+          #tooltip="matTooltip"
+          matTooltip
+          matTooltipPosition="above"
+          matTooltipDisabled="true"
+          attr.icon="{{ getLikeIcon() }}"
+          (click)="handleLike()"
+          [ngClass]="isLiked ? 'pulse' : '' "
+          (delayed-hover)="showTooltip()" [delay]="700" (mouseout)="hideTooltip()"
+        >
+          {{ getLikeIcon() }}
+        </mat-icon>
+
+      </ng-template>
+    </li>
+  </ul>
 </div>
