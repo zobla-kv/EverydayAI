@@ -50,6 +50,9 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // is product liked
   isLiked: boolean;
 
+  // disable animation after load to prevent show animation from running on reuse strategy
+  disableAnimation = false;
+
   constructor(
     private _authService: AuthService,
     private _productService: ProductService,
@@ -59,6 +62,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // TODO: this solves 404 issue with items not displayed, displaying them but without animation
+    setTimeout(() => this.disableAnimation = true, 2000);
     this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {

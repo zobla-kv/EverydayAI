@@ -90,6 +90,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
             // TODO: not good, on copy-paste it goes back to google
             // TODO: try removing load animation on products page / details because of copy paste
             // TODO: also cant see error becuase of it
+            // TODO: error handling (route protection) can be done using resolver
             this.handleClose();
             return;
           }

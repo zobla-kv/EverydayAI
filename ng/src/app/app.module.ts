@@ -24,6 +24,8 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { NgxMasonryModule } from 'ngx-masonry';
 
 import { AppRoutingModule } from './app-routing.module';
+import { RouteReuseStrategy } from '@angular/router';
+import { ReuseStrategy } from './app-routing.reuse-strategy';
 
 import { environment } from '@app/environment';
 
@@ -53,6 +55,7 @@ import {
   DelayedHoverDirective,
   InfiniteScrollDirective
 } from '@app/directives';
+import { UtilService } from './services';
 
 @NgModule({
   declarations: [
@@ -115,6 +118,7 @@ import {
         duration: 2500
       }
     },
+    { provide: RouteReuseStrategy, useClass: ReuseStrategy },
     DecimalPipe
   ],
   bootstrap: [AppComponent]

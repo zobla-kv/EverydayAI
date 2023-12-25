@@ -67,8 +67,8 @@ export interface ProductFilters {
 }
 
 export interface FilterEvent {
-  filters: ProductFilters;
-  targetFilter: string;
+  filterName: string;
+  filterValue: string;
 }
 
 interface ProductTypeShirtMetadata {

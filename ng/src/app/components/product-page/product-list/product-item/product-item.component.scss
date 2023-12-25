@@ -1,26 +1,23 @@
 @import '../../../../styles/variables.scss';
 
-// animation only
-.product-item-wrapper {
-  // didn't manage to have staggered animation using built in, this is alternative
+
+// disable show animation after reuse strategy
+.product-item-wrapper.enableAnimation {
   opacity: 0;
   transform: translateY(100px);
   &.show {
     $delay: calc(var(--data-stagger) * 100ms);
-    opacity: 0;
-    transform: translateY(100px);
     animation: show 300ms ease $delay forwards;
   }
-  &.hide {
-    $delay: calc(var(--data-stagger) * 50ms);
-    opacity: 1;
-    transform: scale(1);
-    animation: hide 150ms ease $delay forwards;
-  }
-
   @keyframes show {
     to { opacity: 1; transform: translateY(0); }
   }
+}
+
+// always run hide animation, regardless of reuse strategy
+.product-item-wrapper.hide {
+  $delay: calc(var(--data-stagger) * 50ms);
+  animation: hide 150ms ease $delay forwards;
   @keyframes hide {
     to { transform: scale(0); }
   }
@@ -30,6 +27,7 @@
 .product-item-wrapper {
   cursor: pointer;
   user-select: none;
+  position: relative;
 
   .product-link {
     position: absolute;

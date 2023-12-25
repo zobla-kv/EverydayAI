@@ -75,8 +75,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
   // handle filter select
   handleFilterSelect(filterName: string, filterValue: string) {
     if (!this.isProductListFetching) {
-      this.filters[filterName].value = filterValue;
-      this.select.emit({ filters: this.filters, targetFilter: filterName });
+      this.select.emit({ filterName, filterValue });
     } else {
       this._toast.open(ToastConstants.MESSAGES.PRODUCT_FILTER_SPAM, ToastConstants.TYPE.ERROR.type);
     }
@@ -178,7 +177,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 
   private _setShowStyles(el: HTMLElement) {
 		el.style.opacity = '1';
-    el.style.zIndex = '1'
+    el.style.zIndex = '10'
     el.style.pointerEvents = 'auto';
   }
 

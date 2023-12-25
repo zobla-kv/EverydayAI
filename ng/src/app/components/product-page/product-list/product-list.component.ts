@@ -65,8 +65,7 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
     private _firebaseService: FirebaseService
   ) {}
 
-  // TODO: Important! error handling
-  // NOTE: keep data when routing (reuse strategy) so it wouldn't reach DB every time
+  // TODO: error handling
   ngOnInit(): void {
     this._firebaseService.isProductListFetching$.next(true);
     this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
@@ -173,7 +172,6 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
 
   ngOnDestroy() {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
-    // TODO: check how this behaves with reuse strategy
     this._firebaseService.resetPagination();
   }
 

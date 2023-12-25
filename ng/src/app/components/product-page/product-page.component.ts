@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { first } from 'rxjs';
-
-// TODO: list losing all queries on exit and comeback, might be solved by reuse strategy
+import { HttpParams } from '@angular/common/http';
 
 import {
   FilterEvent,
@@ -45,9 +45,11 @@ export class ProductPageComponent implements OnInit {
     private _router: Router,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
+    private _location: Location
   ) {}
 
   ngOnInit() {
+    // set filters from query params
     this._route.queryParamMap.pipe(first()).subscribe(params => {
       params.keys.forEach(key => {
         const paramName = key;
@@ -85,22 +87,21 @@ export class ProductPageComponent implements OnInit {
 
   // handle filter select
   handleFilter(event: FilterEvent): void {
-    const newFilterValue = event.filters[event.targetFilter].value;
-    const previousFilterValue = this._route.snapshot.queryParams[event.targetFilter];
+    const newFilterValue = event.filterValue;
+    const previousFilterValue = this.filters[event.filterName].value;
+
     if (newFilterValue === previousFilterValue) {
       return;
     }
 
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: { [event.targetFilter]: newFilterValue === this.filters[event.targetFilter].default ? null : newFilterValue },
-      queryParamsHandling: 'merge',
-    });
+    this.filters[event.filterName].value = newFilterValue;
 
     // direct assign doesnt trigger ngOnChanges
-    this.filters = { ...event.filters };
+    this.filters = { ...this.filters };
 
-    if (event.targetFilter === FILTER_SEARCH) {
+    this.addQueryParamsToUrl();
+
+    if (event.filterName === FILTER_SEARCH) {
       this.setPageTitle(this.filters[FILTER_SEARCH].value);
     }
   }
@@ -114,8 +115,28 @@ export class ProductPageComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // TODO: reuse strategy change
+    // TODO: reuses strategy messed it up, may be solved by title implementation
     document.title = 'House of dogs';
+  }
+
+  // for reuse strategy to set query params because ngOnInit not called
+  onAttach() {
+    this.addQueryParamsToUrl();
+  }
+
+  // appends query params to url
+  addQueryParamsToUrl() {
+    // construct queryParams from active filters
+    let queryParams = new HttpParams();
+    Object.keys(this.filters).forEach(key => {
+      const filter = this.filters[key];
+      if (filter.value !== filter.default) {
+        queryParams = queryParams.append(key, filter.value);
+      }
+    });
+
+    // append them to route
+    this._location.go(this._router.url.split('?')[0], queryParams.toString());
   }
 
 }

@@ -91,4 +91,12 @@ export class AppComponent {
     }
   }
 
+  // handle global attach after route change
+  onAttach(component: any) {
+    // components that should react to router attach event
+    if (component['onAttach']) {
+      component.onAttach();
+    }
+  }
+
 }
