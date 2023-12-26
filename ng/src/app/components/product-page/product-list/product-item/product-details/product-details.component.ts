@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
+
 import { Subscription, catchError, first, throwError } from 'rxjs';
 
 import {
@@ -34,6 +36,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   onPopState(event: any) {
     this.isClosedByBackButton = true;
     this._modalService.close();
+    this._productService.productDetailsClosed$.next();
   }
 
   // product
@@ -59,10 +62,12 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     private _toast: ToastService,
     private _location: Location,
     private _authService: AuthService,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private _titleService: Title
   ) {
     // if opened from product page
     this.product = this._router.getCurrentNavigation()?.extras.state as ProductMapper<ProductTypePrint>;
+    this.product && this._titleService.setTitle(this.product.title);
   }
 
   ngOnInit() {
@@ -96,6 +101,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
           }
           // fetch is triggered after user only because of mapper
           this.product = new ProductMapper<ProductTypePrint>(products[0] as any, ProductListConfig.PRODUCT_LIST, this.user);
+          this._titleService.setTitle(this.product.title);
           // wait for modal to load
           setTimeout(() => this._modalService.open(this.modalName), 100);
         },
@@ -118,10 +124,13 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   // handle close event
   handleClose() {
     console.log('closed')
+    this._productService.productDetailsClosed$.next();
     if (this.isClosedByBackButton) {
       this.isClosedByBackButton = false;
       return;
     }
+    // TODO: causes a small bug. Have search value. Open product details. Refresh. Close product details.
+    // There is old search query in url and doc and page titles are mismatched
     this._location.back();
   }
 

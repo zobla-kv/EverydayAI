@@ -9,6 +9,11 @@ html {
   scroll-behavior: auto !important;
 }
 
+// quick way to add border to all
+// * {
+//   outline: 1px solid #f00 !important;
+// }
+
 body {
   background-color: $main-dark-bg-color;
   color: $white-text;
@@ -20,7 +25,6 @@ body {
     max-width: $page-max-width;
     // NOTE: margin-top must follow header expanded height
     margin: 140px auto 0 auto;
-    overflow: hidden;
     position: relative;
     padding-top: 0;
 
@@ -30,6 +34,8 @@ body {
       // TODO: recheck this
       // min-height: calc(100vh - 880px);
       min-height: 100vh;
+      // only because of filter-dropdown
+      overflow: hidden;
     }
     &:has(.auth-form-page) {
       @extend .flex-center;

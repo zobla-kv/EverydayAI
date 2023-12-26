@@ -384,4 +384,18 @@ loadScript(url: string) {
     return /^[a-zA-Z0-9\s]*$/.test(value);
   }
 
+/**
+  * Get capitalized text
+  *
+  * @param text - string
+  * @return text - capitalized text
+  */
+  capitalizeText(text: string): string {
+    // don't capitalize if it doens't have more than 2 chars.
+    if (text.length < 2) {
+      return text;
+    }
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
 }

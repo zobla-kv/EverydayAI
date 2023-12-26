@@ -36,6 +36,9 @@ export class ProductService implements OnDestroy {
   // user sub
   userStateSub$: Subscription;
 
+  // product details closed event
+  productDetailsClosed$ = new Subject<void>();
+
   constructor(
     private _authService: AuthService,
     private _toast: ToastService,

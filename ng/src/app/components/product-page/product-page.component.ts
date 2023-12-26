@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { first } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
+
+import { Subscription, first } from 'rxjs';
 
 import {
   FilterEvent,
@@ -12,6 +14,7 @@ import {
 
 import {
   FirebaseService,
+  ProductService,
   UtilService
 } from '@app/services';
 
@@ -22,10 +25,13 @@ const FILTER_SEARCH = 'search';
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.scss']
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent implements OnInit, OnDestroy {
+
+  // page title default
+  defaultTitle = 'Products';
 
   // page title
-  title = 'Dog art';
+  title = this.defaultTitle;
 
   // active filters
   filters: ProductFilters = {
@@ -40,15 +46,21 @@ export class ProductPageComponent implements OnInit {
     },
   }
 
+  // product details close event
+  productDetailsClosed$: Subscription;
+
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _location: Location
+    private _location: Location,
+    private _productService: ProductService,
+    private _titleService: Title,
   ) {}
 
   ngOnInit() {
+    this.setPageTitle(this.defaultTitle);
     // set filters from query params
     this._route.queryParamMap.pipe(first()).subscribe(params => {
       params.keys.forEach(key => {
@@ -66,6 +78,8 @@ export class ProductPageComponent implements OnInit {
           this.setPageTitle(paramValue);
         }
       })
+
+      this.productDetailsClosed$ = this._productService.productDetailsClosed$.subscribe(() => this.setPageTitle(this.title))
     })
   }
 
@@ -108,20 +122,18 @@ export class ProductPageComponent implements OnInit {
 
   // set page title and h1 tag
   setPageTitle(title: string) {
-    // capitalalize first letter
-    const capitalized =  title.charAt(0).toUpperCase() + title.slice(1);
-    document.title = capitalized;
+    if (!title) {
+      title = this.defaultTitle;
+    }
+    const capitalized = this._utilService.capitalizeText(title);
     this.title = capitalized;
-  }
-
-  ngOnDestroy() {
-    // TODO: reuses strategy messed it up, may be solved by title implementation
-    document.title = 'House of dogs';
+    this._titleService.setTitle(capitalized);
   }
 
   // for reuse strategy to set query params because ngOnInit not called
   onAttach() {
     this.addQueryParamsToUrl();
+    this.setPageTitle(this.title);
   }
 
   // appends query params to url
@@ -137,6 +149,10 @@ export class ProductPageComponent implements OnInit {
 
     // append them to route
     this._location.go(this._router.url.split('?')[0], queryParams.toString());
+  }
+
+  ngOnDestroy() {
+    this.productDetailsClosed$ && this.productDetailsClosed$.unsubscribe();
   }
 
 }

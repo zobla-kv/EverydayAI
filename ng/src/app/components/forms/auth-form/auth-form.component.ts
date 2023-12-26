@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 import { Subscription } from 'rxjs';
 
@@ -52,7 +53,8 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Router,
     private _utilService: UtilService,
     private _authService: AuthService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _titlService: Title
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
@@ -110,6 +112,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // just change url without realod, easiest way to keep same instance alive
     window.history.pushState(null, '', `auth/${this.activeForm.type}`);
     this.displayProperForm();
+    this._titlService.setTitle(this._utilService.capitalizeText(this.activeForm.type!))
   }
 
   // handle slider value change
