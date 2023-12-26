@@ -53,6 +53,23 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // user sub
   userStateSub$: Subscription;
 
+  // what section is active (scrolled to)
+  activeSection: string = 'Introduction';
+  // section scroll easing
+  sectionScrollEasing = (t: number, b: number, c: number, d: number): any => {
+    // easeInOutExpo easing
+    if (t === 0) {
+      return b;
+    }
+    if (t === d) {
+      return b + c;
+    }
+    if ((t /= d / 2) < 1) {
+      return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
+    }
+    return c / 2 * (-Math.pow(2, -10 * --t) + 2) + b;
+  };
+
   // our picks list config
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
   // our products to be fetched

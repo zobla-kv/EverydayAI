@@ -1,3 +1,4 @@
+
 <section class="top-section">
   <div class="container-fluid h-100 px-6">
     <div class="row position-relative h-100 justify-content-md-between">
@@ -79,161 +80,205 @@
   </div>
 </section>
 
-<section class="about-us-section">
-  <div class="container px-4 px-lg-5">
-      <div class="about-us-heading">
-          <h3 class="mb-0">What is</h3>
-          <h2 class="orange-text mb-5">House of dogs</h2>
+<div class="table-of-contents-section" scrollSpy (sectionChange)="activeSection = $event">
+  <div class="container-fluid px-md-0 px-lg-5">
+    <div class="row justify-content-center">
+      <div class="col-md-2 d-none d-lg-block">
+        <div class="table-of-contents-wrapper">
+          <div class="contents-title">Contents</div>
+          <div class="list-group">
+            <a class="list-group-item" [ngClass]="{'active': activeSection === 'Introduction'}" href="#Introduction"
+               pageScroll [pageScrollOffset]="50" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+            >Introduction</a>
+            <a class="list-group-item" [ngClass]="{'active': activeSection === 'HowItWorks'}" href="#HowItWorks"
+               pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+            >How it works?</a>
+            <a class="list-group-item" [ngClass]="{'active': activeSection === 'MostPopular'}" href="#MostPopular"
+              pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+            >Most popular prints</a>
+          </div>
+        </div>
       </div>
-      <div class="about-us-items row gx-4 gx-lg-5">
-          <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
-            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
-          >
-              <mat-icon svgIcon="dog-head" class="dog-head"></mat-icon>
-              <h4><strong><span class="orange-text">AI</span> as art</strong></h4>
-              <p class="mb-0">Embrace the future while witnessing the evolution of AI generated art.</p>
+      <div class="col-12 col-md-10 ps-md-5">
+        <section id="Introduction" class="about-us-section">
+          <div class="container px-4 px-lg-5">
+              <div class="about-us-heading">
+                  <h3 class="mb-0">What is</h3>
+                  <h2 class="orange-text mb-5">House of dogs</h2>
+              </div>
+              <div class="about-us-items row gx-4 gx-lg-5">
+                  <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
+                    appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+                  >
+                      <mat-icon svgIcon="dog-head" class="dog-head"></mat-icon>
+                      <h4><strong><span class="orange-text">AI</span> as art</strong></h4>
+                      <p class="mb-0">Embrace the future while witnessing the evolution of AI generated art.</p>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
+                    appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+                  >
+                      <mat-icon svgIcon="networking" class="networking"></mat-icon>
+                      <h4><strong>Join the <span class="orange-text">pack</span></strong></h4>
+                      <p class="mb-0">
+                        Whether you're an artist seeking inspiration, a dog enthusiast looking for captivating visuals,
+                        or simply someone intrigued by the possibilities of AI.
+                      </p>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mx-auto mb-5 mb-md-0"
+                    appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+                  >
+                      <mat-icon svgIcon="dog-enthusiast" class="expectance"></mat-icon>
+                      <h4><strong>The <span class="orange-text">expectance</span></strong></h4>
+                      <p class="mb-0">Look how they are looking at you.</p>
+                  </div>
+              </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
-            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
-          >
-              <mat-icon svgIcon="networking" class="networking"></mat-icon>
-              <h4><strong>Join the <span class="orange-text">pack</span></strong></h4>
-              <p class="mb-0">
-                Whether you're an artist seeking inspiration, a dog enthusiast looking for captivating visuals,
-                or simply someone intrigued by the possibilities of AI.
-              </p>
-          </div>
-          <div class="col-lg-4 col-md-6 mx-auto mb-5 mb-md-0"
-            appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
-          >
-              <mat-icon svgIcon="dog-enthusiast" class="expectance"></mat-icon>
-              <h4><strong>The <span class="orange-text">expectance</span></strong></h4>
-              <p class="mb-0">Look how they are looking at you.</p>
-          </div>
-      </div>
-  </div>
-</section>
+        </section>
 
-<section class="inovative-technology-section px-md-5">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="img-wrapper"
-          appear [hide]="{'opacity': 0, 'transform': 'scale(0.5)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}" [threshold]="0.7"
-        >
-          <!-- TODO: alt -->
-          <img src="../../../assets/images/img/inovative-technology-example.jpg" alt="">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="detail-wrapper"
-          appear [hide]="{'opacity': 0, 'transform': 'translateY(50px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1" [delay]="200"
-        >
-          <h2>Inovative technology</h2>
-          <p>
-            Each piece of AI-generated dog art is a testament to the individuality and spontaneity of our beloved pets,
-            capturing their playful spirit and unique artistic style.
-            This emerging field not only showcases the beauty of AI but also celebrates the wonderful bond between humans and
-            their dogs, revealing new dimensions of our shared creative journey.
-          </p>
-          <div>
-            <mat-icon svgIcon="digital-product"></mat-icon>
-            <span>100% Digital product</span>
+        <section id="HowItWorks" class="inovative-technology-section">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="img-wrapper"
+                  appear [hide]="{'opacity': 0, 'transform': 'scale(0.5)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}" [threshold]="0.7"
+                >
+                  <!-- TODO: alt -->
+                  <img src="../../../assets/images/img/inovative-technology-example.jpg" alt="">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="detail-wrapper"
+                  appear [hide]="{'opacity': 0, 'transform': 'translateY(50px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1" [delay]="200"
+                >
+                  <h2>Inovative technology</h2>
+                  <p>
+                    Each piece of AI-generated dog art is a testament to the individuality and spontaneity of our beloved pets,
+                    capturing their playful spirit and unique artistic style.
+                    This emerging field not only showcases the beauty of AI but also celebrates the wonderful bond between humans and
+                    their dogs, revealing new dimensions of our shared creative journey.
+                  </p>
+                  <div>
+                    <mat-icon svgIcon="digital-product"></mat-icon>
+                    <span>100% Digital product</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
+
+        <section id="MostPopular" class="our-pick-section">
+          <div class="container">
+            <div class="row">
+
+              <div class="col-md-12 col-lg-3 mb-5 mb-lg-0" appear>
+                <h2 class="mb-4">Crafted with excellent material. The AI material.</h2>
+                <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
+                <p><a href="shop.html" class="btn">Explore</a></p>
+              </div>
+
+              <mat-spinner
+                *ngIf="!ourPicksLoaded; else ourPicks"
+                class="p-0 mx-auto align-self-center"
+                diameter="48"
+                strokeWidth="6"
+              ></mat-spinner>
+
+              <ng-template #ourPicks>
+
+                <div *ngIf="ourPicksError" class="text-center align-self-center" [ngStyle]="{ flex: 1, height: '48px' }">
+                  Failed to load. Please refresh the page.
+                </div>
+
+                <ng-container *ngIf="!ourPicksError">
+
+                  <div
+                    *ngFor="let product of ourPicksProducts; let i = index"
+                    class="col-12 col-md-4 col-lg-3 my-5 my-md-0 d-flex justify-content-center align-items-end"
+                    appear
+                    [hide]="{'opacity': 0, 'transform': 'translateY(-40px)'}"
+                    [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
+                    [threshold]="0.8"
+                    (intersection)="hightlightProduct(productItem, i * 100)"
+                  >
+                    <div class="product-item" #productItem>
+                      <div class="position-relative mx-auto fit-content">
+                        <mat-icon *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="if-in-cart-icon">shopping_cart</mat-icon>
+                        <img src="{{ product.imgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
+                      </div>
+                      <h3 class="product-title">{{ product.title }}</h3>
+                      <p>{{ product.metadata['resolution'] }}</p>
+                      <strong class="product-price">
+                        <span *ngIf="user?.ownedItems?.includes(product.id); else price">Owned</span>
+                        <ng-template #price>
+                          <div *ngIf="product.discount > 0">
+                            <div *ngIf="product.discount < 100" class="d-flex justify-content-center">
+                              <span class="product-old-price reposition flex-center gap-1">
+                                {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                              </span>
+                              <span class="product-discounted-price reposition flex-center gap-1">
+                                {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
+                              </span>
+                            </div>
+                            <div *ngIf="product.discount === 100" class="d-flex justify-content-center">
+                              <span class="product-old-price flex-center gap-1">
+                                {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                              </span>
+                              <span>Free</span>
+                            </div>
+                          </div>
+                          <div *ngIf="product.discount === 0">
+                            <span *ngIf="product.price !== 0" class="flex-center gap-1">
+                              {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                            </span>
+                            <span *ngIf="product.price === 0">Free</span>
+                          </div>
+                        </ng-template>
+                      </strong>
+                      <button>
+                        <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
+                        <ng-template #action>
+                          <!-- TODO: site lags on download -->
+                          <mat-icon class="download"
+                            *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else action"
+                            (click)="productService.download(product)"
+                          >download</mat-icon>
+                          <ng-template #action>
+                            <mat-icon svgIcon="cart-add" class="cart-action" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
+                            <mat-icon svgIcon="cart-remove" class="cart-action" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
+                          </ng-template>
+                        </ng-template>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+
+              </ng-template>
+
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="our-pick-section px-md-5">
-  <div class="container">
-    <div class="row">
-
-      <div class="col-md-12 col-lg-3 mb-5 mb-lg-0" appear>
-        <h2 class="mb-4">Crafted with excellent material.</h2>
-        <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
-        <p><a href="shop.html" class="btn">Explore</a></p>
+<section class="lets-talk-about-your-dog-section">
+  <div class="container-fluid position-relative p-0">
+    <div class="circle-wrapper w-100 h-100 position-absolute overflow-hidden">
+      <div class="circle left" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="300" [threshold]="1"></div>
+      <div class="circle right" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="100" [threshold]="0.1"></div>
+    </div>
+    <div class="row wrapper flex-wrap justify-content-sm-around">
+      <div class="col-img lets-talk-about-your-dog">
+        <img src="../../../assets/images/transparent/lets-talk-about-your-dog.png" alt="happy dog">
       </div>
-
-      <mat-spinner
-        *ngIf="!ourPicksLoaded; else ourPicks"
-        class="p-0 mx-auto align-self-center"
-        diameter="48"
-        strokeWidth="6"
-      ></mat-spinner>
-
-      <ng-template #ourPicks>
-
-        <div *ngIf="ourPicksError" class="text-center align-self-center" [ngStyle]="{ flex: 1, height: '48px' }">
-          Failed to load. Please refresh the page.
-        </div>
-
-        <ng-container *ngIf="!ourPicksError">
-
-          <div
-            *ngFor="let product of ourPicksProducts; let i = index"
-            class="col-12 col-md-4 col-lg-3 my-5 my-md-0 d-flex justify-content-center align-items-end"
-            appear
-            [hide]="{'opacity': 0, 'transform': 'translateY(-40px)'}"
-            [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
-            [threshold]="0.8"
-            (intersection)="hightlightProduct(productItem, i * 100)"
-          >
-            <div class="product-item" #productItem>
-              <div class="position-relative mx-auto fit-content">
-                <mat-icon *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="if-in-cart-icon">shopping_cart</mat-icon>
-                <img src="{{ product.imgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
-              </div>
-              <h3 class="product-title">{{ product.title }}</h3>
-              <p>{{ product.metadata['resolution'] }}</p>
-              <strong class="product-price">
-                <span *ngIf="user?.ownedItems?.includes(product.id); else price">Owned</span>
-                <ng-template #price>
-                  <div *ngIf="product.discount > 0">
-                    <div *ngIf="product.discount < 100" class="d-flex justify-content-center">
-                      <span class="product-old-price reposition flex-center gap-1">
-                        {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
-                      </span>
-                      <span class="product-discounted-price reposition flex-center gap-1">
-                        {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
-                      </span>
-                    </div>
-                    <div *ngIf="product.discount === 100" class="d-flex justify-content-center">
-                      <span class="product-old-price flex-center gap-1">
-                        {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
-                      </span>
-                      <span>Free</span>
-                    </div>
-                  </div>
-                  <div *ngIf="product.discount === 0">
-                    <span *ngIf="product.price !== 0" class="flex-center gap-1">
-                      {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
-                    </span>
-                    <span *ngIf="product.price === 0">Free</span>
-                  </div>
-                </ng-template>
-              </strong>
-              <button>
-                <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
-                <ng-template #action>
-                  <!-- TODO: site lags on download -->
-                  <mat-icon class="download"
-                    *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else action"
-                    (click)="productService.download(product)"
-                  >download</mat-icon>
-                  <ng-template #action>
-                    <mat-icon svgIcon="cart-add" class="cart-action" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
-                    <mat-icon svgIcon="cart-remove" class="cart-action" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
-                  </ng-template>
-                </ng-template>
-              </button>
-            </div>
-          </div>
-        </ng-container>
-
-      </ng-template>
-
+      <div class="col-text">
+        <h3>Lets talk about your dog</h3>
+        <button class="btn rounded-0">
+          <a href = "mailto: houseofdogs.online@gmail.com" class="text-reset text-decoration-none">Contact us</a>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -390,26 +435,6 @@
     </div>
   </div>
 </section> -->
-
-<section class="lets-talk-about-your-dog-section">
-  <div class="container-fluid position-relative p-0">
-    <div class="circle-wrapper w-100 h-100 position-absolute overflow-hidden">
-      <div class="circle left" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="300" [threshold]="1"></div>
-      <div class="circle right" appear [hide]="{'transform': 'scale(0.1)'}" [show]="{'transform': 'scale(1)'}" [duration]="100" [threshold]="0.1"></div>
-    </div>
-    <div class="row wrapper flex-wrap justify-content-sm-around">
-      <div class="col-img lets-talk-about-your-dog">
-        <img src="../../../assets/images/transparent/lets-talk-about-your-dog.png" alt="happy dog">
-      </div>
-      <div class="col-text">
-        <h3>Lets talk about your dog</h3>
-        <button class="btn rounded-0">
-          <a href = "mailto: houseofdogs.online@gmail.com" class="text-reset text-decoration-none">Contact us</a>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- <section class="how-it-works-section">
   <div class="container-fluid">

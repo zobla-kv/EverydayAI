@@ -22,6 +22,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 // ****************************************** //
 
 import { NgxMasonryModule } from 'ngx-masonry';
+import { NgxPageScrollModule } from 'ngx-page-scroll';
 
 import { AppRoutingModule } from './app-routing.module';
 import { RouteReuseStrategy } from '@angular/router';
@@ -53,9 +54,9 @@ import {
 import {
   ObserveVisibilityDirective,
   DelayedHoverDirective,
-  InfiniteScrollDirective
+  InfiniteScrollDirective,
+  ScrollSpyDirective
 } from '@app/directives';
-import { UtilService } from './services';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { UtilService } from './services';
     // Directives
     ObserveVisibilityDirective,
     DelayedHoverDirective,
-    InfiniteScrollDirective
+    InfiniteScrollDirective,
+    ScrollSpyDirective,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +106,8 @@ import { UtilService } from './services';
 
     // masonry
     NgxMasonryModule,
+    // page scroll
+    NgxPageScrollModule,
 
     // firebase
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

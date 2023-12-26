@@ -12,7 +12,7 @@
   <app-header></app-header>
 
   <main class="page-wrapper">
-    <router-outlet (activate)="window.scrollTo(0, 0)" (attach)="onAttach($event)"></router-outlet>
+    <router-outlet (activate)="window.scrollTo(0, 0)" (attach)="onAttach($event); window.scrollTo(0, 0)"></router-outlet>
   </main>
 
   <!-- <app-footer></app-footer> -->
