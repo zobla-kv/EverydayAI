@@ -12,7 +12,8 @@
         "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
         "build:prod": "cd ng && ng build -c production --output-hashing none && node ../scripts/postBuild.js",
         "express:dev": "set ENV=development&& npx nodemon express/app.js",
-        "express:prod": "set ENV=production&& node express/app.js"
+        "express:prod": "set ENV=production&& node express/app.js",
+        "express:dev:forever": "set ENV=development&& forever start express/config/forever.json"
     },
     "dependencies": {
         "@angular/animations": "^15.0.0",
@@ -35,6 +36,7 @@
         "decimal.js": "^10.4.3",
         "express": "^4.17.1",
         "firebase-admin": "^11.5.0",
+        "forever": "^4.0.3",
         "fs-extra": "^11.1.1",
         "multer": "^1.4.5-lts.1",
         "ngx-masonry": "^14.0.1",
@@ -61,7 +63,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer, cloudinary are for express app",
+        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer, cloudinary, forever are for express app",
         "1": "devDependencies dotenv and nodemon, body-parser, fs-extra are for express app"
     }
 }
