@@ -23,7 +23,8 @@ import {
   ProductResponse,
   ProductType,
   ProductTypePrint,
-  ProductFilters
+  ProductFilters,
+  ProductUploadResponse
 } from '@app/models';
 
 import {
@@ -245,10 +246,11 @@ export class FirebaseService {
   }
 
   // update product with missing fields after creation
-  async updateProductAfterAdd(productId: string, imgPath: string): Promise<void> {
+  async updateProductAfterAdd(productId: string, imgPaths: ProductUploadResponse): Promise<void> {
     return this._db.collection('Products/Prints/All').doc(productId).ref.update({
       id: productId,
-      imgPath
+      watermarkImgPath: imgPaths.watermarkImgPath,
+      originalImgPath: imgPaths.originalImgPath
     });
   }
 

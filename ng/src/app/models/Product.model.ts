@@ -8,8 +8,8 @@ export interface ProductResponse {
   price: number;
   discount: number;
   description: string;
-  // fileName: string; replaced by imgPath
-  imgPath: string;
+  watermarkImgPath: string;
+  originalImgPath: string;
   imgAlt: string; // TODO: remove this (description holds it)
   likes: number;
   isActive: boolean;
@@ -174,7 +174,8 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   description: string;
   price: number;
   discount: number;
-  imgPath: string;
+  watermarkImgPath: string;
+  originalImgPath: string;
   imgAlt: string;
   // TODO: type
   likes: number;
@@ -194,7 +195,8 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.description = product.description;
     this.price = product.price;
     this.discount = product.discount;
-    this.imgPath = product.imgPath;
+    this.watermarkImgPath = product.watermarkImgPath;
+    this.originalImgPath = product.originalImgPath;
     this.imgAlt = product.imgAlt;
     this.likes = product.likes;
     this.isActive = product.isActive;
@@ -209,13 +211,14 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   }
 
   // get original object to store in db (remove all client side properties)
+  // TODO: unused??
   static getOriginalObject(product: ProductMapper<ProductResponse>): ProductResponse {
     // NOTE: be aware of the depth
     const productCopy = JSON.parse(JSON.stringify(product))
     delete productCopy.spinners;
     delete productCopy.isInCart;
     delete productCopy.metadataIconMap;
-    delete productCopy.imgPath;
+    delete productCopy.watermarkImgPath;
     return productCopy;
   }
 
@@ -274,3 +277,8 @@ interface MetadataIcon {
 }
 
 export interface MetadataIconMap extends Map<string, MetadataIcon> {}
+
+export interface ProductUploadResponse {
+  watermarkImgPath: string;
+  originalImgPath: string;
+}

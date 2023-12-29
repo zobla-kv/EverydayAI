@@ -55,7 +55,7 @@ router.post('/upload-file', multer().single('image'), cloudinaryService.upload, 
   if (res.error) {
     return res.status(res.error['http_code']).json(res.error.message);
   }
-  res.status(200).json({ imgPath: res.imgPath });
+  res.status(200).json({ imgPaths: res.imgPaths });
 })
 
 router.put('/products/ingest/:id?', elasticService.ingest, (req, res) => {

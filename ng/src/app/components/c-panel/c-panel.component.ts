@@ -261,9 +261,9 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // set new name
       formData.append('image', productImgFile, fileName);
 
-      const imgPath = await this._httpService.uploadFile(formData);
+      const imgPaths = await this._httpService.uploadFile(formData);
 
-      await this._firebaseService.updateProductAfterAdd(productId, imgPath);
+      await this._firebaseService.updateProductAfterAdd(productId, imgPaths);
 
       await this._httpService.addProductToElasticSearch(productId);
 
@@ -274,7 +274,12 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     })
     .catch(err => {
       // err.messsage only exists for cloudinary err, not firebase
-      this._toast.open(err.cloudinary ? err.cloudinary : ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type, { duration: 4000 });
+      this._toast.open(err.cloudinary ?
+        err.cloudinary :
+        err.elastic ?
+        'Elastic: ' + err.elastic :
+        ToastConstants.MESSAGES.SOMETHING_WENT_WRONG,
+      ToastConstants.TYPE.ERROR.type, { duration: 4000 });
       this._firebaseService.removeProduct(this.productId);
     })
     .finally(() => {
@@ -343,7 +348,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     return {
       // set later
       id: '',
-      imgPath: '',
+      watermarkImgPath: '',
+      originalImgPath: '',
       //
       creationDate: Timestamp.fromDate(new Date()),
       title: formData.title,

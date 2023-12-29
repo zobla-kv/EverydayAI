@@ -15,7 +15,8 @@ import {
   Email,
   PaymentObject,
   ProductResponse,
-  ProductType
+  ProductType,
+  ProductUploadResponse
 } from '@app/models';
 
 @Injectable({
@@ -86,14 +87,14 @@ export class HttpService {
   }
 
   // upload file to server
-  uploadFile(file: FormData): Promise<string> {
+  uploadFile(file: FormData): Promise<ProductUploadResponse> {
     return new Promise((resolve, reject) => {
       this._http
       .post<any>(`${environment.API_HOST}/api/upload-file`, file)
       .pipe(
         // TODO: consider adding first() everywhere
         first(),
-        map(res => resolve(res.imgPath)),
+        map(res => resolve(res.imgPaths)),
         catchError(async err => {
           err.cloudinary = err.error;
           reject(err);
@@ -137,7 +138,10 @@ export class HttpService {
       .pipe(
         first(),
         map(res => resolve()),
-        catchError(async err => reject(err))
+        catchError(async err => {
+          err.elastic = err.error;
+          reject(err);
+        })
       )
       .subscribe();
     })

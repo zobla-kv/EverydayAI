@@ -52,6 +52,7 @@ export class ToastConstants {
     PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.',
     PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
     PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load product details.',
+    PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load products. Please try again.',
     SEARCH_INPUT_VALIDATION_ERROR: 'Use alphanumeric characters only.'
   }
 

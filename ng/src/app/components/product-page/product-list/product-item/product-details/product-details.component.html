@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12 col-md-8 px-0">
         <!-- TODO: alt for seo -->
-        <img src="{{ product.imgPath }}" alt="" class="d-block mx-auto">
+        <img src="{{ product.watermarkImgPath }}" alt="" class="d-block mx-auto">
       </div>
 
       <div class="col-12 col-md-4 px-0 d-flex flex-column justify-content-center">
@@ -28,11 +28,11 @@
         <button class="btn-reverse dark-rounded-button mx-auto mt-3 mt-md-5">
           <mat-spinner *ngIf="product.spinners['cart' || 'download']; else action" diameter="25" strokeWidth="4"></mat-spinner>
           <ng-template #action>
-            <ng-container *ngIf="!user?.ownedItems?.includes(product.id) || (product.price > 0 && product.discount < 100); else download">
+            <ng-container *ngIf="!user?.ownedItems?.includes(product.id) && (product.price > 0 && product.discount < 100); else download">
               <span *ngIf="!product.isInCart" (click)="addToCart()"> Add <mat-icon class="mb-1" svgIcon="cart-add"></mat-icon> </span>
               <span *ngIf="product.isInCart" (click)="removeFromCart()"> Remove <mat-icon class="mb-1" svgIcon="cart-remove"></mat-icon> </span>
             </ng-container>
-            <ng-template #download >
+            <ng-template #download>
               <span (click)="handleDownload()"> Download <mat-icon>download</mat-icon> </span>
             </ng-template>
           </ng-template>

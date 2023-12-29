@@ -204,7 +204,7 @@
                     <div class="product-item" #productItem>
                       <div class="position-relative mx-auto fit-content">
                         <mat-icon *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="if-in-cart-icon">shopping_cart</mat-icon>
-                        <img src="{{ product.imgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
+                        <img src="{{ product.watermarkImgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
                       </div>
                       <h3 class="product-title">{{ product.title }}</h3>
                       <p>{{ product.metadata['resolution'] }}</p>

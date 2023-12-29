@@ -63,7 +63,7 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     // TODO: this solves 404 issue with items not displayed, displaying them but without animation
-    setTimeout(() => this.disableAnimation = true, 2000);
+    setTimeout(() => this.disableAnimation = true, 3000);
     this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
     this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
       if (this.actions.includes(ProductActions.LIKE)) {
@@ -133,3 +133,4 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 }
+

@@ -246,7 +246,7 @@ loadScript(url: string) {
   */
   setProduct404Image(product: ProductResponse): void {
     // TODO: replace src
-    product.imgPath = '../../assets/images/img/cesar-millan.png';
+    product.watermarkImgPath = '../../assets/images/img/cesar-millan.png';
   }
 
 /**

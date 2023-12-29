@@ -9,15 +9,38 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// upload image to cloudinary
+// where are images stored
+const imageFolder = 'hod' + '/' + process.env.NODE_ENV.toLowerCase()[0];
+// TODO: replace with watermarked overlay image (required syntax - hod:d:404-news.png)
+// upload watermark manually before everything else
+const productFallbackImage = 'hod' + ':' + process.env.NODE_ENV.toLowerCase()[0] + ':' + 'qiqnylnovazyoatqjivc';
+
+// upload image to
+// NOTE: upload goes through if other things fail (firebase or elastic)
 async function upload(req, res, next) {
   Readable.from(req.file.buffer).pipe(
     cloudinary.v2.uploader.upload_stream({
-      folder: 'hod' + '/' + process.env.NODE_ENV.toLowerCase()[0],
-      public_id: req.file.originalname,
+      folder: imageFolder,
       resource_type: 'image',
       allowed_formats: ['jpg', 'png', 'svg'],
-      type: 'private'
+      type: 'private',
+      eager: [
+        {
+          fetch_format: 'auto',
+          // below is applied to overlay image
+          flags: ['layer_apply', 'tiled'],
+          angle: 30,
+          width: 0.4,
+          height: 0.3,
+          crop: 'lpad',
+          opacity: 5,
+          brightness: 200,
+          overlay: {
+            // TODO: update when new watermark is created
+            public_id: productFallbackImage
+          }
+        },
+      ]
     }, (error, response) => {
       if (error) {
         res.error = error;
@@ -26,7 +49,13 @@ async function upload(req, res, next) {
       }
       // NOTE: cloudinary response contains image metadata (width, height, type, size)
       // res.cloudinary = response; // unused - this because calculated on FE
-      res.imgPath = response.secure_url;
+      console.log('response: ', response) // response.eager contains img with fallback
+
+      res.imgPaths = {
+        watermarkImgPath: response.eager[0].secure_url,
+        originalImgPath: response.secure_url
+      };
+
       next();
     })
   );
@@ -65,7 +94,7 @@ async function get(req, res, next) {
     }
   }
 
-  const url = product.imgPath;
+  const url = product.originalImgPath;
   const fileName = product.title + '.' + product.metadata.extension;
 
   res.setHeader('Content-Type', 'application/octet-stream');

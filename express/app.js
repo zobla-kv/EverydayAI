@@ -23,7 +23,7 @@ const cors = require('./cors');
 const routes = require('./routes');
 
 // app settings
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname + '/public')));
 
 app.use('/api', cors, express.json(), routes);
 

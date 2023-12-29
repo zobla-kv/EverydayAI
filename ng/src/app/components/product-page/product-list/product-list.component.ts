@@ -1,6 +1,8 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription, first } from 'rxjs'
 import { NgxMasonryComponent } from 'ngx-masonry';
+
+import * as ImagesLoaded from 'imagesloaded';
 
 import {
   CustomUser,
@@ -8,12 +10,14 @@ import {
   ProductListConfig,
   ProductMapper,
   ProductResponse,
-  ProductTypePrint
+  ProductTypePrint,
+  ToastConstants
 } from '@app/models';
 
 import {
   AuthService,
-  FirebaseService
+  FirebaseService,
+  ToastService
 } from '@app/services';
 
 @Component({
@@ -21,8 +25,9 @@ import {
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
-export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
-
+export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
+  // list wrapper
+  @ViewChild('listWrapper') listWrapper: ElementRef;
   // masonry ref
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
 
@@ -60,20 +65,64 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
   // filter no results message
   showFilterNoResults = false;
 
+  // imgLoaded plugin
+  imgLoaded: ImagesLoaded.ImagesLoaded;
+
+  // img of products that didnt load
+  failedImgLoadList: string[] = [];
+
   constructor(
     private _authService: AuthService,
-    private _firebaseService: FirebaseService
+    private _firebaseService: FirebaseService,
+    private _toast: ToastService
   ) {}
 
   // TODO: error handling
   ngOnInit(): void {
     this._firebaseService.isProductListFetching$.next(true);
-    this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
-    this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
-      this.handleProductsResponse(products);
-      this.enableInfiniteScroll = true;
-    })
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
+      this.user = user;
+      // must be after user is loaded
+      this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
+        this.handleProductsResponse(products);
+        this.enableInfiniteScroll = true;
+      })
+    });
   }
+
+  // handle product images loaded
+  handleImagesLoaded() {
+    this.failedImgLoadList = [];
+    this.imgLoaded = ImagesLoaded(this.listWrapper.nativeElement);
+
+    // all images loaded regardless of status
+    this.imgLoaded.on('always', (instance) => {
+      // remove those that didn't load
+      this.productList = this.productList.filter(product => !this.failedImgLoadList.includes(product.watermarkImgPath));
+      // 2 timeouts prevent spinner hide lag
+      setTimeout(() => this.showSpinner = false, 400);
+      setTimeout(() => {
+        this.showProducts();
+        this._firebaseService.isProductListFetching$.next(false);
+      }, 500);
+    });
+
+    // singe image loaded
+    this.imgLoaded.on('progress', (instance, image) => {
+      const isLoaded = image?.isLoaded ? true : false;
+      if (!isLoaded) {
+        this.failedImgLoadList.push(image?.img.src as string);
+      }
+
+      // if all fail to load
+      if (this.failedImgLoadList.length === this.paginationSize) {
+        this._toast.open(ToastConstants.MESSAGES.PRODUCT_FAILED_TO_LOAD_PAGINATION, ToastConstants.TYPE.ERROR.type);
+        this.enableInfiniteScroll = false;
+      }
+    });
+
+  }
+
 
   // on input (filter) change
   ngOnChanges(changes: SimpleChanges): void {
@@ -117,15 +166,16 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
     }
 
     // TODO: bug, initial set of images displayed before being fully rendered (big size?) - not a problem with later ones
-
-    this.showSpinner = false;
     this.productList = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
+
+    // wait for products to be in DOM
     setTimeout(() => {
-      this.showProducts();
-      this._firebaseService.isProductListFetching$.next(false);
-    }, 300)
+      this.handleImagesLoaded();
+    }, 500);
   }
 
+  // trigger infinite scroll load
+  // TODO: make it use handleProductsResponse
   loadMore() {
     // prevent multiple calls on rapid scroll up and down
     if (!this.enableInfiniteScroll || this.showPaginationLoadingSpinner || this.allProductsLoaded || this.showFilterNoResults) {
@@ -140,19 +190,20 @@ export class ProductListComponent implements OnInit, OnChanges ,OnDestroy {
         if (products.length === 0 || products.length < this.paginationSize) {
           this.allProductsLoaded = true;
         }
+
         const mapped = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
-        this.productList.push(...mapped)
+        this.productList.push(...mapped);
         this.showPaginationLoadingSpinner = false;
         setTimeout(() => {
-          this.showProducts();
-          this._firebaseService.isProductListFetching$.next(false);
-        }, 100)
+          this.handleImagesLoaded();
+        }, 500);
       }, 500);
     })
   }
 
   // animate show
   showProducts() {
+    // it sets on previous items on pagination again, can be improved but no issues atm.
     this.masonry.masonryInstance.items.forEach((item: any) => {
       const element: HTMLElement = item.element;
       const productItem = element.children[0].children[0];
