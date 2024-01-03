@@ -26,8 +26,6 @@ async function upload(req, res, next) {
       type: 'private',
       eager: [
         {
-          fetch_format: 'auto',
-          // below is applied to overlay image
           flags: ['layer_apply', 'tiled'],
           angle: 30,
           width: 0.4,
