@@ -214,7 +214,7 @@
                           <div *ngIf="product.discount > 0">
                             <div *ngIf="product.discount < 100" class="d-flex justify-content-center">
                               <span class="product-old-price reposition flex-center gap-1">
-                                {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                                {{ product.price | number : '1.2-2' }} <mat-icon svgIcon="dollar"></mat-icon>
                               </span>
                               <span class="product-discounted-price reposition flex-center gap-1">
                                 {{ utilService.getProductPrice(product) }} <mat-icon svgIcon="dollar"></mat-icon>
@@ -222,14 +222,14 @@
                             </div>
                             <div *ngIf="product.discount === 100" class="d-flex justify-content-center">
                               <span class="product-old-price flex-center gap-1">
-                                {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                                {{ product.price | number : '1.2-2' }} <mat-icon svgIcon="dollar"></mat-icon>
                               </span>
                               <span>Free</span>
                             </div>
                           </div>
                           <div *ngIf="product.discount === 0">
                             <span *ngIf="product.price !== 0" class="flex-center gap-1">
-                              {{ product.price }} <mat-icon svgIcon="dollar"></mat-icon>
+                              {{ product.price | number : '1.2-2' }} <mat-icon svgIcon="dollar"></mat-icon>
                             </span>
                             <span *ngIf="product.price === 0">Free</span>
                           </div>

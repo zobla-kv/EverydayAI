@@ -33,16 +33,16 @@
           <div *ngIf="product.discount > 0">
             <div *ngIf="product.discount < 100">
               <!-- // TODO: for this implement pipe -->
-              <span class="product-old-price">{{ product.price }} $</span>
+              <span class="product-old-price">{{ product.price | number : '1.2-2' }} $</span>
               <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
             </div>
             <div *ngIf="product.discount === 100">
-              <span class="product-old-price">{{ product.price }} $</span>
+              <span class="product-old-price">{{ product.price | number : '1.2-2' }} $</span>
               <span class="lh-1 mt-2">Free on discount</span>
             </div>
           </div>
           <div *ngIf="product.discount === 0">
-            <span *ngIf="product.price !== 0">{{ product.price }} $</span>
+            <span *ngIf="product.price !== 0">{{ product.price | number : '1.2-2' }} $</span>
             <span *ngIf="product.price === 0">Free</span>
           </div>
         </td>
