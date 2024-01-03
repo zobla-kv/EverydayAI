@@ -53,6 +53,8 @@ export class ToastConstants {
     PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
     PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load product details.',
     PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load products. Please try again.',
+    PRODUCT_DOWNLOAD_FAILED: 'Failed to start a download. Please try again.',
+    PRODUCT_NOT_FOUND: 'Product not found.',
     SEARCH_INPUT_VALIDATION_ERROR: 'Use alphanumeric characters only.'
   }
 

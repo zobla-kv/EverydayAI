@@ -94,27 +94,41 @@ export class ProductService implements OnDestroy {
     product.spinners[ProductActions.CART] = true;
     product.spinners[ProductActions.DOWNLOAD] = true;
 
-    // if logged in and item not owned, add to owned and remove from cart if it is there
-    if (this.user && !this.user.ownedItems.includes(product.id)) {
-      this._firebaseService.addProductToUser(product.id, this.user)
-      .subscribe(res => {
-        // TODO: currently the message 'started downloading' depends on update user, what if endpoint fails?
-        // downloads listener on a.click?
-        this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 6000 });
-        this._authService.updateUser();
-      });
+    const downloadUrl = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
+
+    try {
+      // test url before download (not the greatest way because call is triggered twice)
+      const isWorking = (await fetch(downloadUrl)).ok;
+
+      if (!isWorking) {
+        throw new Error();
+      }
+
+      const a = document.createElement('a');
+      a.href = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // if logged in and item not owned, add to owned and remove from cart if it is there
+      if (this.user && !this.user.ownedItems.includes(product.id)) {
+        this._firebaseService.addProductToUser(product.id, this.user)
+        .subscribe(res => {
+          this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 6000 });
+          this._authService.updateUser();
+        });
+      }
+
     }
 
-    const a = document.createElement('a');
-    a.href = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    catch (err) {
+      this._toast.open(ToastConstants.MESSAGES.PRODUCT_DOWNLOAD_FAILED, ToastConstants.TYPE.ERROR.type, { duration: 3000 });
+    }
 
-    setTimeout(() => {
+    finally {
       product.spinners[ProductActions.CART] = false;
       product.spinners[ProductActions.DOWNLOAD] = false;
-    }, 1500);
+    }
 
   }
 

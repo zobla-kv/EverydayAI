@@ -36,7 +36,6 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   onPopState(event: any) {
     this.isClosedByBackButton = true;
     this._modalService.close();
-    this._productService.productDetailsClosed$.next();
   }
 
   // product
@@ -92,11 +91,9 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
           console.log('good response: ', products);
           // invalid id check
           if (products.length === 0) {
-            // TODO: not good, on copy-paste it goes back to google
-            // TODO: try removing load animation on products page / details because of copy paste
-            // TODO: also cant see error becuase of it
             // TODO: error handling (route protection) can be done using resolver
-            this.handleClose();
+            this._toast.open(ToastConstants.MESSAGES.PRODUCT_NOT_FOUND, ToastConstants.TYPE.ERROR.type);
+            this._router.navigate(['products']);
             return;
           }
           // fetch is triggered after user only because of mapper
