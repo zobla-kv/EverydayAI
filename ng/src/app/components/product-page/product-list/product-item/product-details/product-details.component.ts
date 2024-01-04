@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 
-import { Subscription, catchError, first, throwError } from 'rxjs';
+import { catchError, first, throwError } from 'rxjs';
 
 import {
   CustomUser,
@@ -27,7 +27,7 @@ import {
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   // NOTE: Using id for route instead of name because unique name conflict requires additional implementation
 
@@ -50,9 +50,6 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   // is logged in
   user: CustomUser | null;
 
-  // user sub
-  userStateSub$: Subscription;
-
   constructor(
     private _modalService: ModalService,
     private _router: Router,
@@ -70,7 +67,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit() {
-    this.userStateSub$ = this._authService.userState$.subscribe(user => {
+    this._authService.userState$.pipe(first()).subscribe(user => {
       user && (this.user = user);
 
       // if opened on load
@@ -148,9 +145,5 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
   // keep order of keyvalue pipe (not DRY)
   keepOrder() { return 0; }
-
-  ngOnDestroy() {
-    this.userStateSub$ && this.userStateSub$.unsubscribe();
-  }
 
 }

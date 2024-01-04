@@ -71,6 +71,9 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // img of products that didnt load
   failedImgLoadList: string[] = [];
 
+  // only fetch products on first sub
+  isFirstSub = true;
+
   constructor(
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
@@ -82,11 +85,15 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     this._firebaseService.isProductListFetching$.next(true);
     this.userStateSub$ = this._authService.userState$.subscribe(user => {
       this.user = user;
-      // must be after user is loaded
-      this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
-        this.handleProductsResponse(products);
-        this.enableInfiniteScroll = true;
-      })
+
+      if (this.isFirstSub) {
+        // must be after user is loaded
+        this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
+          this.handleProductsResponse(products);
+          this.enableInfiniteScroll = true;
+          this.isFirstSub = false;
+        })
+      }
     });
   }
 
@@ -152,7 +159,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
   // handle products fetch
   handleProductsResponse(products: ProductResponse[]) {
-    console.log('response: ', products)
+    console.log('response: ', products);
 
     if (products.length === 0) {
       this.showSpinner = false;
