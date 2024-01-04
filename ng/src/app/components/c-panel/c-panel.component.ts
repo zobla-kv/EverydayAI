@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { MatPaginator } from '@angular/material/paginator';
-
-import { catchError, debounceTime, distinctUntilChanged, filter, first, fromEvent, map, tap } from 'rxjs';
-
+import { debounceTime, distinctUntilChanged, filter, first, fromEvent, tap } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
 
 import {
@@ -155,7 +154,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // server-side search
     fromEvent(this.searchInput.nativeElement,'keyup')
     .pipe(
         filter(Boolean),
@@ -267,7 +265,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
       await this._httpService.addProductToElasticSearch(productId);
 
-      this._toast.open(ToastConstants.MESSAGES.NEW_PRODUCT_ADDED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.open(ToastConstants.MESSAGES.CPANEL_PRODUCT_ADDED, ToastConstants.TYPE.SUCCESS.type);
 
       // update list
       this.updateProductList();
@@ -275,7 +273,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     .catch(err => {
       // err.messsage only exists for cloudinary err, not firebase
       this._toast.open(err.cloudinary ?
-        err.cloudinary :
+        'Cloudinary: ' + err.cloudinary :
         err.elastic ?
         'Elastic: ' + err.elastic :
         ToastConstants.MESSAGES.SOMETHING_WENT_WRONG,
@@ -329,7 +327,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this._firebaseService.updateProduct(this.formEditProduct.getRawValue())
     .then(() => {
       this.updateProductList();
-      this._toast.open(ToastConstants.MESSAGES.PRODUCT_UPDATED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.open(ToastConstants.MESSAGES.CPANEL_PRODUCT_UPDATED, ToastConstants.TYPE.SUCCESS.type);
     })
     .catch(err => {
       this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
@@ -354,7 +352,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       creationDate: Timestamp.fromDate(new Date()),
       title: formData.title,
       description: formData.description,
-      imgAlt: formData.title,
       price: Number(Number(formData.price).toFixed(2)),
       discount: Number(formData.discount),
       likes: Number(formData.likes),
@@ -461,7 +458,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   //     // remove image from server, catch will not catch this but don't care
   //     this._httpService.deleteItem(target.fileName).pipe(first()).subscribe();
   //     this.updateProductList();
-  //     this._toast.open(ToastConstants.MESSAGES.PRODUCT_REMOVED_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
+  //     this._toast.open(ToastConstants.MESSAGES.CPANEL_PRODUCT_REMOVED, ToastConstants.TYPE.SUCCESS.type);
   //   })
   //   .catch(err => this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type))
   //   .finally(() => this._modalService.actionComplete$.next(true))

@@ -6,7 +6,6 @@ import {
   UtilService
 } from '@app/services';
 
-// TODO: clear unused variables
 /**
  * Observe visibility directive
  * run animation once element is in view
@@ -81,7 +80,6 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   ngAfterViewInit() {
     this._intersect$.subscribe(() => {
       const target = this._element.nativeElement;
-      // console.log('element visible: ', target);
       this.animation.play();
       this.intersection.emit(this._element.nativeElement);
       // cancel after firing once

@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+
+import { Observable, catchError, first, map } from 'rxjs';
 
 import { environment } from '@app/environment';
-
-import { Observable, catchError, concatMap, first, map, mergeMap, of, timeout } from 'rxjs';
 
 import {
   FirebaseService,
@@ -27,7 +27,6 @@ export class HttpService {
   constructor(
     private _http: HttpClient,
     private _injector: Injector,
-    private _utilService: UtilService
   ) { }
 
   // TODO: Improper error handling, empty arrays returned on error

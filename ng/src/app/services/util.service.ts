@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReplaySubject, Subject } from 'rxjs';
 
@@ -10,13 +10,7 @@ import { Decimal } from 'decimal.js';
 import {
   CustomUser,
   ProductResponse,
-  ToastConstants
 } from '@app/models';
-
-import {
-  ToastService
-} from './toast.service';
-
 
 /**
  * Unrelated utility methods.
@@ -52,7 +46,6 @@ export class UtilService {
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
-    private _toast: ToastService,
     private _bo: BreakpointObserver
   ) {
 

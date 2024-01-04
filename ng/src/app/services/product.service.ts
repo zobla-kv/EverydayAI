@@ -76,9 +76,9 @@ export class ProductService implements OnDestroy {
     await this._authService.updateUser();
     product.isInCart = !product.isInCart;
     if (product.isInCart) {
-      this._toast.open(ToastConstants.MESSAGES.ADDED_TO_CART, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.open(ToastConstants.MESSAGES.CART_PRODUCT_ADDED, ToastConstants.TYPE.SUCCESS.type);
     } else {
-      this._toast.open(ToastConstants.MESSAGES.REMOVED_FROM_CART, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.open(ToastConstants.MESSAGES.CART_PRODUCT_REMOVED, ToastConstants.TYPE.SUCCESS.type);
     }
     product.spinners[ProductActions.CART] = false;
   }

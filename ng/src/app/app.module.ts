@@ -11,7 +11,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -100,7 +99,6 @@ import {
     MatSnackBarModule,
     MatBadgeModule,
     MatTooltipModule,
-    MatTabsModule,
     MatTableModule,
     MatDialogModule,
 

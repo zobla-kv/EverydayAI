@@ -35,21 +35,29 @@ export class ToastConstants {
 
   static TYPE = {
     SUCCESS: { type: 'success', cssClass: 'snackbar-success' },
-    ERROR: { type: 'error', cssClass: 'snackbar-error' }
+    ERROR:   { type: 'error',   cssClass: 'snackbar-error'   }
   }
 
   static MESSAGES = {
+    // general
     SOMETHING_WENT_WRONG: 'Something went wrong. Please try again.',
-    ADDED_TO_CART: 'Product added to cart succesfuly.',
-    REMOVED_FROM_CART: 'Product removed from cart succesfuly.',
-    CANNOT_OPEN_PAGE: 'Failed to open page.',
+    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.',
+
+    // cart
+    CART_PRODUCT_ADDED: 'Product added to cart succesfuly.',
+    CART_PRODUCT_REMOVED: 'Product removed from cart succesfuly.',
+
+    // payment
     PAYMENT_SUCCESSFUL: 'Payment sucessful. Enjoy your new prints',
     // TODO: add more descriptive message (wrong cvv or something)
     PAYMENT_FAILED: 'Something went wrong with payment. Please try again',
-    NEW_PRODUCT_ADDED_SUCCESSFUL: 'New product added successfuly',
-    PRODUCT_UPDATED_SUCCESSFUL: 'Product updated successfuly',
-    PRODUCT_REMOVED_SUCCESSFUL: 'Product removed successfuly',
-    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.',
+
+    // control panel
+    CPANEL_PRODUCT_ADDED: 'New product added successfuly',
+    CPANEL_PRODUCT_UPDATED: 'Product updated successfuly',
+    CPANEL_PRODUCT_REMOVED: 'Product removed successfuly',
+
+    // product list
     PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
     PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load product details.',
     PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load products. Please try again.',

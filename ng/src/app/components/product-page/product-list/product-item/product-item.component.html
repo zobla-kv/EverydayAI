@@ -8,7 +8,7 @@
   <div *ngIf="product.isInCart" class="in-cart-icon-wrapper flex-center">
     <mat-icon class="in-cart-icon">shopping_cart</mat-icon>
   </div>
-  <img src="{{ product.watermarkImgPath }}" alt="{{ product.imgAlt }}" class="pe-none">
+  <img src="{{ product.watermarkImgPath }}" alt="" class="pe-none">
   <p class="product-title">{{ product.title }}</p>
   <ul>
     <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->

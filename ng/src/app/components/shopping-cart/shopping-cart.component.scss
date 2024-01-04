@@ -13,7 +13,7 @@
       .mat-mdc-paginator {
         color: white;
         font-weight: 500;
-        &::ng-deep.mat-mdc-paginator-range-label { color: $white-text; }
+        &::ng-deep.mat-mdc-paginator-range-label { color: white; }
         &::ng-deep button .mat-mdc-paginator-icon  { fill: white; }
       }
 

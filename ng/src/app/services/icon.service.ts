@@ -18,20 +18,17 @@ export class IconService {
     { name: 'instagram' },
     { name: 'dog-head'},
     { name: 'networking'},
-    { name: 'planet' },
-    { name: 'book' },
-    { name: 'dog-happy' },
+    { name: 'planet' }, // can be removed after hp refactor
+    { name: 'book' }, // same
+    { name: 'dog-happy' }, // same
     { name: 'dollar' },
     { name: 'cart-add' },
     { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
-    { name: 'art' },
-    { name: 'graphic-designer' },
-    // unused 2 below
-    { name: 'courage' },
-    { name: 'open-mind' },
+    { name: 'art' }, // same
+    { name: 'graphic-designer' }, // same
     { name: 'visa' },
-    { name: 'american-express' },
+    { name: 'american-express' }, // recheck during payment
     { name: 'image-resolution' },
     { name: 'file-type-img' },
     { name: 'tier-classic' },

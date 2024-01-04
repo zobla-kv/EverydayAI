@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Location } from '@angular/common';
 import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
 
 import { first } from 'rxjs';
@@ -50,7 +49,6 @@ export class AppComponent {
     private _authService: AuthService,
     private _utilService: UtilService,
     private _firebaseService: FirebaseService,
-    private _location: Location
   ) {
 
     console.log('test for new build')

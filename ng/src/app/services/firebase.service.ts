@@ -1,17 +1,15 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, query, and, increment, collection, where, getDocs, Timestamp, or, Firestore, QueryFieldFilterConstraint, QueryCompositeFilterConstraint, DocumentData, orderBy, OrderByDirection } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, map, first, mergeMap, Subject, throwError } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject } from 'rxjs';
 
-import { Decimal } from 'decimal.js';
 
 import {
   CustomUser,
@@ -21,7 +19,6 @@ import {
   EmailType,
   Labels,
   ProductResponse,
-  ProductType,
   ProductTypePrint,
   ProductFilters,
   ProductUploadResponse

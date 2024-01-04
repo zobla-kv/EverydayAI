@@ -1,4 +1,3 @@
-// TODO: remove User class because it is unused
 import { Timestamp } from '@angular/fire/firestore';
 
 import {

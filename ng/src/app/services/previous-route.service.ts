@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, RoutesRecognized } from '@angular/router';
+import { Router, RoutesRecognized } from '@angular/router';
 import { filter, pairwise } from 'rxjs/operators';
 
 // service for accessing previous and current route
@@ -18,7 +18,7 @@ export class PreviousRouteService {
       this._previousUrl = events[0].urlAfterRedirects;
     });
    }
-   
+
    public getPreviousUrl() {
     return this._previousUrl;
    }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject, Subject, first, skip } from 'rxjs';
 
 import { User } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ReplaySubject, first, skip } from 'rxjs';
 
 import {
   CustomUser,

@@ -1,26 +1,22 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription, catchError, debounceTime, finalize, first } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 
 import {
-  ToastConstants,
   CustomUser,
   ProductMapper,
   ProductTypePrint,
   ProductListConfig,
   ProductType,
-  ProductResponse,
   ShoppingCart
 } from '@app/models';
 
 import {
   AuthService,
-  FirebaseService,
   HttpService,
   PaymentService,
   ProductService,
-  ToastService,
   UtilService
 } from '@app/services';
 
@@ -105,8 +101,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AuthService,
-    private _toast: ToastService,
-    private _firebaseService: FirebaseService,
     private _paymentService: PaymentService,
     private _httpService: HttpService,
     private _productService: ProductService,

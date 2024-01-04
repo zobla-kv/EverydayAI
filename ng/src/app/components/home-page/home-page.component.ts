@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { Observable, Subscription, first, fromEvent, interval, merge, throttle } from 'rxjs';
+import { Observable, Subscription, first } from 'rxjs';
 
 import {
   CustomUser,
-  ProductActions,
   ProductListConfig,
   ProductMapper,
-  ProductResponse,
   ProductType,
   ProductTypePrint
 } from '@app/models';

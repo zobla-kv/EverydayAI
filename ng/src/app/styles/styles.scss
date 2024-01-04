@@ -16,7 +16,7 @@ html {
 
 body {
   background-color: $main-dark-bg-color;
-  color: $white-text;
+  color: white;
   box-sizing: border-box;
   // NOTE: this is only for preloader to have it so it wouldn't appear after (causes page flick)
   overflow-y: scroll;
@@ -125,7 +125,6 @@ h1, h2, h3, h4, h5 { font-family: 'DM Serif Display'; }
 
 /* backgrounds */
 .main-orange-bg { background-color: $main-orange-bg-color; }
-.light-orange-bg { background-color: $light-orange-bg-color; }
 .main-dark-bg { background-color: $main-dark-bg-color; }
 .gradient-bg { background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%); }
 .hr-color-orange { border: 1px solid $main-orange-bg-color; }
@@ -134,7 +133,6 @@ hr.orange-line { border: 1px solid $main-orange-bg-color; opacity: 1; }
 /* text */
 .dark-text { color: $dark-text !important; }
 .orange-text { color: $orange-text !important; }
-.gray-text { color: $gray-text !important; }
 
 .custom-border {
   &::before {
@@ -182,7 +180,7 @@ hr.orange-line { border: 1px solid $main-orange-bg-color; opacity: 1; }
 }
 .btn-reverse:active {
   background-color: $main-dark-bg-color !important;
-  color: $white-text !important;
+  color: white !important;
 }
 
 .btn,
@@ -350,9 +348,6 @@ form {
   }
 }
 
-/* images */
-.main-logo { background-image: $main-logo; }
-
 /* material */
 *:has(> mat-spinner) { user-select: none !important; cursor: default !important; }
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
@@ -451,65 +446,64 @@ form {
   color: $main-dark-bg-color;
 }
 
-.mat-mdc-tab-group {
+// TODO: unused in new list
+// .mat-mdc-tab-group {
 
-  .mat-mdc-tab {
-    $tab-change-animation-duration: 0.3s;
+//   .mat-mdc-tab {
+//     $tab-change-animation-duration: 0.3s;
 
-    flex: 1 !important;
-    top: 0;
-    padding: 0 !important;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border: 1px solid $main-orange-bg-color;
-    overflow: hidden;
-    // max-width: 300px;
-    // margin: auto;
+//     flex: 1 !important;
+//     top: 0;
+//     padding: 0 !important;
+//     border-top-left-radius: 8px;
+//     border-top-right-radius: 8px;
+//     border: 1px solid $main-orange-bg-color;
+//     overflow: hidden;
 
-    &:first-child { margin-left: 20px; }
-    &:last-child { margin-right: 20px; }
+//     &:first-child { margin-left: 20px; }
+//     &:last-child { margin-right: 20px; }
 
-    .mdc-tab-indicator .mdc-tab-indicator__content { display: none; }
-    .mdc-tab__content { width: 100% }
-    .mdc-tab__text-label {
-      color: $orange-text;
-      transition: $tab-change-animation-duration;
-      .mat-icon {
-        color: $orange-text;
-        transition: $tab-change-animation-duration;
-        margin-right: 0.5rem;
-      }
-      .active-tab-animation-filler {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 0;
-        background-color: $main-orange-bg-color;
-        transition: $tab-change-animation-duration;
-        z-index: -1;
-      }
-    }
-  }
+//     .mdc-tab-indicator .mdc-tab-indicator__content { display: none; }
+//     .mdc-tab__content { width: 100% }
+//     .mdc-tab__text-label {
+//       color: $orange-text;
+//       transition: $tab-change-animation-duration;
+//       .mat-icon {
+//         color: $orange-text;
+//         transition: $tab-change-animation-duration;
+//         margin-right: 0.5rem;
+//       }
+//       .active-tab-animation-filler {
+//         position: absolute;
+//         left: 0;
+//         bottom: 0;
+//         width: 100%;
+//         height: 0;
+//         background-color: $main-orange-bg-color;
+//         transition: $tab-change-animation-duration;
+//         z-index: -1;
+//       }
+//     }
+//   }
 
-  .mat-mdc-tab.mdc-tab--active {
-    .mdc-tab__text-label { color: $dark-text !important; }
-    .mat-icon { color: $dark-text; }
-    .active-tab-animation-filler {
-      height: 100%;
-    }
-  }
+//   .mat-mdc-tab.mdc-tab--active {
+//     .mdc-tab__text-label { color: $dark-text !important; }
+//     .mat-icon { color: $dark-text; }
+//     .active-tab-animation-filler {
+//       height: 100%;
+//     }
+//   }
 
-  .mat-mdc-tab-body-wrapper {
-    position: relative;
-    top: -2px;
-    border-top: 2px solid $main-orange-bg-color;
-    min-height: 700px;
-    border-radius: 20px;
+//   .mat-mdc-tab-body-wrapper {
+//     position: relative;
+//     top: -2px;
+//     border-top: 2px solid $main-orange-bg-color;
+//     min-height: 700px;
+//     border-radius: 20px;
 
-    .mat-mdc-tab-body-content { overflow: hidden; }
-  }
-}
+//     .mat-mdc-tab-body-content { overflow: hidden; }
+//   }
+// }
 
 /* modal */
 .mat-mdc-dialog-container {
@@ -586,7 +580,6 @@ form {
 @media only screen and (max-width: 768px) {
   .mdc-snackbar {
     margin: auto !important;
-    // top: 50px;
     top: 100px; // TODO: because of search introduction, check what is better with other actions later
     left: 50% !important;
     transform: translate(-50%, -50%) !important;

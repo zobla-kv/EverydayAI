@@ -10,7 +10,6 @@ export interface ProductResponse {
   description: string;
   watermarkImgPath: string;
   originalImgPath: string;
-  imgAlt: string; // TODO: remove this (description holds it)
   likes: number;
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
@@ -176,7 +175,6 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
   discount: number;
   watermarkImgPath: string;
   originalImgPath: string;
-  imgAlt: string;
   // TODO: type
   likes: number;
   isActive: boolean;
@@ -197,7 +195,6 @@ export class ProductMapper<T extends ProductResponse> implements ProductResponse
     this.discount = product.discount;
     this.watermarkImgPath = product.watermarkImgPath;
     this.originalImgPath = product.originalImgPath;
-    this.imgAlt = product.imgAlt;
     this.likes = product.likes;
     this.isActive = product.isActive;
     this.metadata = product.metadata;

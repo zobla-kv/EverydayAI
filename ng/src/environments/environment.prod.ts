@@ -1,7 +1,6 @@
 export const environment = {
   production: true,
   API_HOST: 'https://house-of-dogs-v2.onrender.com',
-  // API_HOST: 'http://localhost:3000',
   firebaseConfig: {
     apiKey: "AIzaSyBZnOLOHcmIgH8Dy_4E-zvED59SlYeGB34",
     authDomain: "house-of-dogs-production.firebaseapp.com",
