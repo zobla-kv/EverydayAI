@@ -41,7 +41,7 @@ async function generateEmailLink(email, type) {
 async function getPrice(items) {
   // TODO: !important remove conversion to number once product item ids become a string in db
   const tempItemIds = items.map(item => item.id)
-  return db.collection('Products/Prints/All').where('id', 'in', tempItemIds).get()
+  return db.collection('Products').where('id', 'in', tempItemIds).get()
   .then(products => {
     let price = new Decimal(0);
     products.docs.forEach(productDoc => {
@@ -101,14 +101,14 @@ async function getUserById(id) {
 
 // get product by id
 async function getProductById(id) {
-  return db.collection('Products/Prints/All').doc(id).get()
+  return db.collection('Products').doc(id).get()
   .then(doc => doc.data())
   .catch(err => null)
 }
 
 // get all products
 async function getAllProducts() {
-  return db.collection('Products/Prints/All').get()
+  return db.collection('Products').get()
   .then(res => {
     const products = res.docs.map(res => ({ ...res.data() }));
     return products;

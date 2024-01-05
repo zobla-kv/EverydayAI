@@ -38,6 +38,8 @@ const responseMessages: messageObject = {
   'User does not exist',
   [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]:
   'Wrong credentials',
+  [FirebaseConstants.LOGIN_INVALID_CREDENTIALS]:
+  'Wrong credentials',
   [FirebaseConstants.LOGIN_TOO_MANY_REQUESTS]:
   `Access to this account has been temporarily disabled due to many failed login attempts.
   You can immediately restore it by resetting your password or you can try again later.`,
@@ -66,24 +68,24 @@ export enum EmailType {
 // SCENARIOS THAT ARE TESTED WITH AUTH
 // description: is it working?
 
-/* scenarion 1: 
+/* scenarion 1:
 
   register with express OFF: OK
 
 */
-/* scenarion 2: 
+/* scenarion 2:
 
   register with express ON: OK
 
 */
-/* scenarion 3: 
+/* scenarion 3:
 
   register with existing user: OK
 
 */
 /* scenarion 4:
 
-  login with express OFF: N/A - Express not used for this 
+  login with express OFF: N/A - Express not used for this
 
 */
 /* scenarion 5:
@@ -91,42 +93,42 @@ export enum EmailType {
   login with wrong password or email: OK
 
 */
-/* scenarion 6: 
+/* scenarion 6:
 
   login with unverified email: OK
 
 */
-/* scenarion 7: 
+/* scenarion 7:
 
   email verification: OK
 
 */
-/* scenarion 8: 
+/* scenarion 8:
 
   login after email verification: OK
 
 */
-/* scenarion 8: 
+/* scenarion 8:
 
   reset password unexisting user: OK
 
 */
-/* scenarion 10: 
+/* scenarion 10:
 
   reset password express OFF: OK
 
 */
-/* scenarion 11: 
+/* scenarion 11:
 
   reset password express ON: OK (whole process)
 
 */
-/* scenarion 12: 
+/* scenarion 12:
 
   use already existing email verification code: OK
 
 */
-/* scenarion 13: 
+/* scenarion 13:
 
   use already existing password reset code: OK
 

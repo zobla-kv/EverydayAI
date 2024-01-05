@@ -20,6 +20,7 @@ export class FooterComponent implements AfterViewInit {
 
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
+    // TODO: kinda pointless, might add to bad peformance of product page because of scroll listener
     // check if user reached bottom of the page then show footer
     if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100) {
       !this.show && this.showFooter();
@@ -34,13 +35,13 @@ export class FooterComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    this._httpService.fetchNews().pipe(first()).subscribe(data => {
-      if (data.length === 0 || data.articles.length === 0) {
-        this.setDefaultNews();
-        return;
-      }
-      this.news = data.articles;
-    });
+    // this._httpService.fetchNews().pipe(first()).subscribe(data => {
+    //   if (data.length === 0 || data.articles.length === 0) {
+    //     this.setDefaultNews();
+    //     return;
+    //   }
+    //   this.news = data.articles;
+    // });
 
     this._utilService.loadScript('https://www.instagram.com/embed.js');
     this._utilService.loadScript('https://www.embedista.com/j/instagramfeed.js');

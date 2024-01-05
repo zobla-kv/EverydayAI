@@ -7,20 +7,21 @@ const cloudinaryService = require('./services/cloudinaryService');
 const elasticService = require('./services/elasticService');
 const multer = require('multer');
 
-router.get('/news', async (req, res) => {
-  const url =`https://newsapi.org/v2/everything?q=+ai&pageSize=2&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;
-  fetch(url)
-  .then(async response => {
-    const data = await response.json();
-    if (data.status === 'error') {
-      return res.sendStatus(400);
-    }
-    res.status(200).send(data);
-  })
-  .catch(err => {
-    return res.sendStatus(500);
-  })
-});
+// disabled
+// router.get('/news', async (req, res) => {
+//   const url =`https://newsapi.org/v2/everything?q=+ai&pageSize=2&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+//   fetch(url)
+//   .then(async response => {
+//     const data = await response.json();
+//     if (data.status === 'error') {
+//       return res.sendStatus(400);
+//     }
+//     res.status(200).send(data);
+//   })
+//   .catch(err => {
+//     return res.sendStatus(500);
+//   })
+// });
 
 // TODO: can be misused from postman, protect!!
 router.post('/send-email', async (req, res) => {

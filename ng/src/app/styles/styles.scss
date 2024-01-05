@@ -41,6 +41,10 @@ body {
       @extend .flex-center;
       min-height: calc(100vh - 250px);
     }
+    &:has(.x-form-page) {
+      @extend .flex-center;
+      min-height: calc(100vh - 250px);
+    }
   }
   .footer-wrapper {
     margin: 0;

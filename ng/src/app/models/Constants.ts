@@ -18,6 +18,7 @@ export class FirebaseConstants {
   static REGISTRATION_EMAIL_ALREADY_USED = 'auth/email-already-in-use';
   static LOGIN_WRONG_PASSWORD = 'auth/wrong-password'
   static LOGIN_USER_NOT_FOUND = 'auth/user-not-found';
+  static LOGIN_INVALID_CREDENTIALS = 'auth/invalid-login-credentials';
   static LOGIN_TOO_MANY_REQUESTS = 'auth/too-many-requests';
   static EMAIL_VERIFY_INVALID_CODE = 'auth/invalid-action-code'
   static EMAIL_CODE_EXPIRED = 'auth/expired-action-code';

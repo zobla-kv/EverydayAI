@@ -12,7 +12,7 @@ const client = new Client({
   // }
 });
 
-const indexName = 'house-of-dogs-products-images';
+const indexName = 'everyday-ai-products';
 
 // index all/single product from firebase //
 async function ingest(req, res, next) {

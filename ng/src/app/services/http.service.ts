@@ -32,14 +32,14 @@ export class HttpService {
   // TODO: Improper error handling, empty arrays returned on error
   // Error check in components [].length === 0 should be rewritten when going for fix
 
-  // fetch news for footer
-  fetchNews(): Observable<any> {
-    return this._http
-    .get<any>(`${environment.API_HOST}/api/news`)
-    .pipe(
-      catchError(async err => [])
-    )
-  }
+  // fetch news for footer - disabled
+  // fetchNews(): Observable<any> {
+  //   return this._http
+  //   .get<any>(`${environment.API_HOST}/api/news`)
+  //   .pipe(
+  //     catchError(async err => [])
+  //   )
+  // }
 
   // call endpoint for sending email
   sendEmail(body: Email): Promise<boolean> {
@@ -126,6 +126,7 @@ export class HttpService {
       default:
         throw new Error('Unable to fetch products. Invalid type: ', productType);
     }
+
     return products$;
   }
 

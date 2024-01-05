@@ -10,10 +10,10 @@ cloudinary.config({
 });
 
 // where are images stored
-const imageFolder = 'hod' + '/' + process.env.NODE_ENV.toLowerCase()[0];
-// TODO: replace with watermarked overlay image (required syntax - hod:d:404-news.png)
+const imageFolder = process.env.NODE_ENV.toLowerCase()[0];
+// TODO: replace with watermarked overlay image (nested syntax - hod:d:404-news.png)
 // upload watermark manually before everything else
-const productFallbackImage = 'hod' + ':' + process.env.NODE_ENV.toLowerCase()[0] + ':' + 'qiqnylnovazyoatqjivc';
+const watermarkImage = 'watermark';
 
 // upload image to
 // NOTE: upload goes through if other things fail (firebase or elastic)
@@ -35,7 +35,7 @@ async function upload(req, res, next) {
           brightness: 200,
           overlay: {
             // TODO: update when new watermark is created
-            public_id: productFallbackImage
+            public_id: watermarkImage
           }
         },
       ]

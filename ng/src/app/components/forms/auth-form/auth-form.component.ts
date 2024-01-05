@@ -152,9 +152,10 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // do not show what exactly is wrong (better security)
       case FirebaseConstants.LOGIN_USER_NOT_FOUND:
       case FirebaseConstants.LOGIN_WRONG_PASSWORD:
+      case FirebaseConstants.LOGIN_INVALID_CREDENTIALS:
         return form.setErrors({
           [FirebaseConstants.LOGIN_WRONG_CREDENTIALS]: (FirebaseConstants.LOGIN_WRONG_CREDENTIALS)
-        })
+        });
       case FirebaseConstants.REGISTRATION_EMAIL_ALREADY_USED:
       case FirebaseConstants.LOGIN_TOO_MANY_REQUESTS:
       case FirebaseConstants.LOGIN_EMAIL_NOT_VERIFIED:

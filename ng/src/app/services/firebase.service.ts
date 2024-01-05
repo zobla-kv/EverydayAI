@@ -150,6 +150,7 @@ export class FirebaseService {
   sendPasswordResetEmail(email: string): Promise<FirebaseError | null> {
     return new Promise(async (resolve) => {
       // check if user exists
+      // TODO: move to BE and enable email enumeration protection
       const response = await this._fireAuth.fetchSignInMethodsForEmail(email);
       if (response.length === 0) {
         return resolve(new FirebaseError(FirebaseConstants.LOGIN_USER_NOT_FOUND));
@@ -194,7 +195,7 @@ export class FirebaseService {
     const { password, ...customUser } = {
       ...user,
       role: 'basic',
-      cart: { items: [], totalSum: 0 },
+      cart: [],
       registrationDate: new Date(),
       lastActiveDate: new Date(),
       stripe: { id: null },
@@ -220,7 +221,7 @@ export class FirebaseService {
 
   // get all products
   getAllProducts(): Observable<ProductTypePrint[]> {
-    return this._db.collection('Products/Prints/All').valueChanges() as Observable<ProductTypePrint[]>;
+    return this._db.collection('Products').valueChanges() as Observable<ProductTypePrint[]>;
   }
 
   // get products by id
@@ -230,12 +231,12 @@ export class FirebaseService {
     if (ids.length === 0) {
       return of([]);
     }
-    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
+    return this._db.collection('Products', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add new product to db
   async addProduct(data: ProductResponse): Promise<string> {
-    return this._db.collection('Products/Prints/All').add({
+    return this._db.collection('Products').add({
       ...data,
       creationDate: new Date()
     })
@@ -244,7 +245,7 @@ export class FirebaseService {
 
   // update product with missing fields after creation
   async updateProductAfterAdd(productId: string, imgPaths: ProductUploadResponse): Promise<void> {
-    return this._db.collection('Products/Prints/All').doc(productId).ref.update({
+    return this._db.collection('Products').doc(productId).ref.update({
       id: productId,
       watermarkImgPath: imgPaths.watermarkImgPath,
       originalImgPath: imgPaths.originalImgPath
@@ -253,7 +254,7 @@ export class FirebaseService {
 
   // update product
   async updateProduct(data: any): Promise<void> {
-    return this._db.collection('Products/Prints/All').doc(data.id).ref.update({
+    return this._db.collection('Products').doc(data.id).ref.update({
       price: Number(Number(data.price).toFixed(2)),
       discount: Number(data.discount),
       likes: Number(data.likes),
@@ -268,7 +269,7 @@ export class FirebaseService {
   // delete product from db
   // TODO: dont remove during cleanup
   removeProduct(productId: string): Promise<void> {
-    return this._db.collection('Products/Prints/All').doc(productId).delete();
+    return this._db.collection('Products').doc(productId).delete();
   }
 
 
@@ -289,10 +290,11 @@ export class FirebaseService {
     // search filter
     if (searchFilter.value) {
       const productIds = await this._httpService.getProductsBySearchText(searchFilter.value)
-      // if there are products found
-      if (productIds.length > 0) {
-        compoundQuery = compoundQuery.where('id', 'in', productIds);
+      // if nothing found return immediately
+      if (productIds.length === 0) {
+        return compoundQuery.where('id', '==', null);
       }
+      compoundQuery = compoundQuery.where('id', 'in', productIds);
     }
 
     // orientation filter
@@ -358,7 +360,7 @@ export class FirebaseService {
     if (this.lastQuery && this.lastLoadedWithPagination) {
       return from(this.lastQuery.startAfter(this.lastLoadedWithPagination).limit(limit).get().then(snapshot => handle(snapshot, this.lastQuery)));
     } else {
-      const collectionRef = this._db.collection('Products/Prints/All').ref;
+      const collectionRef = this._db.collection('Products').ref;
       return from(this._constructFilterQuery(collectionRef, filters)
       .then(query => query.limit(limit).get().then(snapshot => handle(snapshot, query))))
     }
@@ -368,12 +370,12 @@ export class FirebaseService {
   getProductsForTypePrintTabShop(user: CustomUser | null): Observable<ProductResponse[] | []> {
     // logged out or logged in with no owned items
     if (!user || user.ownedItems.length === 0) {
-      return this._db.collection('Products/Prints/All', query => query.where('isActive', '==', true)).valueChanges() as Observable<ProductTypePrint[]>;
+      return this._db.collection('Products', query => query.where('isActive', '==', true)).valueChanges() as Observable<ProductTypePrint[]>;
     }
     // compound query like this doens't work. The working one even requires index to be created in firebase
-    // return this._db.collection('Products/Prints/All', query =>
+    // return this._db.collection('Products', query =>
     // query.where('id', 'not-in', user.ownedItems).where('isActive', '==', true)).valueChanges() as Observable<ProductTypePrint[]>;
-    const q = query(collection(this._db.firestore, 'Products/Prints/All'),
+    const q = query(collection(this._db.firestore, 'Products'),
       and(
         where('id', 'not-in', user.ownedItems),
         where('isActive', '==', true)
@@ -387,7 +389,7 @@ export class FirebaseService {
     if (!user || user.ownedItems.length === 0) {
       return of([]).pipe(delay(500))
     }
-    return this._db.collection('Products/Prints/All', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;
+    return this._db.collection('Products', query => query.where('id', 'in', user.ownedItems)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // add single product to cart
@@ -410,7 +412,7 @@ export class FirebaseService {
 
   // add product like to user and product
   async addProductLike(productId: string, user: CustomUser | null) {
-    this._db.collection('Products/Prints/All', query => query.where('id', '==', productId)).get()
+    this._db.collection('Products', query => query.where('id', '==', productId)).get()
       .subscribe(res => {
         const productDoc = res.docs[0];
         let likes = (res.docs[0].data() as ProductResponse).likes;
