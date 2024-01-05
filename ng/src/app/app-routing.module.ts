@@ -21,7 +21,7 @@ import {
 const routes: Routes = [
   {
     path: '',
-    title: 'House of dogs',
+    title: 'EverydayAI',
     component: HomePageComponent
   },
   {
