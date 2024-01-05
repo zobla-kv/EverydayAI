@@ -32,7 +32,6 @@
         <td mat-cell *matCellDef="let product">
           <div *ngIf="product.discount > 0">
             <div *ngIf="product.discount < 100">
-              <!-- // TODO: for this implement pipe -->
               <span class="product-old-price">{{ product.price | number : '1.2-2' }} $</span>
               <span class="product-discounted-price">{{ utilService.getProductPrice(product) }} $</span>
             </div>

@@ -267,7 +267,7 @@ export class FirebaseService {
   }
 
   // delete product from db
-  // TODO: dont remove during cleanup
+  // NOTE: dont remove during cleanup
   removeProduct(productId: string): Promise<void> {
     return this._db.collection('Products').doc(productId).delete();
   }

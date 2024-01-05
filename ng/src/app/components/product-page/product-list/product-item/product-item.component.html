@@ -11,7 +11,6 @@
   <img src="{{ product.watermarkImgPath }}" alt="" class="pe-none">
   <p class="product-title">{{ product.title }}</p>
   <ul>
-    <!-- // BUG:Important! some don't have tooltip when hovered (download, like etc.) -->
     <li *ngFor="let action of actions">
       <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
       <ng-template #enableAction>
