@@ -4,7 +4,7 @@ header {
   // NOTE: height set in animation
   top: 0;
   overflow: hidden;
-  background-color: $main-dark-bg-color;
+  // background-color: $main-dark-bg-color;
   width: 100%;
   z-index: 99999; // 5
   position: fixed;
@@ -20,7 +20,7 @@ header {
       -webkit-filter: brightness(50%);
       filter: brightness(50%);
       cursor: pointer;
-      background-color: black;
+      // background-color: black;
     }
 
     &:focus { border-color: $main-orange-bg-color; }
@@ -61,7 +61,7 @@ header {
       top: -$shadow-height;
     }
     &:after {
-      background: radial-gradient(ellipse at 50% -50%, $main-orange-bg-color 0%, rgba(201, 17, 17, 0) 80%);
+      // background: radial-gradient(ellipse at 50% -50%, $main-orange-bg-color 0%, rgba(201, 17, 17, 0) 80%);
       bottom: -$shadow-height;
     }
   }
@@ -120,7 +120,8 @@ header.medium-screen {
   $hamburger-menu-border-radius: .12em;
   $hamburger-menu-line-height: 2px;
   $hover-line-height: $hamburger-menu-line-height;
-  $hover-color: darken($main-orange-bg-color, 10%);
+  // $hover-color: darken($main-orange-bg-color, 10%);
+  $hover-color: none;
 
   height: $hamburger-menu-size + 20px;
 
@@ -202,6 +203,8 @@ header.medium-screen {
     .hamburger {
       position: absolute;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
       top: 0;
       left: 0;
       z-index: 1;
@@ -218,8 +221,8 @@ header.medium-screen {
         flex: none;
         width: 100%;
         height: $hamburger-menu-line-height;
-        background: $main-color;
-        background-color: $main-orange-bg-color;
+        // background: $main-color;
+        // background-color: $main-orange-bg-color;
         transition: all $anim-duration ease;
 
 
@@ -232,7 +235,7 @@ header.medium-screen {
           left: 0;
           width: 100%;
           height: $hamburger-menu-line-height;
-          background: inherit;
+          // background: inherit;
           transition: all $anim-duration ease;
         }
 
@@ -259,7 +262,7 @@ header.medium-screen {
         width: 200vw;
         height: 200vw;
         color: white;
-        background-color: black;
+        // background-color: black;
         border-radius: 50%;
         transition: all $anim-duration ease;
         flex: none;
@@ -317,7 +320,7 @@ header.medium-screen {
                   left: 0;
                   width: 0;
                   height: $hover-line-height;
-                  background: $hover-color;
+                  // background: $hover-color;
                   transition: width $anim-duration ease;
                 }
               }
@@ -326,7 +329,7 @@ header.medium-screen {
                 width: 120px;
 
                 &:hover {
-                  background-color: $main-orange-bg-color;
+                  // background-color: $main-orange-bg-color;
                   color: $dark-text;
                 }
               }

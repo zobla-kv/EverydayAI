@@ -16,3 +16,5 @@ export * from './toast/toast.component';
 export * from './c-panel/c-panel.component';
 export * from './modal/modal.component';
 export * from './loading/loading.component';
+export * from './star-background/star-background.component';
+export * from './gradient-container/gradient-container.component';

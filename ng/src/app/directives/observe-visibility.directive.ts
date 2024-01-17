@@ -23,6 +23,8 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   @Input('duration') duration: number = 500;
   // show animation delay
   @Input('delay') delay: number = 0;
+  // show animation easing
+  @Input('easing') easing: '' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' = '';
   // what percentage should be visible before triggering
   @Input('threshold') threshold: number = 0.6;
   // root margin
@@ -97,7 +99,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // create animation and set variable
   createAnimation() {
-    const factory = this._builder.build([animate(`${this.duration}ms ${this.delay}ms`, style(this.showStyles))]);
+    const factory = this._builder.build([animate(`${this.duration}ms ${this.delay}ms ${this.easing}`.trim(), style(this.showStyles))]);
     this.animation = factory.create(this._element.nativeElement);
   }
 

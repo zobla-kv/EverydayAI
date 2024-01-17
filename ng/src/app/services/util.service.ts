@@ -229,7 +229,7 @@ loadScript(url: string) {
   */
   set404Image(target: any): void {
     // TODO: replace src
-    target.src = '../../assets/images/img/cesar-millan.png';
+    target.src = '../../assets/images/cesar-millan.png';
   }
 
 /**
@@ -239,7 +239,7 @@ loadScript(url: string) {
   */
   setProduct404Image(product: ProductResponse): void {
     // TODO: replace src
-    product.watermarkImgPath = '../../assets/images/img/cesar-millan.png';
+    product.watermarkImgPath = '../../assets/images/cesar-millan.png';
   }
 
 /**

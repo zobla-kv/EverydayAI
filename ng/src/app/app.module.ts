@@ -47,7 +47,9 @@ import {
   ModalComponent,
   LoadingComponent,
   ProductDetailsComponent,
-  ProductPriceComponent
+  ProductPriceComponent,
+  StarBackgroundComponent,
+  GradientContainerComponent
 } from '@app/components';
 
 import {
@@ -56,6 +58,9 @@ import {
   InfiniteScrollDirective,
   ScrollSpyDirective
 } from '@app/directives';
+
+// not working with barrel
+import FormatPipe from './pipes/format.pipe';
 
 @NgModule({
   declarations: [
@@ -78,12 +83,17 @@ import {
     LoadingComponent,
     ProductDetailsComponent,
     ProductPriceComponent,
+    StarBackgroundComponent,
+    GradientContainerComponent,
 
     // Directives
     ObserveVisibilityDirective,
     DelayedHoverDirective,
     InfiniteScrollDirective,
     ScrollSpyDirective,
+
+    // Pipes
+    FormatPipe
   ],
   imports: [
     BrowserModule,
@@ -121,7 +131,8 @@ import {
       }
     },
     { provide: RouteReuseStrategy, useClass: ReuseStrategy },
-    DecimalPipe
+    DecimalPipe,
+    FormatPipe
   ],
   bootstrap: [AppComponent]
 })

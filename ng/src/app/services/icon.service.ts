@@ -16,23 +16,22 @@ export class IconService {
   Icons: { name: string }[] = [
     { name: 'digital-product' },
     { name: 'instagram' },
+    { name: 'email' },
     { name: 'dog-head'},
     { name: 'networking'},
-    { name: 'planet' }, // can be removed after hp refactor
-    { name: 'book' }, // same
-    { name: 'dog-happy' }, // same
     { name: 'dollar' },
     { name: 'cart-add' },
     { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
-    { name: 'art' }, // same
-    { name: 'graphic-designer' }, // same
     { name: 'visa' },
     { name: 'american-express' }, // recheck during payment
     { name: 'image-resolution' },
     { name: 'file-type-img' },
     { name: 'tier-classic' },
-    { name: 'tier-premium' }
+    { name: 'tier-premium' },
+    { name: 'double-arrow-left' },
+    { name: 'double-arrow-right' },
+    { name: 'payment' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

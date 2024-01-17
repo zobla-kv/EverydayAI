@@ -1,5 +1,5 @@
 /* page */
-$page-max-width: 1600px;
+$page-max-width: 1600px; // TODO: 1920?
 
 /* header */
 $header-height: 140px;
@@ -9,18 +9,24 @@ $viewport-height-without-header: calc(100vh - $header-height);
 
 /* main background colors */
 $main-dark-bg-color: #24242c;
-$light-dark-bg-color: #26262e;
+$gradient-start: #EF65F9;
+$gradient-end: #2A0EE2;
+// same colors in rgb
+$gradient: linear-gradient(90deg, rgba(239,101,249,1) 0%, rgba(138,56,239,1) 50%, rgba(42,14,226,1) 100%);
+$gradient-reverse: linear-gradient(90deg, rgba(42,14,226,1) 0%, rgba(138,56,239,1) 50%, rgba(239,101,249,1) 100%);
+// TODO: replace with gradient - it works somwhere, where is used as background:,  background-color not working
+// $main-orange-bg-color: $gradient;
 $main-orange-bg-color: #F47650;
-// TODO: consider this
-// $main-orange-bg-color: #ee6123;
-$main-orange-bg-color-rgb: rgb(244,118,80);
+
 $toast-green-bg-color: #02ff00;
 $toast-red-bg-color: #B11010;
 
 /* borders */
+// TODO: remove this when refactoring header
 $gray-border-color: rgb(87, 87, 87);
 
 /* text colors */
+// TODO: remove this when refactoring header
 $dark-text: $main-dark-bg-color;
 $orange-text: $main-orange-bg-color;
 
@@ -33,7 +39,9 @@ $shadow-lifted: 0 0 30px 0 rgba(0, 0, 0, 0.3);
 $button-reverse-disabled-bg-color: $main-dark-bg-color;
 
 /* fonts */
+$space-font: 'Space Colony Bold', 'Geneva', 'Verdana', 'sans-serif';
 $product-metadata-font: 'Franklin Gothic Medium', Tahoma, 'Arial Narrow', Arial, sans-serif;
 
 /* images */
-$main-logo: url('../../assets/images/svg/main-logo-grey.svg');
+// TODO: update this when refactoring header
+$main-logo: url('../../assets/images/old/main-logo-grey.svg');

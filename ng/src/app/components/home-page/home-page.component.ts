@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { Observable, Subscription, first } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Subscription, first } from 'rxjs';
 
 import {
   CustomUser,
@@ -16,6 +16,7 @@ import {
   UtilService
 } from '@app/services';
 
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -23,24 +24,10 @@ import {
 })
 export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChildren('carouselItem') carouselItemsRef: QueryList<HTMLImageElement>;
-  @ViewChildren('bullet') bulletPoints: QueryList<ElementRef>;
-
-  // carousel items
-  carouselItems = [
-    { id: 2, name: 'open-minded', imgSrc: '../../../assets/images/img/open-minded-big.jpg', htmlElement: null },
-    { id: 1, name: 'courage', imgSrc: '../../../assets/images/img/courage-big.jpg', htmlElement: null },
-    { id: 0, name: 'enthusiast', imgSrc: '../../../assets/images/img/dog-enthusiast-big.jpg', htmlElement: null },
-  ];
-
-  // is playing
-  isCarouselPlaying = false;
-
-  // carousel image change time
-  carouselInterval = 5000;
-
-  // bullet points hover observable
-  bulletPointsHover$: Observable<any>;
+  // table of contents
+  @ViewChild('toc') toc: ElementRef;
+  // questionmark
+  @ViewChild('questionmark') questionmark: ElementRef;
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
@@ -72,7 +59,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
   // our products to be fetched
   // WARNING: large image size causes page to lag
-  ourPicksProductIds = ['VmVOY54dGMqj0BxYBw2t', 'MoVQKlpibD7JnehAfmmX', '6wHB0XTG3oIZHBXEmKNo'];
+  ourPicksProductIds = ['ijZ4bgWxPhtePi23qDpB', 'kzE6iN9v0jwKwmbkvZH7', 'qW7hGr7O1JcKb3jXjTrC'];
   // our picks fetched products
   ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
   // are our picks loaded
@@ -119,17 +106,13 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     landingSection.style.maxHeight = landingSection.offsetHeight + 'px';
     landingSection.style.minHeight = landingSection.offsetHeight + 'px';
 
-    // setTimeout(() => this.showOurPicks(), 3000)
-
-    // this.setBulletPointsHover();
-    // this.bulletPointsHover$ = merge(
-    //   this.bulletPoints.map(bullet => fromEvent(bullet.nativeElement, 'hover'))
-    // );
-
+    // TODO: only on large screen
+    this.setScrollListenerForToc();
+    this.observeQuestionmark();
   }
 
-  // run hover animation once cta button is displayed to get eyes to focus on that
-  hightlightCTAButton(element: HTMLButtonElement) {
+  // run hover animation once cta element is displayed to get focus on that
+  hightlightCTA(element: any) {
     // run after animation is done, delay + duration
     const delay = this.isFirstVisit ? 1800 : 1200 + 600;
     setTimeout(() => {
@@ -146,61 +129,33 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     }, delay);
   }
 
+  // show toc when scroll when distance from top is smaller than 400px
+  setScrollListenerForToc() {
+    const handleScroll = () => {
+      const distanceFromTop = this.toc.nativeElement.getBoundingClientRect().top;
+      if (distanceFromTop < 400) {
+        this._renderer.addClass(this.toc.nativeElement, 'show');
+        window.removeEventListener('scroll', handleScroll);
+      }
+    }
+    window.addEventListener('scroll', handleScroll);
+  }
+
+  // disable questionmark animation when off screen
+  observeQuestionmark() {
+    new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this._renderer.addClass(this.questionmark.nativeElement, 'animate');
+          } else {
+            this._renderer.removeClass(this.questionmark.nativeElement, 'animate');
+          }
+      });
+    }).observe(this.questionmark.nativeElement);
+  }
+
   handleProductImgLoadError(ev: Event) {
     this.utilService.set404Image(ev.target);
-  }
-
-  // setOurPicks(products: ProductResponse[]) {
-  //   const ourPicks = products.map(product => ({
-  //     ...product,
-  //     // directive
-  //     hideStyles: {'opacity': 0, 'transform': 'translateY(-40px)'},
-  //     showStyles: {'opacity': 1, 'transform': 'translateY(0px)'},
-  //     threshold: 0.8,
-
-  //   }))
-  //   this.ourPicksProducts = products;
-  // }
-
-
-  // sets config for carousel
-  setCarousel() {
-    this.carouselItems.forEach((item, index) => {
-      item.htmlElement = (this.carouselItemsRef.get(index) as any).nativeElement;
-    })
-
-    // play carousel
-    setTimeout(() => this.playCarousel(), this.carouselInterval);
-
-    // REF: same handler for multiple events, with throttle
-    // merge(
-    //   fromEvent(this.bulletPoints.get(0)!.nativeElement, 'mouseenter', () => 0),
-    //   fromEvent(this.bulletPoints.get(1)!.nativeElement, 'mouseenter', () => 1),
-    //   fromEvent(this.bulletPoints.get(2)!.nativeElement, 'mouseenter', () => 2)
-    // )
-    // // .pipe(throttle(() => interval(500)))
-    // .subscribe(data => this.handleHover(data))
-  }
-
-  // plays carousel
-  async playCarousel() {
-    this.isCarouselPlaying = true;
-    while (this.isCarouselPlaying) {
-      const activeImage = this.carouselItems[this.carouselItems.length - 1].htmlElement;
-      // hide active
-      this._renderer.addClass(activeImage, 'hide');
-      // wait before changing image
-      await this._utilService.sleep(this.carouselInterval);
-      // shift array
-      this.carouselItems = this._utilService.rotateArrayToRight(this.carouselItems);
-      // show previously hidden image
-      this._renderer.removeClass(activeImage, 'hide');
-    }
-  }
-
-  // stops carousel
-  disableCarousel() {
-    this.isCarouselPlaying = false;
   }
 
   ngOnDestroy() {
