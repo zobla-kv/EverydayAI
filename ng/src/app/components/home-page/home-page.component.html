@@ -44,7 +44,7 @@
             <p>Welcome to the future</p>
             <a class="btn large-screen" routerLink="/products" #cta>
               <div class="inner-wrapper">Explore now</div>
-              <mat-icon svgIcon="double-arrow-right"></mat-icon>
+              <mat-icon svgIcon="double-arrow-right" class="dark"></mat-icon>
             </a>
           </div>
         </div>
@@ -319,7 +319,7 @@
                       </div>
                       <p class="product-item-title">{{ product.title }}</p>
                       <div class="product-item-likes flex-center gap-1">
-                        <mat-icon>favorite</mat-icon>
+                        <mat-icon class="white">favorite</mat-icon>
                         <strong>{{ product.likes | format }}</strong>
                       </div>
                       <strong class="product-price">
@@ -353,13 +353,13 @@
                         <mat-spinner diameter="22" class="reverse mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
                         <ng-template #action>
                           <!-- TODO: site lags on download -->
-                          <mat-icon class="download"
+                          <mat-icon class="download black"
                             *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else action"
                             (click)="productService.download(product)"
                           >download</mat-icon>
                           <ng-template #action>
-                            <mat-icon svgIcon="cart-add" class="cart-action" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
-                            <mat-icon svgIcon="cart-remove" class="cart-action" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
+                            <mat-icon svgIcon="cart-add" class="cart-action black" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
+                            <mat-icon svgIcon="cart-remove" class="cart-action black" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
                           </ng-template>
                         </ng-template>
                       </button>

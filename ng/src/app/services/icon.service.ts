@@ -15,8 +15,6 @@ export class IconService {
   // name property needs to match file name
   Icons: { name: string }[] = [
     { name: 'digital-product' },
-    { name: 'instagram' },
-    { name: 'email' },
     { name: 'dog-head'},
     { name: 'networking'},
     { name: 'dollar' },
@@ -30,15 +28,28 @@ export class IconService {
     { name: 'tier-classic' },
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
-    { name: 'double-arrow-right' },
+    { name: 'double-arrow-right' }
+  ]
+
+  // name property needs to match file name
+  gradientIcons: { name: string }[] = [
+    { name: 'email' },
+    { name: 'instagram' },
     { name: 'payment' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg
   addCustomIcons() {
+    // clasic
     this.Icons.forEach(icon => this._matIconRegistry.addSvgIcon(
       icon.name,
       this._domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon.name}.svg`)
+    ));
+
+    // gradient
+    this.gradientIcons.forEach(icon => this._matIconRegistry.addSvgIcon(
+      icon.name,
+      this._domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/gradient/${icon.name}.svg`)
     ))
   }
 }

@@ -9,5 +9,7 @@ export class GradientContainerComponent {
 
   // basic - border only, transparent - same but no bg, colored - gradient bg
   @Input() variant: 'basic' | 'transparent' | 'colored' = 'basic';
+  // padding
+  @Input() padding: string = '1rem';
 
 }

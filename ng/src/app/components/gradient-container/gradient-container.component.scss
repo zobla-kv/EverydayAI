@@ -1,7 +1,6 @@
 @import '../../styles/variables.scss';
 
 $border-radius: 8px;
-$padding: 1rem;
 
 div.basic {
   background-image: $gradient;
@@ -11,7 +10,6 @@ div.basic {
   & > div {
     border-radius: inherit;
     background: $main-dark-bg-color;
-    padding: $padding;
   }
 }
 
@@ -22,12 +20,10 @@ div.transparent {
   & > div {
     border: 5px solid;
     border-image: $gradient 1;
-    padding: $padding;
   }
 }
 
 div.colored {
   background-image: $gradient;
   border-radius: $border-radius;
-  padding: $padding;
 }

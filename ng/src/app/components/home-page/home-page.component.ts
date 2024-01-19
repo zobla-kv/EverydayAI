@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Subscription, first } from 'rxjs';
+import { Subscription, first, mergeMap } from 'rxjs';
 
 import {
   CustomUser,
@@ -81,9 +81,15 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
-    this._httpService.getProducts(ProductType.ALL, null, this.ourPicksProductIds)
-    .pipe(first())
+    // TODO: use mergeMap on other places
+    this.userStateSub$ = this._authService.userState$
+    .pipe(
+      first(),
+      mergeMap(user => {
+        this.user = user;
+        return this._httpService.getProducts(ProductType.ALL, null, this.ourPicksProductIds);
+      })
+    )
     .subscribe(products => {
       // TODO: sorted automatically by id, dont want this
       this.ourPicksProducts = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.ourPicksListConfig, this.user));

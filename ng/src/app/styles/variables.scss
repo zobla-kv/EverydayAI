@@ -22,12 +22,12 @@ $toast-green-bg-color: #02ff00;
 $toast-red-bg-color: #B11010;
 
 /* borders */
-// TODO: remove this when refactoring header
+// TODO: remove this durign redesign
 $gray-border-color: rgb(87, 87, 87);
 
 /* text colors */
-// TODO: remove this when refactoring header
 $dark-text: $main-dark-bg-color;
+// TODO: remove this durign redesign
 $orange-text: $main-orange-bg-color;
 
 /* states */
@@ -43,5 +43,4 @@ $space-font: 'Space Colony Bold', 'Geneva', 'Verdana', 'sans-serif';
 $product-metadata-font: 'Franklin Gothic Medium', Tahoma, 'Arial Narrow', Arial, sans-serif;
 
 /* images */
-// TODO: update this when refactoring header
-$main-logo: url('../../assets/images/old/main-logo-grey.svg');
+$main-logo: url('../../assets/images/main-logo.svg');

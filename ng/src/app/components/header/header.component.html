@@ -19,27 +19,29 @@
         routerLinkActive="nav-active"
         [routerLinkActiveOptions]="{exact: true}"
       >
-        {{ 'Home' | uppercase }}
+        {{ 'Home' }}
       </a>
-      <span class="header-item-splitter">|</span>
-      <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' | uppercase }}</a>
+      <a routerLink="/products" routerLinkActive="nav-active">{{ 'Products' }}</a>
       <a routerLink="/control-panel" routerLinkActive="nav-active" *ngIf="isAdmin">
-        {{ 'Admin' | uppercase }}
+        {{ 'Admin' }}
       </a>
     </div>
     <!-- LOGGED IN -->
     <div class="header-item profile" *ngIf="isAuthenticated">
-      <a routerLink="/cart" routerLinkActive="nav-active" class="me-5 d-flex">
-        <mat-icon
-          matBadge="{{ numberOfItemsInCart }}"
-          matBadgePosition="above after"
-          matBadgeOverlap="true"
-          matBadgeHidden="false"
-          matBadgeDescription="number of items in shopping cart"
-          matBadgeSize="medium"
-        >
-          shopping_cart
-        </mat-icon>
+      <a routerLink="/cart" routerLinkActive="nav-active-cart" class="p-0 ms-0 me-5 d-flex">
+        <app-gradient-container padding="0.5rem 0.5rem 0.25rem 0.5rem">
+          <mat-icon
+            matBadge="{{ numberOfItemsInCart }}"
+            matBadgePosition="above after"
+            matBadgeOverlap="true"
+            matBadgeHidden="false"
+            matBadgeDescription="number of items in shopping cart"
+            matBadgeSize="medium"
+            class="white"
+          >
+            shopping_cart
+          </mat-icon>
+        </app-gradient-container>
       </a>
       <button class="btn" (click)="handleLogout()">logout</button>
     </div>
@@ -95,7 +97,7 @@
                 <span>Cart</span>
               </a>
             </li>
-            <hr class="orange-line my-0">
+            <hr class="gradient my-0">
             <li *ngIf="!isAuthenticated" class="mb-0">
               <button type="button" class="btn" (click)="handleAuthButton('login')">
                 <span>Login</span>

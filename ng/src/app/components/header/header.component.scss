@@ -4,26 +4,32 @@ header {
   // NOTE: height set in animation
   top: 0;
   overflow: hidden;
-  // background-color: $main-dark-bg-color;
   width: 100%;
   z-index: 99999; // 5
   position: fixed;
+  background-color: black;
 
   input[type="search"] {
     box-shadow: none;
+    background-color: #e8f4f3;
     // border-radius: 24px; TODO: decide on this. Try matching all corners of buttons, images etc.
 
-    &::-webkit-search-cancel-button{
+    &::-webkit-search-cancel-button {
       display: inline-block;
       height: 20px;
       width: 20px;
       -webkit-filter: brightness(50%);
       filter: brightness(50%);
       cursor: pointer;
-      // background-color: black;
     }
 
-    &:focus { border-color: $main-orange-bg-color; }
+    &:focus { border-color: white; }
+  }
+
+  a {
+    text-decoration: none;
+    font-family: $space-font;
+    color: white;
   }
 }
 
@@ -34,40 +40,30 @@ header {
   height: 100%;
   padding: 0 2rem;
 
+  $active-route-transition: 0.5s ease;
+
   a {
-    padding: 0.5rem 1.25rem;
+    font-size: 14px;
+    margin: 0 1.25rem;
     border-radius: 0;
     position: relative;
-    text-decoration: none;
-    color: white;
+    transition: $active-route-transition;
 
-    $shadow-height: 6px;
-
-    &:before, &:after {
-      position: absolute;
-      content: '';
-      left: 0;
-      height: $shadow-height;
-      opacity: 0;
-      -webkit-transition-duration: 1s;
-      transition-duration: 1s;
-      -webkit-transition-property: opacity;
-      transition-property: opacity;
-      width: 100%;
-      transform: rotate(135deg);
-    }
-    &:before {
-      background: radial-gradient(ellipse at 50% 150%, $main-orange-bg-color 0%, rgba(255, 255, 255, 0) 80%);
-      top: -$shadow-height;
-    }
-    &:after {
-      // background: radial-gradient(ellipse at 50% -50%, $main-orange-bg-color 0%, rgba(201, 17, 17, 0) 80%);
-      bottom: -$shadow-height;
-    }
+    .mat-icon { transition: $active-route-transition; }
   }
 
   a.nav-active {
-    &:before, &:after { opacity: 1; }
+    text-shadow:
+      -2px -2px 3px $gradient-start,
+       2px -2px 3px $gradient-start,
+      -2px  2px 3px $gradient-end,
+       2px  2px 3px $gradient-end;
+  }
+
+  a.nav-active-cart {
+    filter:
+      drop-shadow(0px 0px 10px $gradient-start)
+      drop-shadow(0px 0px 10px $gradient-end);
   }
 
   .header-item {
@@ -88,12 +84,11 @@ header {
     &.search {
       width: 100%;
       // dont expand during header animation
-      max-width: 488px;
+      max-width: 400px;
       min-width: 300px;
       margin: 0 3.5rem;
     }
     &.navigation-wrapper {
-      color: $gray-border-color;
       min-width: 500px;
       justify-content: center;
     }
@@ -105,23 +100,17 @@ header {
         width: auto;
         min-width: 100px;
       }
-      .btn:hover { border: 1px solid $gray-border-color; }
     }
-
-    &-splitter { position: relative; top: -2px; }
 
   }
 }
 
 header.medium-screen {
-  $main-color:#FEFEFE;
   $anim-duration: .4s;
   $hamburger-menu-size: 60px;
   $hamburger-menu-border-radius: .12em;
   $hamburger-menu-line-height: 2px;
   $hover-line-height: $hamburger-menu-line-height;
-  // $hover-color: darken($main-orange-bg-color, 10%);
-  $hover-color: none;
 
   height: $hamburger-menu-size + 20px;
 
@@ -129,15 +118,9 @@ header.medium-screen {
   a:visited,
   a:hover,
   a:active {
+    font-size: 16px;
     color: inherit;
     text-decoration: none;
-  }
-
-  h1 {
-    font-family: 'Pacifico', cursive;
-    font-weight: 400;
-    font-size: 3em;
-    text-align: center;
   }
 
   input[type="search"] {
@@ -221,10 +204,8 @@ header.medium-screen {
         flex: none;
         width: 100%;
         height: $hamburger-menu-line-height;
-        // background: $main-color;
-        // background-color: $main-orange-bg-color;
+        background: $gradient;
         transition: all $anim-duration ease;
-
 
         &:before,
         &:after {
@@ -235,7 +216,7 @@ header.medium-screen {
           left: 0;
           width: 100%;
           height: $hamburger-menu-line-height;
-          // background: inherit;
+          background: inherit;
           transition: all $anim-duration ease;
         }
 
@@ -262,14 +243,13 @@ header.medium-screen {
         width: 200vw;
         height: 200vw;
         color: white;
-        // background-color: black;
+        background-color: $main-dark-bg-color;
         border-radius: 50%;
         transition: all $anim-duration ease;
         flex: none;
         transform: scale(0);
         backface-visibility: hidden;
         overflow: hidden;
-
 
         > div {
           text-align: center;
@@ -280,7 +260,6 @@ header.medium-screen {
           overflow-y: auto;
           flex: none;
 
-
           > ul {
             list-style: none;
             padding: 0 1em;
@@ -290,47 +269,19 @@ header.medium-screen {
 
             > li {
               padding: 0;
-              margin: 1em;
-              font-size: 24px;
-              display: block;
+              margin: 1.5rem;
 
               > a {
                 position: relative;
                 display: inline;
                 cursor: pointer;
-                transition: color $anim-duration ease;
 
                 &.nav-active-mobile {
-                  color: $orange-text;
-                }
-
-                &:hover {
-                  // color: $hover-color;
-
-                  // &:after {
-                  //   width: 100%;
-                  // }
-                }
-
-                &:after {
-                  content: '';
-                  position: absolute;
-                  z-index: 1;
-                  bottom: -.15em;
-                  left: 0;
-                  width: 0;
-                  height: $hover-line-height;
-                  // background: $hover-color;
-                  transition: width $anim-duration ease;
-                }
-              }
-
-              > button {
-                width: 120px;
-
-                &:hover {
-                  // background-color: $main-orange-bg-color;
-                  color: $dark-text;
+                  text-shadow:
+                    -2px -2px 3px $gradient-start,
+                     2px -2px 3px $gradient-start,
+                    -2px  2px 3px $gradient-end,
+                     2px  2px 3px $gradient-end;
                 }
               }
             }

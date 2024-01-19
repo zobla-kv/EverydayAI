@@ -9,7 +9,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export default class FormatPipe implements PipeTransform {
 
   transform(value: number | null): string | null {
-    if (!value) {
+    // allow '0'
+    if (value === undefined || value === null) {
       return '';
     }
     return Intl.NumberFormat('it').format(Number(value));

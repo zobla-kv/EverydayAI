@@ -98,7 +98,11 @@ h1, h2, h3, h4, h5 { font-family: $space-font; }
 
 .opaque { opacity: 0; }
 .rotate-180 { transform: rotate(180deg); }
-.absolute-filler { position: absolute; width: 100%; height: 100%; z-index: -1; }
+hr.gradient {
+  border: 1px solid;
+  border-image: $gradient 1;
+  opacity: 1; // bootstrap default 0.25
+}
 
 /* alignment */
 .absolute-center {
@@ -135,8 +139,6 @@ h1, h2, h3, h4, h5 { font-family: $space-font; }
 .main-orange-bg { background-color: $main-orange-bg-color; }
 .main-dark-bg { background-color: $main-dark-bg-color; }
 .gradient-bg { background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%); }
-.hr-color-orange { border: 1px solid $main-orange-bg-color; }
-hr.orange-line { border: 1px solid $main-orange-bg-color; opacity: 1; }
 
 /* text */
 .dark-text { color: $dark-text !important; }
@@ -175,16 +177,24 @@ hr.orange-line { border: 1px solid $main-orange-bg-color; opacity: 1; }
 
 /* buttons */
 .btn {
-  background-color: $main-orange-bg-color;
+  background-image: $gradient;
   border-radius: 20px;
-  align-items: center;
   font-weight: bold;
+  font-family: $space-font;
+  font-size: 14px;
   transition: all .3s ease;
   border: 0;
-}
-.btn:hover {
-  background-color: $main-dark-bg-color;
-  color: #fff;
+  color: white;
+  background-image: linear-gradient(to right, $gradient-start, $gradient-end, $gradient-start, $gradient-end);
+  background-size: 300% 100%;
+
+  &:hover {
+    background-position: 100% 0;
+  }
+
+  &.dark {
+    background-color: $main-dark-bg-color;
+  }
 }
 
 .btn-reverse {
@@ -386,9 +396,28 @@ form {
   stroke: $main-dark-bg-color !important;
 }
 
-// TODO: this messes up custom icons
-// .mat-icon { color: $orange-text; }
-// .mat-icon svg path { fill: $orange-text; }
+.mat-icon {
+  // NOTE: doesn't work out of the box for custom icons
+  background: $gradient;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  &.white {
+    color: white;
+    -webkit-text-fill-color: white;
+    svg path { fill: white; }
+  }
+  &.dark {
+    color: $main-dark-bg-color;
+    -webkit-text-fill-color: $main-dark-bg-color;
+    svg path { fill: $main-dark-bg-color; }
+  }
+  &.black {
+    color: black;
+    -webkit-text-fill-color: black;
+    svg path { fill: black; }
+  }
+}
 
 .mat-mdc-paginator {
   border-radius: 8px;
@@ -471,9 +500,11 @@ form {
 .mat-badge-content {
   // disable animation
   transition: none !important;
-  background-color: $main-orange-bg-color;
-  border: 1px solid $main-dark-bg-color;
-  color: $main-dark-bg-color;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-image: $gradient;
+  box-shadow: inset 0 100vw $main-dark-bg-color;
+  border-radius: 50%;
 }
 
 /* modal */
@@ -542,12 +573,7 @@ form {
 /* MEDIA QUERIES */
 // smaller than 976px
 @media only screen and (max-width: 976px) {
-  // when hamburger menu appears
   // TODO: hamburger appers a little bit later (960px)
-  body .page-wrapper {
-    margin-top: 90px;
-    padding-top: 0;
-  }
 }
 
 // smaller than 768px

@@ -1,5 +1,5 @@
 <div [ngClass]="variant === 'basic' ? 'basic' : variant === 'transparent' ? 'transparent' : 'colored'">
-  <div>
+  <div [ngStyle]="{'padding': padding}">
     <ng-content></ng-content>
   </div>
 </div>
