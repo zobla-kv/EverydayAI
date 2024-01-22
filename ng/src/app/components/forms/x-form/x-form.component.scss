@@ -35,7 +35,6 @@ button[type="submit"] {
 .card-front {
   width: 100%;
   height: auto;
-  background-color: $main-orange-bg-color;
   border-radius: 6px;
   left: 0;
   top: 0;
@@ -55,4 +54,11 @@ button[type="submit"] {
   z-index: 20;
 }
 
-input[type="password"] { padding-right: 55px; }
+.form-group {
+  .form-style {
+    padding: 13px 20px 13px 55px;
+    height: 48px;
+    input[type="password"] { padding-right: 55px; }
+  }
+}
+

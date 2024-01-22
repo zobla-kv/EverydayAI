@@ -154,7 +154,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    fromEvent(this.searchInput.nativeElement,'keyup')
+    this.searchInput && fromEvent(this.searchInput.nativeElement, 'keyup')
     .pipe(
         filter(Boolean),
         debounceTime(500),

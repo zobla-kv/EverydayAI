@@ -3,202 +3,200 @@
     <div class="row justify-content-center">
       <div class="col-9 col-sm-12 text-center py-4">
         <div class="section pt-sm-2 text-center">
-          <h6 class="mb-0 pb-3"><span>Login</span><span>Register</span></h6>
+          <!-- <h6 class="mb-0 pb-3"><span>Login</span><span>Register</span></h6> -->
           <input #slider class="slider-checkbox" type="checkbox" id="reg-log" name="reg-log" (change)="handleSliderUpdate($event)"/>
           <label for="reg-log"></label>
           <div class="card-3d-wrap mx-auto">
             <div class="card-3d-wrapper">
               <form [formGroup]="loginForm.form" (ngSubmit)="validateForm()" class="card-front">
-                <div class="center-wrap">
-                  <div class="section text-center">
-                    <h4 class="mb-4 pb-3 dark-text">Login</h4>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-style"
-                        id="logemail"
-                        name="logemail"
-                        formControlName="email"
-                        placeholder="Your Email"
-                        autocomplete="off"
-                      >
-                      <mat-icon>alternate_email</mat-icon>
-                      <span
-                        *ngIf="loginForm.form.get('email')?.hasError('required') && loginForm.form.get('email')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Email can not be empty
-                      </span>
-                      <span
-                        *ngIf="loginForm.form.get('email')?.hasError('email') && loginForm.form.get('email')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
-                      </span>
-                      <span
-                        *ngIf="loginForm.form.get('email')?.hasError('auth/too-many-requests')"
-                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('auth/too-many-requests') }}
-                      </span>
-                      <span
-                        *ngIf="loginForm.form.get('email')?.hasError('email-not-verified')"
-                        class="form-text ms-1 dark-text fw-bold d-block">{{ loginForm.form.get('email')?.getError('email-not-verified') }}
-                      </span>
+                <app-gradient-container padding="0">
+                  <div class="center-wrap">
+                    <div class="section text-center">
+                      <h4 class="mb-4 pb-3">Login</h4>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          id="logemail"
+                          name="logemail"
+                          formControlName="email"
+                          placeholder="Your Email"
+                          autocomplete="off"
+                        >
+                        <mat-icon>alternate_email</mat-icon>
+                        <span
+                          *ngIf="loginForm.form.get('email')?.hasError('required') && loginForm.form.get('email')?.touched"
+                          class="input-validation-error-message">Email can not be empty
+                        </span>
+                        <span
+                          *ngIf="loginForm.form.get('email')?.hasError('email') && loginForm.form.get('email')?.touched"
+                          class="input-validation-error-message">Please enter valid email address
+                        </span>
+                        <span
+                          *ngIf="loginForm.form.get('email')?.hasError('auth/too-many-requests')"
+                          class="input-validation-error-message">{{ loginForm.form.get('email')?.getError('auth/too-many-requests') }}
+                        </span>
+                        <span
+                          *ngIf="loginForm.form.get('email')?.hasError('email-not-verified')"
+                          class="input-validation-error-message">{{ loginForm.form.get('email')?.getError('email-not-verified') }}
+                        </span>
+                      </div>
+                      <div class="form-group mt-2">
+                        <input
+                          type="{{ showPassword ? 'text' : 'password' }}"
+                          class="form-style"
+                          id="logpass"
+                          name="logpass"
+                          formControlName="password"
+                          placeholder="Your Password"
+                          autocomplete="off"
+                        >
+                        <mat-icon>lock</mat-icon>
+                        <mat-icon class="show-password-toggle" (click)="showHidePassword()">
+                          {{ showPassword ? 'visibility' : 'visibility_off' }}
+                        </mat-icon>
+                        <span
+                          *ngIf="loginForm.form.get('password')?.hasError('required') && loginForm.form.get('password')?.touched"
+                          class="input-validation-error-message">Password can not be empty
+                        </span>
+                        <span
+                          *ngIf="loginForm.form.hasError('wrong-credentials')"
+                          class="input-validation-error-message">Wrong credentials
+                        </span>
+                      </div>
+                      <button type="submit" class="btn-square uppercase mt-4 mx-auto">
+                        <mat-spinner
+                          *ngIf="showSpinner; else noSpinner"
+                          diameter="25"
+                          strokeWidth="4"
+                        ></mat-spinner>
+                        <ng-template #noSpinner>Submit</ng-template>
+                      </button>
+                      <p class="mb-0 mt-3 text-center forgot-password">
+                        <a routerLink="/reset-password" class="link">Forgot your password?</a>
+                      </p>
                     </div>
-                    <div class="form-group mt-2">
-                      <input
-                        type="{{ showPassword ? 'text' : 'password' }}"
-                        class="form-style"
-                        id="logpass"
-                        name="logpass"
-                        formControlName="password"
-                        placeholder="Your Password"
-                        autocomplete="off"
-                      >
-                      <mat-icon>lock</mat-icon>
-                      <mat-icon class="show-password-toggle" (click)="showHidePassword()">
-                        {{ showPassword ? 'visibility' : 'visibility_off' }}
-                      </mat-icon>
-                      <span
-                        *ngIf="loginForm.form.get('password')?.hasError('required') && loginForm.form.get('password')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Password can not be empty
-                      </span>
-                      <span
-                        *ngIf="loginForm.form.hasError('wrong-credentials')"
-                        class="form-text ms-1 dark-text fw-bold d-block">Wrong credentials
-                      </span>
-                    </div>
-                    <button type="submit" class="btn-reverse mx-auto submit-form-button">
-                      <mat-spinner
-                        *ngIf="showSpinner; else noSpinner"
-                        diameter="25"
-                        strokeWidth="4"
-                      ></mat-spinner>
-                      <ng-template #noSpinner>Submit</ng-template>
-                    </button>
-                    <p class="mb-0 mt-3 text-center">
-                      <a routerLink="/reset-password" class="link">Forgot your password?</a>
-                    </p>
                   </div>
-                </div>
+                </app-gradient-container>
               </form>
               <form [formGroup]="registerForm.form" (ngSubmit)="validateForm()" class="card-back">
-                <div class="center-wrap">
-                  <div class="section text-center">
-                    <h4 class="mb-4 pb-3 dark-text">Register</h4>
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-style"
-                        id="regname"
-                        name="regname"
-                        formControlName="name"
-                        placeholder="Your Name"
-                        autocomplete="off"
-                      >
-                      <mat-icon>perm_identity</mat-icon>
-                      <span
-                        *ngIf="registerForm.form.get('name')?.hasError('required') && registerForm.form.get('name')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Name is required
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('name')?.hasError('minlength') && registerForm.form.get('name')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Minimum name length is 6 characters
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('name')?.hasError('maxlength') && registerForm.form.get('name')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Maximum name length is 16 characters
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('name')?.hasError('pattern') && registerForm.form.get('name')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Special characters not allowed
-                      </span>
-                    </div>
-                    <div class="form-group mt-2">
-                      <input
-                        type="email"
-                        class="form-style"
-                        id="regemail"
-                        name="regemail"
-                        formControlName="email"
-                        placeholder="Your Email"
-                        autocomplete="off"
-                      >
-                      <mat-icon>alternate_email</mat-icon>
-                      <span
-                        *ngIf="registerForm.form.get('email')?.hasError('required') && registerForm.form.get('email')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Email is required
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('email')?.hasError('email') && registerForm.form.get('email')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Please enter valid email address
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('email')?.hasError('auth/email-already-in-use')"
-                        class="form-text ms-1 dark-text fw-bold d-block"> {{ registerForm.form.get('email')?.getError('auth/email-already-in-use')}}
-                      </span>
-                    </div>
-                    <div class="form-group mt-2">
-                      <input
-                        type="{{ showPassword ? 'text' : 'password' }}"
-                        class="form-style"
-                        id="regpassword"
-                        name="regpassword"
-                        formControlName="password"
-                        placeholder="Your Password"
-                        autocomplete="off"
-                      >
-                      <mat-icon>lock</mat-icon>
-                      <mat-icon class="show-password-toggle" (click)="showHidePassword()">
-                        {{ showPassword ? 'visibility' : 'visibility_off' }}
-                      </mat-icon>
-                      <span
-                        *ngIf="registerForm.form.get('password')?.hasError('required') && registerForm.form.get('password')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Password is required
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('password')?.hasError('minlength') && registerForm.form.get('password')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Password must have at least 6 characters
-                      </span>
-                      <span
-                        *ngIf="registerForm.form.get('password')?.hasError('maxlength') && registerForm.form.get('password')?.touched"
-                        class="form-text ms-1 dark-text fw-bold d-block">Password can have up to 16 characters
-                      </span>
-                      <span
-                      *ngIf="registerForm.form.get('password')?.hasError('pattern') && registerForm.form.get('password')?.touched"
-                      class="form-text ms-1 dark-text fw-bold d-block">Special characters not allowed
-                    </span>
-                    </div>
-                    <div class="form-group gender mt-2">
-                      <div class="form-style">
-                        <ng-container *ngFor="let gender of ['male', 'female']">
-                          <input
-                            type="radio"
-                            [id]="gender"
-                            name="gender"
-                            formControlName="gender"
-                            [value]="gender"
-                          >
-                          <label [for]="gender" class="check">
-                            <svg width="18px" height="18px" viewBox="0 0 18 18">
-                              <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
-                              <polyline points="1 9 7 14 15 4"></polyline>
-                            </svg>
-                          </label>
-                          <span class="ms-1 me-4">{{ gender | titlecase }}</span>
-                        </ng-container>
+                <app-gradient-container padding="0">
+                  <div class="center-wrap">
+                    <div class="section text-center">
+                      <h4 class="mb-4 pb-3">Register</h4>
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          id="regname"
+                          name="regname"
+                          formControlName="name"
+                          placeholder="Your Name"
+                          autocomplete="off"
+                        >
+                        <mat-icon>perm_identity</mat-icon>
+                        <span
+                          *ngIf="registerForm.form.get('name')?.hasError('required') && registerForm.form.get('name')?.touched"
+                          class="input-validation-error-message">Name is required
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('name')?.hasError('minlength') && registerForm.form.get('name')?.touched"
+                          class="input-validation-error-message">Minimum name length is 6 characters
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('name')?.hasError('maxlength') && registerForm.form.get('name')?.touched"
+                          class="input-validation-error-message">Maximum name length is 16 characters
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('name')?.hasError('pattern') && registerForm.form.get('name')?.touched"
+                          class="input-validation-error-message">Special characters not allowed
+                        </span>
                       </div>
-                      <mat-icon>wc</mat-icon>
+                      <div class="form-group mt-2">
+                        <input
+                          type="email"
+                          class="form-style"
+                          id="regemail"
+                          name="regemail"
+                          formControlName="email"
+                          placeholder="Your Email"
+                          autocomplete="off"
+                        >
+                        <mat-icon>alternate_email</mat-icon>
+                        <span
+                          *ngIf="registerForm.form.get('email')?.hasError('required') && registerForm.form.get('email')?.touched"
+                          class="input-validation-error-message">Email is required
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('email')?.hasError('email') && registerForm.form.get('email')?.touched"
+                          class="input-validation-error-message">Please enter valid email address
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('email')?.hasError('auth/email-already-in-use')"
+                          class="input-validation-error-message"> {{ registerForm.form.get('email')?.getError('auth/email-already-in-use')}}
+                        </span>
+                      </div>
+                      <div class="form-group mt-2">
+                        <input
+                          type="{{ showPassword ? 'text' : 'password' }}"
+                          class="form-style"
+                          id="regpassword"
+                          name="regpassword"
+                          formControlName="password"
+                          placeholder="Your Password"
+                          autocomplete="off"
+                        >
+                        <mat-icon>lock</mat-icon>
+                        <mat-icon class="show-password-toggle" (click)="showHidePassword()">
+                          {{ showPassword ? 'visibility' : 'visibility_off' }}
+                        </mat-icon>
+                        <span
+                          *ngIf="registerForm.form.get('password')?.hasError('required') && registerForm.form.get('password')?.touched"
+                          class="input-validation-error-message">Password is required
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('password')?.hasError('minlength') && registerForm.form.get('password')?.touched"
+                          class="input-validation-error-message">Password must have at least 6 characters
+                        </span>
+                        <span
+                          *ngIf="registerForm.form.get('password')?.hasError('maxlength') && registerForm.form.get('password')?.touched"
+                          class="input-validation-error-message">Password can have up to 16 characters
+                        </span>
+                        <span
+                        *ngIf="registerForm.form.get('password')?.hasError('pattern') && registerForm.form.get('password')?.touched"
+                        class="input-validation-error-message">Special characters not allowed
+                      </span>
+                      </div>
+                      <div class="form-group gender mt-2">
+                        <div class="form-style">
+                          <ng-container *ngFor="let gender of ['male', 'female']">
+                            <app-gradient-checkbox
+                              type="radio"
+                              controlName="gender"
+                              [control]="registerForm.form.get('gender')"
+                              [value]="gender"
+                            >
+                            </app-gradient-checkbox>
+                            <span class="ms-1 me-4">{{ gender | titlecase }}</span>
+                          </ng-container>
+                        </div>
+                        <mat-icon>wc</mat-icon>
+                        <span
+                          *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
+                          class="input-validation-error-message position-absolute text-start">Gender is required
+                        </span>
+                      </div>
+                      <button type="submit" class="btn-square uppercase mt-4 mx-auto">
+                        <mat-spinner
+                          *ngIf="showSpinner; else noSpinner"
+                          diameter="25"
+                          strokeWidth="4"
+                        ></mat-spinner>
+                        <ng-template #noSpinner>Submit</ng-template>
+                      </button>
                     </div>
-                    <span
-                      *ngIf="registerForm.form.get('gender')?.hasError('required') && registerForm.form.get('gender')?.touched"
-                      class="form-text ms-1 dark-text fw-bold d-block text-start">Gender is required
-                    </span>
-                    <button type="submit" class="btn-reverse mx-auto mt-4 submit-form-button">
-                      <mat-spinner
-                        *ngIf="showSpinner; else noSpinner"
-                        diameter="25"
-                        strokeWidth="4"
-                      ></mat-spinner>
-                      <ng-template #noSpinner>Submit</ng-template>
-                    </button>
                   </div>
-                </div>
+                </app-gradient-container>
               </form>
             </div>
           </div>

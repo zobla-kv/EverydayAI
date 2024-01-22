@@ -1,27 +1,10 @@
 @import '../../../styles/variables.scss';
 
-a {
-	cursor: pointer;
-  transition: all 200ms linear;
-}
-a:hover { text-decoration: none; }
-.link { color: $dark-text; }
-.link:hover { color: black; }
-p {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 1.7;
-}
 h4 { font-weight: 600; }
 h6 span {
   padding: 0 20px;
   text-transform: uppercase;
   font-weight: 700;
-}
-
-.submit-form-button {
-  height: 44px;
-  margin-top: 1.5rem;
 }
 
 .form-group.gender:has(input.ng-invalid.ng-touched),
@@ -30,11 +13,12 @@ h6 span {
   -webkit-box-shadow: $error-inset;
   -moz-box-shadow: $error-inset;
 
-  .mat-icon,
-    & ~ .mat-icon {
-      color: $error-color;
-      svg path { fill: $error-color; }
-    }
+  // turn icons red
+  // .mat-icon,
+  //   & ~ .mat-icon {
+  //     color: $error-color;
+  //     svg path { fill: $error-color; }
+  //   }
 }
 .slider-checkbox:checked,
 .slider-checkbox:not(:checked) {
@@ -50,7 +34,7 @@ h6 span {
   border-radius: 8px;
   margin: 10px auto;
   cursor: pointer;
-  background-color: $main-orange-bg-color;
+  background-image: $gradient;
 }
 .slider-checkbox:checked + label:before,
 .slider-checkbox:not(:checked) + label:before {
@@ -60,7 +44,7 @@ h6 span {
   height: 24px;
   border-radius: 50%;
   background-color: $main-dark-bg-color;
-  border: 1px solid white;
+  border: 2px solid white;
   content: '';
   z-index: 20;
   top: -4px;
@@ -94,7 +78,6 @@ h6 span {
 .card-front, .card-back {
   width: 100%;
   height: auto;
-  background-color: $main-orange-bg-color;
   position: absolute;
   border-radius: 6px;
   left: 0;
@@ -110,6 +93,7 @@ h6 span {
 .slider-checkbox:checked ~ .card-3d-wrap .card-3d-wrapper {
   transform: rotateY(180deg);
 }
+
 .center-wrap {
   position: relative;
   width: 100%;
@@ -118,55 +102,32 @@ h6 span {
   z-index: 20;
 }
 
-.form-group.gender {
-  border-radius: 0.25rem;
-
-  input[type="radio"] {
-    display: none;
-    visibility: hidden;
+.form-group {
+  .form-style {
+    padding: 13px 20px 13px 55px;
+    height: 48px;
   }
 
-  .check {
-    cursor: pointer;
-    position: relative;
-  }
-  .check svg {
-    position: relative;
-    top: -2px;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke: $main-orange-bg-color;
-    stroke-width: 1.5;
-    transform: translate3d(0, 0, 0);
-    transition: all 0.2s ease;
-  }
-  .check svg path {
-    stroke-dasharray: 60;
-    stroke-dashoffset: 0;
-  }
-  .check svg polyline {
-    stroke-dasharray: 22;
-    stroke-dashoffset: 66;
-  }
-  .check:hover svg {
-    stroke: $main-orange-bg-color;
-  }
-  input[type="radio"]:checked + .check svg {
-    stroke: $main-orange-bg-color;
-  }
-  input[type="radio"]:checked + .check svg path {
-    stroke-dashoffset: 60;
-    transition: all 0.3s linear;
-  }
-  input[type="radio"]:checked + .check svg polyline {
-    stroke-dashoffset: 42;
-    transition: all 0.2s linear;
-    transition-delay: 0.15s;
-  }
+  input[type="password"] { padding-right: 55px; }
+
+  &.gender { border-radius: 0.25rem; }
 }
 
-input[type="password"] { padding-right: 55px; }
+
+.forgot-password {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.7;
+
+  a {
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
 
 /* MEDIA QUERIES */
 // smaller than 576px

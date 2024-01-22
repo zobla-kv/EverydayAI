@@ -48,7 +48,8 @@ import {
   ProductDetailsComponent,
   ProductPriceComponent,
   StarBackgroundComponent,
-  GradientContainerComponent
+  GradientContainerComponent,
+  GradientCheckboxComponent
 } from '@app/components';
 
 import {
@@ -85,6 +86,7 @@ import { FormatPipe } from './pipes/format.pipe';
     ProductPriceComponent,
     StarBackgroundComponent,
     GradientContainerComponent,
+    GradientCheckboxComponent,
 
     // Directives
     ObserveVisibilityDirective,

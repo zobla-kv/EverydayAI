@@ -2,20 +2,20 @@
 
 h1 {
   font-size: 2.5rem;
-  color: $orange-text;
   text-align: center;
   margin: 1.5rem 0 2rem 0;
 }
 
 .table-controls {
   width: 300px;
-  background-color: $main-orange-bg-color;
   margin-left: auto;
   margin-right: 0;
   display: flex;
   gap: 24px;
   justify-content: center;
   padding: 4px;
+  border: 2px solid white;
+  border-bottom: 0;
 
   .plus {
     $thickness: 4px;
@@ -50,7 +50,6 @@ h1 {
   table {
     min-width: 500px;
     margin: auto;
-    background-color: $main-orange-bg-color;
 
     td {
       padding-top: 0.8rem;
@@ -62,8 +61,6 @@ h1 {
         gap: 2px;
       }
     }
-
-    .mat-icon { color: $main-dark-bg-color; }
 
     .product-img {
       width: 75px;
@@ -105,7 +102,11 @@ h1 {
       .product-metadata-item[item="fileSizeInMb"] .mat-icon { transform:scale(1); }
     }
     .mat-column-active {
-      .mat-icon.active { color: $toast-green-bg-color; }
+      .mat-icon {
+        -webkit-text-fill-color: unset;
+        &.active { color: $toast-green-bg-color; }
+        &.inactive { color: $toast-red-bg-color; }
+      }
     }
     .mat-column-actions {
       text-align: right;
@@ -140,10 +141,6 @@ h1 {
   display: block;
   width: 15px;
   height: 15px;
-}
-
-.mat-mdc-paginator {
-  background-color: $main-dark-bg-color;
 }
 
 /* MEDIA QUERIES */

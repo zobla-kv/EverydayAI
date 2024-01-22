@@ -105,14 +105,10 @@ export class AuthService {
     this.userState$.pipe(skip(1), first()).subscribe(() => {
       const previousRoute = this._previousRouteService.getPreviousUrl();
       // in case of email verification go back to home page and not previous route
-      if (previousRoute.includes('auth/verify')) {
+      if (!previousRoute || previousRoute.includes('auth/verify')) {
         this._router.navigate(['/']);
       }
-      else if (previousRoute) {
-        this._router.navigateByUrl(previousRoute)
-      } else {
-        this._router.navigate(['/']);
-      }
+      this._router.navigateByUrl(previousRoute)
     });
   }
 

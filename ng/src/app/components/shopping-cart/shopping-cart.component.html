@@ -245,7 +245,7 @@
                           [matTooltipDisabled]="cart && cart.items.length > 0"
                         >
                           <button type="submit"
-                            class="btn-reverse submit-form-button btn-lg mx-auto"
+                            class="btn-reverse btn-lg mx-auto"
                             [ngClass]="{ 'disabled': cart && cart.items.length === 0 }"
                           >
                             <mat-spinner *ngIf="showSubmitButtonSpinner; else purchase" diameter="25" strokeWidth="4"></mat-spinner>

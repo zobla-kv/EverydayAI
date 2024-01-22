@@ -1,0 +1,45 @@
+@import '../../styles/variables.scss';
+
+input {
+  display: none;
+  visibility: hidden;
+}
+
+.check {
+  cursor: pointer;
+  position: relative;
+}
+.check svg {
+  position: relative;
+  top: -2px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  // stroke: black;
+  stroke-width: 1.5;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
+}
+.check svg path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
+}
+.check svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66;
+}
+.check:hover svg {
+  // stroke: black;
+}
+input:checked + .check svg {
+  // stroke: black;
+}
+input:checked + .check svg path {
+  stroke-dashoffset: 60;
+  transition: all 0.3s linear;
+}
+input:checked + .check svg polyline {
+  stroke-dashoffset: 42;
+  transition: all 0.2s linear;
+  transition-delay: 0.15s;
+}
