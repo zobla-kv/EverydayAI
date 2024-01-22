@@ -1,114 +1,113 @@
-<section class="h-100" class="shopping-cart-outer-wrapper">
-  <div class="container pt-5 px-0 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
-        <div class="card shopping-card-inner-wrapper">
-          <div class="card-body p-md-4">
+<div class="container px-0 h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col">
+      <div class="shopping-card-inner-wrapper">
 
-            <h5 class="mb-3 ps-2">
-              <a routerLink="/products" class="d-inline-flex gap-1 dark-text text-decoration-underline">
-                <mat-icon class="rotate-180">arrow_right_alt</mat-icon>
-                <span>Continue shopping</span>
-              </a>
-            </h5>
-            <hr>
+        <app-gradient-container>
+          <h5 class="mb-3 ps-2">
+            <a routerLink="/products" class="d-inline-flex gap-1 text-reset text-decoration-underline">
+              <mat-icon class="white rotate-180">arrow_right_alt</mat-icon>
+              <span>Continue shopping</span>
+            </a>
+          </h5>
 
-            <mat-spinner
-              *ngIf="showLoadSpinner; else content"
-              diameter="50"
-              strokeWidth="5"
-              class="reverse absolute-center mt-5"
-            ></mat-spinner>
+          <hr>
 
-            <ng-template #content>
-              <div class="row">
-                <div class="col-lg-7 cart-items-column-wrapper">
+          <mat-spinner
+            *ngIf="showLoadSpinner; else content"
+            diameter="50"
+            strokeWidth="5"
+            class="absolute-center mt-5"
+          ></mat-spinner>
 
-                  <div class="d-flex justify-content-flex-start align-items-center mb-2 ps-2">
-                    <div>
-                      <p class="mb-1">Shopping cart</p>
-                      <p>You have {{ cart.items.length }} items</p>
-                    </div>
+          <ng-template #content>
+            <div class="row mb-2">
+              <div class="col-lg-7 cart-items-column-wrapper">
 
-                    <!-- // TODO: sort commented out -->
-                    <!-- <div>
-                      <p class="mb-0"><span class="text-muted">Sort by:</span>
-                        <a href="#!"class="text-body">
-                          price
-                          <mat-icon>keyboard_arrow_down</mat-icon>
-                        </a>
-                      </p>
-                    </div> -->
+                <div class="d-flex justify-content-flex-start align-items-center mb-2 ps-2">
+                  <div>
+                    <p class="mb-1">Shopping cart</p>
+                    <p>You have {{ cart.items.length }} items</p>
                   </div>
 
-                  <div class="cart-items-wrapper">
-                    <div class="card cart-item" *ngFor="let product of getCurrentCart()" [ngClass]="{'hovered' : product.spinners.cart}">
-                      <div class="card-body p-2">
-                        <div class="d-flex justify-content-between">
-                          <div class="d-flex flex-column flex-sm-row flex-grow-1 align-items-center">
-                            <div>
-                              <!-- TODO: img alt -->
-                              <img src="{{ product.watermarkImgPath }}" class="rounded-3" alt="Shopping item">
-                            </div>
-                            <div class="product-metadata ms-0 ms-sm-3">
-                              <h5 class="product-title">{{ product.title }}</h5>
-                              <div class="d-flex gap-1 align-items-center">
-                                <div
-                                  class="product-metadata-item"
-                                  *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
-                                  [attr.item]="metadata.key"
-                                >
-                                  <mat-icon [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
-                                    {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
-                                  </mat-icon>
-                                  <span class="mb-0">{{ product.metadata[metadata.key] }}</span>
-                                  <div class="vr"></div>
-                                </div>
+                  <!-- // TODO: sort commented out -->
+                  <!-- <div>
+                    <p class="mb-0"><span class="text-muted">Sort by:</span>
+                      <a href="#!"class="text-body">
+                        price
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                      </a>
+                    </p>
+                  </div> -->
+                </div>
+
+                <div class="cart-items-wrapper">
+                  <div class="cart-item rounded" *ngFor="let product of getCurrentCart()" [ngClass]="{'hovered' : product.spinners.cart}">
+                    <div class="p-2">
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column flex-sm-row flex-grow-1 align-items-center">
+                          <div>
+                            <!-- TODO: img alt -->
+                            <img src="{{ product.watermarkImgPath }}" class="rounded-3" alt="Shopping item">
+                          </div>
+                          <div class="product-metadata ms-0 ms-sm-3">
+                            <h5 class="product-title">{{ product.title }}</h5>
+                            <div class="d-flex gap-1 align-items-center">
+                              <div
+                                class="product-metadata-item"
+                                *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
+                                [attr.item]="metadata.key"
+                              >
+                                <mat-icon class="white" [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+                                  {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+                                </mat-icon>
+                                <span class="mb-0">{{ product.metadata[metadata.key] }}</span>
+                                <div class="vr"></div>
                               </div>
                             </div>
                           </div>
-                          <div class="cart-item-price d-flex flex-row align-items-center gap-2 gap-sm-3">
-                            <div>
-                              <!-- dollar character may not show properly if h5 changed because of font family -->
-                              <h5 class="product-price mb-0">
-                                <span *ngIf="product.discount > 0" class="product-old-price">{{ product.price | number : '1.2-2' }}&nbsp;$</span>
-                                <span>{{ utilService.getProductPrice(product) }}&nbsp;$</span>
-                              </h5>
-                            </div>
-                            <mat-icon
-                              *ngIf="!product.spinners.cart"
-                              class="icon-delete"
-                              (click)="removeFromCart(product)"
-                            >delete_forever
-                            </mat-icon>
-                            <mat-spinner
-                              *ngIf="product.spinners.cart"
-                              diameter="25"
-                              strokeWidth="4"
-                              class="reverse"
-                            ></mat-spinner>
+                        </div>
+                        <div class="cart-item-price d-flex flex-row align-items-center gap-2 gap-sm-3">
+                          <div>
+                            <!-- dollar character may not show properly if h5 changed because of font family -->
+                            <p class="product-price mb-0">
+                              <span *ngIf="product.discount > 0" class="product-old-price">{{ product.price | number : '1.2-2' }}&nbsp;$</span>
+                              <span>{{ utilService.getProductPrice(product) }}&nbsp;$</span>
+                            </p>
                           </div>
+                          <mat-icon
+                            *ngIf="!product.spinners.cart"
+                            class="icon-delete white"
+                            (click)="removeFromCart(product)"
+                          >delete_forever
+                          </mat-icon>
+                          <mat-spinner
+                            *ngIf="product.spinners.cart"
+                            diameter="25"
+                            strokeWidth="4"
+                          ></mat-spinner>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <mat-paginator
-                    #paginator
-                    *ngIf="screenSize !== 'xs' && cart.items.length > config.pageSize"
-                    class="mt-1"
-                    [length]="cart.items.length"
-                    pageSize="{{ config.pageSize }}"
-                    hidePageSize="true"
-                    showFirstLastButtons="true"
-                    (page)="changePage()"
-                  ></mat-paginator>
-
                 </div>
+                <mat-paginator
+                  #paginator
+                  *ngIf="screenSize !== 'xs' && cart.items.length > config.pageSize"
+                  class="mt-1"
+                  [length]="cart.items.length"
+                  pageSize="{{ config.pageSize }}"
+                  hidePageSize="true"
+                  showFirstLastButtons="true"
+                  (page)="changePage()"
+                ></mat-paginator>
 
-                <div class="col-lg-5 payment-column-wrapper mt-4">
+              </div>
 
-                    <div class="card text-white rounded-3 payment-wrapper">
-                    <div class="card-body">
+              <div class="col-lg-5 mt-4">
+
+                  <app-gradient-container>
+                    <div class="text-white rounded-3 payment-wrapper">
                       <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="mb-0">Card details</h5>
                       </div>
@@ -127,7 +126,7 @@
                         <div class="form-group mb-3">
                           <input
                             type="text"
-                            class="form-style white-input"
+                            class="form-style"
                             name="card-holder-name"
                             formControlName="holder_name"
                             placeholder="Cardholder's name"
@@ -135,15 +134,15 @@
                           />
                           <span
                             *ngIf="paymentForm.get('holder_name')?.hasError('required') && paymentForm.get('holder_name')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Cardholder's name is required
+                            class="input-validation-error-message">Cardholder's name is required
                           </span>
                           <span
                             *ngIf="paymentForm.get('holder_name')?.hasError('maxlength') && paymentForm.get('holder_name')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Cardholder's name cannot be over 24 characters long
+                            class="input-validation-error-message">Cardholder's name cannot be over 24 characters long
                           </span>
                           <span
                             *ngIf="paymentForm.get('holder_name')?.hasError('pattern') && paymentForm.get('holder_name')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Cardholder's name can only contain alphabetic characters and spaces
+                            class="input-validation-error-message">Cardholder's name can only contain alphabetic characters and spaces
                           </span>
                           <!-- <label class="form-label" for="card-holder-name">Cardholder's name</label> -->
                         </div>
@@ -151,22 +150,22 @@
                         <div class="form-group mb-3">
                           <input
                             type="text"
-                            class="form-style white-input"
+                            class="form-style"
                             name="card-number"
                             formControlName="number"
                             placeholder="Card number"
                           />
                           <span
                             *ngIf="paymentForm.get('number')?.hasError('required') && paymentForm.get('number')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Card number is required
+                            class="input-validation-error-message">Card number is required
                           </span>
                           <span
                             *ngIf="paymentForm.get('number')?.hasError('maxlength') && paymentForm.get('number')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Card number cannot be over 20 characters long
+                            class="input-validation-error-message">Card number cannot be over 20 characters long
                           </span>
                           <span
                             *ngIf="paymentForm.get('number')?.hasError('pattern') && paymentForm.get('number')?.touched"
-                            class="form-text text-white ms-1 fw-bold d-block">Card number can only contain numbers and dash (-)
+                            class="input-validation-error-message">Card number can only contain numbers and dash (-)
                           </span>
                           <!-- <label class="form-label" for="card-number">Card number</label> -->
                         </div>
@@ -176,22 +175,22 @@
                             <div class="form-group mb-3">
                               <input
                                 type="text"
-                                class="form-style white-input"
+                                class="form-style"
                                 name="card-expiration-date"
                                 formControlName="expiration_date"
                                 placeholder="Exp. (MM/YYYY)"
                               />
                               <span
                                 *ngIf="paymentForm.get('expiration_date')?.hasError('required') && paymentForm.get('expiration_date')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card expiration date is required
+                                class="input-validation-error-message">Card expiration date is required
                               </span>
                               <span
                                 *ngIf="paymentForm.get('expiration_date')?.hasError('maxlength') && paymentForm.get('expiration_date')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card expiration date cannot be over 7 characters long
+                                class="input-validation-error-message">Card expiration date cannot be over 7 characters long
                               </span>
                               <span
                                 *ngIf="paymentForm.get('expiration_date')?.hasError('pattern') && paymentForm.get('expiration_date')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card expiration date can only contain numbers and slash (/)
+                                class="input-validation-error-message">Card expiration date can only contain numbers and slash (/)
                               </span>
                               <!-- <label class="form-label" for="card-expiration-date">Expiration</label> -->
                             </div>
@@ -200,41 +199,41 @@
                             <div class="form-group">
                               <input
                                 type="text"
-                                class="form-style white-input"
+                                class="form-style"
                                 name="card-cvv"
                                 formControlName="cvc"
                                 placeholder="Cvc"
                               />
                               <span
                                 *ngIf="paymentForm.get('cvc')?.hasError('required') && paymentForm.get('cvc')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card cvc is required
+                                class="input-validation-error-message">Card cvc is required
                               </span>
                               <span
                                 *ngIf="paymentForm.get('cvc')?.hasError('minlength') && paymentForm.get('cvc')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card cvc must be minimum 3 characters long
+                                class="input-validation-error-message">Card cvc must be minimum 3 characters long
                               </span>
                               <span
                                 *ngIf="paymentForm.get('cvc')?.hasError('maxlength') && paymentForm.get('cvc')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card cvc can be maximum 5 characters long
+                                class="input-validation-error-message">Card cvc can be maximum 5 characters long
                               </span>
                               <span
                                 *ngIf="paymentForm.get('cvc')?.hasError('pattern') && paymentForm.get('cvc')?.touched"
-                                class="form-text text-white ms-1 fw-bold d-block">Card cvc can only contain numbers
+                                class="input-validation-error-message">Card cvc can only contain numbers
                               </span>
                               <!-- <label class="form-label" for="card-cvc">Cvc</label> -->
                             </div>
                           </div>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-3">
 
-                        <div class="d-flex justify-content-between">
+                        <!-- <div class="d-flex justify-content-between">
                           <p class="mb-2">Subtotal</p>
                           <p class="mb-2">${{ cart.totalSum | number : '1.2-2' }}</p>
-                        </div>
+                        </div> -->
 
                         <div class="d-flex justify-content-between mb-4">
-                          <p class="mb-2">Total(Incl. taxes)</p>
+                          <p class="mb-2">Total</p>
                           <p class="mb-2">${{ cart.totalSum | number : '1.2-2' }}</p>
                         </div>
 
@@ -245,7 +244,7 @@
                           [matTooltipDisabled]="cart && cart.items.length > 0"
                         >
                           <button type="submit"
-                            class="btn-reverse btn-lg mx-auto"
+                            class="btn-square uppercase btn-lg mx-auto"
                             [ngClass]="{ 'disabled': cart && cart.items.length === 0 }"
                           >
                             <mat-spinner *ngIf="showSubmitButtonSpinner; else purchase" diameter="25" strokeWidth="4"></mat-spinner>
@@ -255,17 +254,16 @@
 
                       </form>
 
-                    </div>
                   </div>
-
-                </div>
+                </app-gradient-container>
 
               </div>
-            </ng-template>
 
-          </div>
-        </div>
+            </div>
+          </ng-template>
+        </app-gradient-container>
+
       </div>
     </div>
   </div>
-</section>
+</div>

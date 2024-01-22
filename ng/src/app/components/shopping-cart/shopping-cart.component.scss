@@ -1,152 +1,120 @@
 @import '../../styles/variables';
 
-.shopping-cart-outer-wrapper {
-  background-color: $main-dark-bg-color;
+.shopping-card-inner-wrapper {
+  height: 670px;
 
-  .shopping-card-inner-wrapper {
-    height: 670px;
-    background-color: $main-orange-bg-color;
+  .cart-items-column-wrapper {
+    mat-spinner { top: 180px; }
 
+    .cart-items-wrapper {
+      height: 416px;
 
-    .cart-items-column-wrapper {
-      mat-spinner { top: 180px; }
-      .mat-mdc-paginator {
-        color: white;
-        font-weight: 500;
-        &::ng-deep.mat-mdc-paginator-range-label { color: white; }
-        &::ng-deep button .mat-mdc-paginator-icon  { fill: white; }
-      }
+      .cart-item {
+        margin-top: 0.75rem;
+        background-color: inherit;
+        border: none;
+        transition: all 1s;
+        position: relative;
 
-      .cart-items-wrapper {
-        height: 416px;
-
-        .cart-item {
-          // TODO: choose text colors of things here
-          margin-top: 0.75rem;
-          background-color: inherit;
-          border: none;
-          transition: all 1s;
-
-          &:hover,
-          &.hovered {
-            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
-            -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
-            -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
-            transition: all 1s
-          }
-
-          img { width: 70px; height: 70px; }
-
-          .product-title {
-            color: white;
-            max-height: 50px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            font-size: 1.25rem;
-          }
-
-          .product-price {
-            color: white;
-            position: relative;
-            // TODO: on breakpoints, styles are repeated for this. No common place
-            span {
-              display: inline;
-              text-align: right;
-
-              &.product-old-price {
-                position: relative;
-                top: 0;
-                left: -10px;
-              }
-            }
-          }
-
-          .product-metadata-item {
-            align-items: center;
-            gap: 2px;
-
-            .mat-icon {
-              height: 26px;
-              ::ng-deep svg path { stroke-width: 0; }
-            }
-            &[item="tier"] {
-              .mat-icon ::ng-deep svg path { stroke-width: 1px; }
-            }
-            &[item="extension"] {
-              .mat-icon { transform: scale(0.9); }
-            }
-
-            span { font-size: 14px; }
-
-            .vr { min-height: 16px; margin: auto 4px; }
-            &:last-child .vr { display: none; }
-          }
-
-          .icon-delete { color: white; cursor: pointer; }
-          mat-spinner { top: 0; }
-
+        &:hover,
+        &.hovered {
+          box-shadow: 0 0 30px 0 rgba(255, 255, 255, 0.3);
+          -webkit-box-shadow: 0 0 30px 0 rgba(255, 255, 255, 0.3);
+          -moz-box-shadow: 0 0 30px 0 rgba(255, 255, 255, 0.3);
+          transition: all 1s
         }
+
+        img { width: 70px; height: 70px; }
+
+        .product-title {
+          color: white;
+          max-height: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          font-size: 1.25rem;
+        }
+
+        .product-price {
+          color: white;
+          font-size: 20px;
+          font-family: $product-metadata-font;
+          // TODO: on breakpoints, styles are repeated for this. No common place
+          span {
+            display: inline;
+            text-align: right;
+
+            &.product-old-price {
+              position: relative;
+              top: 0;
+              left: -10px;
+            }
+          }
+        }
+
+        .product-metadata-item {
+          align-items: center;
+          gap: 2px;
+          color: white;
+
+          .mat-icon {
+            height: 26px;
+            ::ng-deep svg path { stroke-width: 0; }
+          }
+          &[item="tier"] {
+            .mat-icon ::ng-deep svg path { stroke-width: 1px; }
+          }
+          &[item="extension"] {
+            .mat-icon { transform: scale(0.9); }
+          }
+
+          span { font-size: 14px; }
+
+          .vr { min-height: 16px; margin: auto 4px; }
+          &:last-child .vr { display: none; }
+        }
+
+        .icon-delete { color: white; cursor: pointer; }
+        mat-spinner { top: 0; }
+
       }
     }
+  }
 
-    .payment-column-wrapper {
-      // position: relative;
-      // left: 40px;
-      .payment-wrapper {
-        background-color: $main-orange-bg-color;
-        border: 0;
-        border-radius: 8px;
-        box-shadow: $shadow-lifted;
-        -webkit-box-shadow: $shadow-lifted;
-        -moz-box-shadow: $shadow-lifted;
+  .payment-wrapper {
+    border: 0;
+    border-radius: 8px;
+
+    height: 100%;
+
+    .form-group {
+      input { padding: 0.5rem 0.75rem; }
+      input::placeholder { font-size: 1rem; }
+    }
+
+    .icon-wrapper {
+      display: flex;
+      column-gap: 0.25rem;
+
+      // svg not encapsulated
+      &::ng-deep .mat-icon {
         height: 100%;
+        width: 60px;
 
-        .form-group {
-          input { padding: 0.5rem 0.75rem; }
-          input::placeholder { font-size: 1rem; }
-        }
+        svg path { fill: unset; }
+      }
 
-        .icon-wrapper {
-          display: flex;
-          column-gap: 0.25rem;
-
-          // svg not encapsulated
-          &::ng-deep .mat-icon {
-            height: 100%;
-            width: 60px;
-
-            svg path { fill: unset; }
-          }
-
-          // for mastercard
-          img {
-            width: 60px;
-            border-radius: 2px;
-          }
-        }
+      // mastercard
+      img {
+        width: 60px;
+        border-radius: 3px;
       }
     }
-  }
-
-  .mat-icon {
-    color: $main-dark-bg-color;
-  }
-
-  .btn {
-    // border: 1px solid;
-    width: 100%;
-    // box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.5);
-    // background-color: $main-dark-bg-color;
-    color: white;
-  }
-
-  .btn:hover {
-    // box-shadow: 0 0px 20px 0 rgba(20, 20, 20, 0.2);
   }
 }
+
 
 /* MEDIA QUERIES */
 // smaller than 1200px
@@ -163,7 +131,7 @@
     display: inline !important;
     &.product-old-price { left: -10px !important; }
   }
-  .shopping-cart-outer-wrapper .shopping-card-inner-wrapper {
+  .shopping-card-inner-wrapper {
     height: auto;
     min-height: 780px;
     .cart-items-column-wrapper,
@@ -181,36 +149,33 @@
 
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  .shopping-cart-outer-wrapper {
-    width: unset;
-    .cart-items-wrapper {
-      height: auto !important;
+  .cart-items-wrapper {
+    height: auto !important;
 
-      .cart-item {
-        img { width: 100px !important; height: 100px !important; }
-        box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
-        -webkit-box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
-        -moz-box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
+    .cart-item {
+      img { width: 100px !important; height: 100px !important; }
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.3);
 
-        .product-metadata {
-          width: 100%;
+      .product-metadata {
+        width: 100%;
 
-          .product-title {
-            margin-top: 0.25rem;
-            margin-bottom: 1rem;
-            text-align: center;
-          }
+        .product-title {
+          margin-top: 0.25rem;
+          margin-bottom: 1rem;
+          text-align: center;
         }
+      }
 
-        .cart-item-price {
-          position: absolute;
-          right: 6px;
-          bottom: 12px;
+      .cart-item-price {
+        position: absolute;
+        right: 6px;
+        bottom: 12px;
 
-          &:has(.product-old-price) .mat-icon {
-            position: relative;
-            top: 12px;
-          }
+        &:has(.product-old-price) .mat-icon {
+          position: relative;
+          top: 12px;
         }
       }
     }
@@ -218,7 +183,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-  .card-body > div:first-child {
+  .product-metadata {
     flex-direction: column;
     align-items: center;
 

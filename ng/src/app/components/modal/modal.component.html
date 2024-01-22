@@ -22,7 +22,7 @@
         <div class="modal-footer" *ngIf="!hideFooter">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
           <button type="button" class="btn btn-primary" (click)="handleConfirm()">
-            <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4" class="reverse"></mat-spinner>
+            <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4"></mat-spinner>
             <ng-template #action>{{ actionButtonText }}</ng-template>
           </button>
         </div>

@@ -222,22 +222,6 @@ hr.gradient {
   letter-spacing: 1px;
 }
 
-.btn-reverse {
-  @extend .btn;
-  background-color: $main-dark-bg-color;
-  color: white;
-  transition: all .3s ease;
-
-  &:hover {
-    background-color: $main-orange-bg-color;
-    color: black;
-  }
-
-  &:active {
-    background-color: $main-dark-bg-color !important;
-    color: white !important;
-  }
-}
 
 /* scrollbar */
 ::-webkit-scrollbar-track
@@ -307,23 +291,8 @@ form {
         //   svg path { fill: $error-color; }
         // }
       }
-
-      &.white-input {
-        background-color: rgb(226, 226, 226);
-        color: $dark-text;
-
-        &.ng-invalid.ng-touched {
-          -webkit-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
-          -moz-box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
-          box-shadow: inset 0px 0px 39px 13px rgba(255,0,0,1);
-        }
-
-        &::placeholder {
-          color: $dark-text;
-          opacity: 0.5;
-        }
-      }
     }
+
     .form-style:focus,
     .form-style:active {
       border: none;
@@ -373,9 +342,6 @@ form {
 *:has(> mat-spinner) { user-select: none !important; cursor: default !important; }
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: white !important;
-}
-.mat-mdc-progress-spinner.reverse .mdc-circular-progress__indeterminate-circle-graphic {
-  stroke: $main-dark-bg-color !important;
 }
 
 .mat-icon {
