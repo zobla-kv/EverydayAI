@@ -111,7 +111,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
       setTimeout(() => {
         this.showProducts();
         this._firebaseService.isProductListFetching$.next(false);
-      }, 500);
+      }, 410);
     });
 
     // singe image loaded

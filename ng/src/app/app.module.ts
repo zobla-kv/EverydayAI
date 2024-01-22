@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
-import { DecimalPipe } from '@angular/common';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -59,8 +58,9 @@ import {
   ScrollSpyDirective
 } from '@app/directives';
 
-// not working with barrel
-import FormatPipe from './pipes/format.pipe';
+
+// doesn't work well with barrel
+import { FormatPipe } from './pipes/format.pipe';
 
 @NgModule({
   declarations: [
@@ -131,7 +131,6 @@ import FormatPipe from './pipes/format.pipe';
       }
     },
     { provide: RouteReuseStrategy, useClass: ReuseStrategy },
-    DecimalPipe,
     FormatPipe
   ],
   bootstrap: [AppComponent]

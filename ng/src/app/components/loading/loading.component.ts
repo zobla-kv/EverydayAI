@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LoadingComponent implements OnInit {
 
-  @Input() variant: 'sketch' | 'ellipsis';
+  @Input() variant: 'gooey' | 'ellipsis' = 'gooey';
 
   ngOnInit(): void {
     if (!this.variant) {

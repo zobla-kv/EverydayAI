@@ -47,7 +47,7 @@
     </div>
     <!-- ********* -->
     <!-- LOGGED OUT -->
-    <div class="header-item profile" *ngIf="!isAuthenticated">
+    <div class="profile" *ngIf="!isAuthenticated">
       <button type="button" class="btn" (click)="handleAuthButton('login')">
         <span>Login</span>
       </button>

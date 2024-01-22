@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
@@ -14,18 +13,19 @@ import {
   AuthService,
   UtilService,
   ProductService,
-  ProductLikeService
+  FirebaseService
 } from '@app/services';
 
-// TODO: erorr images display, to be handled in cloudinary transformations? + local
-// maybe it fails to show sometimes because of settimeout time
+import {
+  FormatPipe
+} from '@app/pipes';
 
 @Component({
   selector: 'app-product-item',
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.scss']
 })
-export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductItemComponent implements OnInit, OnDestroy {
   // tooltip that shows number of likes on product
   @ViewChild('tooltip') likesTooltip: MatTooltip;
 
@@ -56,24 +56,23 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private _authService: AuthService,
     private _productService: ProductService,
-    public   utilService: UtilService,
-    private _productLikeService: ProductLikeService,
-    private _decimalPipe: DecimalPipe
+    private _firebaseService: FirebaseService,
+    private _formatPipe: FormatPipe,
+    public   utilService: UtilService
   ) {}
 
   ngOnInit() {
     // TODO: this solves 404 issue with items not displayed, displaying them but without animation
     setTimeout(() => this.disableAnimation = true, 3000);
-    this.userStateSub$ = this._authService.userState$.subscribe(user => this.user = user);
-    this.likesSub$ = this._productLikeService.likes$.subscribe((likes: string[]) => {
-      if (this.actions.includes(ProductActions.LIKE)) {
-        this.isLiked = likes.includes(this.product.id);
-      }
+    this.isLiked = this.product.likes > 0 ? true : false;
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
+      this.user = user;
+      this.isLiked = user?.productLikes.includes(this.product.id) ? true : false;
     });
   }
 
   ngAfterViewInit() {
-    this.likesTooltip && (this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes));
+    this.likesTooltip && (this.likesTooltip.message = this._formatPipe.transform(this.product.likes));
   }
 
   // handles add to cart
@@ -91,7 +90,6 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     this._productService.download(this.product);
   }
 
-  // TODO: move likes func. to product service
   // handle like
   handleLike() {
     this.likesTooltip.show();
@@ -101,8 +99,9 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     // fix flick on click
     this.likesTooltip.tooltipClass = 'keep-position';
     this.product.likes++;
-    this.likesTooltip.message = this.formatNumberOfLikes(this.product.likes);
-    this._productLikeService.addLike(this.product.id, this.user);
+    this.isLiked = true;
+    this.likesTooltip.message = this._formatPipe.transform(this.product.likes);
+    this._firebaseService.addProductLike(this.product.id, this.user);
   }
 
   getLikeIcon() {
@@ -122,14 +121,8 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
     this.likesTooltip.disabled = true;
   }
 
-  // add thousand separator to number of likes and change to string
-  formatNumberOfLikes(likes: number): string {
-    return this._decimalPipe.transform(likes, '.0')?.replace(',', '.') + '';
-  }
-
   ngOnDestroy(): void {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
-    this.likesSub$ && this.likesSub$.unsubscribe();
   }
 
 }

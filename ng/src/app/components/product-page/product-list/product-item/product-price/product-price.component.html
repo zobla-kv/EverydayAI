@@ -1,5 +1,5 @@
 <div class="position-relative flex-center">
-  <mat-icon class="price-icon" [svgIcon]="product.metadataIconMap.get('price')?.iconName!"></mat-icon>
+  <mat-icon [svgIcon]="product.metadataIconMap.get('price')?.iconName!"></mat-icon>
   <ng-container *ngIf="product.discount > 0">
     <ng-container *ngIf="product.discount < 100">
       <span class="product-old-price">{{ product.price | number : '1.2-2' }}</span>

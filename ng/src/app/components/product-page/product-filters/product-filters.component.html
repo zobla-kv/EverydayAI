@@ -12,7 +12,7 @@
         </div>
         <div *ngIf="filter.key === 'sort'" class="filter-sort">
           <span>{{ filter.value.value.split(' ')[0] | titlecase }}</span>
-          <mat-icon>{{ sortIconMap.get(filter.value.value) }}</mat-icon>
+          <mat-icon class="white">{{ sortIconMap.get(filter.value.value) }}</mat-icon>
         </div>
       </ng-container>
       </span>
@@ -22,20 +22,22 @@
   <div class="filter-dropdown">
     <ng-container *ngFor="let filter of filters | keyvalue: keepOrder">
       <div *ngIf="filter.key !== 'search'" class="filter-dropdown-item" [attr.filter]="filter.key">
-        <ul class="list-unstyled">
-          <li *ngFor="let value of filter.value.possibleValues" (click)="handleFilterSelect(filter.key, value)">
-            <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'" [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
-            <div *ngIf="filter.key === 'color'" class="filter-color">
-              <div class="color-square" [ngStyle]="{'background' : colorFilterMap.get(value)}">
-                <span [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+        <app-gradient-container padding="{{ filter.key === 'sort' ? '0.5rem' : '0.5rem 0' }}">
+          <ul class="list-unstyled">
+            <li *ngFor="let value of filter.value.possibleValues" (click)="handleFilterSelect(filter.key, value)">
+              <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'" [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+              <div *ngIf="filter.key === 'color'" class="filter-color">
+                <div class="color-square" [ngStyle]="{'background' : colorFilterMap.get(value)}">
+                  <span [ngClass]="{'active': value === filter.value.value}">{{ value | titlecase }}</span>
+                </div>
               </div>
-            </div>
-            <div *ngIf="filter.key === 'sort'" class="filter-sort">
-              <span [ngClass]="{'active': value === filter.value.value}">{{ value.split(' ')[0] | titlecase }}</span>
-              <mat-icon>{{ sortIconMap.get(value) }}</mat-icon>
-            </div>
-          </li>
-        </ul>
+              <div *ngIf="filter.key === 'sort'" class="filter-sort">
+                <span [ngClass]="{'active': value === filter.value.value}">{{ value.split(' ')[0] | titlecase }}</span>
+                <mat-icon class="white">{{ sortIconMap.get(value) }}</mat-icon>
+              </div>
+            </li>
+          </ul>
+        </app-gradient-container>
       </div>
     </ng-container>
   </div>

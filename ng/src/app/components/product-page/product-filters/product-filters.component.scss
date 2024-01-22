@@ -16,25 +16,17 @@
 
     .filter-item {
       cursor: default;
-      &.active {
-        color: $main-orange-bg-color !important;
-        mat-icon { color: $main-orange-bg-color !important; }
-      }
       &[filter="price"] { white-space: nowrap; }
-      &[filter="sort"] {
-        margin-left: auto;
-        mat-icon { color: white; }
-      }
+      &[filter="sort"] { margin-left: auto; }
     }
 
     .active-filter-arrow {
       position: absolute;
-      width: 0;
-      height: 0;
-      border-width: 10px;
-      border-style: solid;
-      border-color: transparent transparent $main-orange-bg-color;
-      top: 32px;
+      width: 20px;
+      height: 11px;
+      top: 40px;
+      background-image: $gradient;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
       opacity: 0;
       transition: .20s ease;
       pointer-events: none;
@@ -52,9 +44,6 @@
     .filter-dropdown-item {
       position: absolute;
       transition: .25s ease;
-      background-color: $main-dark-bg-color;
-      border: 1px solid white;
-      border-radius: 12px;
       overflow: hidden;
       z-index: -1;
       text-align: center;
@@ -62,15 +51,12 @@
 
       ul {
         margin: 0.25rem 0;
-        &:has(.filter-color) { margin: 1rem 0; }
-        &:has(.filter-sort) { margin: 0.5rem 0; }
         li {
           text-align: center;
           cursor: pointer;
           user-select: none;
           &:hover, span.active {
-            background-color: $main-orange-bg-color;
-            mat-icon { color: white; }
+            background: $gradient;
           }
 
           &:has(.filter-color) {
@@ -81,13 +67,10 @@
         }
       }
 
-      &[filter="orientation"] { width: 150px; }
+      &[filter="orientation"] { width: 130px; }
       &[filter="price"] { width: 100px; }
       &[filter="color"] { width: 150px; }
-      &[filter="sort"] {
-        width: 120px;
-        padding: 0 0.75rem;
-      }
+      &[filter="sort"] { width: 120px; }
     }
   }
 

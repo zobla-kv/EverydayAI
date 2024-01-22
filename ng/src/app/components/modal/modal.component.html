@@ -1,4 +1,5 @@
 
+<div class="modal-backdrop" *ngIf="isOpen"></div>
 <div
   [id]="id"
   class="modal"
@@ -9,21 +10,23 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" *ngIf="id === 'product_details'">{{ title }}</h1>
-        <p class="modal-title" *ngIf="id !== 'product_details'">{{ title }}</p>
-        <mat-icon (click)="closeModal()">close_icon</mat-icon>
-      </div>
-      <div class="modal-body">
-        <ng-content></ng-content>
-      </div>
-      <div class="modal-footer" *ngIf="!hideFooter">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="handleConfirm()">
-          <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4" class="reverse"></mat-spinner>
-          <ng-template #action>{{ actionButtonText }}</ng-template>
-        </button>
-      </div>
+      <app-gradient-container padding="0">
+        <div class="modal-header">
+          <h1 class="modal-title" *ngIf="id === 'product_details'">{{ title }}</h1>
+          <p class="modal-title" *ngIf="id !== 'product_details'">{{ title }}</p>
+          <mat-icon class="white" (click)="closeModal()">close_icon</mat-icon>
+        </div>
+        <div class="modal-body">
+          <ng-content></ng-content>
+        </div>
+        <div class="modal-footer" *ngIf="!hideFooter">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="handleConfirm()">
+            <mat-spinner *ngIf="showActionSpinner; else action" diameter="25" strokeWidth="4" class="reverse"></mat-spinner>
+            <ng-template #action>{{ actionButtonText }}</ng-template>
+          </button>
+        </div>
+      </app-gradient-container>
     </div>
   </div>
 </div>

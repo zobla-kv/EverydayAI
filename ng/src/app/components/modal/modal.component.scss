@@ -1,9 +1,13 @@
 @import '../../styles/variables.scss';
 
+.modal-backdrop {
+  opacity: 0.5;
+  z-index: 999999 // 6
+}
+
 .modal {
-  color: black;
+  color: white;
   display: none;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 999999; // 6
 
   .modal-header {
@@ -11,12 +15,7 @@
     .mat-icon { cursor: pointer ;}
   }
 
-
-  form {
-    .form-group .form-style {
-       padding-left: 1rem;
-    }
-  }
+  form .form-group .form-style { padding-left: 1rem; }
 }
 
 // TODO: ng deep and turn off view encapsulation?

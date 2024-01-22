@@ -6,9 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'format',
   pure: true
 })
-export default class FormatPipe implements PipeTransform {
+export class FormatPipe implements PipeTransform {
 
-  transform(value: number | null): string | null {
+  transform(value: number | null): string {
     // allow '0'
     if (value === undefined || value === null) {
       return '';

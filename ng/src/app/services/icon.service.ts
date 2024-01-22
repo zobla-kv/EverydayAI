@@ -18,13 +18,9 @@ export class IconService {
     { name: 'dog-head'},
     { name: 'networking'},
     { name: 'dollar' },
-    { name: 'cart-add' },
-    { name: 'cart-remove' },
     { name: 'dog-enthusiast' },
     { name: 'visa' },
     { name: 'american-express' }, // recheck during payment
-    { name: 'image-resolution' },
-    { name: 'file-type-img' },
     { name: 'tier-classic' },
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
@@ -35,7 +31,11 @@ export class IconService {
   gradientIcons: { name: string }[] = [
     { name: 'email' },
     { name: 'instagram' },
-    { name: 'payment' }
+    { name: 'payment' },
+    { name: 'cart-add' },
+    { name: 'cart-remove' },
+    { name: 'image-resolution' },
+    { name: 'file-type-img' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

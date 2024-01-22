@@ -1,47 +1,55 @@
 <div class="product-item-wrapper" [style]="{'--data-stagger': stagger}" [ngClass]="{'enableAnimation': !disableAnimation}">
   <a class="product-link" [routerLink]="product.id" [state]="product"></a>
-  <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon-outside">
+  <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon">
     <span>- {{ product.discount }} %
       <div class="glow"></div>
     </span>
   </div>
   <div *ngIf="product.isInCart" class="in-cart-icon-wrapper flex-center">
-    <mat-icon class="in-cart-icon">shopping_cart</mat-icon>
+    <app-gradient-container padding="0.25rem 0.25rem 0 0.25rem">
+      <mat-icon class="white">shopping_cart</mat-icon>
+    </app-gradient-container>
   </div>
+  <!-- TODO: alt -->
   <img src="{{ product.watermarkImgPath }}" alt="" class="pe-none">
   <p class="product-title">{{ product.title }}</p>
   <ul>
-    <li *ngFor="let action of actions">
-      <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
-      <ng-template #enableAction>
-        <!-- cart action, use download if item free -->
-        <ng-container *ngIf="action === productActions.CART">
-          <ng-container *ngIf="product.price !== 0 && product.discount < 100; else download">
-            <mat-icon *ngIf="!product.isInCart" svgIcon="cart-add" icon="cart" (click)="addToCart(); $event.stopImmediatePropagation()"></mat-icon>
-            <mat-icon *ngIf="product.isInCart" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
-          </ng-container>
-          <ng-template #download>
-            <!-- TODO: this should also show if user owns it -->
-            <mat-icon icon="download" (click)="handleDownload()">download</mat-icon>
+    <app-gradient-container padding="0.25rem">
+      <ng-container *ngFor="let action of actions; let i = index">
+        <li>
+          <mat-spinner *ngIf="product.spinners[action]; else enableAction" diameter="25" strokeWidth="5"></mat-spinner>
+          <ng-template #enableAction>
+            <!-- cart action, use download if item free -->
+            <ng-container *ngIf="action === productActions.CART">
+              <ng-container *ngIf="product.price !== 0 && product.discount < 100; else download">
+                <mat-icon *ngIf="!product.isInCart" class="white" svgIcon="cart-add" icon="cart" (click)="addToCart(); $event.stopImmediatePropagation()"></mat-icon>
+                <mat-icon *ngIf="product.isInCart" class="white" svgIcon="cart-remove" icon="cart"(click)="removeFromCart()"></mat-icon>
+              </ng-container>
+              <ng-template #download>
+                <!-- TODO: this should also show if user owns it -->
+                <mat-icon icon="download" class="white" (click)="handleDownload()">download</mat-icon>
+              </ng-template>
+            </ng-container>
+
+            <!-- like action -->
+            <mat-icon
+              *ngIf="action === productActions.LIKE"
+              #tooltip="matTooltip"
+              matTooltip
+              matTooltipPosition="above"
+              matTooltipDisabled="true"
+              attr.icon="{{ getLikeIcon() }}"
+              (click)="handleLike()"
+              [ngClass]="isLiked ? 'pulse' : '' "
+              (delayed-hover)="showTooltip()" [delay]="700" (mouseout)="hideTooltip()"
+            >
+              {{ getLikeIcon() }}
+            </mat-icon>
+
           </ng-template>
-        </ng-container>
+        </li>
+      </ng-container>
 
-        <!-- like action -->
-        <mat-icon
-          *ngIf="action === productActions.LIKE"
-          #tooltip="matTooltip"
-          matTooltip
-          matTooltipPosition="above"
-          matTooltipDisabled="true"
-          attr.icon="{{ getLikeIcon() }}"
-          (click)="handleLike()"
-          [ngClass]="isLiked ? 'pulse' : '' "
-          (delayed-hover)="showTooltip()" [delay]="700" (mouseout)="hideTooltip()"
-        >
-          {{ getLikeIcon() }}
-        </mat-icon>
-
-      </ng-template>
-    </li>
+    </app-gradient-container>
   </ul>
 </div>
