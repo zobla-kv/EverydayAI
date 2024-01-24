@@ -228,19 +228,18 @@ loadScript(url: string) {
   * @param target - target element (img)
   */
   set404Image(target: any): void {
-    // TODO: replace src
     target.src = '../../assets/images/cesar-millan.png';
   }
 
-/**
-  * set 404 image when product fails to load
-  *
-  * @param product - ProductResponse
-  */
-  setProduct404Image(product: ProductResponse): void {
-    // TODO: replace src
-    product.watermarkImgPath = '../../assets/images/cesar-millan.png';
-  }
+// // NOTE: unused - left for ref
+// /**
+//   * set 404 image when product fails to load
+//   *
+//   * @param product - ProductResponse
+//   */
+//   setProduct404Image(product: ProductResponse): void {
+//     product.watermarkImgPath = '../../assets/images/cesar-millan.png';
+//   }
 
 /**
   * get file extension from file name

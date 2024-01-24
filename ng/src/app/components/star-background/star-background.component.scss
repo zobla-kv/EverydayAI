@@ -15,18 +15,18 @@
 
 .stars {
 	z-index: 0;
-	background: #000 url('https://i.imgur.com/YKY28eT.png') repeat top center;
+	background: black url('../../../assets/images/star-background/stars.png') repeat top center;
 }
 
-.twinkling{
+.twinkling {
 	z-index: 1;
-	background:transparent url('https://i.imgur.com/XYMF4ca.png') repeat top center;
+	background: transparent url('../../../assets/images/star-background/twinkling.png') repeat top center;
 	animation: move-twink-back 200s linear infinite;
 }
 
-.clouds{
+.clouds {
 	z-index: 2;
-  background:transparent url('https://i.imgur.com/mHbScrQ.png') repeat top center;
+  background:transparent url('../../../assets/images/star-background/clouds.png') repeat top center;
 	animation: move-clouds-back 200s linear infinite;
 }
 

@@ -350,7 +350,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       originalImgPath: '',
       //
       creationDate: Timestamp.fromDate(new Date()),
-      title: formData.title,
+      title: this.utilService.capitalizeText(formData.title),
       description: formData.description,
       price: Number(Number(formData.price).toFixed(2)),
       discount: Number(formData.discount),
@@ -367,7 +367,7 @@ export class CPanelComponent implements OnInit, AfterViewInit {
         color: formData.color,
         orientation: this.getImageOrientation(formData.fileResolution)
       }
-    };
+    } as ProductResponse;
   }
 
   // is form valid

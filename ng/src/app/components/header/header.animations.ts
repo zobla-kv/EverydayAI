@@ -6,8 +6,8 @@ export default [
       'height': '120px',
     })),
     state('false', style({
-      'height': '80px',
+      'height': '100px',
     })),
-    transition('false <=> true', animate('800ms ease-in-out'))
+    transition('false <=> true', animate('300ms ease-in-out'))
   ])
 ]

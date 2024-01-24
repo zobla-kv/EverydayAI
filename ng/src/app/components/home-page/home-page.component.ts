@@ -11,7 +11,7 @@ import {
 
 import {
   AuthService,
-  HttpService,
+  FirebaseService,
   ProductService,
   UtilService
 } from '@app/services';
@@ -57,9 +57,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // our picks list config
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
-  // our products to be fetched
-  // WARNING: large image size causes page to lag
-  ourPicksProductIds = ['ijZ4bgWxPhtePi23qDpB', 'kzE6iN9v0jwKwmbkvZH7', 'qW7hGr7O1JcKb3jXjTrC'];
   // our picks fetched products
   ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
   // are our picks loaded
@@ -72,7 +69,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     private _utilService: UtilService,
     private _el: ElementRef,
     private _renderer: Renderer2,
-    private _httpService: HttpService,
+    private _firebaseService: FirebaseService,
     public   productService: ProductService,
     public   utilService: UtilService
   ) {
@@ -87,11 +84,10 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       first(),
       mergeMap(user => {
         this.user = user;
-        return this._httpService.getProducts(ProductType.ALL, null, this.ourPicksProductIds);
+        return this._firebaseService.getProductsByMostLikes(3);
       })
     )
     .subscribe(products => {
-      // TODO: sorted automatically by id, dont want this
       this.ourPicksProducts = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.ourPicksListConfig, this.user));
 
       // 404 images allowed to show
@@ -120,7 +116,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // run hover animation once cta element is displayed to get focus on that
   hightlightCTA(element: any) {
     // run after animation is done, delay + duration
-    const delay = this.isFirstVisit ? 1800 : 1200 + 600;
+    const delay = this.isFirstVisit ? 4500 : 1200 + 600;
     setTimeout(() => {
       element.classList.add('highlighted');
     }, delay);

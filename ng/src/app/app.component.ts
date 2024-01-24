@@ -20,11 +20,10 @@ import {
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('appLoad', [
-    state('true', style({ 'transform': 'translateY(-100vh)' })),
+    state('true', style({ 'opacity': '0' })),
     transition('false => true', [
       group([
-        query(':self', [ animate('420ms 500ms', style({ 'transform': 'translateY(-100vh)' }))]),
-        query('mat-spinner', [ animate('500ms ease-in-out', style({ 'opacity': '0' }))])
+        query(':self', [animate('750ms 2250ms', style({ 'opacity': '0' }))])
       ])
     ]),
     ]),
@@ -80,9 +79,8 @@ export class AppComponent {
     }
   }
 
-  // app loaded and preloader animation done
+  // app loaded and preloader animation doneisPreloadAnimationDone
   handleLoadAnimationDone(event: AnimationEvent) {
-    // NOTE: lift up determines load finish, be careful to make this last animation
     if (event.toState == '1') {
       this.isPreloadAnimationDone = true;
       this._utilService.appLoadedAnimationComplete$.next();

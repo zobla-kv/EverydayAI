@@ -11,7 +11,7 @@
               [hide]="{'opacity': 0, 'transform': 'translateY(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 900 : 300"
+              [delay]="isFirstVisit ? 3000 : 300"
             >
               Best
             </span>
@@ -21,7 +21,7 @@
               [hide]="{'opacity': 0, 'transform': 'translateX(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 1200 : 600"
+              [delay]="isFirstVisit ? 3300 : 600"
             >
               AI
             </span>
@@ -31,14 +31,14 @@
               [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 1500 : 900"
+              [delay]="isFirstVisit ? 3600 : 900"
             >images</span>
           </h1>
           <div
             class="d-flex flex-column"
             appear
             [duration]="500"
-            [delay]="isFirstVisit ? 1800 : 1200"
+            [delay]="isFirstVisit ? 3900 : 1200"
             (intersection)="hightlightCTA(cta)"
           >
             <p>Welcome to the future</p>
@@ -60,7 +60,7 @@
           [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
           [duration]="1000"
           [easing]="'ease-in-out'"
-          [delay]="isFirstVisit ? 700 : 100"
+          [delay]="isFirstVisit ? 3400 : 600"
         >
         <!-- <a class="btn-reverse small-screen" routerLink="/products">
           <div class="animation-filler"></div>
@@ -314,7 +314,11 @@
                   >
                     <a #productItem class="product-item text-reset text-decoration-none" [routerLink]="'/products/' + product.id" target="_blank">
                       <div class="position-relative mx-auto fit-content">
-                        <mat-icon *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="if-in-cart-icon">shopping_cart</mat-icon>
+                        <div *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="in-cart-indicator">
+                          <app-gradient-container padding="0.25rem 0.25rem 0 0.25rem">
+                            <mat-icon class="white">shopping_cart</mat-icon>
+                          </app-gradient-container>
+                        </div>
                         <img src="{{ product.watermarkImgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
                       </div>
                       <p class="product-item-title">{{ product.title }}</p>

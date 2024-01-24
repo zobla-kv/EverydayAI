@@ -11,8 +11,7 @@ cloudinary.config({
 
 // where are images stored
 const imageFolder = process.env.NODE_ENV.toLowerCase()[0];
-// TODO: replace with watermarked overlay image (nested syntax - hod:d:404-news.png)
-// upload watermark manually before everything else
+// upload watermark manually before everything else (nested syntax - hod:d:watermark.png)
 const watermarkImage = 'watermark';
 
 // upload image to
@@ -22,19 +21,18 @@ async function upload(req, res, next) {
     cloudinary.v2.uploader.upload_stream({
       folder: imageFolder,
       resource_type: 'image',
-      allowed_formats: ['jpg', 'png', 'svg'],
+      allowed_formats: ['jpg', 'png', 'svg'], // TODO: remove svg?
       type: 'private',
       eager: [
         {
           flags: ['layer_apply', 'tiled'],
           angle: 30,
-          width: 0.4,
-          height: 0.3,
-          crop: 'lpad',
           opacity: 5,
+          width: 200,
+          height: 200,
+          crop: 'lpad',
           brightness: 200,
           overlay: {
-            // TODO: update when new watermark is created
             public_id: watermarkImage
           }
         },

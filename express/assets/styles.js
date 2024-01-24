@@ -6,7 +6,7 @@ const bodyText = `
 `
 
 const outterWrapper = `
-  background-color: #F47650;
+  background-image: linear-gradient(180deg, rgba(239,101,249,1) 80%, rgba(138,56,239,1) 89%, rgba(42,14,226,1) 98%);
   border-radius: 50%;
   width: fit-content;
   margin: 2% auto;
@@ -30,7 +30,7 @@ const logoWrapper = `
 
 const logo = `
   width: 200px;
-  height: 200px;
+  height: 175px;
 `
 
 const text = `
@@ -38,12 +38,12 @@ const text = `
   width: fit-content;
   margin: auto;
   color: white;
-  margin-top: -20px;
+  margin-top: 10px;
 `
 
 const button = `
   display: block;
-  background-color: #F47650;
+  background-image: linear-gradient(90deg, rgba(239,101,249,1) 0%, rgba(138,56,239,1) 50%, rgba(42,14,226,1) 100%);
   height: 34px;
   border: 0;
   border-radius: 20px;
@@ -51,14 +51,14 @@ const button = `
   line-height: 34px;
   margin: 4px auto;
   text-decoration: none;
-  color: black;
+  color: white;
   font-family: math;
   font-size: 20px;
 `
 
 const followUs = `
   font-size: 20px;
-  color: rgb(0, 0, 0);
+  color: white;
   font-family: math;
 `
 

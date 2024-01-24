@@ -19,7 +19,7 @@ module.exports.sendEmail = async function (email, type) {
     // in case too many requests in small time
     return false;
   }
-  
+
   verificationLink = verificationLink.replace('oobCode', 'code');
 
   const modifiedUrl = new URL(verificationLink);
@@ -32,7 +32,7 @@ module.exports.sendEmail = async function (email, type) {
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
   // capitalize first letter
-  const subject = `${type[0].toUpperCase() + type.slice(1)} 🐕`;
+  const subject = `${type[0].toUpperCase() + type.slice(1)} ✨`;
 
   const content = getContent(email, type);
 
@@ -44,7 +44,7 @@ module.exports.sendEmail = async function (email, type) {
 
   // BUG: doesn't look good in ct email, try using inline styles
   const message =
-  ` 
+  `
     <div style="text-align:center">
       <h2>${content.text.header}</h2>
       <span style="${styles.bodyText}">${content.text.body}</span>
@@ -82,7 +82,7 @@ module.exports.sendEmail = async function (email, type) {
 
   let isSent = false;
   await transporter.sendMail({
-    from: '"House of dogs" <houseofdogs.online@gmail.com>',
+    from: '"EverydayAI" <everydayai.online@gmail.com>',
     to: email,
     subject,
     html: message,
@@ -111,21 +111,21 @@ function getContent(email, type) {
     logo: { text:   '', buttonText: ''}
   }
   if (type === labels.ACTIVATION) {
-    content.text.header =  `Welcome to House of dogs, ${email.split('@')[0]}.`;
-    content.text.body = `Thanks for becoming a part of the House of dogs community. 
-    Let’s embrace the future together where humans and AI join forces to create amazing visual experience, 
-    we hope you will utilize House of dogs to give your brand a new lease on life.
+    content.text.header =  `Welcome to EverydayAI, ${email.split('@')[0]}.`;
+    content.text.body = `Thank you for becoming a part of the EverydayAI community.
+    The integration of AI into our lives should not diminish our humanity. Rather, it should amplify our ability to connect.
+    Together, humans and AI can co-create a world that leverages the strengths of both,
+    transcending the boundaries of what was once thought possible.
     <br>
-    If you did not request this email. Please ignore it.`
+    If you did not request this email, please ignore it.`
     content.logo.text = labels.VERIFY_EMAIL_TEXT;
     content.logo.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
   }
   if (type === labels.RESET_PASSWORD) {
     content.text.header =  `Hello ${email.split('@')[0]}. Let us help get back your account.`;
-    content.text.body = `You requested password reset. Click button below and follow instructions.
-    You will have your account back in no time.
+    content.text.body = `You requested password reset. Click button below and follow instructions to get your account back.'
     <br>
-    If you did not request this email. Please ignore it.`
+    If you did not request this email, please ignore it.`
     content.logo.text = labels.RESET_PASSWORD_EMAIL_TEXT;
     content.logo.buttonText = labels.RESET_PASSWORD_EMAIL_BUTTON_TEXT;
   }

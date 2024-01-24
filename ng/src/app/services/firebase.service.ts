@@ -234,6 +234,17 @@ export class FirebaseService {
     return this._db.collection('Products', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
   }
 
+  // get products sorted by most likes
+  getProductsByMostLikes(limit?: number): Observable<ProductResponse[]> {
+    if (limit === 0) {
+      return of([]);
+    }
+    if (!limit) {
+      return this._db.collection('Products', query => query.where('isActive', '==', true).orderBy('likes', 'desc')).valueChanges() as Observable<ProductResponse[]>;
+    }
+    return this._db.collection('Products', query => query.where('isActive', '==', true).limit(limit).orderBy('likes', 'desc')).valueChanges() as Observable<ProductResponse[]>;
+  }
+
   // add new product to db
   async addProduct(data: ProductResponse): Promise<string> {
     return this._db.collection('Products').add({

@@ -56,7 +56,7 @@
           cursor: pointer;
           user-select: none;
           &:hover, span.active {
-            background: $gradient;
+            background-image: $gradient;
           }
 
           &:has(.filter-color) {

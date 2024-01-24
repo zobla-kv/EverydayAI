@@ -571,7 +571,8 @@ h2 {
       flex: 1;
 
       $transition: .3s all ease;
-      $if-in-cart-icon-distance: 12px;
+
+      .in-cart-indicator { transition: $transition; }
 
       // TODO: for images to be centrally aligned with each other wrap img with this
       // looks better without, recheck and cleanup
@@ -617,15 +618,6 @@ h2 {
           position: relative;
           left: 6px;
         }
-      }
-
-      .if-in-cart-icon {
-        position: absolute;
-        top: $if-in-cart-icon-distance;
-        left: $if-in-cart-icon-distance;
-        z-index: 1;
-        transition: $transition;
-        transform: scale(1.3);
       }
 
       img {
@@ -677,8 +669,8 @@ h2 {
         transition: $transition;
       }
       &:hover {
-        .if-in-cart-icon {
-          top: calc(-24px + $if-in-cart-icon-distance);
+        .in-cart-indicator {
+          top: calc(-24px + 8px) // + distance from top;
         }
         img {
           top: -24px;
@@ -868,9 +860,8 @@ h2 {
     .product-item img { max-width: 325px; }
     // copy of hover
     .product-item.highlighted {
-      $if-in-cart-icon-distance: 12px;
-      .if-in-cart-icon {
-        top: calc(-24px + $if-in-cart-icon-distance);
+      .in-cart-indicator {
+        top: calc(-24px + 8px) // + distance from top;
       }
 			img {
 				top: -24px;

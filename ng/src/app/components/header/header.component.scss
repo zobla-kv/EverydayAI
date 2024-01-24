@@ -71,26 +71,23 @@ header {
     align-items: center;
 
     &.logo-wrapper {
-      display: block;
       cursor: pointer;
       a { padding: 0; }
 
       img {
         content: $main-logo;
-        max-height: 100%;
-        width: 120px;
+        max-height: 100px;
       }
     }
     &.search {
       width: 100%;
-      // dont expand during header animation
       max-width: 400px;
       min-width: 300px;
-      margin: 0 3.5rem;
+      margin-left: 6.5rem;
     }
     &.navigation-wrapper {
-      min-width: 500px;
       justify-content: center;
+      width: 100%;
     }
     &.profile {
       margin-left: auto;
@@ -204,7 +201,7 @@ header.medium-screen {
         flex: none;
         width: 100%;
         height: $hamburger-menu-line-height;
-        background: $gradient;
+        background-image: $gradient;
         transition: all $anim-duration ease;
 
         &:before,
