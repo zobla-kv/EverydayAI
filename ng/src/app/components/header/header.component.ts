@@ -101,8 +101,8 @@ export class HeaderComponent implements OnDestroy {
 
     const currentRoute = this._router.url;
 
-    // if on products page
-    if (currentRoute.includes('products')) {
+    // if on images page
+    if (currentRoute.includes('images')) {
       // allow empty search only if there is old value (to reset)
       if (newValue === '' && !oldValue) {
         return;
@@ -111,13 +111,13 @@ export class HeaderComponent implements OnDestroy {
       return;
     }
 
-    // dont allow empty if not on products page
+    // dont allow empty if not on images page
     if (newValue === '') {
       return;
     }
 
-    // navigate to products page
-    this._router.navigate(['products'], {
+    // navigate to images page
+    this._router.navigate(['images'], {
       queryParams: { 'search': this.searchValue },
       queryParamsHandling: 'merge',
     });

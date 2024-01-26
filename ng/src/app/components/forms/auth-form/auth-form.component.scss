@@ -63,6 +63,7 @@ h6 span {
   height: auto;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  perspective: 800px;
   margin-top: 40px;
 }
 .card-3d-wrapper {
@@ -100,6 +101,7 @@ h6 span {
   padding: 2rem 3rem;
   left: 0;
   z-index: 20;
+  // transform: translate3d(0, 0, 35px);
 }
 
 .form-group {

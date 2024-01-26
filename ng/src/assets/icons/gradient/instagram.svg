@@ -4,7 +4,7 @@
   <linearGradient id="MainGradient">
     <stop offset="0%" stop-color="rgb(239,101,249)" />
     <stop offset="33%" stop-color="rgb(138,56,239)" />
-    <stop offset="66%" stop-color="rgb(42,14,226)" />
+    <stop offset="66%" stop-color="rgb(21,18,226)" />
   </linearGradient>
 </defs>
 <path fill="url(#MainGradient)" fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"/>

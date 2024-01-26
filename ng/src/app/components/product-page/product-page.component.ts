@@ -28,7 +28,7 @@ const FILTER_SEARCH = 'search';
 export class ProductPageComponent implements OnInit, OnDestroy {
 
   // page title default
-  defaultTitle = 'Products';
+  defaultTitle = 'Images';
 
   // page title
   title = this.defaultTitle;

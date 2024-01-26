@@ -38,7 +38,9 @@ h2 {
       background-image: $gradient;
       color: white;
       align-self: flex-end;
-      justify-content: flex-start !important;
+      text-align: center;
+      border-radius: 20px;
+      text-decoration: none;
 
       .inner-wrapper {
         color: white;
@@ -48,6 +50,8 @@ h2 {
         z-index: 2;
         width: 100%;
         transition: 0.25s ease-in-out;
+        position: relative;
+        z-index: 2;
       }
 
       .mat-icon {
@@ -127,6 +131,14 @@ h2 {
       ::ng-deep .mat-icon {
         width: 100px;
         height: 100px;
+
+        &[svgIcon="collaboration"] { transform: scale(0.9); }
+        &[svgIcon="expectance"] {
+          position: relative;
+          top: 1px;
+          transform: scale(1.5);
+         }
+
       }
     }
   }
@@ -207,6 +219,9 @@ h2 {
           justify-content: center;
           align-items: center;
           transform: scale(4);
+
+          &[svgIcon="lightbulb"] { transform: scale(2); }
+          &[svgIcon="confetti"] { transform: scale(2); }
         }
 
       }
@@ -550,10 +565,9 @@ h2 {
 
   #MostPopular {
     margin-top: 6rem;
-    height: 530px;
+    min-height: 540px;
     color: white;
     padding-top: 4rem;
-    padding-bottom: 2rem;
     border-top: 12px solid;
     border-bottom: 12px solid;
     border-image: $gradient 1;
@@ -702,37 +716,101 @@ h2 {
   margin-top: 6rem;
   // cut off image
   overflow: hidden;
-  height: 750px;
+  height: 700px;
   width: 100%;
 
-  .col-img {
+  .robot-hands {
     position: absolute;
-    left: -40px;
+    right: -350px;
+    width: 2000px;
+    height: 1200px;
   }
 
-  .col-text {
-    position: relative;
-    width: 400px;
-    left: 400px;
-    top: 220px;
+  .text {
+    @extend .robot-hands;
+    height: auto;
+    right: -234px;
+    font-size: 28px;
+    text-align: center;
+    top: 180px;
+    font-family: $space-font;
+    transform: skewY(2deg);
 
-    p {
-      font-family: $space-font;
-      font-weight: 700;
-      font-size: 52px;
-      line-height: 65px;
-      letter-spacing: 0px;
-      margin-bottom: 40px;
+    &.animate .typewriter-wrapper {
+      span:nth-child(1) { animation: blink .5s step-end infinite alternate, type 1s steps(40, end) 1s forwards; }
+      span:nth-child(2) { animation: shring-animation 0.5s steps(40, end) 2s forwards, blink .5s step-end infinite alternate; }
+    }
+
+    .typewriter-wrapper {
+      position: relative;
+
+      span {
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      span:nth-child(1) {
+        margin: 0 0 0 35%;
+        border-right: 1px solid white;
+        width: 0;
+        left: 148px;
+      }
+
+      span:nth-child(2) {
+        margin: 0 0 0 46%;
+        width: 140px;
+        opacity: 0;
+      }
+
+      @keyframes type {
+        0% { width: 0; }
+        1%, 99% { border-right: 1px solid white; }
+        100%{ border-right: none; width: 302px; }
+      }
+
+      @keyframes blink {
+        50% { border-color: transparent; }
+      }
+
+
+      @keyframes shring-animation {
+        0% {
+          background-position: 0 0;
+          opacity: 0;
+          width: 0;
+        }
+        1% {
+          background-position: 0 0;
+          opacity: 1;
+          border-right: 1px solid white;
+        }
+        50% {
+          background-position: 150px 0;
+          opacity: 1;
+          border-right: 1px solid white;
+        }
+        100% {
+          background-position: 400px 0;
+          opacity: 1;
+          border-right: 1px solid white;
+        }
+      }
+
     }
 
     .mat-icon {
-      vertical-align: middle;
       width: 35px;
-      height: 35px;
+      height: 40px;
+      position: relative;
+      right: 10px;
 
+      &[svgIcon="instagram"] { top: -2px; }
       &[svgIcon="email"] { transform: scale(1.5); }
     }
+
   }
+
 }
 
 /* MEDIA QUERIES */
@@ -746,15 +824,6 @@ h2 {
     .landing-image {
       margin-left: 5rem;
       width: 475px;
-    }
-  }
-
-
-  .lets-talk-about-your-ai-section {
-    .col-img {
-      width: 300px;
-      height: 300px;
-      img { top: -14px; }
     }
   }
 
@@ -784,7 +853,6 @@ h2 {
   #MostPopular { height: auto; }
 
   .lets-talk-about-your-ai-section {
-    .col-text { width: 370px; }
   }
 }
 // smaller than 768px
@@ -884,43 +952,13 @@ h2 {
   }
 
   .lets-talk-about-your-ai-section {
-    .col-img {
-      width: 200px;
-      height: 200px;
-      order: 2;
-      img { top: -9px; }
-    }
-    .col-text {
-      width: 100%;
-      height: 85px;
-    }
+
   }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
 
   .lets-talk-about-your-ai-section {
-    .circle-wrapper {
-      .circle.left {
-        width: 270px;
-        height: 270px;
-        left: -90px;
-        top: -120px
-      }
-    }
-    .col-img {
-      width: 200px;
-      height: 200px;
-      margin: 2rem auto 0;
-      img { top: -9px; }
-    }
-    .col-text {
-      width: 100%;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      p { font-size: 2rem; margin-bottom: 1.5rem; }
-    }
+
   }
 }

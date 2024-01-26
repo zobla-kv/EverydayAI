@@ -31,6 +31,9 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   @Input('rootMargin') rootMargin: string = '0px';
   // appear immediately (don't wait to be in view)
   @Input('appearImmediately') appearImmediately: boolean = false;
+  // add css class - if this is present element is not hidden and shown by directive
+  // added class is responsible for that
+  @Input('addClass') addClass: string = '';
 
   // emit event when element enters viewport
   @Output() intersection = new EventEmitter<ElementRef>();
@@ -82,7 +85,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   ngAfterViewInit() {
     this._intersect$.subscribe(() => {
       const target = this._element.nativeElement;
-      this.animation.play();
+      this.addClass ? this._renderer.addClass(target, this.addClass) : this.animation.play();
       this.intersection.emit(this._element.nativeElement);
       // cancel after firing once
       this._observer?.unobserve(target);
@@ -92,6 +95,9 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // hide element (should be reverse of show)
   setHideStyles() {
+    if (this.addClass) {
+      return;
+    }
     for (const style of Object.keys(this.hideStyles)) {
       this._renderer.setStyle(this._element.nativeElement, style, this.hideStyles[style])
     }

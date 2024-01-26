@@ -42,7 +42,7 @@
             (intersection)="hightlightCTA(cta)"
           >
             <p>Welcome to the future</p>
-            <a class="btn large-screen" routerLink="/products" #cta>
+            <a class="large-screen" routerLink="/images" #cta>
               <div class="inner-wrapper">Explore now</div>
               <mat-icon svgIcon="double-arrow-right" class="dark"></mat-icon>
             </a>
@@ -62,7 +62,7 @@
           [easing]="'ease-in-out'"
           [delay]="isFirstVisit ? 3400 : 600"
         >
-        <!-- <a class="btn-reverse small-screen" routerLink="/products">
+        <!-- <a class="btn-reverse small-screen" routerLink="/images">
           <div class="animation-filler"></div>
           <p class="m-0">Our dogs</p>
           <mat-icon>arrow_forward</mat-icon>
@@ -86,7 +86,7 @@
             >How it works?</a>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'WhyUs'}" href="#WhyUs"
                pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
-            >Why us?</a>
+            >4 Why's?</a>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'MostPopular'}" href="#MostPopular"
               pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
             >Most popular</a>
@@ -102,20 +102,21 @@
                 appear [hide]="{'opacity': 0, 'transform': 'translateX(-50px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
               >
                 <app-gradient-container>
-                  <mat-icon svgIcon="dog-head" class="dog-head"></mat-icon>
-                  <p class="about-us-items-title">AI as art</p>
-                  <p class="mb-0">Embrace the future while witnessing the evolution of AI generated art.</p>
+                  <mat-icon svgIcon="everyday-life"></mat-icon>
+                  <p class="about-us-items-title">AI in everyday life</p>
+                  <p class="mb-0">
+                    Stay up to date with latest advancements in AI and continiously discover new ways of using it in your daily activities.
+                  </p>
                 </app-gradient-container>
               </div>
               <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
                 appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
               >
                 <app-gradient-container>
-                  <mat-icon svgIcon="networking" class="networking"></mat-icon>
-                  <p class="about-us-items-title">Join the pack</p>
+                  <mat-icon svgIcon="collaboration"></mat-icon>
+                  <p class="about-us-items-title">Global collaboration</p>
                   <p class="mb-0">
-                    Whether you're an artist seeking inspiration, a dog enthusiast looking for captivating visuals,
-                    or simply someone intrigued by the possibilities of AI.
+                    Share ideas and facilitate connections with professionals, researchers, and enthusiasts worldwide.
                   </p>
                 </app-gradient-container>
               </div>
@@ -123,9 +124,9 @@
                 appear [hide]="{'opacity': 0, 'transform': 'translateX(50px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
               >
                 <app-gradient-container>
-                  <mat-icon svgIcon="dog-enthusiast" class="expectance"></mat-icon>
-                  <p class="about-us-items-title">The expectance</p>
-                  <p class="mb-0">Look how they are looking at you.</p>
+                  <mat-icon svgIcon="expectance"></mat-icon>
+                  <p class="about-us-items-title">The expectation</p>
+                  <p class="mb-0">We expect things from AI, but does it expect something from us? Look how it's looking at you.</p>
                 </app-gradient-container>
               </div>
             </div>
@@ -141,7 +142,7 @@
                   <div class="content">
                     <div class="body">
                       <p class="step-item-title">Explore</p>
-                      <p>Take a look around and find perfect image that fits your needs.</p>
+                      <p>Take a look around.</p>
                     </div>
                     <div class="icon-wrapper">
                       <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
@@ -154,43 +155,58 @@
                 <div class="step-list__item__inner">
                   <div class="content">
                     <div class="body">
-                      <p class="step-item-title">Order</p>
-                      <p>Finalize your decision.</p>
-                    </div>
-                    <div class="icon-wrapper">
-                      <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
-                      <mat-icon svgIcon="payment" [ngStyle]="{'height': '25px'}"></mat-icon>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="step-list__item">
-                <div class="step-list__item__inner">
-                  <div class="content">
-                    <div class="body">
-                      <p class="step-item-title">Enjoy</p>
-                      <p>
-                        Use image as wallpaper or any device, for your projects or even print it and hang it on your wall!
-                        Everything you buy stays with you forever.
-                      </p>
-                    </div>
-                    <div class="icon-wrapper">
-                      <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
-                      <mat-icon>important_devices</mat-icon>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="step-list__item">
-                <div class="step-list__item__inner">
-                  <div class="content">
-                    <div class="body">
                       <p class="step-item-title">Follow us on <span class="glow-text">instagram</span></p>
-                      <p>Stay up to date with our latest news and events.</p>
+                      <p>Stay up to date with latest news and events in the world of AI.</p>
                     </div>
                     <div class="icon-wrapper">
                       <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
                       <mat-icon>favorite_border</mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="step-list__item">
+                <div class="step-list__item__inner">
+                  <div class="content">
+                    <div class="body">
+                      <p class="step-item-title">Share ideas.</p>
+                      <p>Don't be just an observer. Make an impact on the collaborative growth and development of AI.</p>
+                    </div>
+                    <div class="icon-wrapper">
+                      <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+                      <mat-icon svgIcon="lightbulb"></mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="step-list__item">
+                <div class="step-list__item__inner">
+                  <div class="content">
+                    <div class="body">
+                      <p class="step-item-title">Have fun</p>
+                      <p>Remember to infuse a bit of fun into the mix.</p>
+                    </div>
+                    <div class="icon-wrapper">
+                      <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+                      <mat-icon svgIcon="confetti"></mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="step-list__item">
+                <div class="step-list__item__inner">
+                  <div class="content">
+                    <div class="body">
+                      <p class="step-item-title">Support</p>
+                      <p>
+                        Support the cause.
+                        In return your get image that you can us as wallpaper or any device, for your projects or even print it and hang it on your wall!
+                        Everything you buy stays with you forever!
+                      </p>
+                    </div>
+                    <div class="icon-wrapper">
+                      <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+                      <mat-icon svgIcon="payment" [ngStyle]="{'height': '25px'}"></mat-icon>
                     </div>
                   </div>
                 </div>
@@ -215,8 +231,6 @@
 
         <section id="WhyUs">
           <div class="container">
-            <!-- TODO: decide -->
-            <!-- <h2>Why us?</h2> -->
             <h2>4 Why's</h2>
             <div class="questionmark-wrapper" #questionmark>
               <span>?</span>
@@ -226,12 +240,10 @@
                 <div class="why-us-item bottom-right-border"
                   appear [hide]="{'opacity': 0, 'transform': 'translate(100px, 100px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="2000" easing="ease"
                 >
-                  <!-- TODO: decide -->
-                  <!-- <p class="why-us-item-header">Innovative technology</p> -->
-                  <p class="why-us-item-header">Technology meet-up</p>
+                  <p class="why-us-item-header">Real-world impact</p>
                   <p>
                     In the dawn of the digital age, the technology erupts quickly.
-                    Through us, you will meet most amazing and useful tools provided by world of AI.
+                    Improve overall quality of your work and 10x your productivity by using AI to your advantage.
                   </p>
                 </div>
               </div>
@@ -282,10 +294,9 @@
               <div class="col-md-12 col-lg-3 mb-5 mb-lg-0" appear>
                 <!-- <p class="most-popular-title mb-4">Crafted with excellent material, the AI material.</p>
                 <p class="mb-4">The people's choice. Most liked images by others.</p> -->
-                <p class="most-popular-title mb-4 text-center">The people's choice. What others like.</p>
-                <p class="mb-4 text-center">Crafted with excellent material, the AI material.</p>
-                <!-- TODO: update/remove button -->
-                <p><a href="shop.html" class="btn">Explore</a></p>
+                <p class="most-popular-title mb-4 text-center">The people's choice. Most popular.</p>
+                <p class="mb-4 text-center"><i>"Crafted with excellent material, the AI material"</i></p>
+                <a class="btn w-100" routerLink="/images">More images</a>
               </div>
 
               <mat-spinner
@@ -312,7 +323,7 @@
                     [threshold]="0.8"
                     (intersection)="hightlightProduct(productItem, i * 100)"
                   >
-                    <a #productItem class="product-item text-reset text-decoration-none" [routerLink]="'/products/' + product.id" target="_blank">
+                    <a #productItem class="product-item text-reset text-decoration-none" [routerLink]="'/images/' + product.id" target="_blank">
                       <div class="position-relative mx-auto fit-content">
                         <div *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="in-cart-indicator">
                           <app-gradient-container padding="0.25rem 0.25rem 0 0.25rem">
@@ -381,22 +392,19 @@
   </div>
 </section>
 
-<section class="lets-talk-about-your-ai-section">
-  <div class="container-fluid position-relative p-0">
-    <div class="row wrapper flex-wrap justify-content-sm-around">
-      <div class="col-img">
-        <!-- TODO: alt -->
-        <img src="../../../assets/images/contact-us-image.png" alt="" loading="lazy">
-      </div>
-      <div class="col-text" appear [hide]="{'opacity': 0, 'transform': 'scale(1.2)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}" [duration]="1000" [delay]="0.2" easing="ease-in-out">
-        <p>Lets talk about your ai</p>
-        <div class="d-flex align-items-center gap-3">
-          <mat-icon svgIcon="instagram"></mat-icon>
-          <a href="mailto: everyday-ai.online@gmail.com" class="text-reset text-decoration-none">
-            <mat-icon svgIcon="email"></mat-icon>
-          </a>
-        </div>
-      </div>
+<section class="lets-talk-about-your-ai-section position-relative">
+  <!-- TODO: alt -->
+  <img src="../../../assets/images/contact-us-image.png" alt="" loading="lazy" class="robot-hands">
+  <div class="text user-select-none" appear addClass="animate" [threshold]="0.1">
+    <div class="typewriter-wrapper">
+      <span class="d-block">Lets talk about</span>
+      <span class="d-block">your AI</span>
+    </div>
+    <div class="flex-center gap-3" appear [delay]="2750">
+      <mat-icon svgIcon="instagram" class="white"></mat-icon>
+      <a href="mailto: everyday-ai.online@gmail.com" class="text-reset text-decoration-none">
+        <mat-icon svgIcon="email" class="white"></mat-icon>
+      </a>
     </div>
   </div>
 </section>

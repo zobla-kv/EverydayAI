@@ -90,7 +90,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
           if (products.length === 0) {
             // TODO: error handling (route protection) can be done using resolver
             this._toast.open(ToastConstants.MESSAGES.PRODUCT_NOT_FOUND, ToastConstants.TYPE.ERROR.type);
-            this._router.navigate(['products']);
+            this._router.navigate(['images']);
             return;
           }
           // fetch is triggered after user only because of mapper

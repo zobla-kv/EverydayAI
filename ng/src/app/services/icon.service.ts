@@ -14,11 +14,10 @@ export class IconService {
 
   // name property needs to match file name
   Icons: { name: string }[] = [
+    { name: 'cart-add' },
+    { name: 'cart-remove' },
     { name: 'digital-product' },
-    { name: 'dog-head'},
-    { name: 'networking'},
     { name: 'dollar' },
-    { name: 'dog-enthusiast' },
     { name: 'visa' },
     { name: 'american-express' }, // recheck during payment
     { name: 'tier-classic' },
@@ -29,11 +28,14 @@ export class IconService {
 
   // name property needs to match file name
   gradientIcons: { name: string }[] = [
+    { name: 'everyday-life' },
+    { name: 'collaboration' },
+    { name: 'expectance' },
+    { name: 'lightbulb' },
+    { name: 'confetti' },
     { name: 'email' },
     { name: 'instagram' },
     { name: 'payment' },
-    { name: 'cart-add' },
-    { name: 'cart-remove' },
     { name: 'image-resolution' },
     { name: 'file-type-img' }
   ]

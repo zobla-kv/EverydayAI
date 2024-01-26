@@ -42,11 +42,11 @@ export class ToastConstants {
   static MESSAGES = {
     // general
     SOMETHING_WENT_WRONG: 'Something went wrong. Please try again.',
-    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and product added to owned items.',
+    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and image is now owned.',
 
     // cart
-    CART_PRODUCT_ADDED: 'Product added to cart succesfuly.',
-    CART_PRODUCT_REMOVED: 'Product removed from cart succesfuly.',
+    CART_PRODUCT_ADDED: 'Image added to cart succesfuly.',
+    CART_PRODUCT_REMOVED: 'Image removed from cart succesfuly.',
 
     // payment
     PAYMENT_SUCCESSFUL: 'Payment sucessful. Enjoy your new prints',
@@ -60,10 +60,10 @@ export class ToastConstants {
 
     // product list
     PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
-    PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load product details.',
-    PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load products. Please try again.',
+    PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load image details.',
+    PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load images. Please try again.',
     PRODUCT_DOWNLOAD_FAILED: 'Failed to start a download. Please try again.',
-    PRODUCT_NOT_FOUND: 'Product not found.',
+    PRODUCT_NOT_FOUND: 'Image not found.',
     SEARCH_INPUT_VALIDATION_ERROR: 'Use alphanumeric characters only.'
   }
 
