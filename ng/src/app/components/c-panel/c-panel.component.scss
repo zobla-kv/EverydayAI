@@ -22,7 +22,7 @@ h1 {
     width: 32px;
     transform: scale(0.8);
     aspect-ratio: 1;
-    // border: 10px solid $main-orange-bg-color; /* the outer space */
+    // border: 10px solid white; /* the outer space */
     background:
       conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0)
       calc(100% + $thickness / 2) calc(100% + $thickness / 2)/

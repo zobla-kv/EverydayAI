@@ -7,7 +7,7 @@
 //   right: 0;
 //   bottom: 0;
 //   height: 32px;
-//   background-color: $main-orange-bg-color;
+//   background-color: $main-dark-bg-color;
 //   color: $dark-text;
 //   font-weight: bold;
 
@@ -43,7 +43,7 @@
 			display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid $main-orange-bg-color;
+      border: 1px solid $main-dark-bg-color;
 
       &.instagram ::ng-deep svg { transform: scale(0.55); }
 		}

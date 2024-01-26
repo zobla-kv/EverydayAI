@@ -122,9 +122,7 @@ hr.gradient {
 .hr-left { margin: 0 auto 0 0; }
 
 /* backgrounds */
-.main-orange-bg { background-color: $main-orange-bg-color; }
 .main-dark-bg { background-color: $main-dark-bg-color; }
-.gradient-bg { background: linear-gradient(90deg, rgba(249,226,226,0.5665616588432247) 0%, $main-orange-bg-color 100%); }
 
 /* text */
 .uppercase { text-transform: uppercase; }
@@ -189,7 +187,6 @@ hr.gradient {
   }
 
   &:active {
-    background-color: $main-orange-bg-color !important;
     color: $dark-text !important;
     border: 0 !important;
   }
@@ -305,7 +302,6 @@ form {
       font-size: 24px;
       line-height: 48px;
       text-align: left;
-      color: $main-orange-bg-color;
       -webkit-transition: all 200ms linear;
       transition: all 200ms linear;
 
@@ -313,8 +309,6 @@ form {
         cursor: pointer;
         left: calc(100% - 45px) !important;
         height: 50px;
-        // keep color on failed validation
-        color: $main-orange-bg-color !important;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -450,10 +444,6 @@ form {
   border-radius: 50%;
 }
 
-/* modal */
-.mat-mdc-dialog-container {
-  background-color: $main-orange-bg-color !important;
-}
 
 /* product */
 .in-cart-indicator {

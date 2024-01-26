@@ -14,21 +14,14 @@ $gradient-end: #2A0EE2;
 // same colors in rgb
 $gradient: linear-gradient(90deg, rgba(239,101,249,1) 0%, rgba(138,56,239,1) 50%, rgba(42,14,226,1) 100%);
 $gradient-reverse: linear-gradient(90deg, rgba(42,14,226,1) 0%, rgba(138,56,239,1) 50%, rgba(239,101,249,1) 100%);
-// TODO: replace with gradient - it works somwhere, where is used as background:,  background-color not working
-// $main-orange-bg-color: $gradient;
-$main-orange-bg-color: #F47650;
-
 $toast-green-bg-color: #02ff00;
 $toast-red-bg-color: #B11010;
 
 /* borders */
-// TODO: remove this durign redesign
 $gray-border-color: rgb(87, 87, 87);
 
 /* text colors */
 $dark-text: $main-dark-bg-color;
-// TODO: remove this durign redesign
-$orange-text: $main-orange-bg-color;
 
 /* states */
 $error-color: red;

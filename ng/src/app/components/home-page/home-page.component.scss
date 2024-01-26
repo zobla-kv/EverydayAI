@@ -678,7 +678,7 @@ h2 {
         right: 0;
         position: absolute;
         content: "";
-        background: $main-orange-bg-color;
+        background-image: $gradient;
         height: 0%;
         transition: $transition;
       }
