@@ -2,7 +2,7 @@
 <section class="top-section">
   <div class="container-fluid px-6 h-100">
     <div class="row position-relative h-100">
-      <div class="col-md-5 col-sm-12 d-flex justify-content-md-end justify-content-center align-items-center">
+      <div class="col-12 col-md-5 d-flex justify-content-center justify-content-md-end align-items-center">
         <div class="landing-text-wrapper">
           <h1 class="glow-text">
             <span
@@ -42,14 +42,14 @@
             (intersection)="hightlightCTA(cta)"
           >
             <p>Welcome to the future</p>
-            <a class="large-screen" routerLink="/images" #cta>
+            <a class="cta-button large-screen" routerLink="/images" #cta>
               <div class="inner-wrapper">Explore now</div>
               <mat-icon svgIcon="double-arrow-right" class="dark"></mat-icon>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-md-7 col-sm-12 d-flex align-items-md-start align-items-center">
+      <div class="col-12 col-md-7">
         <!-- NOTE: directive hides flick (cls) -->
         <img
           src="../../../assets/images/landing-image.png"
@@ -62,11 +62,10 @@
           [easing]="'ease-in-out'"
           [delay]="isFirstVisit ? 3400 : 600"
         >
-        <!-- <a class="btn-reverse small-screen" routerLink="/images">
-          <div class="animation-filler"></div>
-          <p class="m-0">Our dogs</p>
-          <mat-icon>arrow_forward</mat-icon>
-        </a> -->
+        <a class="cta-button small-screen highlighted mx-auto" routerLink="/images" #cta>
+          <div class="inner-wrapper">Explore now</div>
+          <mat-icon svgIcon="double-arrow-right" class="dark"></mat-icon>
+        </a>
       </div>
     </div>
   </div>
@@ -95,38 +94,38 @@
       </div>
       <div class="col-12 col-md-10 ps-md-5">
         <section id="Introduction">
-          <div class="container px-4">
+          <div class="container px-0 px-sm-4">
             <h2>What is <br> EverydayAI</h2>
             <div class="about-us-items row gx-4">
-              <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
-                appear [hide]="{'opacity': 0, 'transform': 'translateX(-50px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
+              <div class="col-12 col-md-6 col-xl-4 mx-auto mx-sm-none mb-5 px-2"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(30px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
               >
                 <app-gradient-container>
                   <mat-icon svgIcon="everyday-life"></mat-icon>
                   <p class="about-us-items-title">AI in everyday life</p>
-                  <p class="mb-0">
+                  <p class="about-us-items-text mb-0">
                     Stay up to date with latest advancements in AI and continiously discover new ways of using it in your daily activities.
                   </p>
                 </app-gradient-container>
               </div>
-              <div class="col-lg-4 col-md-6 mb-5 mb-lg-0"
-                appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+              <div class="col-12 col-md-6 col-xl-4 mx-auto mx-sm-none mb-5 px-2"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(30px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
               >
                 <app-gradient-container>
                   <mat-icon svgIcon="collaboration"></mat-icon>
                   <p class="about-us-items-title">Global collaboration</p>
-                  <p class="mb-0">
+                  <p class="about-us-items-text mb-0">
                     Share ideas and facilitate connections with professionals, researchers, and enthusiasts worldwide.
                   </p>
                 </app-gradient-container>
               </div>
-              <div class="col-lg-4 col-md-6 mx-auto mb-5 mb-md-0"
-                appear [hide]="{'opacity': 0, 'transform': 'translateX(50px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
+              <div class="col-12 col-md-6 col-xl-4 mx-auto mx-sm-none mb-5 px-2"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(30px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
               >
                 <app-gradient-container>
                   <mat-icon svgIcon="expectance"></mat-icon>
                   <p class="about-us-items-title">The expectation</p>
-                  <p class="mb-0">We expect things from AI, but does it expect something from us? Look how it's looking at you.</p>
+                  <p class="about-us-items-text mb-0">We expect things from AI, but does it expect something from us? Look how it's looking at you.</p>
                 </app-gradient-container>
               </div>
             </div>
@@ -230,13 +229,13 @@
         </section>
 
         <section id="WhyUs">
-          <div class="container">
+          <div class="container overflow-hidden">
             <h2>4 Why's</h2>
             <div class="questionmark-wrapper" #questionmark>
               <span>?</span>
             </div>
             <div class="row justify-content-between">
-              <div class="col-xl-5 col-lg-6">
+              <div class="col-lg-6 col-xl-5 mb-sm-5">
                 <div class="why-us-item bottom-right-border"
                   appear [hide]="{'opacity': 0, 'transform': 'translate(100px, 100px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="2000" easing="ease"
                 >
@@ -247,7 +246,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-xl-5 col-lg-6">
+              <div class="col-lg-6 col-xl-5 mb-sm-5">
                 <div class="why-us-item bottom-left-border"
                   appear [hide]="{'opacity': 0, 'transform': 'translate(-100px, 100px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="2000" easing="ease"
                 >
@@ -260,7 +259,7 @@
               </div>
             </div>
             <div class="row justify-content-between top-spacing">
-              <div class="col-xl-5 col-lg-6">
+              <div class="col-lg-6 col-xl-5 mb-sm-5">
                 <div class="why-us-item top-right-border"
                   appear [hide]="{'opacity': 0, 'transform': 'translate(100px, -100px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="2000" easing="ease"
                 >
@@ -272,7 +271,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-xl-5 col-lg-6">
+              <div class="col-lg-6 col-xl-5 mb-sm-5">
                 <div class="why-us-item top-left-border"
                   appear [hide]="{'opacity': 0, 'transform': 'translate(-100px, -100px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="2000" easing="ease"
                 >
@@ -296,7 +295,7 @@
                 <p class="mb-4">The people's choice. Most liked images by others.</p> -->
                 <p class="most-popular-title mb-4 text-center">The people's choice. Most popular.</p>
                 <p class="mb-4 text-center"><i>"Crafted with excellent material, the AI material"</i></p>
-                <a class="btn w-100" routerLink="/images">More images</a>
+                <a class="btn w-100 more-images-link" routerLink="/images">More images</a>
               </div>
 
               <mat-spinner
@@ -365,7 +364,7 @@
                         </ng-template>
                       </strong>
                       <button (click)="$event.preventDefault()">
-                        <mat-spinner diameter="22" class="mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
+                        <mat-spinner diameter="22" class="black mx-auto" *ngIf="product.spinners['cart']; else action"></mat-spinner>
                         <ng-template #action>
                           <!-- TODO: site lags on download -->
                           <mat-icon class="download black"
@@ -400,7 +399,7 @@
       <span class="d-block">Lets talk about</span>
       <span class="d-block">your AI</span>
     </div>
-    <div class="flex-center gap-3" appear [delay]="2750">
+    <div class="flex-center gap-3" appear [delay]="2750" [threshold]="0.1">
       <mat-icon svgIcon="instagram" class="white"></mat-icon>
       <a href="mailto: everyday-ai.online@gmail.com" class="text-reset text-decoration-none">
         <mat-icon svgIcon="email" class="white"></mat-icon>

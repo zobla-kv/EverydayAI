@@ -2,10 +2,11 @@
 $page-max-width: 1600px; // TODO: 1920?
 
 /* header */
-$header-height: 140px;
+$header-height-lg: 120px;
+$header-height-md: 60px;
 
 /* viewport height */
-$viewport-height-without-header: calc(100vh - $header-height);
+$viewport-height-without-header: calc(100vh - $header-height-lg);
 
 /* main background colors */
 $main-dark-bg-color: #24242c;

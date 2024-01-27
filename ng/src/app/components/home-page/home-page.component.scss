@@ -27,47 +27,6 @@ h2 {
       transition: all 1s ease;
     }
 
-    a {
-      $button-width: 195px;
-      width: $button-width;
-      font-family: $space-font;
-      position: relative;
-      padding: 0.1rem;
-      font-size: 16px;
-      left: 40px;
-      background-image: $gradient;
-      color: white;
-      align-self: flex-end;
-      text-align: center;
-      border-radius: 20px;
-      text-decoration: none;
-
-      .inner-wrapper {
-        color: white;
-        border-radius: inherit;
-        background-color: black;
-        padding: 0.1rem 0.75rem 0.25rem 0.75rem;
-        z-index: 2;
-        width: 100%;
-        transition: 0.25s ease-in-out;
-        position: relative;
-        z-index: 2;
-      }
-
-      .mat-icon {
-        position: absolute;
-        right: 0;
-        top: 3px;
-        width: 20px;
-        margin: 0 0.25rem;
-        z-index: 1;
-      }
-
-      &.highlighted {
-        .inner-wrapper { width: calc($button-width - 28px); }
-      }
-    }
-
   }
 
   .landing-image {
@@ -76,6 +35,49 @@ h2 {
     // because it increases parent height
     position: absolute;
   }
+
+  .cta-button {
+    $button-width: 195px;
+    width: $button-width;
+    font-family: $space-font;
+    position: relative;
+    padding: 0.1rem;
+    font-size: 16px;
+    left: 40px;
+    background-image: $gradient;
+    color: white;
+    align-self: flex-end;
+    text-align: center;
+    border-radius: 20px;
+    text-decoration: none;
+
+    .inner-wrapper {
+      color: white;
+      border-radius: inherit;
+      background-color: black;
+      padding: 0.1rem 0.75rem 0.25rem 0.75rem;
+      z-index: 2;
+      width: 100%;
+      transition: 0.25s ease-in-out;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mat-icon {
+      position: absolute;
+      right: 0;
+      top: 3px;
+      width: 20px;
+      margin: 0 0.25rem;
+      z-index: 1;
+    }
+
+    &.highlighted {
+      .inner-wrapper { width: calc($button-width - 28px); }
+    }
+  }
+
+  .cta-button.small-screen { display: none; }
 
 }
 
@@ -123,9 +125,13 @@ h2 {
 
     .about-us-items {
 
+      > div {
+        max-width: 360px;
+      }
+
       &-title {
         font-family: $space-font;
-        font-size: 22px;
+        font-size: 20px;
       }
 
       ::ng-deep .mat-icon {
@@ -161,7 +167,7 @@ h2 {
     $connectorBorderColor: white;
 
     $circleSizeSmall: 36px;
-    $circlePaddingSmall: 9px;
+    $circlePaddingSmall: 0px;
 
     $circleSizeLarge: 174px;
     $circlePaddingLarge: 48px;
@@ -256,7 +262,10 @@ h2 {
 
         & + li { margin-top: $connectorHeight; }
 
-        &:first-child:before { left: -2px; }
+        &:first-child:before {
+          left: -2px;
+          margin-right: 1.5rem;
+        }
 
         &:before {
           content: counter(step-counter);
@@ -278,7 +287,11 @@ h2 {
           top: 42px;
 
           .icon-shadow { display: none; }
-          .mat-icon { transform: scale(1); }
+          .mat-icon {
+            transform: scale(1);
+            &[svgIcon="lightbulb"] { transform: scale(0.8); }
+            &[svgIcon="confetti"] { transform: scale(0.8); }
+          }
         }
 
         .content {
@@ -502,10 +515,10 @@ h2 {
         width: 180px;
         height: 50px;
         content: "";
-        border: 0 !important;
+        // NOTE: disables below borders - visible on small
+        border-width: 0 !important;
       }
 
-      // TODO: show them on mobile
       &.bottom-right-border {
         padding-bottom: 2rem;
         padding-right: 2rem;
@@ -732,7 +745,7 @@ h2 {
     right: -234px;
     font-size: 28px;
     text-align: center;
-    top: 180px;
+    top: 160px;
     font-family: $space-font;
     transform: skewY(2deg);
 
@@ -814,17 +827,32 @@ h2 {
 }
 
 /* MEDIA QUERIES */
+// smaller than 1400px
+@media only screen and (max-width: 1400px) {
+  .lets-talk-about-your-ai-section {
+    .robot-hands {
+      transform: scale(0.9);
+      right: -540px;
+    }
+    .text {
+      right: -436px;
+      top: 200px;
+      transform: scale(0.9) skewY(2deg);
+    }
+  }
+}
 // smaller than 1200px
 @media only screen and (max-width: 1200px) {
   .top-section {
-    .landing-text-wrapper {
-      h1 { font-size: 85px; line-height: 85px; }
-    }
-
     .landing-image {
       margin-left: 5rem;
       width: 475px;
     }
+  }
+
+  .lets-talk-about-your-ai-section {
+    .robot-hands { right: -600px; }
+    .text { right: -496px; }
   }
 
 }
@@ -837,29 +865,53 @@ h2 {
     }
 
     .landing-image {
-      margin-left: 3rem;
-      width: 400px;
+      margin-left: 0;
+      width: 450px;
+      top: 20px;
     }
   }
 
-  #WhyUs {
-    .detail-wrapper {
-      h2 { font-size: 1.85rem; }
-      p { text-align: justify; }
+  .table-of-contents-section {
+
+    #HowItWorks { margin-top: 10rem; }
+
+    #WhyUs {
+      .questionmark-wrapper { display: none; }
+      .row.top-spacing { margin-top: 0; }
+      .why-us-item::after { border-width: 3px !important; }
     }
+
+
+    #MostPopular {
+      height: auto;
+      padding-top: 2rem;
+      .most-popular-title { font-size: 24px; }
+      .more-images-link { max-width: 300px; margin: auto; }
+    }
+
   }
-
-
-  #MostPopular { height: auto; }
 
   .lets-talk-about-your-ai-section {
+    margin-top: 0;
+    .robot-hands {
+      transform: scale(0.8);
+      right: -545px;
+      width: 1800px;
+      height: 1200px;
+    }
+    .text {
+      right: -560px;
+      top: 80px;
+      transform: scale(0.7) skewY(2deg);
+      width: 2000px;
+    }
   }
 }
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   .top-section {
     // NOTE: change variable value on screen resize (100vh -> 100svh)
-    // height: calc(100svh - $header-height - 50px);
+    // height: calc(100svh - $header-height-md - 50px);
     height: 100svh;
 
     .landing-text-wrapper {
@@ -884,81 +936,95 @@ h2 {
 
     .landing-image {
       position: relative;
-      margin-left: 0;
       width: 250px;
+      display: block;
+      margin: auto;
     }
 
-    .col-md-7 { flex-direction: column; }
-
-    a.large-screen { display: none !important; }
-    a.small-screen {
-      display: block !important;
-      align-self: center;
+    .cta-button.large-screen { display: none; }
+    .cta-button.small-screen {
+      display: block;
       left: 0;
-      background-color: transparent;
-      width: 200px;
-      height: 50px;
-      margin-top: 2rem;
-      border: 0;
-
-      p { color: $dark-text; margin-top: 2px !important; }
-
-      .mat-icon {
-        // border-color: $main-dark-bg-color !important;
-        transform: rotate(-45deg) !important;
-        overflow: visible;
-        margin-top: 0.25rem;
-        &::before { opacity: 1; width: 16px; }
-      }
-      &:active { background-color: transparent !important; }
+      top: -24px;
     }
+
   }
 
-  #WhyUs {
-    .img-wrapper img { max-width: 250px; }
-    .detail-wrapper {
-      h2 {
-        text-align: center;
-        margin-top: 0.5rem;
+  .table-of-contents-section {
+
+    #MostPopular {
+      .product-item img { max-width: 325px; }
+      // copy of hover
+      .product-item.highlighted {
+        .in-cart-indicator {
+          top: calc(-24px + 8px) // + distance from top;
+        }
+        img {
+          top: -24px;
+        }
+        strong, p {
+          color: black;
+        }
+        .product-item-likes .mat-icon {
+          color: black;
+        }
+        .product-price ::ng-deep .mat-icon svg path {
+          fill: black;
+        }
+        button {
+          bottom: -8px;
+          opacity: 1;
+          visibility: visible;
+        }
+        &:before {
+          height: 240px;
+        }
       }
     }
-  }
 
-  #MostPopular {
-    .product-item img { max-width: 325px; }
-    // copy of hover
-    .product-item.highlighted {
-      .in-cart-indicator {
-        top: calc(-24px + 8px) // + distance from top;
-      }
-			img {
-				top: -24px;
-			}
-      strong, p {
-        color: black;
-      }
-      .product-price ::ng-deep .mat-icon svg path {
-        fill: black;
-      }
-			button {
-				bottom: -8px;
-				opacity: 1;
-				visibility: visible;
-			}
-			&:before {
-				height: 240px;
-			}
-		}
   }
 
   .lets-talk-about-your-ai-section {
-
+    .robot-hands { right: -630px; }
+    .text { right: -645px; }
   }
 }
 // smaller than 576px
 @media only screen and (max-width: 576px) {
 
-  .lets-talk-about-your-ai-section {
+  .table-of-contents-section {
 
+    #Introduction {
+      .about-us-items {
+        &-title {
+          font-size: 22px;
+          margin-bottom: 0.5rem;
+        }
+        &-text { font-size: 14px; }
+      }
+    }
+
+    #HowItWorks { margin-top: 6rem; }
+
+  }
+
+  .lets-talk-about-your-ai-section {
+    .robot-hands { right: -740px; }
+    .text { right: -752px; }
+  }
+
+}
+// smaller than 430px
+@media only screen and (max-width: 430px) {
+  .lets-talk-about-your-ai-section {
+    .robot-hands {
+      transform: scale(0.7);
+      right: -800px;
+     }
+    .text {
+      transform: scale(0.63) skewY(2deg);
+      right: -827px;
+      top: 75px;
+    }
   }
 }
