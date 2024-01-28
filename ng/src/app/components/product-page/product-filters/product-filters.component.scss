@@ -97,11 +97,14 @@
   }
 }
 
-// smaller than 576px
+// smaller than 992px
+@media only screen and (max-width: 992px) {
+  .filter-list-wrapper .filter-list { padding: 0 2rem; }
+}
 @media only screen and (max-width: 576px) {
   .filter-list-wrapper {
     .filter-list {
-      padding: 0 0.5rem;
+      padding: 0 1rem;
       gap: 16px;
     }
   }
