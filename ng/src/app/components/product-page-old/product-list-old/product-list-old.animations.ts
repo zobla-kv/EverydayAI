@@ -1,4 +1,4 @@
-import { animate, keyframes, query, stagger, state, style, transition, trigger } from "@angular/animations";
+import { animate, group, keyframes, query, stagger, state, style, transition, trigger } from "@angular/animations";
 
 export default [
   trigger('productsLoaded', [
@@ -11,5 +11,14 @@ export default [
         { optional: true }
       )
     ])
-  ])
+  ]),
+  // old animation for preloader saved here for ref
+  // trigger('appLoad', [
+  //   state('true', style({ 'opacity': '0' })),
+  //   transition('false => true', [
+  //     group([
+  //       query(':self', [animate('750ms 2250ms', style({ 'opacity': '0' }))])
+  //     ])
+  // ]),
+  // ]),
 ]

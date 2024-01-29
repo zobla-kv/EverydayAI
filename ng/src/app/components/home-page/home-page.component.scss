@@ -16,6 +16,8 @@ h2 {
   .landing-text-wrapper {
     text-align: right;
     padding-right: 1rem;
+    position: relative;
+    top: -40px;
 
     p {
       margin-top: 2rem;
@@ -32,8 +34,6 @@ h2 {
   .landing-image {
     width: 510px;
     margin-left: 8rem;
-    // because it increases parent height
-    position: absolute;
   }
 
   .cta-button {
@@ -876,6 +876,7 @@ h2 {
     #HowItWorks { margin-top: 10rem; }
 
     #WhyUs {
+      padding-top: 2rem;
       .questionmark-wrapper { display: none; }
       .row.top-spacing { margin-top: 0; }
       .why-us-item::after { border-width: 3px !important; }
@@ -910,11 +911,10 @@ h2 {
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   .top-section {
-    // NOTE: change variable value on screen resize (100vh -> 100svh)
-    // height: calc(100svh - $header-height-md - 50px);
-    height: 100svh;
+    height: calc(100svh - $header-height-md - 50px);
 
     .landing-text-wrapper {
+      top: 0;
       text-align: left;
       padding: 1rem;
       h1 {
@@ -935,7 +935,6 @@ h2 {
     }
 
     .landing-image {
-      position: relative;
       width: 250px;
       display: block;
       margin: auto;
@@ -945,15 +944,25 @@ h2 {
     .cta-button.small-screen {
       display: block;
       left: 0;
-      top: -24px;
     }
 
   }
 
   .table-of-contents-section {
+    padding-top: 4rem;
 
     #MostPopular {
-      .product-item img { max-width: 325px; }
+      .product-item {
+        img { max-width: 325px; }
+        button {
+          width: 75px;
+          height: 75px;
+          .mat-icon {
+            &.download { transform: scale(1.8); }
+            &.cart-action { transform: scale(1.6); }
+          }
+        }
+      }
       // copy of hover
       .product-item.highlighted {
         .in-cart-indicator {
@@ -972,7 +981,7 @@ h2 {
           fill: black;
         }
         button {
-          bottom: -8px;
+          bottom: -20px;
           opacity: 1;
           visibility: visible;
         }
@@ -1010,7 +1019,16 @@ h2 {
 
   .lets-talk-about-your-ai-section {
     .robot-hands { right: -740px; }
-    .text { right: -752px; }
+    .text {
+      right: -752px;
+
+      .typewriter-wrapper { margin-bottom: 0.75rem; }
+      .mat-icon {
+        width: 45px;
+        height: 45px;
+        &[svgIcon="instagram"] { top: -6px; }
+      }
+    }
   }
 
 }

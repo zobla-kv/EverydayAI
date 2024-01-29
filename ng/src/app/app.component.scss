@@ -1,22 +1,28 @@
 @import './styles/variables';
 
 .preloader {
-	height: 100%;
-	width: 100%;
-	position: fixed;
-	z-index: 99999999;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 99999999;
 
-  animation: zoom 10s forwards;
-  -webkit-animation: zoom 10s forwards;
-  animation-delay: 1.3s;
-  -webkit-animation-delay: 1.3s;
+  img.logo {
+    content: $main-logo;
+    backface-visibility: hidden; // keeps logo sharp on scale
+  }
+}
 
-  &-center {
+.preloader.large-screen {
+  // PRELOAD_ANIMATION_DURATION['lg'] = hide delay + animation (1.5 + 5)
+  animation: zoom 10s 1.3s forwards, hide 1.5s 5s forwards;
+  -webkit-animation: zoom 10s 1.3s forwards, hide 1.5s 5s forwards;
+
+  .preloader-center {
     width: 100%;
 	  height: 100%;
 	  position: relative;
 
-    &-absolute {
+    .preloader-center-absolute {
       position: absolute;
 	    left: 50%;
 	    top: 50%;
@@ -31,9 +37,8 @@
       $animation-duration: 2s;
 
       .logo {
-        content: $main-logo;
-        -webkit-animation: logo $animation-duration forwards ease;
-	      animation: logo $animation-duration forwards ease;
+        -webkit-animation: logoLarge $animation-duration forwards ease;
+	      animation: logoLarge $animation-duration forwards ease;
         -webkit-animation-delay: 3s;
         animation-delay: 3s;
         -ms-transform: rotate(-45deg) scale(0);
@@ -130,10 +135,10 @@
           }
         }
 
-        @-webkit-keyframes logo {
+        @-webkit-keyframes logoLarge {
           100% { -webkit-transform: rotate(-45deg) scale(0.5); }
         }
-        @keyframes logo {
+        @keyframes logoLarge {
           100% {
             transform: rotate(-45deg) scale(0.5);
             -webkit-transform: rotate(-45deg) scale(0.5);
@@ -257,4 +262,34 @@
     }
 
   }
+}
+
+
+.preloader.small-screen {
+  // PRELOAD_ANIMATION_DURATION['xs'] = hide delay + animation (1.5 + 5)
+  animation: hide 1.5s 5s forwards;
+  -webkit-animation: hide 1.5s 5s forwards;
+
+  .logo {
+    width: 400px;
+    height: 350px;
+	  animation: logoSmall 1.5s 1s forwards ease;
+    -webkit-animation: logoSmall 1.5s 1s forwards ease;
+    transform: scale(0);
+
+    @-webkit-keyframes logoSmall {
+      100% { -webkit-transform: scale(0.5); }
+    }
+    @keyframes logoSmall {
+      100% { transform: scale(0.5);  -webkit-transform: scale(0.5); }
+    }
+  }
+
+}
+
+@-webkit-keyframes hide {
+  100% { opacity: 0; }
+}
+@keyframes hide {
+  100% { opacity: 0; }
 }

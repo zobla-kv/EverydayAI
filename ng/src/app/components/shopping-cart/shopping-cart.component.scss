@@ -138,8 +138,6 @@
   .shopping-card-inner-wrapper {
     height: auto;
     min-height: 780px;
-    .cart-items-column-wrapper,
-    .payment-column-wrapper { left: 0; }
   }
 }
 
@@ -208,6 +206,7 @@
   }
 
   .cart-item {
+    .product-title { padding: 0 16px !important; }
     &:has(.product-old-price) {
       .product-metadata-item { margin-bottom: 50px; }
     }

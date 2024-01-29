@@ -10,11 +10,9 @@ html {
 }
 
 // NOTE: quick way to add border to all
-// * {
+* {
   // outline: 1px solid #f00 !important;
-  // background-color: transparent !important;
-  // background: transparent !important;
-// }
+}
 
 body {
   background-color: $main-dark-bg-color;
@@ -25,29 +23,14 @@ body {
 
   .page-wrapper {
     max-width: $page-max-width;
-    // NOTE: margin-top must follow header expanded height
-    // margin: 140px auto 0 auto;
-    // padding-top: 0;
     padding-top: $header-height-lg;
     margin: auto;
     position: relative;
 
-    // TODO: 100svh on mobile
-    // to keep everything nicely aligned on zoom out (not needed on large pages ie. home page)
+    // to keep everything aligned on zoom out (not needed on large pages ie. home page)
     &:has(.product-page-wrapper) {
-      // TODO: recheck this
-      // min-height: calc(100vh - 880px);
       min-height: 100vh;
-      // only because of filter-dropdown
-      overflow: hidden;
-    }
-    &:has(.auth-form-page) {
-      @extend .flex-center;
-      min-height: calc(100vh - 250px);
-    }
-    &:has(.x-form-page) {
-      @extend .flex-center;
-      min-height: calc(100vh - 250px);
+      overflow: hidden; // because of filter-dropdown
     }
   }
   .footer-wrapper {
@@ -514,7 +497,6 @@ form {
 @media only screen and (max-width: 976px) {
   // TODO: hamburger appers a little bit later (960px)
 }
-
 // smaller than 768px
 @media only screen and (max-width: 768px) {
   body .page-wrapper { padding-top: $header-height-md; }

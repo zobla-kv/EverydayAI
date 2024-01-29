@@ -55,6 +55,7 @@ export class ProductService implements OnDestroy {
     product.spinners[ProductActions.CART] = true;
     if (!this.user) {
       this._router.navigate(['auth', 'login']);
+      product.spinners[ProductActions.CART] = false;
       return;
     }
     this._firebaseService.addProductToCart(product.id)
@@ -105,7 +106,7 @@ export class ProductService implements OnDestroy {
       }
 
       const a = document.createElement('a');
-      a.href = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
+      a.href = downloadUrl;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

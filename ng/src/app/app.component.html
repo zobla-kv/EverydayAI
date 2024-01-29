@@ -1,9 +1,4 @@
-<div class="preloader"
-  *ngIf="isFirstVisit && !isPreloadAnimationDone"
-  [@appLoad]="runPreloadAnimation"
-  (@appLoad.start)="handleLoadAnimationStarted($event)"
-  (@appLoad.done)="handleLoadAnimationDone($event)"
->
+<div class="preloader large-screen" *ngIf="screenSize !== mobileScreenSize && isFirstVisit && !preloadAnimationDone">
   <app-star-background></app-star-background>
   <div class="preloader-center">
     <div class="preloader-center-absolute">
@@ -21,13 +16,24 @@
   </div>
 </div>
 
+<div class="preloader small-screen" *ngIf="screenSize === mobileScreenSize && isFirstVisit && !preloadAnimationDone">
+  <app-star-background></app-star-background>
+  <div class="flex-center h-100">
+    <img class="logo">
+  </div>
+</div>
+
 <div>
   <app-star-background></app-star-background>
 
   <app-header></app-header>
 
   <main class="page-wrapper">
-    <router-outlet (activate)="window.scrollTo(0, 0)" (attach)="onAttach($event); window.scrollTo(0, 0)"></router-outlet>
+    <router-outlet
+      (activate)="window.scrollTo(0, 0)"
+      (attach)="onAttach($event); window.scrollTo(0, 0)"
+      (detach)="onDetach($event)"
+    ></router-outlet>
   </main>
 
   <!-- <app-footer></app-footer> -->

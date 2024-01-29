@@ -72,6 +72,7 @@ export class UtilService {
   * @returns void
   */
   appLoaded(): void {
+    console.log('app loaded');
     document.cookie = 'new_session';
     this.appLoaded$.next();
   }
@@ -289,8 +290,8 @@ loadScript(url: string) {
 /**
   * get extension rom type mime type
   *
-  * @param file - File
-  * @return size - file size in mb
+  * @param mimeType - string
+  * @return file extesion - string
   */
   getExtensionFromMimeType(mimeType: string): string {
     switch(mimeType) {
@@ -310,8 +311,8 @@ loadScript(url: string) {
 /**
   * get mime type from extension
   *
-  * @param file - File
-  * @return size - file size in mb
+  * @param extension - string
+  * @return mimeType - string
   */
   getMimeTypeFromExtension(extension: string): string {
     switch(extension) {
@@ -380,7 +381,7 @@ loadScript(url: string) {
   * Get capitalized text
   *
   * @param text - string
-  * @return text - capitalized text
+  * @return capitalized text - string
   */
   capitalizeText(text: string): string {
     // don't capitalize if it doens't have more than 2 chars.
@@ -388,6 +389,15 @@ loadScript(url: string) {
       return text;
     }
     return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+/**
+  * Get zoom level - might not be exact as browser
+  *
+  * @return zoom level - number
+  */
+  getZoomLevel(): number {
+    return Math.round(window.devicePixelRatio * 100);
   }
 
 }

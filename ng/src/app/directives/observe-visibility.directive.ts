@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
-import { Subject, first } from 'rxjs';
+import { Subject, Subscription, first } from 'rxjs';
 
 import {
   UtilService
@@ -20,20 +20,20 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   // object holding show styles
   @Input('show') showStyles: any = { 'opacity': '1' };
   // show animation duration
-  @Input('duration') duration: number = 500;
+  @Input() duration: number = 500;
   // show animation delay
-  @Input('delay') delay: number = 0;
+  @Input() delay: number = 0;
   // show animation easing
-  @Input('easing') easing: '' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' = '';
+  @Input() easing: '' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' = '';
   // what percentage should be visible before triggering
-  @Input('threshold') threshold: number = 0.6;
+  @Input() threshold: number = 0.6;
   // root margin
-  @Input('rootMargin') rootMargin: string = '0px';
-  // appear immediately (don't wait to be in view)
-  @Input('appearImmediately') appearImmediately: boolean = false;
+  @Input() rootMargin: string = '0px';
   // add css class - if this is present element is not hidden and shown by directive
   // added class is responsible for that
-  @Input('addClass') addClass: string = '';
+  @Input() addClass: string = '';
+  // run on mobile - disabled by default
+  @Input() runOnMobile = false;
 
   // emit event when element enters viewport
   @Output() intersection = new EventEmitter<ElementRef>();
@@ -50,14 +50,29 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   // intersection trigger
   private _intersect$ = new Subject<void>();
 
+  // subscibe to screen size change
+  screenSizeChangeSub$: Subscription;
+
+  // screen size
+  screenSize: string;
+
+  // mobile screen size
+  mobileScreenSize = 'xs';
+
   constructor(
     private _element: ElementRef,
     private _renderer: Renderer2,
     private _builder: AnimationBuilder,
     private _utilService: UtilService
-  ) {}
+  ) {
+    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.screenSize = size);
+  }
 
   ngOnInit() {
+    // prevent run on mobile
+    if (this.screenSize === this.mobileScreenSize && !this.runOnMobile) {
+      return;
+    }
     // hide element initially
     this.setHideStyles();
     this.createObserver();
@@ -67,11 +82,6 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // start observing
   startObserving() {
-    if (this.appearImmediately) {
-      this.animation.play();
-      return;
-    }
-
     if (!this.isFirstVisit) {
       this._observer?.observe(this._element.nativeElement);
       return;
@@ -132,6 +142,8 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       this._observer = null;
     }
     this._intersect$.complete();
+
+    this.screenSizeChangeSub$ && this.screenSizeChangeSub$.unsubscribe();
   }
 
 }

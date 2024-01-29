@@ -17,7 +17,8 @@ import {
 import {
   AuthService,
   FirebaseService,
-  ToastService
+  ToastService,
+  UtilService
 } from '@app/services';
 
 @Component({
@@ -74,9 +75,13 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // only fetch products on first sub
   isFirstSub = true;
 
+  // prevZoomLevel - for fixing broken layout
+  prevZoomLevel: number = 0;
+
   constructor(
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
+    private _utilService: UtilService,
     private _toast: ToastService
   ) {}
 
@@ -226,6 +231,14 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
       productItem.classList.remove('show');
       productItem.classList.add('hide');
     })
+  }
+
+  // fix broken layout after zoom-in/out on other page then coming back
+  public fixMasonryLayout() {
+    const currentZoomLevel = this._utilService.getZoomLevel();
+    if (this.prevZoomLevel !== currentZoomLevel) {
+      this.masonry.layout();
+    }
   }
 
   ngOnDestroy() {

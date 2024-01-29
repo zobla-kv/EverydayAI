@@ -6,40 +6,10 @@ h1 {
   margin: 1.5rem 0 2rem 0;
 }
 
-.table-controls {
-  width: 300px;
-  margin-left: auto;
-  margin-right: 0;
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-  padding: 4px;
-  border: 2px solid white;
-  border-bottom: 0;
-
-  .plus {
-    $thickness: 4px;
-    width: 32px;
-    transform: scale(0.8);
-    aspect-ratio: 1;
-    // border: 10px solid white; /* the outer space */
-    background:
-      conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0)
-      calc(100% + $thickness / 2) calc(100% + $thickness / 2)/
-      calc(50%  + $thickness)   calc(50%  + $thickness);
-    display: inline-block;
-    cursor: pointer;
-  }
-
-  input { padding: 2px 8px; }
-  input:focus { outline: none; }
-}
-
 .table-wrapper {
   overflow-x: auto;
   position: relative;
-  width: 80%;
-  margin: auto;
+  margin: 0 6rem;
   min-height: 300px;
 
   mat-spinner {
@@ -117,6 +87,35 @@ h1 {
     }
 
   }
+
+  .table-controls {
+    width: 300px;
+    margin-left: auto;
+    margin-right: 0;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    padding: 4px;
+    border: 2px solid white;
+    border-bottom: 0;
+
+    .plus {
+      $thickness: 4px;
+      width: 32px;
+      transform: scale(0.8);
+      aspect-ratio: 1;
+      // border: 10px solid white; /* the outer space */
+      background:
+        conic-gradient(from 90deg at $thickness $thickness, transparent 90deg,#fff 0)
+        calc(100% + $thickness / 2) calc(100% + $thickness / 2)/
+        calc(50%  + $thickness)   calc(50%  + $thickness);
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    input { padding: 2px 8px; }
+    input:focus { outline: none; }
+  }
 }
 
 .form-group input[type="checkbox"] {
@@ -144,25 +143,28 @@ h1 {
 }
 
 /* MEDIA QUERIES */
-// smaller than 850px when horizontal scrollbar appears on table
-@media only screen and (max-width: 850px) {
-  // make elements follow vertical table scroll
-  .table-controls {
-    position: fixed;
-    top: 116px;
-    // same as table
-    width: 80%;
-  }
-  .table-wrapper .mat-mdc-paginator::ng-deep .mat-mdc-paginator-range-actions {
-    position: fixed;
-  }
-
-  // adjust because of fixed
-  h1 { margin-bottom: 60px; }
-  mat-paginator { margin-top: 0.25rem !important; }
+// smaller than 1200px
+@media only screen and (max-width: 1200px) {
+  .table-wrapper { margin: 0 2rem; }
 }
-
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  // make elements follow vertical table scroll
+  .table-wrapper {
+    .table-controls {
+      position: sticky;
+      top: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+    }
+    mat-paginator {
+      position: sticky;
+      left: 0;
+    }
+  }
+}
 // smaller than 576px
 @media only screen and (max-width: 576px) {
-  // .table-controls { width: unset; gap: 12px; }
+  h1 { font-size: 32px; }
 }

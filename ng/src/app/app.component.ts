@@ -1,8 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { animate, group, query, state, style, transition, trigger, AnimationEvent } from '@angular/animations';
-
-import { first } from 'rxjs';
-
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Subscription, first } from 'rxjs';
 import { environment } from '@app/environment';
 
 import {
@@ -12,36 +9,38 @@ import {
   FirebaseService
 } from '@app/services';
 
+// this should match scss time
+const PRELOAD_ANIMATION_DURATION: { [key: string]: number} = {
+  'lg': 6500,
+  'xs': 6500
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  // svg inside mat-icon does not have css selector for encapsulation added
-  encapsulation: ViewEncapsulation.None,
-  animations: [
-    trigger('appLoad', [
-    state('true', style({ 'opacity': '0' })),
-    transition('false => true', [
-      group([
-        query(':self', [animate('750ms 2250ms', style({ 'opacity': '0' }))])
-      ])
-    ]),
-    ]),
-  ]
+  // svg inside mat-icon does not encapsulated
+  encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
 
-  // run preload animation?
-  runPreloadAnimation = false;
-
-  // is preload animation done
-  isPreloadAnimationDone = false;
-
   // access in template
   get window() { return window; }
+
+  // subscibe to screen size change
+  screenSizeChangeSub$: Subscription;
+
+  // screen size
+  screenSize: string;
+
+  // mobile screen size
+  mobileScreenSize = 'xs';
+
+  // is preload animation done?
+  preloadAnimationDone = false;
 
   constructor(
     private _iconService: IconService,
@@ -53,13 +52,21 @@ export class AppComponent {
     console.log('test for new build')
     console.log('environment: ', environment);
     console.log('api-url: ', environment.API_HOST);
-    // custom user set
-    // for now this is only deteremining factor for app load
+
+    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.screenSize = size);
+
+
+    const preloadAnimationStartTime = Date.now();
+
+    // custom user set - only deteremining factor for app load
     this._authService.userState$.pipe(first()).subscribe(user => {
+      const userLoadedTime = Date.now();
+      const timeBetween = Math.abs(preloadAnimationStartTime - userLoadedTime);
       if (this.isFirstVisit) {
-        setTimeout(() => this.runPreloadAnimation = true, 2000);
+        this.handlePreloadAnimation(timeBetween);
         return;
       }
+
       this._utilService.appLoaded();
 
       if (user) {
@@ -69,22 +76,16 @@ export class AppComponent {
     });
 
     this._iconService.addCustomIcons();
-
   }
 
-  // app loaded and preloader animation started
-  handleLoadAnimationStarted(event: AnimationEvent) {
-    if (event.toState == '1') {
+  // handle preload animation done
+  handlePreloadAnimation(timeBetween: number) {
+    const screenSize = this.screenSize === 'xs' ? 'xs' : 'lg';
+    const animationDuration = PRELOAD_ANIMATION_DURATION[screenSize];
+    setTimeout(() => {
+      this.preloadAnimationDone = true;
       this._utilService.appLoaded();
-    }
-  }
-
-  // app loaded and preloader animation doneisPreloadAnimationDone
-  handleLoadAnimationDone(event: AnimationEvent) {
-    if (event.toState == '1') {
-      this.isPreloadAnimationDone = true;
-      this._utilService.appLoadedAnimationComplete$.next();
-    }
+    }, animationDuration - timeBetween - 200);
   }
 
   // handle global attach after route change
@@ -93,6 +94,17 @@ export class AppComponent {
     if (component['onAttach']) {
       component.onAttach();
     }
+  }
+  // handle global detach after route change
+  onDetach(component: any) {
+    // components that should react to router attach event
+    if (component['onDetach']) {
+      component.onDetach();
+    }
+  }
+
+  ngOnDestroy() {
+    this.screenSizeChangeSub$ && this.screenSizeChangeSub$.unsubscribe();
   }
 
 }

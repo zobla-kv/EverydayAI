@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ProductListComponent } from './product-list/product-list.component';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
@@ -26,6 +27,8 @@ const FILTER_SEARCH = 'search';
   styleUrls: ['./product-page.component.scss']
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
+  // product list
+  @ViewChild(ProductListComponent) ProductListComponent: ProductListComponent;
 
   // page title default
   defaultTitle = 'Images';
@@ -134,6 +137,11 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   onAttach() {
     this.addQueryParamsToUrl();
     this.setPageTitle(this.title);
+    this.ProductListComponent.fixMasonryLayout();
+  }
+  // for reuse strategy to set zoom out level on exit
+  onDetach() {
+    this.ProductListComponent.prevZoomLevel = this._utilService.getZoomLevel();
   }
 
   // appends query params to url

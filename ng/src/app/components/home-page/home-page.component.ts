@@ -29,9 +29,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // questionmark
   @ViewChild('questionmark') questionmark: ElementRef;
 
-  // is first visit
-  isFirstVisit = this._utilService.isFirstVisit();
-
   // is logged in
   user: CustomUser | null;
 
@@ -66,7 +63,6 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private _authService: AuthService,
-    private _utilService: UtilService,
     private _el: ElementRef,
     private _renderer: Renderer2,
     private _firebaseService: FirebaseService,
@@ -113,22 +109,11 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.observeQuestionmark();
   }
 
-  // run hover animation once cta element is displayed to get focus on that
-  hightlightCTA(element: any) {
-    // run after animation is done, delay + duration
-    const delay = this.isFirstVisit ? 4500 : 1200 + 600;
+  // run animation once cta element is displayed to get eyes to focus on that
+  highlightCTA(element: any) {
     setTimeout(() => {
       element.classList.add('highlighted');
-    }, delay);
-  }
-  // copy of above one with different delay
-  // TODO: move to directive because not DRY
-  hightlightProduct(element: HTMLElement, elementDelay: number = 0) {
-    // run after animation is done, delay + duration
-    const delay = 350 + elementDelay;
-    setTimeout(() => {
-      element.classList.add('highlighted');
-    }, delay);
+    }, 1800);
   }
 
   // show toc when scroll when distance from top is smaller than 400px

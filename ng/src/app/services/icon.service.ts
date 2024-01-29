@@ -23,7 +23,9 @@ export class IconService {
     { name: 'tier-classic' },
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
-    { name: 'double-arrow-right' }
+    { name: 'double-arrow-right' },
+    { name: 'email' },
+    { name: 'instagram' }
   ]
 
   // name property needs to match file name
@@ -33,8 +35,6 @@ export class IconService {
     { name: 'expectance' },
     { name: 'lightbulb' },
     { name: 'confetti' },
-    { name: 'email' },
-    { name: 'instagram' },
     { name: 'payment' },
     { name: 'image-resolution' },
     { name: 'file-type-img' }

@@ -39,9 +39,6 @@ export class HeaderComponent implements OnDestroy {
   // expand when user scroll is on top
   expand = true;
 
-  // is first visit
-  isFirstVisit = this._utilService.isFirstVisit();
-
   // is user logged in
   isAuthenticated: boolean;
 

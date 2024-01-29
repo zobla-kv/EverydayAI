@@ -7,6 +7,8 @@ h6 span {
   font-weight: 700;
 }
 
+.form-wrapper { margin-top: 20%; }
+
 .form-group.gender:has(input.ng-invalid.ng-touched),
 .form-group.gender .form-style:has(input.ng-invalid.ng-touched) {
   box-shadow: $error-inset;

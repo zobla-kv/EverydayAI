@@ -11,7 +11,8 @@
               [hide]="{'opacity': 0, 'transform': 'translateY(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 3000 : 300"
+              [runOnMobile]="true"
+              [delay]="300"
             >
               Best
             </span>
@@ -21,7 +22,8 @@
               [hide]="{'opacity': 0, 'transform': 'translateX(-20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateX(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 3300 : 600"
+              [runOnMobile]="true"
+              [delay]="600"
             >
               AI
             </span>
@@ -31,15 +33,17 @@
               [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}"
               [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
               [duration]="300"
-              [delay]="isFirstVisit ? 3600 : 900"
+              [runOnMobile]="true"
+              [delay]="900"
             >images</span>
           </h1>
           <div
             class="d-flex flex-column"
             appear
             [duration]="500"
-            [delay]="isFirstVisit ? 3900 : 1200"
-            (intersection)="hightlightCTA(cta)"
+            [runOnMobile]="true"
+            [delay]="1200"
+            (intersection)="highlightCTA(cta)"
           >
             <p>Welcome to the future</p>
             <a class="cta-button large-screen" routerLink="/images" #cta>
@@ -49,7 +53,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-7">
+      <div class="col-12 col-md-7 d-md-flex align-items-md-center">
         <!-- NOTE: directive hides flick (cls) -->
         <img
           src="../../../assets/images/landing-image.png"
@@ -59,10 +63,16 @@
           [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
           [show]="{'opacity': 1, 'transform': 'scale(1)'   }"
           [duration]="1000"
+          [runOnMobile]="true"
           [easing]="'ease-in-out'"
-          [delay]="isFirstVisit ? 3400 : 600"
+          [delay]="600"
         >
-        <a class="cta-button small-screen highlighted mx-auto" routerLink="/images" #cta>
+        <a class="cta-button small-screen highlighted mx-auto" routerLink="/images" #cta
+          appear
+          [duration]="500"
+          [runOnMobile]="true"
+          [delay]="1200"
+        >
           <div class="inner-wrapper">Explore now</div>
           <mat-icon svgIcon="double-arrow-right" class="dark"></mat-icon>
         </a>
@@ -109,7 +119,7 @@
                 </app-gradient-container>
               </div>
               <div class="col-12 col-md-6 col-xl-4 mx-auto mx-sm-none mb-5 px-2"
-                appear [hide]="{'opacity': 0, 'transform': 'translateY(30px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0px)'}" [threshold]="1"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(30px)'}" [show]="{'opacity': 1, 'transform': 'none'}"
               >
                 <app-gradient-container>
                   <mat-icon svgIcon="collaboration"></mat-icon>
@@ -316,13 +326,8 @@
                   <div
                     *ngFor="let product of ourPicksProducts; let i = index"
                     class="col-12 col-md-4 col-lg-3 my-5 my-md-0 d-flex justify-content-center align-items-end"
-                    appear
-                    [hide]="{'opacity': 0, 'transform': 'translateY(-40px)'}"
-                    [show]="{'opacity': 1, 'transform': 'translateY(0px)'}"
-                    [threshold]="0.8"
-                    (intersection)="hightlightProduct(productItem, i * 100)"
                   >
-                    <a #productItem class="product-item text-reset text-decoration-none" [routerLink]="'/images/' + product.id" target="_blank">
+                    <a class="product-item highlighted text-reset text-decoration-none" [routerLink]="'/images/' + product.id" target="_blank">
                       <div class="position-relative mx-auto fit-content">
                         <div *ngIf="product.isInCart && product.price !== 0 && !user?.ownedItems?.includes(product.id)" class="in-cart-indicator">
                           <app-gradient-container padding="0.25rem 0.25rem 0 0.25rem">
@@ -372,8 +377,8 @@
                             (click)="productService.download(product)"
                           >download</mat-icon>
                           <ng-template #action>
-                            <mat-icon svgIcon="cart-add" class="cart-action black" *ngIf="!product.isInCart" (click)="productService.addToCart(product)"></mat-icon>
-                            <mat-icon svgIcon="cart-remove" class="cart-action black" *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"></mat-icon>
+                            <mat-icon svgIcon="cart-add" class="cart-action black" *ngIf="!product.isInCart" (click)="productService.addToCart(product); $event.preventDefault()"></mat-icon>
+                            <mat-icon svgIcon="cart-remove" class="cart-action black" *ngIf="product.isInCart" (click)="productService.removeFromCart(product); $event.preventDefault()"></mat-icon>
                           </ng-template>
                         </ng-template>
                       </button>
@@ -394,12 +399,12 @@
 <section class="lets-talk-about-your-ai-section position-relative">
   <!-- TODO: alt -->
   <img src="../../../assets/images/contact-us-image.png" alt="" loading="lazy" class="robot-hands">
-  <div class="text user-select-none" appear addClass="animate" [threshold]="0.1">
+  <div class="text user-select-none" appear addClass="animate" [threshold]="0.1" [runOnMobile]="true">
     <div class="typewriter-wrapper">
       <span class="d-block">Lets talk about</span>
       <span class="d-block">your AI</span>
     </div>
-    <div class="flex-center gap-3" appear [delay]="2750" [threshold]="0.1">
+    <div class="flex-center gap-4 gap-sm-3" appear [delay]="3200" [threshold]="0.1" [runOnMobile]="true">
       <mat-icon svgIcon="instagram" class="white"></mat-icon>
       <a href="mailto: everyday-ai.online@gmail.com" class="text-reset text-decoration-none">
         <mat-icon svgIcon="email" class="white"></mat-icon>

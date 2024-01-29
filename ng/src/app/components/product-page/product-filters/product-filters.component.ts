@@ -79,6 +79,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       this._toast.open(ToastConstants.MESSAGES.PRODUCT_FILTER_SPAM, ToastConstants.TYPE.ERROR.type);
     }
+    this.closeDropdown();
   }
 
   ngAfterViewInit() {
