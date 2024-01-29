@@ -82,7 +82,7 @@
 </section>
 
 <section class="table-of-contents-section" scrollSpy (sectionChange)="activeSection = $event">
-  <div class="container-fluid px-md-0 px-lg-5">
+  <div class="container-fluid px-3 px-md-5">
     <div class="row justify-content-center">
       <div class="col-md-2 d-none d-lg-block">
         <div class="table-of-contents-wrapper">
@@ -373,10 +373,10 @@
                         <ng-template #action>
                           <!-- TODO: site lags on download -->
                           <mat-icon class="download black"
-                            *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else action"
+                            *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else cartAction"
                             (click)="productService.download(product)"
                           >download</mat-icon>
-                          <ng-template #action>
+                          <ng-template #cartAction>
                             <mat-icon svgIcon="cart-add" class="cart-action black" *ngIf="!product.isInCart" (click)="productService.addToCart(product); $event.preventDefault()"></mat-icon>
                             <mat-icon svgIcon="cart-remove" class="cart-action black" *ngIf="product.isInCart" (click)="productService.removeFromCart(product); $event.preventDefault()"></mat-icon>
                           </ng-template>

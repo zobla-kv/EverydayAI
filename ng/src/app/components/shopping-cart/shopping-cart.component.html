@@ -54,17 +54,21 @@
                           <div class="product-metadata ms-0 ms-sm-3">
                             <h5 class="product-title">{{ product.title }}</h5>
                             <div class="d-flex gap-1 align-items-center">
-                              <div
-                                class="product-metadata-item"
-                                *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder"
-                                [attr.item]="metadata.key"
-                              >
-                                <mat-icon class="white" [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
-                                  {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
-                                </mat-icon>
-                                <span class="mb-0">{{ product.metadata[metadata.key] }}</span>
-                                <div class="vr"></div>
-                              </div>
+
+                              <ng-container *ngFor="let metadata of product.metadataIconMap | keyvalue: keepOrder">
+                                <div
+                                  *ngIf="config.product.metadata.includes(metadata.key)"
+                                  class="product-metadata-item"
+                                  [attr.item]="metadata.key"
+                                >
+                                  <mat-icon class="white" [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+                                    {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+                                  </mat-icon>
+                                  <span class="mb-0">{{ product.metadata[metadata.key] }}</span>
+                                  <div class="vr"></div>
+                                </div>
+                              </ng-container>
+
                             </div>
                           </div>
                         </div>

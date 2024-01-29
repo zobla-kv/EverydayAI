@@ -10,7 +10,6 @@ import {
   ProductListConfig,
   ProductMapper,
   ProductResponse,
-  ProductTypePrint,
   ToastConstants
 } from '@app/models';
 
@@ -45,7 +44,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   userStateSub$: Subscription;
 
   // product list
-  productList: ProductMapper<ProductTypePrint>[] = [];
+  productList: ProductMapper[] = [];
 
   // products initial loading spinner
   showSpinner = true;
@@ -178,7 +177,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // TODO: bug, initial set of images displayed before being fully rendered (big size?) - not a problem with later ones
-    this.productList = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
+    this.productList = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
 
     // wait for products to be in DOM
     setTimeout(() => {
@@ -203,7 +202,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
           this.allProductsLoaded = true;
         }
 
-        const mapped = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.config, this.user));
+        const mapped = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
         this.productList.push(...mapped);
         this.showPaginationLoadingSpinner = false;
         setTimeout(() => {

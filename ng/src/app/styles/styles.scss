@@ -2,8 +2,6 @@
 @import '../../../../node_modules/bootstrap/scss/bootstrap'; // TODO: is this the place?
 @import './variables';
 
-// TODO: check responsiveness of everything
-
 html {
   // required for instant scroll on route change
   scroll-behavior: auto !important;
@@ -51,7 +49,6 @@ img {
 
 h1, h2, h3, h4, h5 { font-family: $space-font; }
 
-// TODO: check zoom out
 .viewport-height { min-height: $viewport-height-without-header; }
 .vr { opacity: 0.75; }
 
@@ -502,7 +499,7 @@ form {
   body .page-wrapper { padding-top: $header-height-md; }
   .mdc-snackbar {
     margin: auto !important;
-    top: 100px; // TODO: because of search introduction, check what is better with other actions later
+    top: 100px;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     position: fixed !important;

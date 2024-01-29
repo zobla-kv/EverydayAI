@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 
 import {
   ProductMapper,
-  ProductTypePrint,
   CustomUser,
   ProductActions
 } from '@app/models';
@@ -30,7 +29,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   @ViewChild('tooltip') likesTooltip: MatTooltip;
 
   // product
-  @Input('product') product: ProductMapper<ProductTypePrint>;
+  @Input('product') product: ProductMapper;
   // actions a product can peform
   @Input('actions') actions: string[];
   // animation stagger
@@ -55,14 +54,14 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AuthService,
-    private _productService: ProductService,
+    public   productService: ProductService,
     private _firebaseService: FirebaseService,
     private _formatPipe: FormatPipe,
     public   utilService: UtilService
   ) {}
 
   ngOnInit() {
-    // TODO: this solves 404 issue with items not displayed, displaying them but without animation
+    // NOTE: this solves 404 issue with items not displayed, displaying them but without animation
     setTimeout(() => this.disableAnimation = true, 3000);
     this.isLiked = this.product.likes > 0 ? true : false;
     this.userStateSub$ = this._authService.userState$.subscribe(user => {
@@ -73,21 +72,6 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.likesTooltip && (this.likesTooltip.message = this._formatPipe.transform(this.product.likes));
-  }
-
-  // handles add to cart
-  addToCart() {
-    this._productService.addToCart(this.product);
-  }
-
-  // handles remove from cart
-  removeFromCart() {
-    this._productService.removeFromCart(this.product);
-  }
-
-  // handle download
-  handleDownload() {
-    this._productService.download(this.product);
   }
 
   // handle like

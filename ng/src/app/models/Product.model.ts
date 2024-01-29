@@ -40,7 +40,6 @@ interface ProductTypePrintMetadata {
   }
 }
 
-// TODO: comment out colors that contain no pictures, rather than displaying no results when filtered
 export enum ProductColor {
   all = 'linear-gradient(70deg, #FF4136  30%, rgba(0,0,0,0) 30%), linear-gradient(30deg, #01FF70 60%, #0074D9 60%)',
   black = '#111111',
@@ -70,6 +69,7 @@ export interface FilterEvent {
   filterValue: string;
 }
 
+// NOTE: unused
 interface ProductTypeShirtMetadata {
   [key: string]: {
     size: 'SM' | 'XL' | 'XXL';
@@ -166,50 +166,48 @@ export class ProductListConfig {
 }
 
 // modify Product from BE to include FE properties
-// TODO: remove 'extends ProductResponse', see types when calling new
-export class ProductMapper<T extends ProductResponse> implements ProductResponse {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  discount: number;
-  watermarkImgPath: string;
-  originalImgPath: string;
-  // TODO: type
-  likes: number;
-  isActive: boolean;
-  metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
-  creationDate: Timestamp;
-  isFree: boolean;
-  isDiscounted: boolean;
-  // FE properties that are added
-  spinners: any;
-  isInCart: boolean;
-  metadataIconMap: MetadataIconMap;
+export class ProductMapper implements ProductResponse {
+  // singleton for each product id
+  // prevent bugs caused by inconsistent product object across pages (ie. isInCart property)
+  private static instances = new Map<string, ProductMapper>();
 
-  constructor(product: T, config: ProductListConfig, user: CustomUser | null) {
-    this.id = product.id;
-    this.title = product.title;
-    this.description = product.description;
-    this.price = product.price;
-    this.discount = product.discount;
-    this.watermarkImgPath = product.watermarkImgPath;
-    this.originalImgPath = product.originalImgPath;
-    this.likes = product.likes;
-    this.isActive = product.isActive;
-    this.metadata = product.metadata;
-    this.creationDate = product.creationDate;
-    this.isFree = product.isFree;
-    this.isDiscounted = product.isDiscounted;
+  // added FE properties
+  public spinners: any;
+  public isInCart: boolean;
+  public metadataIconMap: MetadataIconMap;
+
+  private constructor(
+    product: ProductResponse, config: ProductListConfig, user: CustomUser | null,
+    public id: string = product.id,
+    public title: string = product.title,
+    public description: string = product.description,
+    public price: number = product.price,
+    public discount: number = product.discount,
+    public watermarkImgPath: string = product.watermarkImgPath,
+    public originalImgPath: string = product.originalImgPath,
+    public likes: number = product.likes,
+    public isActive: boolean = product.isActive,
+    public metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata = product.metadata,
+    public creationDate: Timestamp = product.creationDate,
+    public isFree: boolean = product.isFree,
+    public isDiscounted: boolean = product.isActive,
+  ) {
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = ProductMapper._isInCart(product, config, user);
     this.metadataIconMap = ProductMapper.getMetadataIconMap(config.product.metadata, product.metadata);
   }
 
+  public static getInstance(product: ProductResponse, config: ProductListConfig, user: CustomUser | null): ProductMapper {
+    if (!ProductMapper.instances.get(product.id)) {
+      ProductMapper.instances.set(product.id, new ProductMapper(product, config, user));
+    }
+    return ProductMapper.instances.get(product.id) as ProductMapper;
+  }
+
   // get original object to store in db (remove all client side properties)
-  // TODO: unused??
-  static getOriginalObject(product: ProductMapper<ProductResponse>): ProductResponse {
+  // TODO: unused - remove?
+  static getOriginalObject(product: ProductMapper): ProductResponse {
     // NOTE: be aware of the depth
     const productCopy = JSON.parse(JSON.stringify(product))
     delete productCopy.spinners;

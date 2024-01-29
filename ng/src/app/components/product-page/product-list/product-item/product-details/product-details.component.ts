@@ -10,7 +10,6 @@ import {
   ProductListConfig,
   ProductMapper,
   ProductResponse,
-  ProductTypePrint,
   ToastConstants
 } from '@app/models';
 
@@ -39,7 +38,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
   }
 
   // product
-  product: ProductMapper<ProductTypePrint>;
+  product: ProductMapper;
 
   // modal name (should be unique across app)
   modalName = 'product_details';
@@ -62,7 +61,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     private _titleService: Title
   ) {
     // if opened from product page
-    this.product = this._router.getCurrentNavigation()?.extras.state as ProductMapper<ProductTypePrint>;
+    this.product = this._router.getCurrentNavigation()?.extras.state as ProductMapper;
     this.product && this._titleService.setTitle(this.product.title);
   }
 
@@ -94,7 +93,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
             return;
           }
           // fetch is triggered after user only because of mapper
-          this.product = new ProductMapper<ProductTypePrint>(products[0] as any, ProductListConfig.PRODUCT_LIST, this.user);
+          this.product = ProductMapper.getInstance(products[0], ProductListConfig.PRODUCT_LIST, this.user);
           this._titleService.setTitle(this.product.title);
           // wait for modal to load
           setTimeout(() => this._modalService.open(this.modalName), 100);

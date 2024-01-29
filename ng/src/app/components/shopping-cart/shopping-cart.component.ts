@@ -6,7 +6,6 @@ import { Subscription, first } from 'rxjs';
 import {
   CustomUser,
   ProductMapper,
-  ProductTypePrint,
   ProductListConfig,
   ProductType,
   ShoppingCart
@@ -39,7 +38,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   set cart(cart: ShoppingCart) {
     this._cart = cart;
 
-    this.fullProductList = cart.items.map((item: any) => new ProductMapper<ProductTypePrint>(item, ProductListConfig.SHOPPING_CART, this.user))
+    this.fullProductList = cart.items.map(item => ProductMapper.getInstance(item, this.config, this.user));
 
     // initial
     if (!this.paginator) {
@@ -64,10 +63,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // on set map all list to use screen not small
-  fullProductList: ProductMapper<ProductTypePrint>[] = [];
+  fullProductList: ProductMapper[] = [];
 
   // only holds current page items
-  paginatedCart: ProductMapper<ProductTypePrint>[] = [];
+  paginatedCart: ProductMapper[] = [];
 
   // custom user
   user: CustomUser;
@@ -163,7 +162,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
   // used to return current cart to template
   // if 'xs' screen show whole cart else show paginated cart
-  getCurrentCart(): ProductMapper<ProductTypePrint>[] {
+  getCurrentCart(): ProductMapper[] {
     if (this.screenSize !== 'xs') {
       return this.paginatedCart;
     }
@@ -176,7 +175,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // get products for next paginated list
-  getProductsForNextPage(): ProductMapper<ProductTypePrint>[] {
+  getProductsForNextPage(): ProductMapper[] {
     return this.utilService.getFromRange(
       this.fullProductList,
       this.paginator.pageIndex * this.config.pageSize,
@@ -185,7 +184,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   // remove item from cart
-  async removeFromCart(item: ProductMapper<ProductTypePrint>) {
+  async removeFromCart(item: ProductMapper) {
     if (this.isRemoveDisabled) {
       return;
     }

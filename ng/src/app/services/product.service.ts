@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, Subscription, first } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 import { environment } from '@app/environment';
 
@@ -8,17 +8,13 @@ import {
   CustomUser,
   ProductActions,
   ProductMapper,
-  ProductResponse,
-  ProductTypePrint,
   ToastConstants
 } from '@app/models';
 
 import {
    AuthService,
    FirebaseService,
-   HttpService,
-   ToastService,
-   UtilService
+   ToastService
 } from '@app/services';
 
 // product related actions
@@ -27,9 +23,6 @@ import {
   providedIn: 'root'
 })
 export class ProductService implements OnDestroy {
-
-  // TODO: merge product-like service with this.
-
   // is logged in
   user: CustomUser | null;
 
@@ -43,15 +36,13 @@ export class ProductService implements OnDestroy {
     private _authService: AuthService,
     private _toast: ToastService,
     private _router: Router,
-    private _httpService: HttpService,
-    private _utilService: UtilService,
     private _firebaseService: FirebaseService
   ) {
     this.userStateSub$ = this._authService.userState$.subscribe(user => user && (this.user = user));
   }
 
   // add product to cart
-  async addToCart(product: ProductMapper<ProductTypePrint>) {
+  async addToCart(product: ProductMapper) {
     product.spinners[ProductActions.CART] = true;
     if (!this.user) {
       this._router.navigate(['auth', 'login']);
@@ -64,7 +55,7 @@ export class ProductService implements OnDestroy {
   }
 
   // remove product from cart
-  async removeFromCart(product: ProductMapper<ProductTypePrint>): Promise<void> {
+  async removeFromCart(product: ProductMapper): Promise<void> {
     product.spinners[ProductActions.CART] = true;
     this._firebaseService.removeProductFromCart(product.id)
     .then(async () => await this._handleCartActionSucceeded(product))
@@ -72,7 +63,7 @@ export class ProductService implements OnDestroy {
   }
 
   // after product was added/removed to cart
-  private async _handleCartActionSucceeded(product: ProductMapper<ProductTypePrint>) {
+  private async _handleCartActionSucceeded(product: ProductMapper) {
     // this can trigger catch block, for that 'await' is needed
     await this._authService.updateUser();
     product.isInCart = !product.isInCart;
@@ -84,13 +75,13 @@ export class ProductService implements OnDestroy {
     product.spinners[ProductActions.CART] = false;
   }
 
-  private _handleCartActionFailed(product: ProductMapper<ProductTypePrint>) {
+  private _handleCartActionFailed(product: ProductMapper) {
     product.spinners[ProductActions.CART] = false;
     this._toast.showDefaultError();
   }
 
   // download product
-  async download(product: ProductMapper<ProductTypePrint>) {
+  async download(product: ProductMapper) {
     // download is somewhere triggered from cart action (tab shop), somewhere from download action (tab owned)
     product.spinners[ProductActions.CART] = true;
     product.spinners[ProductActions.DOWNLOAD] = true;
@@ -142,7 +133,7 @@ export class ProductService implements OnDestroy {
 /* OLD WAY - saved for ref */
 
 // // FE download (the old way)
-// private _triggerDownloadOld(product: ProductMapper<ProductTypePrint>, url: string): void {
+// private _triggerDownloadOld(product: ProductMapper, url: string): void {
 //   // if logged in and item not owned, add to owned and remove from cart if it is there
 //   if (this.user && !this.user.ownedItems.includes(product.id)) {
 //     this._firebaseService.addProductToUser(product.id, this.user)

@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import {
-  ToastComponent 
+  ToastComponent
 } from '@app/components';
 
-import { 
-  ToastConstants 
+import {
+  ToastConstants
 } from '@app/models';
 
-// TODO: make it a component like dialog
 @Injectable({
   providedIn: 'root'
 })
@@ -33,5 +32,5 @@ export class ToastService extends MatSnackBar {
     this.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
   }
 
-  
+
 }

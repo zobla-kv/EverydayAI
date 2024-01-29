@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import {
-  ProductMapper,
-  ProductTypePrint
+  ProductMapper
 } from '@app/models';
 
 import {
@@ -19,7 +18,7 @@ import {
 })
 export class ProductPriceComponent {
 
-  @Input() product: ProductMapper<ProductTypePrint>;
+  @Input() product: ProductMapper;
 
   constructor(
     public utilService: UtilService

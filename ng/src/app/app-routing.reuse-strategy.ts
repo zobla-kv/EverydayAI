@@ -14,7 +14,7 @@ export class ReuseStrategy implements RouteReuseStrategy {
   // function determininy if component shouldAttach
   private _routeHandlerFnMap = new Map<string, (route: ActivatedRouteSnapshot) => boolean>([
     // if there is some specific check to decice wheather to reuse or not
-    ['images',      this.attachImmediately],
+    ['images',        this.attachImmediately],
     ['control-panel', this.attachImmediately],
     ['cart',          this.attachImmediately]
   ]);

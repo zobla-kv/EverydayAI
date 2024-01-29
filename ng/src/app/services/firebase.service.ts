@@ -2,13 +2,13 @@ import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection, QuerySnapshot } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map } from 'rxjs';
 
 
 import {
@@ -231,7 +231,13 @@ export class FirebaseService {
     if (ids.length === 0) {
       return of([]);
     }
-    return this._db.collection('Products', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
+    return this._db.collection('Products', query => query.where('id', 'in', ids))
+    .get()
+    .pipe(
+      map(querySnapshot => querySnapshot.docs.map(doc => doc.data() as ProductResponse))
+    );
+    // .valueChanges() caches and not always returns all results
+    // return this._db.collection('Products', query => query.where('id', 'in', ids)).valueChanges() as Observable<ProductResponse[]>;
   }
 
   // get products sorted by most likes

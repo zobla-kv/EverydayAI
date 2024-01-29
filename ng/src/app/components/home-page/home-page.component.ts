@@ -5,8 +5,6 @@ import {
   CustomUser,
   ProductListConfig,
   ProductMapper,
-  ProductType,
-  ProductTypePrint
 } from '@app/models';
 
 import {
@@ -55,7 +53,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   // our picks list config
   ourPicksListConfig = ProductListConfig.HOME_PAGE_OUR_PICKS;
   // our picks fetched products
-  ourPicksProducts: ProductMapper<ProductTypePrint>[] = [];
+  ourPicksProducts: ProductMapper[] = [];
   // are our picks loaded
   ourPicksLoaded = false;
   // are our picks loaded with error
@@ -84,7 +82,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     )
     .subscribe(products => {
-      this.ourPicksProducts = products.map((product: any) => new ProductMapper<ProductTypePrint>(product, this.ourPicksListConfig, this.user));
+      this.ourPicksProducts = products.map(product => ProductMapper.getInstance(product, this.ourPicksListConfig, this.user));
 
       // 404 images allowed to show
       if (products.length !== this.ourPicksListConfig.pageSize) {

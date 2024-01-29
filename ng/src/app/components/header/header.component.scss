@@ -12,7 +12,6 @@ header {
   input[type="search"] {
     box-shadow: none;
     background-color: #e8f4f3;
-    // border-radius: 24px; TODO: decide on this. Try matching all corners of buttons, images etc.
 
     &::-webkit-search-cancel-button {
       display: inline-block;
@@ -77,6 +76,7 @@ header {
       img {
         content: $main-logo;
         max-height: 100px;
+        backface-visibility: hidden;
       }
     }
     &.search {

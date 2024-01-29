@@ -1,4 +1,3 @@
-<!-- TODO: chose container width -->
 <div class="product-list-wrapper" #listWrapper infinite-scroll [threshold]="120" (scrolled)="loadMore()">
   <app-loading *ngIf="showSpinner" variant="gooey"></app-loading>
   <ngx-masonry [ordered]="true">

@@ -21,13 +21,13 @@
           <ng-template #enableAction>
             <!-- cart action, use download if item free -->
             <ng-container *ngIf="action === productActions.CART">
-              <ng-container *ngIf="product.price !== 0 && product.discount < 100; else download">
-                <mat-icon *ngIf="!product.isInCart" class="white" svgIcon="cart-add" icon="cart" (click)="addToCart(); $event.stopImmediatePropagation()"></mat-icon>
-                <mat-icon *ngIf="product.isInCart" class="white" svgIcon="cart-remove" icon="cart"(click)="removeFromCart(); $event.stopImmediatePropagation()"></mat-icon>
-              </ng-container>
-              <ng-template #download>
-                <!-- TODO: this should also show if user owns it -->
-                <mat-icon icon="download" class="white" (click)="handleDownload()">download</mat-icon>
+              <mat-icon class="download white" icon="download"
+                *ngIf="product.price === 0 || product.discount === 100 || user?.ownedItems?.includes(product.id); else cartAction"
+                (click)="productService.download(product)"
+              >download</mat-icon>
+              <ng-template #cartAction>
+                <mat-icon svgIcon="cart-add" class="cart-action white" icon="cart" *ngIf="!product.isInCart" (click)="productService.addToCart(product); $event.preventDefault()"></mat-icon>
+                <mat-icon svgIcon="cart-remove" class="cart-action white" icon="cart" *ngIf="product.isInCart" (click)="productService.removeFromCart(product); $event.preventDefault()"></mat-icon>
               </ng-template>
             </ng-container>
 
