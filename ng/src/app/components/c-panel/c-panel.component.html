@@ -65,7 +65,7 @@
             [attr.item]="metadataIcon.key"
             class="product-metadata-item"
           >
-            <!-- NOTE: quick fix for classic icon displayed as premium, can be fixed better in ts -->
+            <!-- NOTE: quick fix for classic icon displayed as premium, can be fixed better in ts TODO: premium still displayed as classic -->
             <mat-icon *ngIf="product.metadata[metadataIcon.key] === 'premium'" [svgIcon]="'tier-premium'"></mat-icon>
             <mat-icon
               *ngIf="product.metadata[metadataIcon.key] !== 'premium'"

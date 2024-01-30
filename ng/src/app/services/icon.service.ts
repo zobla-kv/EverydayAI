@@ -20,7 +20,7 @@ export class IconService {
     { name: 'dollar' },
     { name: 'visa' },
     { name: 'american-express' }, // recheck during payment
-    { name: 'tier-classic' },
+    { name: 'tier-classic' }, // TODO: figma - crop around corners
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
     { name: 'double-arrow-right' },
