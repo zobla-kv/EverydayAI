@@ -2,13 +2,13 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 
-import { environment } from '@app/environment';
+import environment from '@app/environment';
 
 import {
   CustomUser,
   ProductActions,
   ProductMapper,
-  ToastConstants
+  ToastMessages
 } from '@app/models';
 
 import {
@@ -68,9 +68,9 @@ export class ProductService implements OnDestroy {
     await this._authService.updateUser();
     product.isInCart = !product.isInCart;
     if (product.isInCart) {
-      this._toast.open(ToastConstants.MESSAGES.CART_PRODUCT_ADDED, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.showSuccessMessage(ToastMessages.CART_PRODUCT_ADDED);
     } else {
-      this._toast.open(ToastConstants.MESSAGES.CART_PRODUCT_REMOVED, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.showSuccessMessage(ToastMessages.CART_PRODUCT_REMOVED);
     }
     product.spinners[ProductActions.CART] = false;
   }
@@ -86,7 +86,7 @@ export class ProductService implements OnDestroy {
     product.spinners[ProductActions.CART] = true;
     product.spinners[ProductActions.DOWNLOAD] = true;
 
-    const downloadUrl = `${environment.API_HOST}/api/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
+    const downloadUrl = `${environment.API_HOST}/api/products/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
 
     try {
       // test url before download (not the greatest way because call is triggered twice)
@@ -106,7 +106,7 @@ export class ProductService implements OnDestroy {
       if (this.user && !this.user.ownedItems.includes(product.id)) {
         this._firebaseService.addProductToUser(product.id, this.user)
         .subscribe(res => {
-          this._toast.open(ToastConstants.MESSAGES.PRODUCT_ADDED_TO_OWNED_ITEMS, ToastConstants.TYPE.SUCCESS.type, { duration: 6000 });
+          this._toast.showSuccessMessage(ToastMessages.PRODUCT_ADDED_TO_OWNED_ITEMS, { duration: 6000 });
           this._authService.updateUser();
         });
       }
@@ -114,7 +114,7 @@ export class ProductService implements OnDestroy {
     }
 
     catch (err) {
-      this._toast.open(ToastConstants.MESSAGES.PRODUCT_DOWNLOAD_FAILED, ToastConstants.TYPE.ERROR.type, { duration: 3000 });
+      this._toast.showErrorMessage(ToastMessages.PRODUCT_DOWNLOAD_FAILED, { duration: 3000 });
     }
 
     finally {

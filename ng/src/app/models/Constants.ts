@@ -31,40 +31,34 @@ export class FirebaseConstants {
 
 }
 
-// constants used for toast
-export class ToastConstants {
+// messages for toast
+export class ToastMessages {
+  // general
+  static SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
+  static PRODUCT_ADDED_TO_OWNED_ITEMS = 'Download started and image is now owned.';
 
-  static TYPE = {
-    SUCCESS: { type: 'success', cssClass: 'snackbar-success' },
-    ERROR:   { type: 'error',   cssClass: 'snackbar-error'   }
-  }
+  // cart
+  static CART_PRODUCT_ADDED = 'Image added to cart succesfuly.';
+  static CART_PRODUCT_REMOVED = 'Image removed from cart succesfuly.';
 
-  static MESSAGES = {
-    // general
-    SOMETHING_WENT_WRONG: 'Something went wrong. Please try again.',
-    PRODUCT_ADDED_TO_OWNED_ITEMS: 'Download started and image is now owned.',
+  // payment
+  static PAYMENT_SCRIPT_FAILED_TO_LOAD = 'There is a problem with payment. Please refresh the page.';
+  static PAYMENT_PAYMENT_TERMINATED = 'Payment terminated.';
+  static PAYMENT_FAILED_TO_INITIALIZE_PAYMENT = 'Failed to initialize payment. Please try again.';
+  static PAYMENT_FAILED_TO_PROCESS_PAYMENT = 'Failed to process payment. Please try again.';
+  static PAYMENT_SUCCESSFUL = 'Payment sucessful. Enjoy your new image(s)!';
 
-    // cart
-    CART_PRODUCT_ADDED: 'Image added to cart succesfuly.',
-    CART_PRODUCT_REMOVED: 'Image removed from cart succesfuly.',
+  // control panel
+  static CPANEL_PRODUCT_ADDED = 'New product added successfuly.';
+  static CPANEL_PRODUCT_UPDATED = 'Product updated successfuly.';
+  static CPANEL_PRODUCT_REMOVED = 'Product removed successfuly.';
 
-    // payment
-    PAYMENT_SUCCESSFUL: 'Payment sucessful. Enjoy your new prints',
-    // TODO: add more descriptive message (wrong cvv or something)
-    PAYMENT_FAILED: 'Something went wrong with payment. Please try again',
-
-    // control panel
-    CPANEL_PRODUCT_ADDED: 'New product added successfuly',
-    CPANEL_PRODUCT_UPDATED: 'Product updated successfuly',
-    CPANEL_PRODUCT_REMOVED: 'Product removed successfuly',
-
-    // product list
-    PRODUCT_FILTER_SPAM: 'Please wait for the current operation to finish.',
-    PRODUCT_FAILED_TO_LOAD_DETAILS: 'Failed to load image details.',
-    PRODUCT_FAILED_TO_LOAD_PAGINATION: 'Failed to load images. Please try again.',
-    PRODUCT_DOWNLOAD_FAILED: 'Failed to start a download. Please try again.',
-    PRODUCT_NOT_FOUND: 'Image not found.',
-    SEARCH_INPUT_VALIDATION_ERROR: 'Use alphanumeric characters only.'
-  }
+  // product list
+  static PRODUCT_FILTER_SPAM = 'Please wait for the current operation to finish.';
+  static PRODUCT_FAILED_TO_LOAD_DETAILS = 'Failed to load image details.';
+  static PRODUCT_FAILED_TO_LOAD_PAGINATION = 'Failed to load images. Please try again.';
+  static PRODUCT_DOWNLOAD_FAILED = 'Failed to start a download. Please try again.';
+  static PRODUCT_NOT_FOUND = 'Image not found.';
+  static SEARCH_INPUT_VALIDATION_ERROR = 'Use alphanumeric characters only.';
 
 }

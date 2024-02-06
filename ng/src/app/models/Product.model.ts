@@ -14,6 +14,7 @@ export interface ProductResponse {
   isActive: boolean;
   metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata;
   creationDate: Timestamp;
+  soldTimes: number;
   // cant get 'or' and 'and' query to work
   isFree: boolean;
   isDiscounted: boolean;
@@ -189,6 +190,7 @@ export class ProductMapper implements ProductResponse {
     public isActive: boolean = product.isActive,
     public metadata: ProductTypePrintMetadata | ProductTypeShirtMetadata = product.metadata,
     public creationDate: Timestamp = product.creationDate,
+    public soldTimes: number = product.soldTimes,
     public isFree: boolean = product.isFree,
     public isDiscounted: boolean = product.isActive,
   ) {

@@ -198,7 +198,8 @@ export class FirebaseService {
       cart: [],
       registrationDate: new Date(),
       lastActiveDate: new Date(),
-      stripe: { id: null },
+      payments: [],
+      totalSpent: 0,
       ownedItems: [],
       ownedItemsTimeMap: {},
       productLikes: []

@@ -1,5 +1,5 @@
 {
-  "uid": "hod-app",
+  "uid": "everydayAI_app",
   "append": true,
   "watch": false,
   "script": "express/app.js",
@@ -7,5 +7,5 @@
   "outFile": "../../../forever-logs/forever-out-log.log",
   "errFile": "../../../forever-logs/forever-error-log.log",
   "args": [],
-  "comment": "update values for production"
+  "comment": "TODO: update values for production"
 }

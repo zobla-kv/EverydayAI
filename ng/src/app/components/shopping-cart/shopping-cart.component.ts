@@ -1,14 +1,17 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription, first } from 'rxjs';
+import { Subscription,first } from 'rxjs';
+import environment from '@app/environment';
+
+declare const paypal: any;
 
 import {
   CustomUser,
   ProductMapper,
   ProductListConfig,
   ProductType,
-  ShoppingCart
+  ShoppingCart,
+  ToastMessages
 } from '@app/models';
 
 import {
@@ -16,6 +19,7 @@ import {
   HttpService,
   PaymentService,
   ProductService,
+  ToastService,
   UtilService
 } from '@app/services';
 
@@ -24,7 +28,7 @@ import {
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss']
 })
-export class ShoppingCartComponent implements OnInit, OnDestroy {
+export class ShoppingCartComponent implements OnDestroy {
 
   @ViewChild('paginator') paginator: MatPaginator;
 
@@ -37,6 +41,10 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // called on each user update (remove from cart etc.)
   set cart(cart: ShoppingCart) {
     this._cart = cart;
+
+    if (cart.items.length === 0) {
+      this.showPaymentButtons = false;
+    }
 
     this.fullProductList = cart.items.map(item => ProductMapper.getInstance(item, this.config, this.user));
 
@@ -72,7 +80,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   user: CustomUser;
 
   // custom user state
-  customUserState$: Subscription;
+  userStateSub$: Subscription;
 
   // screen size
   screenSize: string;
@@ -80,14 +88,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   // screen size sub
   screenSize$: Subscription;
 
-  // payment form
-  paymentForm: FormGroup;
-
   // fetch spinner
   showLoadSpinner = true;
 
-  // show submit button spinner
-  showSubmitButtonSpinner = false;
+  // show payment buttons?
+  showPaymentButtons = false;
 
   // is remove disabled
   // this is to prevent multiple deletes in short time. To be improved with debounce
@@ -103,10 +108,13 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     private _paymentService: PaymentService,
     private _httpService: HttpService,
     private _productService: ProductService,
-    public   utilService: UtilService
+    public   utilService: UtilService,
+    private _toast: ToastService
   ) {
 
-    this.customUserState$ = this._authService.userState$.subscribe(user => {
+    this.loadPaypalScript();
+
+    this.userStateSub$ = this._authService.userState$.subscribe(user => {
       this.user = <CustomUser>user;
 
       if (this.removedItemId) {
@@ -119,10 +127,15 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
 
       this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
         this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
-        this.showLoadSpinner = false;
-      })
-    });
 
+        // ideally this should run only on first user subscribe
+        setTimeout(() => {
+          this.showPaymentButtons = this.cart.items.length > 0 ? true : false;
+          this.showLoadSpinner = false;
+        }, 1300)
+      });
+
+    });
 
     this.screenSize$ = this.utilService.screenSizeChange$.subscribe(size => {
       if (size === 'xs') {
@@ -134,30 +147,55 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(): void {
-    this.paymentForm = new FormGroup({
-      'holder_name': new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(24),
-        Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
-      ]),
-      'number': new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(20),
-        Validators.pattern('^[0-9-]*$')
-      ]),
-      'expiration_date': new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(7),
-        Validators.pattern('^[0-9/]*$')
-      ]),
-      'cvc': new FormControl(null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(5),
-        Validators.pattern('^[0-9]*$')
-      ])
+  // loads paypal script
+  async loadPaypalScript(): Promise<void> {
+    const paypalSdkUrl = 'https://www.paypal.com/sdk/js';
+    const clientId = environment.paypal_client_id;
+
+    console.log('clientId: ', clientId);
+    const components = 'buttons' // card-fields not supported in Serbia
+
+    this.utilService.loadScript(
+      paypalSdkUrl + '?client-id=' + clientId + '&components=' + components + '&enable-funding=venmo',
+      'async'
+    )
+    .then(() => this.renderPaypalButtons())
+    .catch(err => this._toast.showErrorMessage(ToastMessages.PAYMENT_SCRIPT_FAILED_TO_LOAD));
+  }
+
+  // renders paypal buttons
+  renderPaypalButtons() {
+    paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        color:  'gold',
+        shape:  'rect',
+        label:  'paypal'
+      },
+      createOrder: (data: any, actions: any) => {
+        this._authService.updateUser();
+        return this._paymentService.createOrder(this.user.id, this.user.cart)
+      },
+      onApprove: (data: any, actions: any) => {
+        this._paymentService.handlePaymentApprove(this.user.id, data.orderID, this.user.cart)
+        .then(() => {
+          this._authService.updateUser();
+          this._toast.showSuccessMessage(ToastMessages.PAYMENT_SUCCESSFUL);
+        })
+        .catch(err => this._toast.showErrorMessage(ToastMessages.PAYMENT_FAILED_TO_PROCESS_PAYMENT));
+      },
+      onCancel: () => this._toast.showErrorMessage(ToastMessages.PAYMENT_PAYMENT_TERMINATED),
+      onError: (err: any) => this._toast.showErrorMessage(ToastMessages.PAYMENT_FAILED_TO_INITIALIZE_PAYMENT)
     })
+    .render('#paypalButtonsContainer');
+  }
+
+  // render buttons again because they dissapear on route leave
+  onAttach() {
+    if (this.cart.items.length > 0) {
+      this.showPaymentButtons = true;
+      this.renderPaypalButtons();
+    }
   }
 
   // used to return current cart to template
@@ -196,35 +234,11 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
     })
   }
 
-
-  // handles purchase
-  async handlePurchase() {
-    this.validateAllFormFields(this.paymentForm);
-    if (this.paymentForm.valid) {
-      this.showSubmitButtonSpinner = true;
-      await this._paymentService.processPayment(this.user, this.paymentForm.getRawValue());
-      this.showSubmitButtonSpinner = false;
-    } else {
-      this.validateAllFormFields(this.paymentForm);
-    }
-  }
-
-  validateAllFormFields(formGroup: FormGroup) {
-    Object.keys(formGroup.controls).forEach(field => {
-      const control = formGroup.get(field);
-      if (control instanceof FormControl) {
-        control.markAsTouched({ onlySelf: true });
-      } else if (control instanceof FormGroup) {
-        this.validateAllFormFields(control);
-      }
-    });
-  }
-
   // keep order of keyvalue pipe (not DRY)
   keepOrder() { return 0; }
 
   ngOnDestroy() {
-    this.customUserState$ && this.customUserState$.unsubscribe();
+    this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
 
 }

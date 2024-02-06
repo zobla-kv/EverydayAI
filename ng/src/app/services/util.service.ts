@@ -94,17 +94,20 @@ export class UtilService {
 /**
   * Load script at component level.
   *
-  * @return boolean
+  * @return boolean - is script loaded?
   */
-loadScript(url: string) {
-  // TODO: error handling
-  const body = document.body;
-  const script = document.createElement('script');
-  script.innerHTML = '';
-  script.src = url;
-  script.async = false;
-  script.defer = true;
-  body.appendChild(script);
+loadScript(url: string, mode?: 'async' | 'defer'): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const script: HTMLScriptElement = document.createElement('script');
+    script.async = mode === 'async' ? true : false;
+    script.defer = mode === 'defer' ? true : false;
+    document.head.appendChild(script);
+
+    script.onload = () => resolve();
+    script.onerror = () => reject();
+
+    script.src = url;
+  })
 }
 
 /**

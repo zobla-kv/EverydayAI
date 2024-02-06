@@ -1,16 +1,17 @@
+const { NODE_ENV, HOST_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 const Https = require('https');
 const cloudinary = require('cloudinary');
 const { Readable } = require('stream');
 const { getUserById, getProductById } = require('./firebaseService');
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  cloud_name: CLOUDINARY_CLOUD_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET
 });
 
 // where are images stored
-const imageFolder = process.env.NODE_ENV.toLowerCase()[0];
+const imageFolder = NODE_ENV.toLowerCase()[0];
 // upload watermark manually before everything else (nested syntax - hod:d:watermark.png)
 const watermarkImage = 'watermark';
 
@@ -63,8 +64,8 @@ async function get(req, res, next) {
   // block different host other than FE from accessing endpoint
   // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
-  if (process.env.NODE_ENV === 'production') {
-    if (req.headers.host !== process.env.HOST_URL) {
+  if (NODE_ENV === 'production') {
+    if (req.headers.host !== HOST_URL) {
       return res.sendStatus(403);
     }
   }

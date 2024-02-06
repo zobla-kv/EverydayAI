@@ -26,7 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouteReuseStrategy } from '@angular/router';
 import { ReuseStrategy } from './app-routing.reuse-strategy';
 
-import { environment } from '@app/environment';
+import environment from '@app/environment';
 
 import {
   AppComponent,

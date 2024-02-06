@@ -7,7 +7,7 @@ import {
   ProductColor,
   ProductFilters,
   FilterEvent,
-  ToastConstants,
+  ToastMessages
 } from '@app/models';
 
 import {
@@ -67,7 +67,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
       if (this._utilService.validateSeachInput(value)) {
        this.handleFilterSelect('search', value);
       } else {
-       this._toast.open(ToastConstants.MESSAGES.SEARCH_INPUT_VALIDATION_ERROR, ToastConstants.TYPE.ERROR.type);
+       this._toast.showErrorMessage(ToastMessages.SEARCH_INPUT_VALIDATION_ERROR);
       }
     });
   }
@@ -77,7 +77,7 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
     if (!this.isProductListFetching) {
       this.select.emit({ filterName, filterValue });
     } else {
-      this._toast.open(ToastConstants.MESSAGES.PRODUCT_FILTER_SPAM, ToastConstants.TYPE.ERROR.type);
+      this._toast.showErrorMessage(ToastMessages.PRODUCT_FILTER_SPAM);
     }
     this.closeDropdown();
   }

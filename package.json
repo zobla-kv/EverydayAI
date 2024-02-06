@@ -9,6 +9,8 @@
         "start": "npm run build:dev",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
+        "ng:dev": "cd ng && ng serve",
+        "ng:prod": "cd ng && ng serve -c production",
         "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
         "build:prod": "cd ng && ng build -c production --output-hashing none && node ../scripts/postBuild.js",
         "express:dev": "set ENV=development&& npx nodemon express/app.js",
@@ -45,7 +47,6 @@
         "ngx-page-scroll": "^10.0.0",
         "nodemailer": "^6.4.10",
         "rxjs": "~7.5.0",
-        "stripe": "^12.7.0",
         "tslib": "^2.3.0",
         "zone.js": "~0.12.0"
     },
@@ -65,7 +66,7 @@
         "typescript": "~4.8.2"
     },
     "dependenciesComments": {
-        "0": "Dependencies express, firebase-admin and nodemailer, stripe, multer, cloudinary, forever are for express app",
+        "0": "Dependencies express, firebase-admin and nodemailer, multer, cloudinary, forever are for express app",
         "1": "devDependencies dotenv and nodemon, body-parser, fs-extra are for express app"
     }
 }

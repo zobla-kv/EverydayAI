@@ -1,22 +1,22 @@
 import { Injectable, Injector } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, catchError, first, map } from 'rxjs';
 
-import { environment } from '@app/environment';
+import environment from '@app/environment';
 
 import {
-  FirebaseService,
-  UtilService
+  FirebaseService
 } from '@app/services';
 
 import {
   CustomUser,
   Email,
-  PaymentObject,
   ProductResponse,
   ProductType,
-  ProductUploadResponse
+  ProductUploadResponse,
+  captureOrderApiResponse,
+  createOrderApiResponse
 } from '@app/models';
 
 @Injectable({
@@ -45,7 +45,7 @@ export class HttpService {
   sendEmail(body: Email): Promise<boolean> {
     return new Promise((resolve) => {
       this._http
-      .post<any>(`${environment.API_HOST}/api/send-email`, body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post<any>(`${environment.API_HOST}/api/user/send-email`, body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -58,7 +58,7 @@ export class HttpService {
   getPrivateKey(): Promise<string> {
     return new Promise((resolve, reject) => {
       this._http
-      .get<any>(`${environment.API_HOST}/api/crypto`, { headers: { 'Content-type': 'application/json' } })
+      .get<any>(`${environment.API_HOST}/api/crypt`, { headers: { 'Content-type': 'application/json' } })
       .pipe(
         map(data => data.response),
         catchError(async () => reject(''))
@@ -67,29 +67,39 @@ export class HttpService {
     })
   }
 
-  // initiate payment
-  initiatePayment(data: PaymentObject): Promise<any> {
+  // create order
+  createOrder(userId: string, cartItems: string[]): Promise<string> {
     return new Promise((resolve, reject) => {
-      this._http
-      .post<any>(
-        `${environment.API_HOST}/api/stripe-create-payment-intent`,
-        data,
-        { headers: { 'Content-type': 'application/json'} },
-      )
-      .pipe(
-        map((response: HttpResponse<any>) => response),
-        // NOTE: success response with bad code
-        catchError(async (err) => reject(err))
-      )
-      .subscribe(data => resolve(data));
+      this._http.post<createOrderApiResponse>(`${environment.API_HOST}/api/paypal/create-order`, { userId, cartItems })
+      .subscribe({
+        next: (response: createOrderApiResponse) => resolve(response.orderId),
+        error: (err: HttpErrorResponse) => reject(err.error)
+      })
     })
   }
 
-  // upload file to server
-  uploadFile(file: FormData): Promise<ProductUploadResponse> {
+  // capture order
+  captureOrder(userId: string, orderId: string, cartItems: string[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this._http.post<captureOrderApiResponse>(`${environment.API_HOST}/api/paypal/capture-order`, { userId, orderId, cartItems })
+      .subscribe({
+        next: (response: captureOrderApiResponse) => {
+          if (response.message = 'succeeded') {
+            resolve();
+            return;
+          }
+          reject(response.message); // failed
+        },
+        error: (err: HttpErrorResponse) => reject(err.error)
+      })
+    })
+  }
+
+  // upload product image to server
+  uploadImage(file: FormData): Promise<ProductUploadResponse> {
     return new Promise((resolve, reject) => {
       this._http
-      .post<any>(`${environment.API_HOST}/api/upload-file`, file)
+      .post<any>(`${environment.API_HOST}/api/products/upload-image`, file)
       .pipe(
         // TODO: consider adding first() everywhere
         first(),

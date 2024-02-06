@@ -10,7 +10,7 @@ import {
   ProductListConfig,
   ProductMapper,
   ProductResponse,
-  ToastConstants
+  ToastMessages
 } from '@app/models';
 
 import {
@@ -127,7 +127,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
       // if all fail to load
       if (this.failedImgLoadList.length === this.paginationSize) {
-        this._toast.open(ToastConstants.MESSAGES.PRODUCT_FAILED_TO_LOAD_PAGINATION, ToastConstants.TYPE.ERROR.type);
+        this._toast.showErrorMessage(ToastMessages.PRODUCT_FAILED_TO_LOAD_PAGINATION);
         this.enableInfiniteScroll = false;
       }
     });

@@ -1,12 +1,13 @@
+const { CRYPT_PRIVATE_KEY, HOST_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
 const path = require('path');
 const nodemailer = require('nodemailer');
 // NOTE: crypto needed so email wont be shown in url (also on FE)
 const CryptoJS = require('crypto-js');
-
 const firebaseService = require('./firebaseService');
-
-const { appConstants, labels } = require('../constants');
+const labels = require('../labels/labels');
 const styles = require('../assets/styles');
+
+const instagram_url = 'https://www.instagram.com/house_of_dogs_ig' // TODO: update url
 
 module.exports.sendEmail = async function (email, type) {
   type = type.toLowerCase();
@@ -27,7 +28,7 @@ module.exports.sendEmail = async function (email, type) {
   modifiedUrl.searchParams.delete('continueUrl');
 
   // encrypt email address
-  const encryptedEmail = CryptoJS.AES.encrypt(email, process.env.CRYPT_PRIVATE_KEY);
+  const encryptedEmail = CryptoJS.AES.encrypt(email, CRYPT_PRIVATE_KEY);
 
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
@@ -51,7 +52,7 @@ module.exports.sendEmail = async function (email, type) {
     </div>
     <div style="${styles.outterWrapper}">
       <div style="${styles.innerWrapper}">
-        <a href="${process.env.HOST_URL}" style="${styles.logoWrapper}">
+        <a href="${HOST_URL}" style="${styles.logoWrapper}">
           <img src="cid:logo" style="${styles.logo}">
         </a>
         <h2 style="${styles.text}">
@@ -63,7 +64,7 @@ module.exports.sendEmail = async function (email, type) {
         </a>
       </div>
       <span style="${styles.followUs}">Follow us on</span>
-      <a href="${appConstants.INSTAGRAM_URL}" style="${styles.instagramLogoWrapper}">
+      <a href="${instagram_url}" style="${styles.instagramLogoWrapper}">
         <img src="cid:instagram" style="${styles.instagramLogo}">
       </a>
     </div>
@@ -75,8 +76,8 @@ module.exports.sendEmail = async function (email, type) {
     port: 587,
     secure: false,
     auth: {
-      user: process.env.EMAIL_AUTH_USERNAME,
-      pass: process.env.EMAIL_AUTH_PASSWORD,
+      user: NODE_MAILER_USERNAME,
+      pass: NODE_MAILER_PASSWORD,
     },
   });
 

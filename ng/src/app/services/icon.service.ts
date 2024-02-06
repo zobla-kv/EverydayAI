@@ -18,8 +18,6 @@ export class IconService {
     { name: 'cart-remove' },
     { name: 'digital-product' },
     { name: 'dollar' },
-    { name: 'visa' },
-    { name: 'american-express' }, // recheck during payment
     { name: 'tier-classic' }, // TODO: figma - crop around corners
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },

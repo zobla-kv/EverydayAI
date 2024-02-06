@@ -10,7 +10,7 @@ import {
   ProductListConfig,
   ProductMapper,
   ProductResponse,
-  ToastConstants
+  ToastMessages
 } from '@app/models';
 
 import {
@@ -88,7 +88,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
           // invalid id check
           if (products.length === 0) {
             // TODO: error handling (route protection) can be done using resolver
-            this._toast.open(ToastConstants.MESSAGES.PRODUCT_NOT_FOUND, ToastConstants.TYPE.ERROR.type);
+            this._toast.showErrorMessage(ToastMessages.PRODUCT_NOT_FOUND);
             this._router.navigate(['images']);
             return;
           }
@@ -100,7 +100,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
         },
         error: (e) => {
           console.log('error response: ', e);
-          this._toast.open(ToastConstants.MESSAGES.PRODUCT_FAILED_TO_LOAD_DETAILS, ToastConstants.TYPE.ERROR.type);
+          this._toast.showErrorMessage(ToastMessages.PRODUCT_FAILED_TO_LOAD_DETAILS);
         }
       })
     }

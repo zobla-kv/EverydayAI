@@ -19,7 +19,7 @@ import {
   ProductMapper,
   ProductResponse,
   ProductType,
-  ToastConstants
+  ToastMessages,
 } from '@app/models';
 
 @Component({
@@ -259,26 +259,24 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       // set new name
       formData.append('image', productImgFile, fileName);
 
-      const imgPaths = await this._httpService.uploadFile(formData);
+      const imgPaths = await this._httpService.uploadImage(formData);
 
       await this._firebaseService.updateProductAfterAdd(productId, imgPaths);
 
       await this._httpService.addProductToElasticSearch(productId);
 
-      this._toast.open(ToastConstants.MESSAGES.CPANEL_PRODUCT_ADDED, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.showSuccessMessage(ToastMessages.CPANEL_PRODUCT_ADDED);
 
       // update list
       this.updateProductList();
     })
     .catch(err => {
-      // err.messsage only exists for cloudinary err, not firebase
-      this._toast.open(err.cloudinary ?
-        'Cloudinary: ' + err.cloudinary :
-        err.elastic ?
-        'Elastic: ' + err.elastic :
-        ToastConstants.MESSAGES.SOMETHING_WENT_WRONG,
-      ToastConstants.TYPE.ERROR.type, { duration: 4000 });
       this._firebaseService.removeProduct(this.productId);
+
+      // err.messsage only exists for cloudinary err, not firebase
+      this._toast.showErrorMessage(err.cloudinary ?
+        'Cloudinary: ' + err.cloudinary : err.elastic ?
+        'Elastic: ' + err.elastic : ToastMessages.SOMETHING_WENT_WRONG, { duration: 4000 });
     })
     .finally(() => {
       this.clearAddProductFormAfterSubmit();
@@ -327,10 +325,10 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this._firebaseService.updateProduct(this.formEditProduct.getRawValue())
     .then(() => {
       this.updateProductList();
-      this._toast.open(ToastConstants.MESSAGES.CPANEL_PRODUCT_UPDATED, ToastConstants.TYPE.SUCCESS.type);
+      this._toast.showSuccessMessage(ToastMessages.CPANEL_PRODUCT_UPDATED);
     })
     .catch(err => {
-      this._toast.open(ToastConstants.MESSAGES.SOMETHING_WENT_WRONG, ToastConstants.TYPE.ERROR.type);
+      this._toast.showErrorMessage(ToastMessages.SOMETHING_WENT_WRONG);
     })
     .finally(() => {
       this.formEditProduct.reset();
@@ -356,6 +354,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       discount: Number(formData.discount),
       likes: Number(formData.likes),
       isActive: false,
+      // TODO: test is working by creating new product
+      soldTimes: 0,
       isFree: (Number(formData.price) === 0 || Number(formData.discount) === 100) ? true : false,
       isDiscounted: Number(formData.discount) > 0 ? true : false,
       metadata: {

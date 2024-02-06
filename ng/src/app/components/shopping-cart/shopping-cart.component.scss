@@ -4,7 +4,13 @@
   height: 670px;
 
   .cart-items-column-wrapper {
-    mat-spinner { top: 180px; }
+    mat-spinner:nth-child(1) {
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
 
     .cart-items-wrapper {
       height: 416px;
@@ -90,33 +96,16 @@
   .payment-wrapper {
     border: 0;
     border-radius: 8px;
-
     height: 100%;
 
-    .form-group {
-      input { padding: 0.5rem 0.75rem; }
-      input::placeholder { font-size: 1rem; }
-    }
-
-    .icon-wrapper {
-      display: flex;
-      column-gap: 0.25rem;
-
-      // svg not encapsulated
-      &::ng-deep .mat-icon {
-        height: 100%;
-        width: 60px;
-
-        svg path { fill: unset; }
-      }
-
-      // mastercard
-      img {
-        width: 60px;
-        border-radius: 3px;
-      }
+    .paypal-note {
+      font-size: 0.75rem;
+      display: block;
+      line-height: 20px;
+      text-align: center;
     }
   }
+
 }
 
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subscription, first } from 'rxjs';
-import { environment } from '@app/environment';
+import environment from '@app/environment';
 
 import {
   IconService,

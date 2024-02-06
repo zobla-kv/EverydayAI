@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
-  CustomUser,
-  PaymentCard,
-  PaymentObject,
-  ToastConstants
-} from '@app/models';
-
-import {
-  AuthService,
-  HttpService,
-  ToastService
+  HttpService
 } from '@app/services';
 
 @Injectable({
@@ -19,61 +10,17 @@ import {
 export class PaymentService {
 
   constructor(
-    private _authService: AuthService,
-    private _http: HttpService,
-    private _toast: ToastService
+    private _http: HttpService
   ) {}
 
-  async processPayment(user: CustomUser, card: any) {
-    return this._http.initiatePayment(this.createPaymentObject(user, card))
-    .then(response => {
-      // TODO: !important handle other statuses (see official docs)
-      if (response.error) {
-        this._toast.open(ToastConstants.MESSAGES.PAYMENT_FAILED, ToastConstants.TYPE.ERROR.type);
-      }
-      if (response.paymentStatus === 'succeeded') {
-        this._toast.open(ToastConstants.MESSAGES.PAYMENT_SUCCESSFUL, ToastConstants.TYPE.SUCCESS.type);
-        this._authService.updateUser();
-      }
-    })
-    .catch(err => {
-      this._toast.open(ToastConstants.MESSAGES.PAYMENT_FAILED, ToastConstants.TYPE.ERROR.type);
-    })
+  // creates order
+  async createOrder(userId: string, cartItems: string[]): Promise<string> {
+    return this._http.createOrder(userId, cartItems);
   }
 
-  // creates payment object that is sent to http
-  createPaymentObject(user: CustomUser, card: PaymentCard): PaymentObject {
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        // TODO: old before rework for ref to later update BE. title wasnt used why did i put it here
-        // shopping_cart_items: user.cart.items.map(item => (
-        //   { id: item.id, title: item.title }
-        // )),
-        shopping_cart_items: user.cart,
-        stripeId: user.stripe.id,
-        card: {
-          holder_name: card.holder_name,
-          number: card.number,
-          expiration_date: card.expiration_date,
-          expiration_date_month: this.getExpirationDateMonth(card.expiration_date),
-          expiration_date_year: this.getExpirationDateYear(card.expiration_date),
-          cvc: card.cvc
-        }
-      }
-    }
-  }
-
-  // returns first part of MM/YYYY
-  getExpirationDateMonth(expirationDate: string): string {
-    const month = expirationDate.split('/')[0];
-    return month;
-  }
-  // returns second part of MM/YYYY
-  getExpirationDateYear(expirationDate: string): string {
-    const year = expirationDate.split('/')[1];
-    return year;
+  // handle payment approve
+  async handlePaymentApprove(userId: string, orderId: string, cartItems: string[]): Promise<void> {
+    return this._http.captureOrder(userId, orderId, cartItems);
   }
 
 }

@@ -1,13 +1,13 @@
-export const environment = {
+export default {
   production: true,
-  API_HOST: 'https://house-of-dogs-v2.onrender.com',
+  API_HOST: 'http://localhost:3000',
   firebaseConfig: {
-    apiKey: "AIzaSyBZnOLOHcmIgH8Dy_4E-zvED59SlYeGB34",
-    authDomain: "house-of-dogs-production.firebaseapp.com",
-    projectId: "house-of-dogs-production",
-    storageBucket: "house-of-dogs-production.appspot.com",
-    messagingSenderId: "764514344861",
-    appId: "1:764514344861:web:f23bd6806870b9268b1974",
-    measurementId: "G-9GM3Z36SCD"
-  }
+    apiKey: "AIzaSyCu3BRKnrtarg7w4olsJXIla8F_POPJpvA",
+    authDomain: "everydayai-development.firebaseapp.com",
+    projectId: "everydayai-development",
+    storageBucket: "everydayai-development.appspot.com",
+    messagingSenderId: "231045001565",
+    appId: "1:231045001565:web:04cc1af06648e1621a78b4"
+  },
+  paypal_client_id: 'AQRjHFeKIztuVlSnpuhI74y5cPfHbg0W1fGHosUsUUhNb_XpHDcL6Z2rlycPUqSFXBpeMvSsVGZRiqHU'
 };

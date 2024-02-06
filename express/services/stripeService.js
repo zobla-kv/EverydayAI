@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const firebaseService = require('./firebaseService');
 
-// TODO: services should be classes and single same instance returned on every import
+// NOTE: Unused, saved for ref
 
 async function initiatePayment(user, card) {
   let stripeCustomer;
@@ -16,10 +16,11 @@ async function initiatePayment(user, card) {
   const paymentMethod = await createPaymentMethod(card);
   const paymentIntent = await createPaymentIntent(paymentMethod, user, stripeCustomer);
   const paymentConfirm = await confirmPayment(paymentIntent);
-  
+
   // NOTE: doesn't matter if it succeded for now
   // await because FE reads it after
-  await firebaseService.addPaymentToUser(user, paymentIntent)
+  // await firebaseService.addPaymentToUser(user, paymentIntent) - before
+  await addPaymentToUser(user, paymentIntent)
 
   return paymentConfirm.status;
 }
@@ -77,5 +78,41 @@ async function createPaymentIntent(paymentMethod, user, stripeCustomer) {
 async function confirmPayment(paymentIntent) {
   return stripe.paymentIntents.confirm(paymentIntent.id);
 }
+
+
+// MOVE FROM FIREBASE SERVICE AND STORED HERE FOR REF
+// // update user in db with info about the payment
+// // TODO: !important what if write is failed but payment succeeds
+// // TODO: nothing on the backed was updated when cart was changed from whole product object to product id
+// async function addPaymentToUser(user, paymentIntent) {
+//   // read first to store later updated object
+//   const ownedItemsTimeMap = (await db.collection('Users').doc(user.id).get()).get('ownedItemsTimeMap');
+//   // TODO: shopping_cart_items was changed on FE
+//   const newItems = user.shopping_cart_items.map(item => item.id);
+//   // combine ownedItemsTimeMap object and newItems array into single object
+//   const updated = newItems.reduce(
+//     (prev, curr) => {
+//         return {
+//             ...prev,
+//             [curr]: new Date()
+//         };
+//     },
+//     ownedItemsTimeMap
+//   );
+//   await db.collection('Users').doc(user.id).update({
+//     'stripe.id': paymentIntent.customer,
+//     'stripe.payments': FieldValue.arrayUnion({
+//       id: paymentIntent.id,
+//       items: user.shopping_cart_items,
+//       amount: '$' + await getPrice(user.shopping_cart_items) / 100, // to get real price
+//       date: new Date()
+//     }),
+//     'cart.items': [],
+//     'cart.totalSum': 0,
+//     'ownedItems': FieldValue.arrayUnion(...user.shopping_cart_items.map(item => item.id)),
+//     'ownedItemsTimeMap': updated
+//   })
+// }
+
 
 module.exports = { initiatePayment };
