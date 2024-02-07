@@ -127,6 +127,7 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     this._location.back();
   }
 
+  // TODO: these 3 can be removed and called directly from HTML
   // handles add to cart
   addToCart() {
     this._productService.addToCart(this.product);

@@ -57,29 +57,42 @@
         <td mat-cell *matCellDef="let product">{{ product.likes | format }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="soldTimes">
+        <th mat-header-cell *matHeaderCellDef>Sold times</th>
+        <td mat-cell *matCellDef="let product">{{ product.soldTimes }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="metadata">
         <th mat-header-cell *matHeaderCellDef>Metadata</th>
         <td mat-cell *matCellDef="let product" class="product-metadata">
-          <div
-            *ngFor="let metadataIcon of metadataIconMap | keyvalue: keepOrder"
-            [attr.item]="metadataIcon.key"
-            class="product-metadata-item"
-          >
-            <!-- NOTE: quick fix for classic icon displayed as premium, can be fixed better in ts TODO: premium still displayed as classic -->
-            <mat-icon *ngIf="product.metadata[metadataIcon.key] === 'premium'" [svgIcon]="'tier-premium'"></mat-icon>
-            <mat-icon
-              *ngIf="product.metadata[metadataIcon.key] !== 'premium'"
-              [svgIcon]="metadataIcon.value.type === 'custom' ? metadataIcon.value.iconName : ''"
-              class="black"
+
+          <ng-container *ngFor="let iconMap of product.metadataIconMap | keyvalue: keepOrder">
+            <div
+              *ngIf="config.product.metadata.includes($any(iconMap).key)"
+              [attr.item]="iconMap.key"
+              class="product-metadata-item"
             >
-              {{ metadataIcon.value.type === 'custom' ? '' : metadataIcon.value.iconName  }}
-            </mat-icon>
-            {{ product.metadata[metadataIcon.key] }}
-          </div>
+
+              <!-- bug with material icons displaying same for all -->
+              <ng-container *ngIf="iconMap.key !== 'tier'; else Tier">
+                <mat-icon class="black" [svgIcon]="$any(iconMap.value).type === 'custom' ? $any(iconMap.value).iconName : ''">
+                  {{ $any(iconMap.value).type === 'custom' ? '' : $any(iconMap.value).iconName  }}
+                </mat-icon>
+              </ng-container>
+
+              <ng-template #Tier>
+                <mat-icon class="{{$any(iconMap.value).iconName}}"></mat-icon>
+              </ng-template>
+
+              {{ product.metadata[$any(iconMap).key] }}
+            </div>
+          </ng-container>
+
           <div class="product-metadata-item">
             <div class="rounded" [ngStyle]="{'background-color': product.metadata.color, 'width': '24px', 'height': '24px'}"></div>
             <span>{{ product.metadata.color | titlecase }}</span>
           </div>
+
         </td>
       </ng-container>
 

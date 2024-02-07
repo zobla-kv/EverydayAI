@@ -85,7 +85,7 @@ export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.ourPicksProducts = products.map(product => ProductMapper.getInstance(product, this.ourPicksListConfig, this.user));
 
       // 404 images allowed to show
-      if (products.length !== this.ourPicksListConfig.pageSize) {
+      if (products.length !== 3) {
         this.ourPicksError = true;
       }
 

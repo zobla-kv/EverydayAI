@@ -88,16 +88,16 @@
         <div class="table-of-contents-wrapper">
           <div class="list-group" #toc>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'Introduction'}" href="#Introduction"
-               pageScroll [pageScrollOffset]="50" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+               pageScroll [pageScrollOffset]="150" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
             >Introduction</a>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'HowItWorks'}" href="#HowItWorks"
                pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
             >How it works?</a>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'WhyUs'}" href="#WhyUs"
-               pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+               pageScroll [pageScrollOffset]="80" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
             >4 Why's?</a>
             <a class="list-group-item" [ngClass]="{'active': activeSection === 'MostPopular'}" href="#MostPopular"
-              pageScroll [pageScrollOffset]="120" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+              pageScroll [pageScrollOffset]="140" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
             >Most popular</a>
           </div>
         </div>
@@ -322,10 +322,10 @@
                 </div>
 
                 <ng-container *ngIf="!ourPicksError">
-
                   <div
                     *ngFor="let product of ourPicksProducts; let i = index"
                     class="col-12 col-md-4 col-lg-3 my-5 my-md-0 d-flex justify-content-center align-items-end"
+                    appear [hide]="{'opacity': 0, 'transform': 'translateY(-20px)'}" [show]="{'opacity': 1, 'transform': 'none'}" [duration]="300"
                   >
                     <a class="product-item highlighted text-reset text-decoration-none" [routerLink]="'/images/' + product.id" target="_blank">
                       <div class="position-relative mx-auto fit-content">

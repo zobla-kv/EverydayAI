@@ -12,7 +12,7 @@ const dotenv = require('dotenv').config({
 });
 
 if (dotenv.error) {
-  console.log('FAILED TO LOAD ENV VARIABLES: ', dotenv.error.message);
+  throw new Error('FAILED TO LOAD ENV VARIABLES: ' + dotenv.error.message);
 }
 
 // cors

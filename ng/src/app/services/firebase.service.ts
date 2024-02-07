@@ -2,10 +2,10 @@ import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserCredential } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
-import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection, QuerySnapshot } from '@angular/fire/firestore';
+import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
 import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map } from 'rxjs';
@@ -227,7 +227,6 @@ export class FirebaseService {
 
   // get products by id
   getProductsById(ids: string[]): Observable<ProductResponse[]> {
-    // return throwError('no way') TODO: remove this
     // if added because of user.cart can be empty array
     if (ids.length === 0) {
       return of([]);
@@ -429,19 +428,21 @@ export class FirebaseService {
   }
 
   // add product like to user and product
-  async addProductLike(productId: string, user: CustomUser | null) {
-    this._db.collection('Products', query => query.where('id', '==', productId)).get()
-      .subscribe(res => {
+  addProductLike(productId: string, user: CustomUser | null): Observable<void> {
+    return this._db.collection('Products', query => query.where('id', '==', productId)).get()
+    .pipe(
+      map(res => {
         const productDoc = res.docs[0];
         let likes = (res.docs[0].data() as ProductResponse).likes;
         productDoc.ref.update({ likes: ++likes });
-      });
-
-    if (user) {
-      this._db.collection('Users').doc(user.id).ref.update({
-        'productLikes': arrayUnion(productId),
+      }),
+      mergeMap(() => {
+        if (user) {
+          return from(this._db.collection('Users').doc(user.id).ref.update({ 'productLikes': arrayUnion(productId) }));
+        }
+        return of();
       })
-    }
+    )
   }
 
   // add item to user

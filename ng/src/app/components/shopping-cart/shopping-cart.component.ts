@@ -50,7 +50,7 @@ export class ShoppingCartComponent implements OnDestroy {
 
     // initial
     if (!this.paginator) {
-      this.paginatedCart = this.utilService.getFromRange(this.fullProductList, 0, this.config.pageSize - 1);
+      this.paginatedCart = this.utilService.getFromRange(this.fullProductList, 0, this.pageSize - 1);
       return;
     }
 
@@ -60,7 +60,7 @@ export class ShoppingCartComponent implements OnDestroy {
     // after removing if no more items are left on the page
     // when dividible by pageSize (4) after item remove
     // go page back
-    const modus = this.paginatedCart.length % this.config.pageSize;
+    const modus = this.paginatedCart.length % this.pageSize;
     if (modus === 0) {
       this.paginator.previousPage();
     }
@@ -75,6 +75,9 @@ export class ShoppingCartComponent implements OnDestroy {
 
   // only holds current page items
   paginatedCart: ProductMapper[] = [];
+
+  // number of items per page
+  pageSize = 4;
 
   // custom user
   user: CustomUser;
@@ -125,6 +128,7 @@ export class ShoppingCartComponent implements OnDestroy {
         return;
       }
 
+      // NOTE: it fetches every time user is updated, even if it is on another page due to reuse strategy
       this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
         this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
 
@@ -200,7 +204,7 @@ export class ShoppingCartComponent implements OnDestroy {
 
   // used to return current cart to template
   // if 'xs' screen show whole cart else show paginated cart
-  getCurrentCart(): ProductMapper[] {
+    getCurrentCart(): ProductMapper[] {
     if (this.screenSize !== 'xs') {
       return this.paginatedCart;
     }
@@ -216,8 +220,8 @@ export class ShoppingCartComponent implements OnDestroy {
   getProductsForNextPage(): ProductMapper[] {
     return this.utilService.getFromRange(
       this.fullProductList,
-      this.paginator.pageIndex * this.config.pageSize,
-      (this.paginator.pageIndex + 1) * this.config.pageSize - 1
+      this.paginator.pageIndex * this.pageSize,
+      (this.paginator.pageIndex + 1) * this.pageSize - 1
     );
   }
 

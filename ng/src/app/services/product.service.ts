@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, forkJoin, from, of } from 'rxjs';
 
 import environment from '@app/environment';
 
@@ -102,14 +102,17 @@ export class ProductService implements OnDestroy {
       a.click();
       document.body.removeChild(a);
 
-      // if logged in and item not owned, add to owned and remove from cart if it is there
-      if (this.user && !this.user.ownedItems.includes(product.id)) {
-        this._firebaseService.addProductToUser(product.id, this.user)
-        .subscribe(res => {
+      // NOTE: errors are not caught and will not disrupt download, catch does not catch err in those
+      forkJoin([
+        from(this._firebaseService.addProductLike(product.id, this.user)),
+        (this.user && !this.user.ownedItems.includes(product.id)) ? this._firebaseService.addProductToUser(product.id, this.user) : of(null)
+      ])
+      .subscribe(() => {
+        if (this.user) {
           this._toast.showSuccessMessage(ToastMessages.PRODUCT_ADDED_TO_OWNED_ITEMS, { duration: 6000 });
           this._authService.updateUser();
-        });
-      }
+        }
+      });
 
     }
 

@@ -70,11 +70,21 @@
                                     class="product-metadata-item"
                                     [attr.item]="metadata.key"
                                   >
-                                    <mat-icon class="white" [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
-                                      {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
-                                    </mat-icon>
+
+                                    <!-- bug with material icons displaying same for all -->
+                                    <ng-container *ngIf="metadata.key !== 'tier'; else Tier">
+                                      <mat-icon class="white" [svgIcon]="metadata.value.type === 'custom' ? metadata.value.iconName : ''">
+                                        {{ metadata.value.type === 'custom' ? '' : metadata.value.iconName  }}
+                                      </mat-icon>
+                                    </ng-container>
+
+                                    <ng-template #Tier>
+                                      <mat-icon class="{{metadata.value.iconName}}"></mat-icon>
+                                    </ng-template>
+
                                     <span class="mb-0">{{ product.metadata[metadata.key] }}</span>
                                     <div class="vr"></div>
+
                                   </div>
                                 </ng-container>
 
@@ -107,10 +117,10 @@
                   </div>
                   <mat-paginator
                     #paginator
-                    *ngIf="screenSize !== 'xs' && cart.items.length > config.pageSize"
+                    *ngIf="screenSize !== 'xs' && cart.items.length > pageSize"
                     class="mt-1"
                     [length]="cart.items.length"
-                    pageSize="{{ config.pageSize }}"
+                    pageSize="{{ pageSize }}"
                     hidePageSize="true"
                     showFirstLastButtons="true"
                     (page)="changePage()"

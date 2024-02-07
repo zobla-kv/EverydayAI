@@ -98,78 +98,79 @@ export namespace ProductType {
 
 }
 
-// TODO: refactor
-// title not needed, type always the same with after list refactor, is pageSize needed?
+// TODO: refactor further, remove product. Also not used correctly everywhere
 export class ProductListConfig {
 
-  title: string;
-  product: { type: any, actions: ProductActions[], metadata: string[] }
-  pageSize: number;
+  // all metadata
+  static metadataList = ['price', 'tier', 'resolution', 'extension', 'fileSizeInMb', 'likes'];
+
+  product: {
+    actions: ProductActions[],
+    // what metadata is shown - done in html
+    metadata: string[]
+  }
 
   public static HOME_PAGE_OUR_PICKS = {
-    title: '',
     product: {
-      type: ProductType.ALL,
       // download replaces action so isn't passed
       actions: [ProductActions.CART],
+      // TODO: not implemented with this
       metadata: []
-    },
-    pageSize: 3
+    }
   }
 
   public static PRODUCT_LIST = {
-    title: '',
     product: {
-      type: ProductType.ALL,
-      // download replaces action so isn't passed
+      // download replaces cart action so isn't passed
       actions: [ProductActions.CART, ProductActions.LIKE],
-      // what is to be showed in metadata in product details
       metadata: ['price', 'tier', 'resolution', 'extension', 'fileSizeInMb', 'likes']
-    },
-    // TODO: set pagination size from this?
-    pageSize: 6
-  }
-
-  // old (used only in old component)
-  public static PRODUCT_LIST_PRINTS = {
-    TAB_SHOP: {
-      title: 'Explore new products',
-      product: {
-        type: ProductType.PRINTS.SHOP,
-        // download action not passed because it replaces cart action
-        actions: [ProductActions.CART, ProductActions.LIKE],
-        metadata: ['price', 'tier', 'extension', 'fileSizeInMb', 'resolution']
-      },
-      pageSize: 6
-    },
-    TAB_OWNED_ITEMS: {
-      title: 'Download your items',
-      product: {
-        type: ProductType.PRINTS.OWNED_ITEMS,
-        actions: [ProductActions.DOWNLOAD],
-        metadata: ['resolution', 'extension', 'fileSizeInMb', 'tier']
-      },
-      pageSize: 6
     }
   }
 
   public static SHOPPING_CART = {
-    title: '',
     product: {
-      type: ProductType.ALL,
       actions: [ProductActions.CART],
-      // TODO: not all will have same metadata
+      // metadata: ['tier', 'extension', 'resolution']
       metadata: ['tier', 'extension', 'resolution']
-    },
-    pageSize: 4
+    }
   }
+
+  public static C_PANEL = {
+    product: {
+      actions: [],
+      metadata: ['tier', 'resolution', 'extension', 'fileSizeInMb']
+    }
+  }
+
+  // old (used only in old component) - saved for ref
+  // public static PRODUCT_LIST_PRINTS = {
+  //   TAB_SHOP: {
+  //     title: 'Explore new products',
+  //     product: {
+  //       type: ProductType.PRINTS.SHOP,
+  //       // download action not passed because it replaces cart action
+  //       actions: [ProductActions.CART, ProductActions.LIKE],
+  //       metadata: ['price', 'tier', 'extension', 'fileSizeInMb', 'resolution']
+  //     },
+  //     pageSize: 6
+  //   },
+  //   TAB_OWNED_ITEMS: {
+  //     title: 'Download your items',
+  //     product: {
+  //       type: ProductType.PRINTS.OWNED_ITEMS,
+  //       actions: [ProductActions.DOWNLOAD],
+  //       metadata: ['resolution', 'extension', 'fileSizeInMb', 'tier']
+  //     },
+  //     pageSize: 6
+  //   }
+  // }
 
 }
 
 // modify Product from BE to include FE properties
 export class ProductMapper implements ProductResponse {
   // singleton for each product id
-  // prevent bugs caused by inconsistent product object across pages (ie. isInCart property)
+  // prevent bugs caused by inconsistent product object across pages (multiple sources of truth)
   private static instances = new Map<string, ProductMapper>();
 
   // added FE properties
@@ -197,7 +198,7 @@ export class ProductMapper implements ProductResponse {
     // spinner for each action
     this.spinners = Object.assign({}, ...config.product.actions.map(action => ({ [action]: false })));
     this.isInCart = ProductMapper._isInCart(product, config, user);
-    this.metadataIconMap = ProductMapper.getMetadataIconMap(config.product.metadata, product.metadata);
+    this.metadataIconMap = ProductMapper._getMetadataIconMap(ProductListConfig.metadataList, product.metadata);
   }
 
   public static getInstance(product: ProductResponse, config: ProductListConfig, user: CustomUser | null): ProductMapper {
@@ -225,17 +226,18 @@ export class ProductMapper implements ProductResponse {
   private static _metadataIconMap: MetadataIconMap = new Map([
     ['price',        { iconName: 'dollar',           type: 'custom'   }],
     ['fileSizeInMb', { iconName: 'download',         type: 'mat-icon' }],
+    // NOTE: tier icons are overriden in styles.scss due to material bug displaying all icons the same in list
     ['tier-classic', { iconName: 'tier-classic',     type: 'custom'   }],
     ['tier-premium', { iconName: 'tier-premium',     type: 'custom'   }],
     ['resolution',   { iconName: 'image-resolution', type: 'custom'   }],
     ['extension',    { iconName: 'file-type-img',    type: 'custom'   }],
-    ['likes',        { iconName: 'favorite',         type: 'mat-icon'   }],
+    ['likes',        { iconName: 'favorite',         type: 'mat-icon' }],
   ])
 
 
   // what metadata is displayed in the bottom section of single product
   // filter out product list icons to only include passed ones, order is important
-  public static getMetadataIconMap(
+  private static _getMetadataIconMap(
     metadataList: string[],
     productMetadata: ProductTypePrintMetadata | ProductTypeShirtMetadata
   ): MetadataIconMap {

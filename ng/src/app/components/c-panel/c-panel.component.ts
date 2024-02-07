@@ -13,13 +13,16 @@ import {
   UtilService
 } from '@app/services';
 
+
+// NOTE: Don't create products that have price over 99 (https://prnt.sc/Ybvghl_O0TKo)
+
 import {
-  MetadataIconMap,
   ProductColor,
+  ProductListConfig,
   ProductMapper,
   ProductResponse,
   ProductType,
-  ToastMessages,
+  ToastMessages
 } from '@app/models';
 
 @Component({
@@ -39,13 +42,13 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   fullProductList: ProductResponse[];
 
   // paginated list
-  paginatedList: ProductResponse[];
+  paginatedList: ProductMapper[];
 
   // page size for pagination
   pageSize = 4;
 
   // displayed columns
-  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'metadata', 'active', 'actions'];
+  displayedColumns: string[] = ['title', 'image', 'price', 'discount', 'likes', 'soldTimes', 'metadata', 'active', 'actions'];
 
   // add product form
   formAddProduct: FormGroup;
@@ -56,11 +59,11 @@ export class CPanelComponent implements OnInit, AfterViewInit {
   // current product id
   productId: string;
 
-  // metadata icon map
-  metadataIconMap: MetadataIconMap;
-
   // filter color map
   filterColorMap: Map<string, string>;
+
+  // list config
+  config = ProductListConfig.C_PANEL;
 
   constructor(
     private _firebaseService: FirebaseService,
@@ -184,17 +187,14 @@ export class CPanelComponent implements OnInit, AfterViewInit {
     this._httpService.getProducts(ProductType.ALL, null).pipe(first()).subscribe((data: any) => {
       this.fullProductList = this.utilService.sortByCreationDate(data);
       this.paginator.length = this.fullProductList.length;
+
+      // NOTE: this can be optimized to create them on page switch
+      this.fullProductList = this.fullProductList.map(product => ProductMapper.getInstance(product, this.config, null));
+
       // NOTE: this needs to be done only once
       this.updatePaginatedList();
       this.showSpinner = false;
 
-      if (this.fullProductList.length > 0) {
-        // TODO: this causes bug with premium displayed as classic
-        this.metadataIconMap = ProductMapper.getMetadataIconMap(
-          ['tier', 'resolution', 'extension', 'fileSizeInMb'],
-          this.fullProductList[0].metadata
-        );
-      }
     });
   }
 

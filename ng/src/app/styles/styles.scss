@@ -1,5 +1,4 @@
 /* global styles */
-@import '../../../../node_modules/bootstrap/scss/bootstrap'; // TODO: is this the place?
 @import './variables';
 
 html {
@@ -20,6 +19,8 @@ body {
   overflow-y: scroll;
 
   .page-wrapper {
+    min-height: 100vh;
+    height: 1px; // allow child height 100%
     max-width: $page-max-width;
     padding-top: $header-height-lg;
     margin: auto;
@@ -27,8 +28,8 @@ body {
 
     // to keep everything aligned on zoom out (not needed on large pages ie. home page)
     &:has(.product-page-wrapper) {
-      min-height: 100vh;
-      overflow: hidden; // because of filter-dropdown
+      height: 100%;
+      overflow-x: hidden; // because of filter-dropdown
     }
   }
   .footer-wrapper {
@@ -458,7 +459,18 @@ form {
     }
     &[item="tier"] {
       text-transform: capitalize;
-      .mat-icon svg path { fill: none; }
+      .mat-icon {
+        background-size: 100%;
+        &.tier-classic {
+          background-image: url( '../../assets/icons/tier-classic.svg' );
+          -webkit-background-clip: unset;
+        }
+        &.tier-premium {
+          background-image: url( '../../assets/icons/tier-premium.svg' );
+          -webkit-background-clip: unset;
+        }
+        svg path { fill: none; }
+      }
     }
     &[item="extension"] {
       text-transform: uppercase;
