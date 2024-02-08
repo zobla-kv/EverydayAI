@@ -89,7 +89,7 @@ export class ProductService implements OnDestroy {
     const downloadUrl = `${environment.API_HOST}/api/products/download/${product.id}?&uid=${this.user ? this.user.id : null}`;
 
     try {
-      // test url before download (not the greatest way because call is triggered twice)
+      // test url before download (not the greatest way because call is triggered twice) - careful with handler on BE
       const isWorking = (await fetch(downloadUrl)).ok;
 
       if (!isWorking) {
@@ -105,10 +105,10 @@ export class ProductService implements OnDestroy {
       // NOTE: errors are not caught and will not disrupt download, catch does not catch err in those
       forkJoin([
         from(this._firebaseService.addProductLike(product.id, this.user)),
-        (this.user && !this.user.ownedItems.includes(product.id)) ? this._firebaseService.addProductToUser(product.id, this.user) : of(null)
+        (this.user && !this.user.ownedItems.includes(product.id)) ? this._firebaseService.addProductToUser(product.id, this.user) : of(false)
       ])
-      .subscribe(() => {
-        if (this.user) {
+      .subscribe(([undefined, userUpdated]) => {
+        if (userUpdated) {
           this._toast.showSuccessMessage(ToastMessages.PRODUCT_ADDED_TO_OWNED_ITEMS, { duration: 6000 });
           this._authService.updateUser();
         }

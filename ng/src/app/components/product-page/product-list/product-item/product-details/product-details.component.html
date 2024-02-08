@@ -29,11 +29,11 @@
           <mat-spinner *ngIf="product.spinners['cart' || 'download']; else action" diameter="25" strokeWidth="4"></mat-spinner>
           <ng-template #action>
             <ng-container *ngIf="!user?.ownedItems?.includes(product.id) && (product.price > 0 && product.discount < 100); else download">
-              <span *ngIf="!product.isInCart" (click)="addToCart()"> Add <mat-icon class="white mb-1" svgIcon="cart-add"></mat-icon> </span>
-              <span *ngIf="product.isInCart" (click)="removeFromCart()"> Remove <mat-icon class="white mb-1" svgIcon="cart-remove"></mat-icon> </span>
+              <span *ngIf="!product.isInCart" (click)="productService.addToCart(product)"> Add <mat-icon class="white mb-1" svgIcon="cart-add"></mat-icon> </span>
+              <span *ngIf="product.isInCart" (click)="productService.removeFromCart(product)"> Remove <mat-icon class="white mb-1" svgIcon="cart-remove"></mat-icon> </span>
             </ng-container>
             <ng-template #download>
-              <span (click)="handleDownload()"> Download <mat-icon class="white">download</mat-icon> </span>
+              <span (click)="productService.download(product)"> Download <mat-icon class="white">download</mat-icon> </span>
             </ng-template>
           </ng-template>
         </button>

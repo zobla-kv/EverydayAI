@@ -107,6 +107,7 @@ export class AuthService {
       // in case of email verification go back to home page and not previous route
       if (!previousRoute || previousRoute.includes('auth/verify')) {
         this._router.navigate(['/']);
+        return;
       }
       this._router.navigateByUrl(previousRoute)
     });

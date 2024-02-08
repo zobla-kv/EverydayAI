@@ -5,6 +5,8 @@ import { Title } from '@angular/platform-browser';
 
 import { catchError, first, throwError } from 'rxjs';
 
+import environment from '@app/environment';
+
 import {
   CustomUser,
   ProductListConfig,
@@ -17,6 +19,7 @@ import {
   AuthService,
   FirebaseService,
   ModalService,
+  PreviousRouteService,
   ProductService,
   ToastService
 } from '@app/services';
@@ -57,8 +60,9 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     private _toast: ToastService,
     private _location: Location,
     private _authService: AuthService,
-    private _productService: ProductService,
-    private _titleService: Title
+    private _titleService: Title,
+    public   productService: ProductService,
+    private _previousRouteService: PreviousRouteService
   ) {
     // if opened from product page
     this.product = this._router.getCurrentNavigation()?.extras.state as ProductMapper;
@@ -116,31 +120,21 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   // handle close event
   handleClose() {
-    console.log('closed')
-    this._productService.productDetailsClosed$.next();
+    this.productService.productDetailsClosed$.next();
     if (this.isClosedByBackButton) {
       this.isClosedByBackButton = false;
       return;
     }
+
+    // if user came from hp/copy-paste
+    if (!this._previousRouteService.getPreviousUrl()?.includes('images')) {
+      this._router.navigate(['images']);
+      return;
+    }
+
     // TODO: causes a small bug. Have search value. Open product details. Refresh. Close product details.
     // There is old search query in url and doc and page titles are mismatched
     this._location.back();
-  }
-
-  // TODO: these 3 can be removed and called directly from HTML
-  // handles add to cart
-  addToCart() {
-    this._productService.addToCart(this.product);
-  }
-
-  // handles remove from cart
-  removeFromCart() {
-    this._productService.removeFromCart(this.product);
-  }
-
-  // handle download
-  handleDownload() {
-    this._productService.download(this.product);
   }
 
   // keep order of keyvalue pipe (not DRY)

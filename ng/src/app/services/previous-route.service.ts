@@ -8,7 +8,7 @@ import { filter, pairwise } from 'rxjs/operators';
 })
 export class PreviousRouteService {
 
-  private _previousUrl: string;
+  private _previousUrl: string | null = null;
 
   constructor(private router: Router) {
 

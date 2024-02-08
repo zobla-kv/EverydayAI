@@ -8,7 +8,7 @@ import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map, concatMap } from 'rxjs';
 
 
 import {
@@ -446,19 +446,23 @@ export class FirebaseService {
   }
 
   // add item to user
-  addProductToUser(productId: string, user: CustomUser): Observable<any> {
-    return this._db.collection('Users').doc(user.id).get().pipe(
+  addProductToUser(productId: string, user: CustomUser): Observable<boolean> {
+    return this._db.collection('Users').doc(user.id).get()
+    .pipe(
       first(),
-      // mergeMap -> wait for promise inside observable
-      mergeMap(async res => {
+      map(res => {
         const ownedItemsTimeMap = (res.data() as CustomUser).ownedItemsTimeMap;
         ownedItemsTimeMap[productId] = Timestamp.fromDate(new Date());
         const filteredCart = user.cart.filter(id => id !== productId);
-        return this._db.collection('Users').doc(user.id).update({
+        return { ownedItemsTimeMap, filteredCart };
+      }),
+      concatMap(({ ownedItemsTimeMap, filteredCart }) => {
+        this._db.collection('Users').doc(user.id).update({
           'cart': filteredCart,
           'ownedItems': arrayUnion(productId),
           'ownedItemsTimeMap': ownedItemsTimeMap
         });
+        return of(true);
       })
     );
   }
