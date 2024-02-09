@@ -12,6 +12,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -113,6 +115,8 @@ import { FormatPipe } from './pipes/format.pipe';
     MatTooltipModule,
     MatTableModule,
     MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     // masonry
     NgxMasonryModule,

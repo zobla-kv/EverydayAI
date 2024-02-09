@@ -51,7 +51,7 @@
                         autocomplete="off"
                       >
                       <mat-icon>lock</mat-icon>
-                      <mat-icon class="show-password-toggle" (click)="showHidePassword()">
+                      <mat-icon class="form-style-inner-icon" [attr.id]="'password-toggle'" (click)="showHidePassword()">
                         {{ showPassword ? 'visibility' : 'visibility_off' }}
                       </mat-icon>
                       <span
@@ -146,7 +146,7 @@
                         autocomplete="off"
                       >
                       <mat-icon>lock</mat-icon>
-                      <mat-icon class="show-password-toggle" (click)="showHidePassword()">
+                      <mat-icon class="form-style-inner-icon" [attr.id]="'password-toggle'" (click)="showHidePassword()">
                         {{ showPassword ? 'visibility' : 'visibility_off' }}
                       </mat-icon>
                       <span
@@ -165,6 +165,39 @@
                       *ngIf="registerForm.form.get('password')?.hasError('pattern') && registerForm.form.get('password')?.touched"
                       class="input-validation-error-message">Special characters not allowed
                     </span>
+                    </div>
+                    <div class="form-group mt-2">
+                      <input
+                        readonly
+                        matInput
+                        [matDatepicker]="datePicker"
+                        class="form-style"
+                        role="button"
+                        id="dob"
+                        name="dob"
+                        formControlName="dob"
+                        placeholder="Mm/dd/yyyy"
+                        (dateChange)="handleDateChange()"
+                      >
+                      <mat-datepicker #datePicker></mat-datepicker>
+                      <mat-datepicker-toggle
+                        class="form-style-inner-icon"
+                        [attr.id]="'datepicker'"
+                        matIconSuffix
+                        [for]="datePicker"
+                      >
+                        <!-- NOTE: icon is necessary for open but its hidden -->
+                        <mat-icon matDatepickerToggleIcon></mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-icon>cake</mat-icon>
+                      <span
+                        *ngIf="registerForm.form.get('dob')?.hasError('required') && registerForm.form.get('dob')?.touched"
+                        class="input-validation-error-message text-start">Date of birth is required
+                      </span>
+                      <span
+                        *ngIf="registerForm.form.get('dob')?.hasError('underAge') && registerForm.form.get('dob')?.touched"
+                        class="input-validation-error-message text-start">You must be at least 18 years old
+                      </span>
                     </div>
                     <div class="form-group gender mt-2">
                       <div class="form-style">

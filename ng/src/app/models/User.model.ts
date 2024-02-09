@@ -7,10 +7,16 @@ import {
 
 export interface RegisterUser {
   id: string;
-  name: string,
-  email: string,
-  password: string
-  gender: string
+  name: string;
+  email: string;
+  password: string;
+  dob: Date;
+  gender: string;
+}
+
+export interface LoginUser {
+  email: string;
+  password: string;
 }
 
 // custom user stored in db that is different from firebase user
@@ -19,6 +25,7 @@ export interface CustomUser {
   email: string;
   name: string;
   role: string;
+  dob: string;
   gender: string;
   cart: string[];
   registrationDate: Date;

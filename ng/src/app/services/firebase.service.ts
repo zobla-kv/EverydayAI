@@ -21,7 +21,8 @@ import {
   ProductResponse,
   ProductTypePrint,
   ProductFilters,
-  ProductUploadResponse
+  ProductUploadResponse,
+  LoginUser
 } from '@app/models';
 
 import {
@@ -98,7 +99,7 @@ export class FirebaseService {
   }
 
   // log in user
-  login(user: RegisterUser): Promise<FirebaseError | void> {
+  login(user: LoginUser): Promise<FirebaseError | void> {
     return this._fireAuth.signInWithEmailAndPassword(user.email, user.password)
     .then(async (userData: any) => {
       if (!userData.user?.emailVerified) {
@@ -107,6 +108,8 @@ export class FirebaseService {
       }
 
       // login succeeded
+      this.updateLastActiveTime(userData.user.uid);
+
       return Promise.resolve();
     })
     // resolve in catch leads to then
@@ -185,8 +188,11 @@ export class FirebaseService {
   }
 
   // updates last active time on user
-  async updateLastActiveTime(user: any): Promise<void> {
-    this._db.collection('Users').doc(user.id).update({ lastActiveDate: new Date() });
+  async updateLastActiveTime(userId: string): Promise<void> {
+    this._db.collection('Users').doc(userId).update({
+      lastActiveDate: this._utilService.formatDate(new Date(), 'DD/MM/YYYY HH:mm')
+    })
+    .catch(err => console.log('Failed to update last active time: ', err));
   }
 
   // return value whether it succeeded
@@ -194,10 +200,11 @@ export class FirebaseService {
     // desctucture user and omit password
     const { password, ...customUser } = {
       ...user,
+      dob: this._utilService.formatDate(user.dob, 'DD/MM/YYYY'),
       role: 'basic',
       cart: [],
-      registrationDate: new Date(),
-      lastActiveDate: new Date(),
+      registrationDate: this._utilService.formatDate(new Date(), 'DD/MM/YYYY HH:mm'),
+      lastActiveDate: this._utilService.formatDate(new Date(), 'DD/MM/YYYY HH:mm'),
       payments: [],
       totalSpent: 0,
       ownedItems: [],

@@ -9,7 +9,8 @@ import {
   CustomUser,
   RegisterUser,
   FirebaseError,
-  FirebaseConstants
+  FirebaseConstants,
+  LoginUser
 } from '@app/models';
 
 import {
@@ -96,7 +97,7 @@ export class AuthService {
   }
 
   // login user
-  async login(user: RegisterUser): Promise<FirebaseError | void> {
+  async login(user: LoginUser): Promise<FirebaseError | void> {
     const response = await this._firebaseService.login(user);
     if (response) {
       return response;

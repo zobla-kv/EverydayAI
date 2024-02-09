@@ -7,6 +7,8 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 
 import { Decimal } from 'decimal.js';
 
+declare const moment: any;
+
 import {
   CustomUser,
   ProductResponse,
@@ -401,6 +403,29 @@ loadScript(url: string, mode?: 'async' | 'defer'): Promise<void> {
   */
   getZoomLevel(): number {
     return Math.round(window.devicePixelRatio * 100);
+  }
+
+/**
+  * Get age based on date of birth
+  *
+  * @return age - number
+  */
+  getAge(dob: Date): number {
+    const ageDifMs = Date.now() - dob.getTime();
+    const ageDate = new Date(ageDifMs);
+    const age = Math.abs(ageDate.getFullYear() - 1970);
+    return age;
+  }
+
+/**
+  * Format date field to 'mm/dd/yyyy, time o'clock'
+  * localized to Serbian
+  *
+  * @return formatted date - string
+  */
+  formatDate(date: Date, format: string): string {
+    const timeZone = 'Europe/Belgrade';
+    return moment(date).tz(timeZone).format(format);
   }
 
 }

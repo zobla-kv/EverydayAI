@@ -71,7 +71,7 @@ export class AppComponent implements OnDestroy {
 
       if (user) {
         // doesn't matter if it succeeded
-        this._firebaseService.updateLastActiveTime(user);
+        this._firebaseService.updateLastActiveTime(user.id);
       }
     });
 

@@ -19,7 +19,7 @@ export class PreviousRouteService {
     });
    }
 
-   public getPreviousUrl() {
-    return this._previousUrl;
-   }
+  public getPreviousUrl() {
+   return this._previousUrl;
+  }
 }

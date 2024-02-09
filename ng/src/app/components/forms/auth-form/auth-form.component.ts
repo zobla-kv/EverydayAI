@@ -78,6 +78,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
           Validators.maxLength(16),
           Validators.pattern('^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$')
         ]),
+        'dob': new FormControl(null, Validators.required),
         'gender': new FormControl(null, Validators.required),
       }),
       type: FormType.REGISTER
@@ -124,6 +125,15 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // toggle show-hide password
   showHidePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  // handle date of birth change
+  handleDateChange() {
+    const dob = this.registerForm.form.get('dob')?.value;
+    const age = this._utilService.getAge(dob);
+    if (age < 18) {
+      this.registerForm.form.controls['dob'].setErrors({ underAge: true });
+    }
   }
 
   // submit form
