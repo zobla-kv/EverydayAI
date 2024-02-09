@@ -22,22 +22,11 @@ export class HeaderComponent implements OnDestroy {
   // hamburger menu toggle
   @ViewChild('hamburgerToggle') hamburgerToggle: ElementRef;
 
-  // TODO: remove scroll listener on mobile, no issues for now because mobile header has no animation
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: any) {
-    // check if user reached bottom of the page then show footer
-    if (window.pageYOffset === 0) {
-      !this.expand && this.expandHeader();
-    } else {
-      this.expand && this.collapseHeader();
-    }
-  }
-
   // current screen size
   currentScreenSize: string;
 
   // expand when user scroll is on top
-  expand = true;
+  expand = false;
 
   // is user logged in
   isAuthenticated: boolean;
@@ -56,6 +45,9 @@ export class HeaderComponent implements OnDestroy {
 
   // search input value
   searchValue = '';
+
+  // previous Y position - for calculating scroll direction
+  private _prevY = 0;
 
   constructor(
     private _router: Router,
@@ -76,7 +68,15 @@ export class HeaderComponent implements OnDestroy {
       this.isAdmin = user?.role === 'admin' ? true : false;
     });
 
-    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.currentScreenSize = size);
+    const scrollHandler = this.handleScroll.bind(this);
+    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => {
+      this.currentScreenSize = size;
+      if (['xl', 'lg', 'md'].includes(this.currentScreenSize)) {
+        window.addEventListener('scroll', scrollHandler);
+      } else {
+        window.removeEventListener('scroll', scrollHandler);
+      }
+    });
 
     this._router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -87,6 +87,17 @@ export class HeaderComponent implements OnDestroy {
 
     this._firebaseService.search$.pipe(first()).subscribe(value => this.searchValue = value);
 
+  }
+
+  // handle scroll event
+  handleScroll() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollY > this._prevY) {
+      !this.expand && this.expandHeader();
+    } else if (scrollY < this._prevY) {
+      this.expand && this.collapseHeader();
+    }
+    this._prevY = scrollY;
   }
 
   // handle search (triggered on x)
