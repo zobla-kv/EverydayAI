@@ -1,25 +1,110 @@
 const { CRYPT_PRIVATE_KEY, HOST_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
 const path = require('path');
 const nodemailer = require('nodemailer');
-// NOTE: crypto needed so email wont be shown in url (also on FE)
+const pug = require('pug');
+const firebaseService = require('../services/firebaseService');
 const CryptoJS = require('crypto-js');
-const firebaseService = require('./firebaseService');
-const labels = require('../labels/labels');
-const styles = require('../assets/styles');
 
-const instagram_url = 'https://www.instagram.com/house_of_dogs_ig' // TODO: update url
+// host email
+const HOST_EMAIL = 'everydayai.online@gmail.com' // TODO: update
 
-module.exports.sendEmail = async function (email, type) {
-  type = type.toLowerCase();
-  if (type !== labels.ACTIVATION && type !== labels.RESET_PASSWORD) {
-    return false;
-  }
+// email types
+const ACTIVATION = 'activation';
+const RESET_PASSWORD = 'reset-password';
+const TRANSACTION = 'transaction';
 
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // TODO: update
+  auth: {
+    user: NODE_MAILER_USERNAME,
+    pass: NODE_MAILER_PASSWORD,
+  },
+});
+
+// send email
+// email - string, type - email types
+async function sendEmail(email, type, orderDetails = null) {
+  const emailData = await getEmailData(email, type, orderDetails);
+
+  const compiledFunction = pug.compileFile(path.join(__dirname, '..', `/email/${type}.pug`));
+  const emailHTML = compiledFunction(emailData);
+
+  const response = await transporter.sendMail({
+    from: `"EverydayAI" <${HOST_EMAIL}>`,
+    to: emailData.receivers,
+    subject: emailData.subject,
+    html: emailHTML,
+    attachments: emailData.attachments
+  });
+
+  return response;
+};
+
+// gets email data based on email type
+async function getEmailData(email, type, orderDetails) {
+  const emailData = async (type) => {
+    switch (type) {
+      case ACTIVATION:
+        return {
+          subject: 'Activation ✨',
+          receivers: [email],
+          action_url: await getActionUrl(email, ACTIVATION)
+        };
+      case RESET_PASSWORD:
+        return {
+          subject: 'Reset password ✨',
+          receivers: [email],
+          action_url: await getActionUrl(email, RESET_PASSWORD),
+        };
+      case TRANSACTION:
+        return {
+          subject: 'Receipt ✨',
+          receivers: [email, `${HOST_EMAIL}`],
+          order: {
+            transaction_id: orderDetails.id,
+            items: orderDetails.items,
+            totalAmount: orderDetails.totalAmount
+          }
+        };
+      default:
+        throw new Error('Failed to get email data. There is no data key: ' + type);
+    }
+  };
+
+  const data = await emailData(type);
+
+  // shared
+  data.user = email.split('@')[0];
+  data.host_url = HOST_URL;
+  data.instagram_url = 'https://www.instagram.com/house_of_dogs_ig'; // TODO: update
+  data.attachments = [
+    {
+      filename: 'main-logo.png',
+      path: path.join(__dirname, '..', '/email/img/main-logo.png'),
+      cid: 'logo'
+    },
+    {
+      filename: 'stars.png',
+      path: path.join(__dirname, '..', '/email/img/stars.png'),
+      cid: 'stars'
+    },
+    {
+      filename: 'instagram-logo.png',
+      path: path.join(__dirname, '..', '/email/img/instagram-logo.png'),
+      cid: 'instagram'
+    }
+
+  ]
+
+  return data;
+}
+
+// TODO: move to firebase service
+// get action url
+async function getActionUrl(email, type) {
   let verificationLink = await firebaseService.generateEmailLink(email, type);
-  if (!verificationLink) {
-    // in case too many requests in small time
-    return false;
-  }
 
   verificationLink = verificationLink.replace('oobCode', 'code');
 
@@ -27,108 +112,16 @@ module.exports.sendEmail = async function (email, type) {
   modifiedUrl.searchParams.delete('apiKey');
   modifiedUrl.searchParams.delete('continueUrl');
 
-  // encrypt email address
   const encryptedEmail = CryptoJS.AES.encrypt(email, CRYPT_PRIVATE_KEY);
 
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
-  // capitalize first letter
-  const subject = `${type[0].toUpperCase() + type.slice(1)} ✨`;
-
-  const content = getContent(email, type);
-
-  // prevent gmail from trimming content
-  const random = Date.now();
-
-  // TODO: figure out what was this for
-  // type = type.replace(/ /g, '_');
-
-  // BUG: doesn't look good in ct email, try using inline styles
-  const message =
-  `
-    <div style="text-align:center">
-      <h2>${content.text.header}</h2>
-      <span style="${styles.bodyText}">${content.text.body}</span>
-    </div>
-    <div style="${styles.outterWrapper}">
-      <div style="${styles.innerWrapper}">
-        <a href="${HOST_URL}" style="${styles.logoWrapper}">
-          <img src="cid:logo" style="${styles.logo}">
-        </a>
-        <h2 style="${styles.text}">
-          ${content.logo.text}
-        </h2>
-        <br>
-        <a href="${modifiedUrl}" style="${styles.button}">
-          ${content.logo.buttonText}
-        </a>
-      </div>
-      <span style="${styles.followUs}">Follow us on</span>
-      <a href="${instagram_url}" style="${styles.instagramLogoWrapper}">
-        <img src="cid:instagram" style="${styles.instagramLogo}">
-      </a>
-    </div>
-    <div style="opacity: 0">${random}</div>
-  `;
-
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: NODE_MAILER_USERNAME,
-      pass: NODE_MAILER_PASSWORD,
-    },
-  });
-
-  let isSent = false;
-  await transporter.sendMail({
-    from: '"EverydayAI" <everydayai.online@gmail.com>',
-    to: email,
-    subject,
-    html: message,
-    attachments: [
-      {
-        filename: 'main-logo.png',
-        path: path.join(__dirname, '..', '/assets/main-logo.png'),
-        cid: 'logo'
-      },
-      {
-        filename: 'instagram-logo.png',
-        path: path.join(__dirname, '..', '/assets/instagram-logo.png'),
-        cid: 'instagram'
-      }
-    ]
-  })
-  .then(() => isSent = true)
-  .catch(() => isSent = false);
-
-  return isSent;
-};
-
-function getContent(email, type) {
-  const content = {
-    text: { header: '', body: '' },
-    logo: { text:   '', buttonText: ''}
-  }
-  if (type === labels.ACTIVATION) {
-    content.text.header =  `Welcome to EverydayAI, ${email.split('@')[0]}.`;
-    content.text.body = `Thank you for becoming a part of the EverydayAI community.
-    The integration of AI into our lives should not diminish our humanity. Rather, it should amplify our ability to connect.
-    Together, humans and AI can co-create a world that leverages the strengths of both,
-    transcending the boundaries of what was once thought possible.
-    <br>
-    If you did not request this email, please ignore it.`
-    content.logo.text = labels.VERIFY_EMAIL_TEXT;
-    content.logo.buttonText = labels.VERIFY_EMAIL_BUTTON_TEXT;
-  }
-  if (type === labels.RESET_PASSWORD) {
-    content.text.header =  `Hello ${email.split('@')[0]}. Let us help get back your account.`;
-    content.text.body = `You requested password reset. Click button below and follow instructions to get your account back.'
-    <br>
-    If you did not request this email, please ignore it.`
-    content.logo.text = labels.RESET_PASSWORD_EMAIL_TEXT;
-    content.logo.buttonText = labels.RESET_PASSWORD_EMAIL_BUTTON_TEXT;
-  }
-  return content;
+  return modifiedUrl;
 }
+
+
+module.exports = {
+  sendEmail,
+  emailType: { ACTIVATION, RESET_PASSWORD, TRANSACTION }
+}
+

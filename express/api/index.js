@@ -1,10 +1,13 @@
 const router = require('express').Router();
+const emailRouter = require('./email');
 const userRouter = require('./user');
 const productsRouter = require('./products');
 const paypalRouter = require('./paypal');
+const validators = require('../middleware/validators');
 const bodyParser = require('body-parser'); // TODO: unused dependency
 
-// TODO: protect routes, validate params
+// TODO: protect routes, validate params, protect from postman
+router.use('/email', [validators.email, validators.emailExists], emailRouter);
 router.use('/user', userRouter);
 router.use('/products', productsRouter);
 router.use('/paypal', paypalRouter);

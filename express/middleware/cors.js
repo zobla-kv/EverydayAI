@@ -7,6 +7,11 @@ module.exports = function cors(req, res, next) {
     res.set('Access-Control-Allow-Origin', origin);
     res.set('Access-Control-Allow-Headers', 'Content-type');
     res.set('Access-Control-Allow-Methods', 'GET, POST, PUT');
+
+    if(req.method === 'OPTIONS') {
+      res.sendStatus(204);
+      return;
+    }
   }
   next();
 };

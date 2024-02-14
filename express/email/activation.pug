@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  include partials/head.pug
+
+  body
+    include partials/stars.pug
+      include partials/header.pug
+
+      include partials/gradient-container.pug
+        p(class="large-text") Welcome to EverydayAI, #{user}!
+        p(class="small-text mx-auto") Thank you for becoming a part of the EverydayAI community.
+        p(class="small-text mx-auto") Please verify email by clicking button below.
+
+        a(href=action_url class="button" style="width: 160px") Verify
+
+        p(class="small-text mx-auto") You received this email because you recently created new account.
+        p(class="small-text mx-auto") If this wasn't you, please ignore this email.
+
+      include partials/footer.pug
+        br
+        blockquote(style="width: 400px" class="mx-auto text-center")
+          | &#8223;The integration of AI into our lives should not diminish our humanity.
+          | Together, humans and AI can co-create a world that leverages the strengths of both,
+          | transcending the boundaries of what was once thought possible.&#8221;
+          p - EverydayAI

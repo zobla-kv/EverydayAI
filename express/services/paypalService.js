@@ -81,7 +81,7 @@ async function createOrder(userId, cartItems) {
                 value: firebaseService.getPriceSync([product])
               }
             })),
-            description: 'test description',
+            description: 'test description', // TODO: check on live payment email and remove possibly, check everything on live email
             custom_id: userId,
             amount: {
                currency_code: 'USD',
@@ -89,7 +89,7 @@ async function createOrder(userId, cartItems) {
                breakdown: {
                  item_total: {
                   currency_code: 'USD',
-                  value: firebaseService.getPriceSync(products),
+                  value: firebaseService.getPriceSync(products)
                  }
                }
             }
@@ -121,15 +121,10 @@ async function captureOrder(userId, orderId, cartItems) {
   })
   .then(response => response.json())
   .then(async order => {
-
-    // TODO: payment succeeded at this point, if some of these fail ignore the error.
+    // NOTE: payment succeeded at this point, if some of these fail ignore the error.
     // User will not own item if this fails. Same if user is disconnect from internet while processing payment.
-    return Promise.all([
-      firebaseService.addPaymentToUser(userId, order, cartItems),
-      firebaseService.incrementProductSoldTimes(cartItems)
-    ])
+    return firebaseService.handlePaymendSucceded(userId, order, cartItems)
     .catch(err => err);
-
   });
 
 }

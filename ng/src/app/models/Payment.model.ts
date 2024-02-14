@@ -11,6 +11,3 @@ export interface createOrderApiResponse {
   orderId: string;
 }
 
-export interface captureOrderApiResponse {
-  message: 'succeeded' | 'failed';
-}

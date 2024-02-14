@@ -1,3 +1,6 @@
+// TODO: all services should be classes and single same instance returned on every import
+
+
 const { NODE_ENV, HOST_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 const Https = require('https');
 const cloudinary = require('cloudinary');

@@ -11,7 +11,8 @@ import {
   ProductListConfig,
   ProductType,
   ShoppingCart,
-  ToastMessages
+  ToastMessages,
+  EmailType
 } from '@app/models';
 
 import {
@@ -97,6 +98,9 @@ export class ShoppingCartComponent implements OnDestroy {
   // show payment buttons?
   showPaymentButtons = false;
 
+  // are payment buttons rendered?
+  paymentButtonsRendered = false;
+
   // is remove disabled
   // this is to prevent multiple deletes in short time. To be improved with debounce
   isRemoveDisabled = false;
@@ -121,23 +125,12 @@ export class ShoppingCartComponent implements OnDestroy {
       this.user = <CustomUser>user;
 
       if (this.removedItemId) {
-        const filteredCartItems = this.cart.items.filter(item => item.id !== this.removedItemId);
-        const newTotalSum = this.utilService.getTotalSum(filteredCartItems);
-        this.cart = { items: filteredCartItems, totalSum: newTotalSum }
-        this.removedItemId = null;
-        return;
+        this.updateCartOnClient();
+      } else {
+        // TODO: running on each user update because of reuse strategy. More fetches than needed.
+        // idea: store updated cart somwehere and on route reopen fetch difference between current and updated cart.
+        this.updateCartFromServer();
       }
-
-      // NOTE: it fetches every time user is updated, even if it is on another page due to reuse strategy
-      this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
-        this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
-
-        // ideally this should run only on first user subscribe
-        setTimeout(() => {
-          this.showPaymentButtons = this.cart.items.length > 0 ? true : false;
-          this.showLoadSpinner = false;
-        }, 1300)
-      });
 
     });
 
@@ -155,17 +148,14 @@ export class ShoppingCartComponent implements OnDestroy {
   async loadPaypalScript(): Promise<void> {
     const paypalSdkUrl = 'https://www.paypal.com/sdk/js';
     const clientId = environment.paypal_client_id;
-
-    console.log('clientId: ', clientId);
     const components = 'buttons' // card-fields not supported in Serbia
 
     this.utilService.loadScript(
-      paypalSdkUrl + '?client-id=' + clientId + '&components=' + components + '&enable-funding=venmo',
-      'async'
+      paypalSdkUrl + '?client-id=' + clientId + '&components=' + components + '&enable-funding=venmo'
     )
-    .then(() => this.renderPaypalButtons())
     .catch(err => this._toast.showErrorMessage(ToastMessages.PAYMENT_SCRIPT_FAILED_TO_LOAD));
   }
+
 
   // renders paypal buttons
   renderPaypalButtons() {
@@ -176,10 +166,7 @@ export class ShoppingCartComponent implements OnDestroy {
         shape:  'rect',
         label:  'paypal'
       },
-      createOrder: (data: any, actions: any) => {
-        this._authService.updateUser();
-        return this._paymentService.createOrder(this.user.id, this.user.cart)
-      },
+      createOrder: (data: any, actions: any) => this._paymentService.createOrder(this.user.id, this.user.cart),
       onApprove: (data: any, actions: any) => {
         this._paymentService.handlePaymentApprove(this.user.id, data.orderID, this.user.cart)
         .then(() => {
@@ -200,6 +187,36 @@ export class ShoppingCartComponent implements OnDestroy {
       this.showPaymentButtons = true;
       this.renderPaypalButtons();
     }
+  }
+
+  // update cart on client side
+  updateCartOnClient() {
+    const filteredCartItems = this.cart.items.filter(item => item.id !== this.removedItemId);
+    const newTotalSum = this.utilService.getTotalSum(filteredCartItems);
+    this.cart = { items: filteredCartItems, totalSum: newTotalSum }
+    this.removedItemId = null;
+  }
+
+  // update cart on server side
+  updateCartFromServer() {
+    this._httpService.getProducts(ProductType.ALL, this.user, this.user.cart).pipe(first()).subscribe(products => {
+      this.cart = { items: products, totalSum: this.utilService.getTotalSum(products) };
+
+      if (!this.paymentButtonsRendered) {
+        this.updateUIAfterCartUpdate();
+      }
+
+    });
+  }
+
+  // update UI after cart update
+  updateUIAfterCartUpdate() {
+    setTimeout(() => {
+      this.showPaymentButtons = this.cart.items.length > 0;
+      this.showLoadSpinner = false;
+      this.renderPaypalButtons();
+      this.paymentButtonsRendered = true;
+    }, 1300);
   }
 
   // used to return current cart to template

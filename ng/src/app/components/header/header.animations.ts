@@ -10,6 +10,7 @@ export default [
       'transform': 'translateY(0)',
       // 'height': '100px',
     })),
-    transition('false <=> true', animate('600ms ease-in-out'))
+    transition('false => true', animate('600ms 300ms ease-in-out')),
+    transition('true  => false', animate('600ms ease-in-out'))
   ])
 ]

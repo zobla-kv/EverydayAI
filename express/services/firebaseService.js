@@ -1,6 +1,5 @@
-const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, HOST_URL } = process.env;
+const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, HOST_URL, SERVER_URL } = process.env;
 const admin = require('firebase-admin');
-const labels = require('../labels/labels');
 const { Decimal } = require('decimal.js');
 
 admin.initializeApp({
@@ -23,17 +22,12 @@ const actionCodeSettings = {
 
 async function generateEmailLink(email, type) {
   let link = null;
-
   const that = auth;
 
-  const cb = type === labels.ACTIVATION ?
+  const cb = type === 'activation' ?
     auth.generateEmailVerificationLink.bind(that) : auth.generatePasswordResetLink.bind(that);
 
-  try {
-    link = await cb(email, actionCodeSettings);
-  } catch(err) {
-    console.log('failed to generate email link: ', err);
-  }
+  link = await cb(email, actionCodeSettings);
 
   return link;
 }
@@ -77,6 +71,11 @@ async function getUserById(id) {
   .catch(err => null)
 }
 
+// get user by email
+async function getUserByEmail(email) {
+  return db.collection('Users').where('email', '==', email).get();
+}
+
 // get product by id
 async function getProductById(id) {
   return db.collection('Products').doc(id).get()
@@ -84,6 +83,7 @@ async function getProductById(id) {
   .catch(err => null)
 }
 
+// TODO: remove catch blocks from all fns here and implement try catch in callers
 // get mutliple products by id
 async function getProductsById(ids) {
   return db.collection('Products').where('id', 'in', ids).get()
@@ -102,36 +102,74 @@ async function getAllProducts() {
   })
 }
 
-// update user in db with info about the payment and reset cart
-async function addPaymentToUser(userId, order, cartItems) {
-  // read first to store later updated object
-  const ownedItemsTimeMap = (await db.collection('Users').doc(userId).get()).get('ownedItemsTimeMap');
-  // combine ownedItemsTimeMap object and newItems array into single object
-  const updated = cartItems.reduce(
-    (prev, curr) => {
-        return {
-            ...prev,
-            [curr]: new Date()
-        };
-    },
-    ownedItemsTimeMap
-  );
+// do all actions after succesful payment
+async function handlePaymendSucceded(userId, order, cartItems) {
+  const user = await getUserById(userId);
+  const updatedOwnedItemsTimeMap = _getUpdatedOwnedItemsTimeMap(user.ownedItemsTimeMap, cartItems);
+  const orderDetails = await _getOrderDetails(order, cartItems);
 
-  return db.collection('Users').doc(userId).update({
-    'payments': FieldValue.arrayUnion({
+  return Promise.all([
+    _incrementProductSoldTimes(cartItems),
+    _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap),
+    _sendTransactionEmail(user.email, orderDetails)
+  ]);
+}
+
+// get updated ownedItemsTimeMap object
+function _getUpdatedOwnedItemsTimeMap(ownedItemsTimeMap, cartItems) {
+  return cartItems.reduce((prev, curr) => ({ ...prev, [curr]: new Date() }), ownedItemsTimeMap);
+}
+
+// get concstruct order details object
+// order - capture payment response object
+async function _getOrderDetails(order, cartItems) {
+  const products = await getProductsById(cartItems);
+  const items = products.map(product => ({
+    id: product.id,
+    title: product.title,
+    img: product.watermarkImgPath,
+    price: product.price
+  }));
+  const totalAmount = +order.purchase_units[0].payments.captures[0].amount.value;
+
+  return { id: order.id, items, totalAmount };
+}
+
+// send transaction email
+function _sendTransactionEmail(email, orderDetails) {
+  fetch(`${SERVER_URL}/api/email/transaction`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ email, orderDetails })
+  });
+}
+
+// update user with information about payment
+async function _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap) {
+  const totalAmount = +order.purchase_units[0].payments.captures[0].amount.value;
+  let totalSpent = new Decimal(user.totalSpent);
+  totalSpent = totalSpent.plus(totalAmount);
+
+  const updateData = {
+    payments: FieldValue.arrayUnion({
       orderId: order.id,
       items: cartItems,
-      amount: order.purchase_units[0].payments.captures[0].amount.value,
+      amount: totalAmount,
       date: new Date()
     }),
-    'cart': [],
-    'ownedItems': FieldValue.arrayUnion(...cartItems),
-    'ownedItemsTimeMap': updated
-  })
+    totalSpent: totalSpent.toNumber(),
+    cart: [],
+    ownedItems: FieldValue.arrayUnion(...cartItems),
+    ownedItemsTimeMap: updatedOwnedItemsTimeMap
+  };
+
+  return await db.collection('Users').doc(user.id).update(updateData);
 }
 
 // increment how many times a product was sold
-async function incrementProductSoldTimes(cartItems) {
+async function _incrementProductSoldTimes(cartItems) {
   // update multiple documents at once
   const batch = admin.firestore().batch();
 
@@ -151,10 +189,10 @@ module.exports = {
   generateEmailLink,
   getPriceAsync,
   getPriceSync,
-  addPaymentToUser,
   getUserById,
+  getUserByEmail,
   getProductById,
   getProductsById,
   getAllProducts,
-  incrementProductSoldTimes
+  handlePaymendSucceded
 };

@@ -1,14 +1,14 @@
 <div class="wrapper">
   <span>{{ message }}</span>
 
-  <div>
+  <div class="mt-4">
 
     <ng-template #noSpinner>
       <button *ngIf="showResendButton" class="btn" (click)="handleResendCode()">
-        <span>Request new</span>
+        Request new
       </button>
     </ng-template>
-    
+
     <mat-spinner
       *ngIf="showSpinner; else noSpinner"
       class="mx-auto"

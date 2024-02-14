@@ -12,10 +12,10 @@ import {
 import {
   CustomUser,
   Email,
+  EmailType,
   ProductResponse,
   ProductType,
   ProductUploadResponse,
-  captureOrderApiResponse,
   createOrderApiResponse
 } from '@app/models';
 
@@ -43,9 +43,16 @@ export class HttpService {
 
   // call endpoint for sending email
   sendEmail(body: Email): Promise<boolean> {
+    let endpoint = '';
+    if (body.email_type === EmailType.ACTIVATION) {
+      endpoint = `${environment.API_HOST}/api/email/activation`;
+    } else {
+      endpoint = `${environment.API_HOST}/api/email/reset-password`;
+    }
+
     return new Promise((resolve) => {
       this._http
-      .post<any>(`${environment.API_HOST}/api/user/send-email`, body, { headers: { 'Content-type': 'application/json' }, observe: 'response' })
+      .post(endpoint, { email: body.email }, { headers: { 'Content-type': 'application/json' }, responseType: 'text' })
       .pipe(
         map(data => true),
         catchError(async () => false)
@@ -81,15 +88,9 @@ export class HttpService {
   // capture order
   captureOrder(userId: string, orderId: string, cartItems: string[]): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._http.post<captureOrderApiResponse>(`${environment.API_HOST}/api/paypal/capture-order`, { userId, orderId, cartItems })
+      this._http.post(`${environment.API_HOST}/api/paypal/capture-order`, { userId, orderId, cartItems }, { responseType: 'text' })
       .subscribe({
-        next: (response: captureOrderApiResponse) => {
-          if (response.message = 'succeeded') {
-            resolve();
-            return;
-          }
-          reject(response.message); // failed
-        },
+        next: () => resolve(),
         error: (err: HttpErrorResponse) => reject(err.error)
       })
     })
