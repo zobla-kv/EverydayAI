@@ -21,7 +21,7 @@ import {
 const routes: Routes = [
   {
     path: '',
-    title: 'EverydayAI',
+    title: 'Best AI images',
     component: HomePageComponent
   },
   {

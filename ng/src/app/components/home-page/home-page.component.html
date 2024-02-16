@@ -57,7 +57,7 @@
         <!-- NOTE: directive hides flick (cls) -->
         <img
           src="../../../assets/images/landing-image.png"
-          alt="landing image"
+          alt="AI robot head that glows in purple"
           class="img-fluid pe-none landing-image"
           appear
           [hide]="{'opacity': 0, 'transform': 'scale(1.1)' }"
@@ -334,7 +334,7 @@
                             <mat-icon class="white">shopping_cart</mat-icon>
                           </app-gradient-container>
                         </div>
-                        <img src="{{ product.watermarkImgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid">
+                        <img src="{{ product.watermarkImgPath }}" (error)="handleProductImgLoadError($event)" class="img-fluid" alt="{{ product.description }}">
                       </div>
                       <p class="product-item-title">{{ product.title }}</p>
                       <div class="product-item-likes flex-center gap-1">
@@ -397,8 +397,7 @@
 </section>
 
 <section class="lets-talk-about-your-ai-section position-relative">
-  <!-- TODO: alt -->
-  <img src="../../../assets/images/contact-us-image.png" alt="" loading="lazy" class="robot-hands">
+  <img src="../../../assets/images/contact-us-image.png" alt="robot hands holding a phone that displays text message" loading="lazy" class="robot-hands">
   <div class="text user-select-none" appear addClass="animate" [threshold]="0.1" [runOnMobile]="true">
     <div class="typewriter-wrapper">
       <span class="d-block">Lets talk about</span>
