@@ -6,7 +6,7 @@ const firebaseService = require('../services/firebaseService');
 const CryptoJS = require('crypto-js');
 
 // host email
-const HOST_EMAIL = 'everydayai.online@gmail.com' // TODO: update
+const HOST_EMAIL = 'everydayai.business@gmail.com'
 
 // email types
 const ACTIVATION = 'activation';

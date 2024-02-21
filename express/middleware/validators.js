@@ -80,7 +80,7 @@ const order = (req, res, next) => {
 
   const isValidOrderDetails = (orderDetails) => {
     if (typeof orderDetails.id !== 'string' || !Array.isArray(orderDetails.items) || orderDetails.items.length === 0 ||
-      typeof orderDetails.totalAmount !== 'string' || isNaN(parseFloat(orderDetails.totalAmount)) || !isFinite(orderDetails.totalAmount)) {
+      typeof orderDetails.totalAmount !== 'number' || !isFinite(orderDetails.totalAmount)) {
       return false;
     }
 
@@ -89,8 +89,7 @@ const order = (req, res, next) => {
 
   const isValidOrderDetailsItem = (item) => {
     return (typeof item.id === 'string' && typeof item.title === 'string' && typeof item.img === 'string' &&
-      !isNaN(parseFloat(item.price)) && isFinite(item.price)
-    );
+    typeof item.price === 'number' || isFinite(item.price));
   }
 
   if (!orderDetails || typeof orderDetails !== 'object' || !isValidOrderDetails(orderDetails)) {

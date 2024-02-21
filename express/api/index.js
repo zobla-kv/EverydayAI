@@ -55,7 +55,6 @@ module.exports = router;
 
 // /* stripe */
 // router.post('/stripe-create-payment-intent', async (req, res) => {
-//   // TODO: validate params
 //   const user = req.body.user;
 //   const card = user.card;
 //   try {

@@ -9,5 +9,5 @@ export default {
     messagingSenderId: "231045001565",
     appId: "1:231045001565:web:04cc1af06648e1621a78b4"
   },
-  paypal_client_id: 'AbYvTZHScSCYPvsaK7Ns3UkWgVsxbM1rGPtoAswJsT9WX82d747SFfKbCQxqboWKJ_SGudn7AjmYOgYi'
+  paypal_client_id: 'ASbFjrXBXJQBHeExhx6Zs9D_0fA5KCXhwiW-a6QDry0RgOIMpMtqFhocE05q5dVEWCcY3y-wLuT1zXdO'
 };

@@ -103,7 +103,7 @@ async function getAllProducts() {
 }
 
 // do all actions after succesful payment
-async function handlePaymendSucceded(userId, order, cartItems) {
+async function handlePaymentSucceded(userId, order, cartItems) {
   const user = await getUserById(userId);
   const updatedOwnedItemsTimeMap = _getUpdatedOwnedItemsTimeMap(user.ownedItemsTimeMap, cartItems);
   const orderDetails = await _getOrderDetails(order, cartItems);

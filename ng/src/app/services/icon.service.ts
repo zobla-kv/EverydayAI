@@ -18,7 +18,7 @@ export class IconService {
     { name: 'cart-remove' },
     { name: 'digital-product' },
     { name: 'dollar' },
-    { name: 'tier-classic' }, // TODO: figma - crop around corners
+    { name: 'tier-classic' },
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
     { name: 'double-arrow-right' },

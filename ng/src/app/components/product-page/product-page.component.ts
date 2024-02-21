@@ -45,7 +45,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     sort: {
       value: 'latest',
       default: 'latest',
-      possibleValues: ['latest', 'price desc', 'price asc', 'popular'] // TODO: 'owned desc', 'owned asc' - implement later
+      possibleValues: ['latest', 'price desc', 'price asc', 'popular']
     },
   }
 

@@ -55,7 +55,6 @@ async function createOrder(userId, cartItems) {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
-        // 'PayPal-Request-Id': '7b92603e-77ed-4896-8e78-5dea2050476a'
     },
     body: JSON.stringify(
       {
@@ -81,7 +80,6 @@ async function createOrder(userId, cartItems) {
                 value: firebaseService.getPriceSync([product])
               }
             })),
-            description: 'test description', // TODO: check on live payment email and remove possibly, check everything on live email
             custom_id: userId,
             amount: {
                currency_code: 'USD',
@@ -116,14 +114,13 @@ async function captureOrder(userId, orderId, cartItems) {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-      // 'PayPal-Request-Id': '7b92603e-77ed-4896-8e78-5dea2050476a'
     }
   })
   .then(response => response.json())
   .then(async order => {
     // NOTE: payment succeeded at this point, if some of these fail ignore the error.
     // User will not own item if this fails. Same if user is disconnect from internet while processing payment.
-    return firebaseService.handlePaymendSucceded(userId, order, cartItems)
+    return firebaseService.handlePaymentSucceded(userId, order, cartItems)
     .catch(err => err);
   });
 
