@@ -147,8 +147,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // if it returns it has an error, otherwise is handled in auth service
     if (response) {
-      // PRODUCTION:: uncomment for prod
-      // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
       return this.handleError(form.form, response);
     }

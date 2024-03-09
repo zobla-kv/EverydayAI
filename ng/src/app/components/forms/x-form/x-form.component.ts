@@ -23,7 +23,7 @@ export class XFormComponent {
 
   // phase
   phase: number;
-  
+
   form: FormGroup;
 
   showSpinner = false;
@@ -35,20 +35,20 @@ export class XFormComponent {
     private _firebaseService: FirebaseService
   ) {}
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.phase = window.history.state.phase;
-    // if it is phase 2 it is password update 
+    // if it is phase 2 it is password update
     // if not then it is email to which to send link
     this.form = new FormGroup(
-      this.phase === 2 ? 
+      this.phase === 2 ?
       {
         'password': new FormControl(null, [
-          Validators.required, 
+          Validators.required,
           Validators.minLength(6),
           Validators.maxLength(16),
           Validators.pattern('^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$')
         ])
-      } : 
+      } :
       {
         'email': new FormControl(null, [Validators.required, Validators.email])
       }
@@ -72,8 +72,6 @@ export class XFormComponent {
     }
     // if it returns it has an error, otherwise is handled in firebase service
     if (response) {
-      // PRODUCTION: uncomment for prod
-      // setTimeout(() => console.clear(), 0);
       this.showSpinner = false;
       return this.handleError(form, response);
     }
@@ -104,5 +102,5 @@ export class XFormComponent {
       }
     });
   }
-  
+
 }

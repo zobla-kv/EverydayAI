@@ -1,4 +1,4 @@
-const { CRYPT_PRIVATE_KEY, HOST_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
+const { CRYPT_PRIVATE_KEY, NG_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
 const path = require('path');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
@@ -77,8 +77,8 @@ async function getEmailData(email, type, orderDetails) {
 
   // shared
   data.user = email.split('@')[0];
-  data.host_url = HOST_URL;
-  data.instagram_url = 'https://www.instagram.com/house_of_dogs_ig'; // TODO: update
+  data.NG_URL = NG_URL;
+  data.instagram_url = 'https://www.instagram.com/everydayai.io/';
   data.attachments = [
     {
       filename: 'main-logo.png',

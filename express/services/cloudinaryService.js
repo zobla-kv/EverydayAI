@@ -1,7 +1,7 @@
 // TODO: all services should be classes and single same instance returned on every import
 
 
-const { NODE_ENV, HOST_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
+const { NODE_ENV, NG_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 const Https = require('https');
 const cloudinary = require('cloudinary');
 const { Readable } = require('stream');
@@ -19,7 +19,7 @@ const imageFolder = NODE_ENV.toLowerCase()[0];
 const watermarkImage = 'watermark';
 
 // upload image to
-// NOTE: upload goes through if other things fail (firebase or elastic)
+// TODO: upload goes through if other things fail (firebase or elastic)
 async function upload(req, res, next) {
   Readable.from(req.file.buffer).pipe(
     cloudinary.v2.uploader.upload_stream({
@@ -68,7 +68,7 @@ async function get(req, res, next) {
   // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
   if (NODE_ENV === 'production') {
-    if (req.headers.host !== HOST_URL) {
+    if (req.headers.host !== NG_URL) {
       return res.sendStatus(403);
     }
   }

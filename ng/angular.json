@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "house-of-dogs": {
+    "everydayAI": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -80,11 +80,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "house-of-dogs:build:production",
+              "browserTarget": "everydayAI:build:production",
               "open": true
             },
             "development": {
-              "browserTarget": "house-of-dogs:build:development",
+              "browserTarget": "everydayAI:build:development",
               "open": true
             }
           },
@@ -93,7 +93,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "house-of-dogs:build"
+            "browserTarget": "everydayAI:build"
           }
         },
         "test": {

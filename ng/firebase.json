@@ -12,5 +12,8 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "firestore": {
+    "indexes": "firebase.indexes.json"
   }
 }

@@ -52,9 +52,8 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // pagination loading spinner
   showPaginationLoadingSpinner = false;
 
-  // TODO: increase number
   // pagination size
-  paginationSize = 6;
+  paginationSize = 30;
 
   // are all products loaded?
   allProductsLoaded = false;

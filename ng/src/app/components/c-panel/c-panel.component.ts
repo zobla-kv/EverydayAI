@@ -354,7 +354,6 @@ export class CPanelComponent implements OnInit, AfterViewInit {
       discount: Number(formData.discount),
       likes: Number(formData.likes),
       isActive: false,
-      // TODO: test is working by creating new product
       soldTimes: 0,
       isFree: (Number(formData.price) === 0 || Number(formData.discount) === 100) ? true : false,
       isDiscounted: Number(formData.discount) > 0 ? true : false,

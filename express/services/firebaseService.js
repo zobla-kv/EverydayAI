@@ -1,4 +1,4 @@
-const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, HOST_URL, SERVER_URL } = process.env;
+const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL } = process.env;
 const admin = require('firebase-admin');
 const { Decimal } = require('decimal.js');
 
@@ -17,7 +17,7 @@ const { FieldValue } = require('firebase-admin/firestore')
 // must pass something but is overriden later
 // can stay for prod
 const actionCodeSettings = {
-  url: HOST_URL
+  url: NG_URL
 };
 
 async function generateEmailLink(email, type) {
@@ -194,5 +194,5 @@ module.exports = {
   getProductById,
   getProductsById,
   getAllProducts,
-  handlePaymendSucceded
+  handlePaymentSucceded
 };
