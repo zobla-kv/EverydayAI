@@ -85,7 +85,9 @@ export class UtilService {
   *
   * @return boolean
   */
+  // TODO: UNCOMMENT WHEN READY
   isFirstVisit(): boolean {
+    return true;
     let isFirstVisit = true;
     if (document.cookie.includes('new_session')) {
       isFirstVisit = false;

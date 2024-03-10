@@ -14,13 +14,35 @@
 
 .preloader.large-screen {
   // PRELOAD_ANIMATION_DURATION['lg'] = hide delay + animation (1.5 + 5)
-  animation: zoom 10s 1.3s forwards, hide 1.5s 5s forwards;
-  -webkit-animation: zoom 10s 1.3s forwards, hide 1.5s 5s forwards;
+  // animation: zoom 10s 1.3s forwards, hide 1.5s 10s forwards;
+  // -webkit-animation: zoom 10s 1.3s forwards, hide 1.5s 10s forwards;
+  // PRELOAD_ANIMATION_DURATION['lg'] = hide delay + animation (1.5 + 5)
+  // TODO: UNCOMMENT WHEN READY
+  animation: zoom 10s 1.3s forwards, hide 1.5s 99999s forwards;
+  -webkit-animation: zoom 10s 1.3s forwards, hide 1.5s 99999s forwards;
 
   .preloader-center {
     width: 100%;
 	  height: 100%;
 	  position: relative;
+
+
+     // TODO: DELETE WHEN READY
+     p {
+       font-size: 35px;
+       position: absolute;
+       top: 110px;
+       font-family: $space-font;
+       transform: scale(0) rotate(200deg);
+       animation: logoSmall 1.5s 4s forwards ease;
+       -webkit-animation: logoSmall 1.5s 4s forwards ease;
+     }
+     @-webkit-keyframes logoSmall {
+      100% { -webkit-transform: scale(0.5); }
+    }
+    @keyframes logoSmall {
+      100% { transform: scale(0.5);  -webkit-transform: scale(0.5); }
+    }
 
     .preloader-center-absolute {
       position: absolute;
@@ -127,11 +149,16 @@
         }
         @keyframes zoom {
           100% {
-            -webkit-transform:scale(7);
-            -moz-transform:scale(7);
-            -ms-transform:scale(7);
-            -o-transform:scale(7);
-            transform:scale(7);
+            // -webkit-transform:scale(7);
+            // -moz-transform:scale(7); // TODO: UNCOMMENT WHEN READY
+            // -ms-transform:scale(7);
+            // -o-transform:scale(7);
+            // transform:scale(7);
+            -webkit-transform:scale(3);
+            -moz-transform:scale(3);
+            -ms-transform:scale(3);
+            -o-transform:scale(3);
+            transform:scale(3);
           }
         }
 
@@ -267,8 +294,11 @@
 
 .preloader.small-screen {
   // PRELOAD_ANIMATION_DURATION['xs'] = hide delay + animation (1.5 + 5)
-  animation: hide 1.5s 5s forwards;
-  -webkit-animation: hide 1.5s 5s forwards;
+  // animation: hide 1.5s 5s forwards;
+  // -webkit-animation: hide 1.5s 5s forwards;
+  // TODO: UNCOMMENT WHEN READY
+  animation: hide 1.5s 99999s forwards;
+  -webkit-animation: hide 1.5s 99999s forwards;
 
   .logo {
     width: 400px;
@@ -283,6 +313,17 @@
     @keyframes logoSmall {
       100% { transform: scale(0.5);  -webkit-transform: scale(0.5); }
     }
+  }
+
+  // TODO: DELETE WHEN READY
+  p {
+    font-size: 35px;
+    position: absolute;
+    bottom: 26%;
+    font-family: $space-font;
+    transform: scale(0);
+    animation: logoSmall 1.5s 1s forwards ease;
+    -webkit-animation: logoSmall 1.5s 1s forwards ease;
   }
 
 }

@@ -58,22 +58,23 @@ export class AppComponent implements OnDestroy {
 
     const preloadAnimationStartTime = Date.now();
 
+  // TODO: UNCOMMENT WHEN READY
     // custom user set - only deteremining factor for app load
-    this._authService.userState$.pipe(first()).subscribe(user => {
-      const userLoadedTime = Date.now();
-      const timeBetween = Math.abs(preloadAnimationStartTime - userLoadedTime);
-      if (this.isFirstVisit) {
-        this.handlePreloadAnimation(timeBetween);
-        return;
-      }
+    // this._authService.userState$.pipe(first()).subscribe(user => {
+    //   const userLoadedTime = Date.now();
+    //   const timeBetween = Math.abs(preloadAnimationStartTime - userLoadedTime);
+    //   if (this.isFirstVisit) {
+    //     this.handlePreloadAnimation(timeBetween);
+    //     return;
+    //   }
 
-      this._utilService.appLoaded();
+    //   this._utilService.appLoaded();
 
-      if (user) {
-        // doesn't matter if it succeeded
-        this._firebaseService.updateLastActiveTime(user.id);
-      }
-    });
+    //   if (user) {
+    //     // doesn't matter if it succeeded
+    //     this._firebaseService.updateLastActiveTime(user.id);
+    //   }
+    // });
 
     this._iconService.addCustomIcons();
   }
