@@ -14,9 +14,9 @@
         "ng:prod": "cd ng && ng serve -c production",
         "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
         "build:prod": "cd ng && ng build -c production --output-hashing none && node ../scripts/postBuild.js",
-        "express:dev": "set ENV=development&& npx nodemon express/app.js",
-        "express:prod": "set ENV=production&& node express/app.js",
-        "express:dev:forever": "set ENV=development&& forever start express/config/forever.json"
+        "express:dev": "npx nodemon express/app.js",
+        "express:prod": "node express/app.js",
+        "express:dev:forever": "forever start express/config/forever.json"
     },
     "dependencies": {
         "@angular/animations": "^15.0.0",
