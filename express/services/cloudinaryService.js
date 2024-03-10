@@ -1,7 +1,7 @@
 // TODO: all services should be classes and single same instance returned on every import
 
 
-const { NODE_ENV, NG_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
+const { ENV, NG_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
 const Https = require('https');
 const cloudinary = require('cloudinary');
 const { Readable } = require('stream');
@@ -14,7 +14,7 @@ cloudinary.config({
 });
 
 // where are images stored
-const imageFolder = NODE_ENV.toLowerCase()[0];
+const imageFolder = ENV.toLowerCase()[0];
 // upload watermark manually before everything else (nested syntax - hod:d:watermark.png)
 const watermarkImage = 'watermark';
 
@@ -67,7 +67,7 @@ async function get(req, res, next) {
   // block different host other than FE from accessing endpoint
   // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
-  if (NODE_ENV === 'production') {
+  if (ENV === 'production') {
     if (req.headers.host !== NG_URL) {
       return res.sendStatus(403);
     }
