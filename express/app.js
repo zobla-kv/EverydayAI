@@ -1,7 +1,7 @@
 // app
 // NOTE: doesn't work with https in production, why?
 // const https = require('https');
-const { ENV, PORT = 3000 } = process.env;
+const { ENV, PORT } = process.env;
 const http = require('http');
 const path = require('path');
 const express = require('express');

@@ -1,4 +1,4 @@
-const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL } = process.env;
+const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL, SERVER_PORT } = process.env;
 const admin = require('firebase-admin');
 const { Decimal } = require('decimal.js');
 
@@ -137,7 +137,7 @@ async function _getOrderDetails(order, cartItems) {
 
 // send transaction email
 function _sendTransactionEmail(email, orderDetails) {
-  fetch(`${SERVER_URL}/api/email/transaction`, {
+  fetch(`${SERVER_URL}:${SERVER_PORT}/api/email/transaction`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
