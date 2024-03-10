@@ -1,7 +1,7 @@
 // app
 // NOTE: doesn't work with https in production, why?
 // const https = require('https');
-const { ENV, PORT } = process.env;
+const { ENV, SERVER_PORT } = process.env;
 const http = require('http');
 const path = require('path');
 const express = require('express');
@@ -37,6 +37,6 @@ app.use('/api', cors, express.json(), apiRouter);
 console.log('starting server...');
 console.log('HTTP SERVER')
 
-http.createServer(app).listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+http.createServer(app).listen(SERVER_PORT, () => {
+  console.log(`server started on port ${SERVER_PORT}`);
 })
