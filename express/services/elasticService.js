@@ -1,11 +1,11 @@
 // Service for elastic search
 const firebaseService = require('./firebaseService');
 const { Client } = require('@elastic/elasticsearch');
-const { ELASTIC_URL, ELASTIC_USERNAME, ELASTIC_PASSWORD } = process.env;
+const { ENV, ELASTIC_URL, ELASTIC_USERNAME, ELASTIC_PASSWORD } = process.env;
 
 const client = new Client({
   node: ELASTIC_URL,
-  auth: env === 'production' ? {
+  auth: ENV === 'production' ? {
     username: ELASTIC_USERNAME,
     password: ELASTIC_PASSWORD
   } : null
