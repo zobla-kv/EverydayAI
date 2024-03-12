@@ -12,6 +12,10 @@ router.use('/user', userRouter);
 router.use('/products', productsRouter);
 router.use('/paypal', paypalRouter);
 
+router.get('/test', (req, res) => {
+  res.send('hey');
+})
+
 router.get('/crypt', (req, res) => res.status(200).send({ response: process.env.CRYPT_PRIVATE_KEY }));
 
 // disabled

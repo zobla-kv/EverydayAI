@@ -1,18 +1,17 @@
 // Service for elastic search
 const firebaseService = require('./firebaseService');
 const { Client } = require('@elastic/elasticsearch');
+const { ELASTIC_URL, ELASTIC_USERNAME, ELASTIC_PASSWORD } = process.env;
 
-// TODO: add auth and security for production
 const client = new Client({
-  node: process.env.ELASTIC_URL,
-  // auth: {
-  //     apiKey: process.env.ELASTIC_API_KEY
-  //     username: '',
-  //     password: ''
-  // }
+  node: ELASTIC_URL,
+  auth: env === 'production' ? {
+    username: ELASTIC_USERNAME,
+    password: ELASTIC_PASSWORD
+  } : null
 });
 
-const indexName = 'everyday-ai-products';
+const indexName = 'everyday-ai-images';
 
 // index all/single product from firebase //
 async function ingest(req, res, next) {
