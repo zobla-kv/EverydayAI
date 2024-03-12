@@ -1,15 +1,16 @@
 // app
-// NOTE: doesn't work with https in production, why?
-// const https = require('https');
-const { ENV, SERVER_PORT } = process.env;
-const http = require('http');
+const { ENV } = process.env;
+const https = require('https');
 const path = require('path');
 const express = require('express');
 const app = express();
+const fs = require('fs');
 
 const dotenv = require('dotenv').config({
   path: path.resolve(__dirname, `environments/.env.${ENV ? ENV : 'development' }`)
 });
+
+const { SERVER_PORT, SSL_KEY_FILE, SSL_CERT_FILE } = process.env;
 
 if (dotenv.error) {
   throw new Error('FAILED TO LOAD ENV VARIABLES: ' + dotenv.error.message);
@@ -28,15 +29,10 @@ app.use(express.static(path.join(__dirname + '/public')));
 app.use('/api', cors, express.json(), apiRouter);
 
 // https server
-// const sslServer = https.createServer({
-//   // NOTE: cert folders unused in production
-//   key: process.env.CERT_KEY.replace(/\\n/g, '\n'),
-//   cert: process.env.CERT.replace(/\\n/g, '\n'),
-// }, app);
-
-console.log('starting server...');
-console.log('HTTP SERVER')
-
-http.createServer(app).listen(SERVER_PORT, () => {
+https.createServer({
+  key: fs.readFileSync(SSL_KEY_FILE),
+  cert: fs.readFileSync(SSL_CERT_FILE)
+}, app)
+.listen(SERVER_PORT, () => {
   console.log(`server started on port ${SERVER_PORT}`);
 })

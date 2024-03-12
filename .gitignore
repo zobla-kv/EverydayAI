@@ -50,6 +50,7 @@ Thumbs.db
 
 # cert
 cert
+*/ssl
 
 #express
 express/.env
