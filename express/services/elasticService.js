@@ -3,6 +3,7 @@ const firebaseService = require('./firebaseService');
 const { Client } = require('@elastic/elasticsearch');
 const { ENV, ELASTIC_URL, ELASTIC_USERNAME, ELASTIC_PASSWORD } = process.env;
 
+// TODO: update to use api key. Check postman collection
 const client = new Client({
   node: ELASTIC_URL,
   auth: ENV === 'production' ? {
