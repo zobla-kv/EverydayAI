@@ -1,6 +1,5 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subscription, first } from 'rxjs';
-import environment from '@app/environment';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { first } from 'rxjs';
 
 import {
   IconService,
@@ -9,12 +8,6 @@ import {
   FirebaseService
 } from '@app/services';
 
-// this should match scss time
-const PRELOAD_ANIMATION_DURATION: { [key: string]: number} = {
-  'lg': 6500,
-  'xs': 6500
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,7 +15,7 @@ const PRELOAD_ANIMATION_DURATION: { [key: string]: number} = {
   // svg inside mat-icon does not encapsulated
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
 
   // is first visit
   isFirstVisit = this._utilService.isFirstVisit();
@@ -30,17 +23,11 @@ export class AppComponent implements OnDestroy {
   // access in template
   get window() { return window; }
 
-  // subscibe to screen size change
-  screenSizeChangeSub$: Subscription;
+  // show large screen size loader?
+  showLargeLoader = false;
 
-  // screen size
-  screenSize: string;
-
-  // mobile screen size
-  mobileScreenSize = 'xs';
-
-  // is preload animation done?
-  preloadAnimationDone = false;
+  // preloaderDuration
+  preloaderDuration = 5000;
 
   constructor(
     private _iconService: IconService,
@@ -49,44 +36,62 @@ export class AppComponent implements OnDestroy {
     private _firebaseService: FirebaseService,
   ) {
 
-    console.log('test for new build')
-    console.log('environment: ', environment);
-    console.log('api-url: ', environment.API_HOST);
-
-    this.screenSizeChangeSub$ = this._utilService.screenSizeChange$.subscribe(size => this.screenSize = size);
-
+    this._utilService.screenSizeChange$.pipe(first()).subscribe(size => {
+      console.log('size: ', size);
+      // TODO: delete when ready
+      if (document.cookie.includes('admin')) {
+        this.showLargeLoader = false;
+        this.preloaderDuration = 3500;
+      } else {
+        if (this.isFirstVisit) {
+          if (['xs', 'sm'].includes(size)) {
+            this.showLargeLoader = false;
+            this.preloaderDuration = 999999;
+          } else {
+            this.showLargeLoader = true;
+            this.preloaderDuration = 999999;
+          }
+      }
+      }
+      // TODO: take this durations when ready
+      // if (this.isFirstVisit) {
+      //   if (['xs', 'sm'].includes(size)) {
+      //     this.showLargeLoader = false;
+      //     this.preloaderDuration = 3500;
+      //   } else {
+      //     this.showLargeLoader = true;
+      //     this.preloaderDuration = 5000;
+      //   }
+      // }
+    });
 
     const preloadAnimationStartTime = Date.now();
 
-  // TODO: UNCOMMENT WHEN READY
     // custom user set - only deteremining factor for app load
-    // this._authService.userState$.pipe(first()).subscribe(user => {
-    //   const userLoadedTime = Date.now();
-    //   const timeBetween = Math.abs(preloadAnimationStartTime - userLoadedTime);
-    //   if (this.isFirstVisit) {
-    //     this.handlePreloadAnimation(timeBetween);
-    //     return;
-    //   }
+    this._authService.userState$.pipe(first()).subscribe(user => {
+      const userLoadedTime = Date.now();
+      const timeBetween = Math.abs(preloadAnimationStartTime - userLoadedTime);
+      if (this.isFirstVisit) {
+        this.handlePreloadAnimation(timeBetween);
+        return;
+      }
 
-    //   this._utilService.appLoaded();
+      this._utilService.appLoaded();
 
-    //   if (user) {
-    //     // doesn't matter if it succeeded
-    //     this._firebaseService.updateLastActiveTime(user.id);
-    //   }
-    // });
+      if (user) {
+        // doesn't matter if it succeeded
+        this._firebaseService.updateLastActiveTime(user.id);
+      }
+    });
 
     this._iconService.addCustomIcons();
   }
 
   // handle preload animation done
   handlePreloadAnimation(timeBetween: number) {
-    const screenSize = this.screenSize === 'xs' ? 'xs' : 'lg';
-    const animationDuration = PRELOAD_ANIMATION_DURATION[screenSize];
     setTimeout(() => {
-      this.preloadAnimationDone = true;
       this._utilService.appLoaded();
-    }, animationDuration - timeBetween - 200);
+    }, this.preloaderDuration - timeBetween + 1000);
   }
 
   // handle global attach after route change
@@ -102,10 +107,6 @@ export class AppComponent implements OnDestroy {
     if (component['onDetach']) {
       component.onDetach();
     }
-  }
-
-  ngOnDestroy() {
-    this.screenSizeChangeSub$ && this.screenSizeChangeSub$.unsubscribe();
   }
 
 }

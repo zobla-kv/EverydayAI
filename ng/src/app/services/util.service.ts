@@ -85,7 +85,7 @@ export class UtilService {
   *
   * @return boolean
   */
-  // TODO: UNCOMMENT WHEN READY
+  // TODO: DELETE WHEN READY
   isFirstVisit(): boolean {
     return true;
     let isFirstVisit = true;
