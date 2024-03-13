@@ -29,6 +29,9 @@ export class AppComponent {
   // preloaderDuration
   preloaderDuration = 5000;
 
+  // is preloader animation done?
+  preloaderAnimationDone = false;
+
   constructor(
     private _iconService: IconService,
     private _authService: AuthService,
@@ -90,6 +93,7 @@ export class AppComponent {
   // handle preload animation done
   handlePreloadAnimation(timeBetween: number) {
     setTimeout(() => {
+      this.preloaderAnimationDone = true;
       this._utilService.appLoaded();
     }, this.preloaderDuration - timeBetween + 1000);
   }

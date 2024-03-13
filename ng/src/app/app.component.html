@@ -1,4 +1,4 @@
-<div class="preloader large-screen" *ngIf="showLargeLoader" [style]="{'--preloader-duration': preloaderDuration}">
+<div class="preloader large-screen" *ngIf="showLargeLoader && !preloaderAnimationDone" [style]="{'--preloader-duration': preloaderDuration}">
   <app-star-background></app-star-background>
   <div class="preloader-center">
     <div class="preloader-center-absolute">
@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<div class="preloader small-screen" *ngIf="!showLargeLoader" [style]="{'--preloader-duration': preloaderDuration}">
+<div class="preloader small-screen" *ngIf="!showLargeLoader && !preloaderAnimationDone" [style]="{'--preloader-duration': preloaderDuration}">
   <app-star-background></app-star-background>
   <div class="flex-center h-100">
     <img class="logo">

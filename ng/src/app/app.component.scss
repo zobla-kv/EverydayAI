@@ -148,16 +148,16 @@ $hide-delay: calc((var(--preloader-duration) - 1500) / 1000 * 1s);
         }
         @keyframes zoom {
           100% {
-            -webkit-transform:scale(7);
-            -moz-transform:scale(7); // TODO: UNCOMMENT WHEN READY
-            -ms-transform:scale(7);
-            -o-transform:scale(7);
-            transform:scale(7);
-            // -webkit-transform:scale(3);
-            // -moz-transform:scale(3);
-            // -ms-transform:scale(3);
-            // -o-transform:scale(3);
-            // transform:scale(3);
+            // -webkit-transform:scale(7);
+            // -moz-transform:scale(7); // TODO: UNCOMMENT WHEN READY
+            // -ms-transform:scale(7);
+            // -o-transform:scale(7);
+            // transform:scale(7);
+            -webkit-transform:scale(3);
+            -moz-transform:scale(3);
+            -ms-transform:scale(3);
+            -o-transform:scale(3);
+            transform:scale(3);
           }
         }
 
