@@ -1,0 +1,10 @@
+{
+  "uid": "everydayAI_app",
+  "append": true,
+  "watch": false,
+  "script": "express/app.js",
+  "logFile": "/var/log/forever/main.log",
+  "outFile": "/var/log/forever/out.log",
+  "errFile": "/var/log/forever/error.log",
+  "args": []
+}
