@@ -6,6 +6,5 @@
   "logFile": "../forever-logs/forever-log.log",
   "outFile": "../../../forever-logs/forever-out-log.log",
   "errFile": "../../../forever-logs/forever-error-log.log",
-  "args": [],
-  "comment": "TODO: update values for production"
+  "args": []
 }
