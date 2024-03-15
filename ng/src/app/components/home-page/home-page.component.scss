@@ -741,39 +741,40 @@ h2 {
         opacity: 0;
       }
 
-      @keyframes type {
-        0% { width: 0; }
-        1%, 99% { border-right: 1px solid white; }
-        100%{ border-right: none; width: 302px; }
-      }
+      // TODO: move global styles here
+      // @keyframes type {
+      //   0% { width: 0; }
+      //   1%, 99% { border-right: 1px solid white; }
+      //   100%{ border-right: none; width: 302px; }
+      // }
 
-      @keyframes blink {
-        50% { border-color: transparent; }
-      }
+      // @keyframes blink {
+      //   50% { border-color: transparent; }
+      // }
 
 
-      @keyframes shring-animation {
-        0% {
-          background-position: 0 0;
-          opacity: 0;
-          width: 0;
-        }
-        1% {
-          background-position: 0 0;
-          opacity: 1;
-          border-right: 1px solid white;
-        }
-        50% {
-          background-position: 150px 0;
-          opacity: 1;
-          border-right: 1px solid white;
-        }
-        100% {
-          background-position: 400px 0;
-          opacity: 1;
-          border-right: 1px solid white;
-        }
-      }
+      // @keyframes shring-animation {
+      //   0% {
+      //     background-position: 0 0;
+      //     opacity: 0;
+      //     width: 0;
+      //   }
+      //   1% {
+      //     background-position: 0 0;
+      //     opacity: 1;
+      //     border-right: 1px solid white;
+      //   }
+      //   50% {
+      //     background-position: 150px 0;
+      //     opacity: 1;
+      //     border-right: 1px solid white;
+      //   }
+      //   100% {
+      //     background-position: 400px 0;
+      //     opacity: 1;
+      //     border-right: 1px solid white;
+      //   }
+      // }
 
     }
 
@@ -782,6 +783,7 @@ h2 {
       height: 40px;
       position: relative;
       right: 10px;
+      top: -4px;
 
       &[svgIcon="instagram"] { top: -2px; }
       &[svgIcon="email"] { transform: scale(1.5); }

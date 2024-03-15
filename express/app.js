@@ -28,6 +28,11 @@ app.use(express.static(path.join(__dirname + '/public')));
 // api handlers
 app.use('/api', cors, express.json(), apiRouter);
 
+// if route not found on server use ng routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/public', 'index.html'));
+});
+
 // https server
 https.createServer({
   key: fs.readFileSync(SSL_KEY_FILE),

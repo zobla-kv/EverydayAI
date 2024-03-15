@@ -164,7 +164,15 @@
                 <div class="step-list__item__inner">
                   <div class="content">
                     <div class="body">
-                      <p class="step-item-title">Follow us on <span class="glow-text">instagram</span></p>
+                      <p class="step-item-title">Follow us on
+                        <a
+                          href="https://www.instagram.com/everydayai.io/"
+                          target="_blank"
+                          class="glow-text text-reset text-decoration-none"
+                        >
+                          instagram
+                        </a>
+                      </p>
                       <p>Stay up to date with latest news and events in the world of AI.</p>
                     </div>
                     <div class="icon-wrapper">
@@ -404,7 +412,9 @@
       <span class="d-block">your AI</span>
     </div>
     <div class="flex-center gap-4 gap-sm-3" appear [delay]="3200" [threshold]="0.1" [runOnMobile]="true">
-      <mat-icon svgIcon="instagram" class="white"></mat-icon>
+      <a href="https://www.instagram.com/everydayai.io/" target="_blank">
+        <mat-icon svgIcon="instagram" class="white"></mat-icon>
+      </a>
       <a href="mailto: everydayai.business@gmail.com" class="text-reset text-decoration-none">
         <mat-icon svgIcon="email" class="white"></mat-icon>
       </a>

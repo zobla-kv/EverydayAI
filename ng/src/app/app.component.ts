@@ -24,7 +24,10 @@ export class AppComponent {
   get window() { return window; }
 
   // show large screen size loader?
-  showLargeLoader = false;
+  showLargePreloader = false;
+
+  // show small screen loader?
+  showSmallPreloader = false;
 
   // preloaderDuration
   preloaderDuration = 5000;
@@ -40,29 +43,29 @@ export class AppComponent {
   ) {
 
     this._utilService.screenSizeChange$.pipe(first()).subscribe(size => {
-      console.log('size: ', size);
-      // TODO: delete when ready
+      // console.log('size: ', size);
+      // // TODO: delete when ready
       if (document.cookie.includes('admin')) {
-        this.showLargeLoader = false;
+        this.showLargePreloader = false;
         this.preloaderDuration = 3500;
       } else {
         if (this.isFirstVisit) {
           if (['xs', 'sm'].includes(size)) {
-            this.showLargeLoader = false;
+            this.showSmallPreloader = true;
             this.preloaderDuration = 999999;
           } else {
-            this.showLargeLoader = true;
+            this.showLargePreloader = true;
             this.preloaderDuration = 999999;
           }
-      }
+        }
       }
       // TODO: take this durations when ready
       // if (this.isFirstVisit) {
       //   if (['xs', 'sm'].includes(size)) {
-      //     this.showLargeLoader = false;
+      //     this.showSmallPreloader = true;
       //     this.preloaderDuration = 3500;
       //   } else {
-      //     this.showLargeLoader = true;
+      //     this.showLargePreloader = true;
       //     this.preloaderDuration = 5000;
       //   }
       // }

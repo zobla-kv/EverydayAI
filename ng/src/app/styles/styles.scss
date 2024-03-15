@@ -518,6 +518,42 @@ form {
   top: 6px;
 }
 
+// TODO: move to home page .scss after after resolving issue with prodution build
+// not adding prefix to animations
+/* animations */
+@keyframes type {
+  0% { width: 0; }
+  1%, 99% { border-right: 1px solid white; }
+  100%{ border-right: none; width: 302px; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+@keyframes shring-animation {
+  0% {
+    background-position: 0 0;
+    opacity: 0;
+    width: 0;
+  }
+  1% {
+    background-position: 0 0;
+    opacity: 1;
+    border-right: 1px solid white;
+  }
+  50% {
+    background-position: 150px 0;
+    opacity: 1;
+    border-right: 1px solid white;
+  }
+  100% {
+    background-position: 400px 0;
+    opacity: 1;
+    border-right: 1px solid white;
+  }
+}
+
 /* MEDIA QUERIES */
 // smaller than 976px
 @media only screen and (max-width: 976px) {
