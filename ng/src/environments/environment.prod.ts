@@ -1,6 +1,6 @@
 export default {
   production: true,
-  API_HOST: 'http://localhost:3000',
+  API_HOST: 'https://everyday-ai.io',
   firebaseConfig: {
     apiKey: "AIzaSyCQjI26RpW2K2mkcz_hC5mVL3CurUGxr-o",
     authDomain: "production-44720.firebaseapp.com",
