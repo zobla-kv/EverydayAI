@@ -27,11 +27,16 @@ async function ingest(req, res, next) {
     next();
   }
 
+
+  console.log('elastic products: ', products);
+
+
   // index to elastic
   client.helpers.bulk({
     // only want fields that are being search
     datasource: products.map(product => ({ id: product.id, title: product.title, description: product.description })),
     onDocument (doc) {
+    console.log('elastic onDocument: ', doc);
       return [
         {
           index: {
@@ -46,11 +51,13 @@ async function ingest(req, res, next) {
       ]
     },
     onDrop (doc) {
+      console.log('elastic onDrop: ', doc);
       // on failure
       console.log('dropped: ', doc)
     }
   })
   .then(result => {
+    console.log('elastic then: ', result);
     // if single
     if (req.params.id) {
       result.successful === result.total ? res.result = result : res.error = result;
@@ -63,6 +70,7 @@ async function ingest(req, res, next) {
     next();
   })
   .catch(err => {
+    console.log('elastic err: ', err);
     res.error = err;
     next();
   })
