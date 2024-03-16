@@ -15,7 +15,7 @@
         "build:dev": "cd ng && ng build --output-hashing none && node ../scripts/postBuild.js",
         "build:prod": "cd ng && ng build -c production --output-hashing none && node ../scripts/postBuild.js",
         "express:dev": "set ENV=development&& nodemon express/app.js",
-        "express:prod": "cross-env NODE_EXTRA_CA_CERTS=/etc/letsencrypt/live/104-225-142-163.cloud-xip.com/104-225-142-163.cloud-xip.com.crt node express/app.js",
+        "express:prod": "cross-env NODE_EXTRA_CA_CERTS=/etc/letsencrypt/live/104-225-142-163.cloud-xip.com/104-225-142-163.cloud-xip.com.pem node express/app.js",
         "express:dev:forever": "forever start express/config/forever.development.json",
         "express:prod:forever": "forever start express/config/forever.production.json"
     },
@@ -31,7 +31,7 @@
         "@angular/platform-browser": "^15.0.0",
         "@angular/platform-browser-dynamic": "^15.0.0",
         "@angular/router": "^15.0.0",
-        "@elastic/elasticsearch": "^8.11.0",
+        "@elastic/elasticsearch": "7.12.0",
         "@types/crypto-js": "^4.1.1",
         "@types/imagesloaded": "^4.1.6",
         "body-parser": "^1.20.2",
