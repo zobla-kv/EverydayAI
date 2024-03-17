@@ -38,19 +38,26 @@ async function ingest(req, res, next) {
     // only want fields that are being search
     datasource: products.map(product => ({ id: product.id, title: product.title, description: product.description })),
     onDocument (doc) {
-    console.log('elastic onDocument: ', doc);
+      console.log('elastic onDocument: ', doc);
+      // First, specify the action/metadata line
+      const actionDescriptor = {
+        index: {
+          _index: indexName, // Make sure indexName is defined somewhere in your function
+          _id: doc.id
+        }
+      };
+
+      // Then, specify the document to index, excluding the ID since it's specified in the actionDescriptor
+      const document = {
+        title: doc.title,
+        description: doc.description
+      };
+
+      // The Elasticsearch bulk helper will correctly format these as NDJSON
       return [
-        {
-          index: {
-            // it will create one if id does not exist
-            _index: indexName,
-            // create or update existing doc with this id
-            _id : doc.id
-          },
-        },
-        // update doc before writing - remove id because it is used only to assign doc.id
-        { title: doc.title, description: doc.description }
-      ]
+        actionDescriptor, // This line describes the action to be taken (indexing, in this case)
+        document // This is the document to be indexed
+      ];
     },
     onDrop (doc) {
       console.log('elastic onDrop: ', doc);
