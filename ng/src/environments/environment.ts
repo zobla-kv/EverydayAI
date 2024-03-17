@@ -1,6 +1,6 @@
 export default {
   production: false,
-  API_HOST: 'http://localhost:3000',
+  API_HOST: 'https://localhost:3000',
   firebaseConfig: {
     apiKey: "AIzaSyB1AOUzqiwX_7Hpsr8VuecguhJYXDJXPvI",
     authDomain: "development-c4262.firebaseapp.com",

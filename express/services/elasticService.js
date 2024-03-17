@@ -16,12 +16,14 @@ const indexName = 'everyday-ai-images';
 
 // index all/single product from firebase //
 async function ingest(req, res, next) {
+  console.log('fired')
   // this determines all or single
   const productId = req.params.id;
 
   let products;
   try {
-    products = productId ? [].concat(await firebaseService.getProductById(productId)) : await firebaseService.getAllProducts();
+    // products = productId ? [].concat(await firebaseService.getProductById(productId)) : await firebaseService.getAllProducts();
+    products = [require('../mock/productResponse.json')[0]]
   } catch (err) {
     res.error = err;
     next();
@@ -47,7 +49,7 @@ async function ingest(req, res, next) {
           },
         },
         // update doc before writing - remove id because it is used only to assign doc.id
-        // { title: doc.title, description: doc.description
+        { title: doc.title, description: doc.description }
       ]
     },
     onDrop (doc) {
