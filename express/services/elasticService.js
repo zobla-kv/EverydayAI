@@ -56,7 +56,7 @@ async function ingest(req, res, next) {
       return [
         actionDescriptor,
         document
-      ].map(JSON.stringify).join('\n') + '\n';
+      ];
     },
     onDrop (doc) {
       console.log('elastic onDrop: ', doc);
