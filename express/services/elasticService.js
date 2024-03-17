@@ -14,58 +14,63 @@ const client = new Client({
 
 const indexName = 'everyday-ai-images';
 
-// index all/single product from firebase //
 async function ingest(req, res, next) {
-  console.log('fired')
+  try {
+    const productId = req.params.id;
+
+    const product = await firebaseService.getProductById(productId);
+
+    const document = {
+      index: indexName,
+      id: product.id,
+      body: {
+        title: product.title,
+        description: product.description,
+      }
+    };
+
+    const result = await client.index(document);
+    console.log("created a new index", result);
+    res.result = result;
+    next();
+
+  } catch (error) {
+    console.log('index err: ', error);
+    res.error = error;
+    next();
+  }
+}
+
+// index all/single product from firebase
+// TODO: not being in use but left for ref. if use try to refactor
+async function ingestBulk(req, res, next) {
   // this determines all or single
   const productId = req.params.id;
 
   let products;
+
   try {
-    // products = productId ? [].concat(await firebaseService.getProductById(productId)) : await firebaseService.getAllProducts();
-    products = [require('../mock/productResponse.json')[0]]
+    products = productId ? [].concat(await firebaseService.getProductById(productId)) : await firebaseService.getAllProducts();
   } catch (err) {
     res.error = err;
     next();
   }
 
-
-  console.log('elastic products: ', products);
-
-
-  // index to elastic
-  client.helpers.bulk({
-    // only want fields that are being search
+  client.bulk({
     datasource: products.map(product => ({ id: product.id, title: product.title, description: product.description })),
     onDocument (doc) {
-      console.log('elastic onDocument: ', doc);
-
-      const actionDescriptor = {
-        index: {
-          _index: indexName,
-          _id: doc.id
-        }
-      };
-
-      // this is how it is saved in elastic db
-      const document = {
-        title: doc.title,
-        description: doc.description
-      };
-
-      const valutToSend = [
-        actionDescriptor,
-        document
-      ];
-
-      // .map(JSON.stringify).join('\n') + '\n'
-
-      console.log('valutToSend: ', valutToSend);
-
-      return valutToSend;
+      return [
+        {
+          index: {
+            _index: indexName,
+            _id: doc.id
+          }
+        },
+        // this is how data is saved in elastic db, only fields that are being searched
+        { title: doc.title, description: doc.description }
+      ]
     },
     onDrop (doc) {
-      console.log('elastic onDrop: ', doc);
       // on failure
       console.log('dropped: ', doc)
     }
