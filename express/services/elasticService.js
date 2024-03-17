@@ -53,10 +53,14 @@ async function ingest(req, res, next) {
         description: doc.description
       };
 
-      return [
+      const valutToSend = [
         actionDescriptor,
         document
-      ];
+      ].map(JSON.stringify).join('\n') + '\n';
+
+      console.log('valutToSend: ', valutToSend);
+
+      return valutToSend;
     },
     onDrop (doc) {
       console.log('elastic onDrop: ', doc);
