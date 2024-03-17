@@ -12,7 +12,8 @@ productsRouter.post('/upload-image', multer().single('image'), cloudinaryService
 
 productsRouter.put('/ingest/:id?', elasticService.ingest, (req, res) => {
   if (res.error) {
-    return res.status(500).json(res.error.message);
+    // return res.status(500).json(res.error.message);
+    return res.status(500).json(res.error);
   }
   res.status(200).json(res.result);
 });
