@@ -39,25 +39,24 @@ async function ingest(req, res, next) {
     datasource: products.map(product => ({ id: product.id, title: product.title, description: product.description })),
     onDocument (doc) {
       console.log('elastic onDocument: ', doc);
-      // First, specify the action/metadata line
+
       const actionDescriptor = {
         index: {
-          _index: indexName, // Make sure indexName is defined somewhere in your function
+          _index: indexName,
           _id: doc.id
         }
       };
 
-      // Then, specify the document to index, excluding the ID since it's specified in the actionDescriptor
+      // this is how it is saved in elastic db
       const document = {
         title: doc.title,
         description: doc.description
       };
 
-      // The Elasticsearch bulk helper will correctly format these as NDJSON
       return [
-        actionDescriptor, // This line describes the action to be taken (indexing, in this case)
-        document // This is the document to be indexed
-      ];
+        actionDescriptor,
+        document
+      ].map(JSON.stringify).join('\n') + '\n';
     },
     onDrop (doc) {
       console.log('elastic onDrop: ', doc);
