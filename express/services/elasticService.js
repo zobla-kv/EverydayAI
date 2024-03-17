@@ -47,7 +47,7 @@ async function ingest(req, res, next) {
           },
         },
         // update doc before writing - remove id because it is used only to assign doc.id
-        { title: doc.title, description: doc.description }
+        // { title: doc.title, description: doc.description
       ]
     },
     onDrop (doc) {
