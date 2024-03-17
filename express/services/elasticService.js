@@ -56,7 +56,9 @@ async function ingest(req, res, next) {
       const valutToSend = [
         actionDescriptor,
         document
-      ].map(JSON.stringify).join('\n') + '\n';
+      ];
+
+      // .map(JSON.stringify).join('\n') + '\n'
 
       console.log('valutToSend: ', valutToSend);
 
