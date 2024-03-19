@@ -114,8 +114,9 @@ async function search(req, res, next) {
     }
   })
   .then(result => {
-    console.log('result: ', result);
-    const matchingProductIds = result.hits.hits.map(doc => doc._id);
+    console.log('result: ', result.body.hits.hits);
+    const matchingProductIds = result.body.hits.hits.map(doc => doc._id);
+    console.log('matchingProductIds: ', matchingProductIds);
     res.ids = matchingProductIds;
     next();
   })
