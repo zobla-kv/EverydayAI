@@ -29,13 +29,16 @@ export class IconService {
   // name property needs to match file name
   gradientIcons: { name: string }[] = [
     { name: 'everyday-life' },
-    { name: 'collaboration' },
+    { name: 'mona-lisa' },
+    { name: 'collaboration' }, // TODO: unused but really cool
     { name: 'expectance' },
-    { name: 'lightbulb' },
-    { name: 'confetti' },
+    { name: 'lightbulb' }, // TODO: unused
+    { name: 'confetti' }, // TODO: unused, usage place is commented out
     { name: 'payment' },
     { name: 'image-resolution' },
-    { name: 'file-type-img' }
+    { name: 'file-type-img' },
+    { name: 'photos' },
+    { name: 'discussion' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

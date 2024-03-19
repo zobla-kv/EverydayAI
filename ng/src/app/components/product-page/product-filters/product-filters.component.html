@@ -6,8 +6,20 @@
       <ng-container *ngIf="filter.value.value !== filter.value.default">
         <span *ngIf="filter.key !== 'color' && filter.key !== 'sort'">{{ filter.value.value | titlecase }}</span>
         <div *ngIf="filter.key === 'color'" class="filter-color">
-          <div class="color-square" [ngStyle]="{'background' : colorFilterMap.get(filter.value.value)}">
-            <span [ngStyle]="{'color': colorFilterMap.get(filter.value.value), 'left': '30px'}">{{ filter.value.value | titlecase }}</span>
+          <div
+            class="color-square"
+            [ngStyle]="{
+              'background': colorFilterMap.get(filter.value.value),
+              'border': filter.value.value === 'black' ? '1px solid white' : 'none'
+            }"
+          >
+            <span [ngStyle]="{
+                'color': filter.value.value === 'black' ? 'white' : colorFilterMap.get(filter.value.value),
+                'left': '30px'
+              }"
+            >
+              {{ filter.value.value | titlecase }}
+          </span>
           </div>
         </div>
         <div *ngIf="filter.key === 'sort'" class="filter-sort">
