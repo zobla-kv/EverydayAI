@@ -68,13 +68,9 @@ async function get(req, res, next) {
   // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
   if (ENV === 'production') {
-    console.log('x-forwarded-proto: ',  req.headers['x-forwarded-proto']);
-    console.log('req.protocol: ',  req.protocol);
-    const proto = req.headers['x-forwarded-proto'] || req.protocol;
-    const fullUrl = `${proto}://${req.headers.host}${req.originalUrl}`;
-    console.log('fullUrl: ', fullUrl);
-    console.log('req.headers.host: ', req.headers.host);
-    if (req.headers.host !== NG_URL) {
+    const requestHost = `${req.protocol}://${req.headers.host}`;
+    console.log('requestHost: ', requestHost)
+    if (requestHost !== NG_URL) {
       return res.sendStatus(403);
     }
   }
