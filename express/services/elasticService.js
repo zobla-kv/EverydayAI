@@ -104,10 +104,12 @@ async function search(req, res, next) {
 
   await client.search({
     index: indexName,
-    query: {
-      query_string: {
-        query: `*${searchText}*`,
-        fields: ['title', 'description']
+    body: {
+      query: {
+        query_string: {
+          query: `*${searchText}*`,
+          fields: ['title', 'description']
+        }
       }
     }
   })
