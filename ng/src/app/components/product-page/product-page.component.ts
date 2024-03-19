@@ -135,6 +135,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   // for reuse strategy to set query params because ngOnInit not called
   onAttach() {
+    const searchFromQueryParam = this._route.snapshot.queryParamMap.get('search');
+    if (searchFromQueryParam) {
+      this._firebaseService.search$.next(searchFromQueryParam);
+    }
     this.addQueryParamsToUrl();
     this.setPageTitle(this.title);
     this.ProductListComponent.fixMasonryLayout();

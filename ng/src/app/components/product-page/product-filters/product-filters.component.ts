@@ -132,15 +132,14 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 		// mouseenter target rectangle
 		const targetElement = el.getBoundingClientRect();
 
-		// remove active class from inactive items in menu
-		this.filterItems.forEach(el => el.classList.remove('active'));
-		// add active to current one
-		el.classList.add('active');
+    // make whole dropdown react to mouseenter
+		this._setShowStyles(this.filterDropdown);
 
 		// hide inactive dropdown items
 		this.filterDropdownItems.forEach(el => this._setHideStyles(el));
+
     // show current active one
-    this._setShowStyles(activeFilterDropdown)
+    this._setShowStyles(activeFilterDropdown);
 
     let dropdownPositionLeft: any = el.offsetLeft - (( dropdownItemRectangle!.width / 2 ) - targetElement.width / 2 );
 
@@ -166,10 +165,10 @@ export class ProductFiltersComponent implements OnInit, AfterViewInit, OnDestroy
 	}
 
 	closeDropdown() {
-		// remove active class from all filter items
-		this.filterItems.forEach(el => el.classList.remove('active'));
-		// hide all dropdowns
-		this.filterDropdownItems.forEach (el => this._setHideStyles(el))
+    // make whole dropdown not react to mouseenter
+    this._setHideStyles(this.filterDropdown);
+		// hide all dropdown items
+		this.filterDropdownItems.forEach(el => this._setHideStyles(el))
 		// hide arrow
 		this.dropdownArrow.style.opacity = '0';
 		// unset selected menu

@@ -1,3 +1,4 @@
+import { Injector } from "@angular/core";
 import { ActivatedRouteSnapshot, DetachedRouteHandle, Params, RouteReuseStrategy } from "@angular/router"
 
 interface RouteData {
@@ -8,6 +9,8 @@ interface RouteData {
 }
 
 export class ReuseStrategy implements RouteReuseStrategy {
+
+  static injector: Injector;
 
   private _storedRoutes = new Map<string, RouteData>();
 

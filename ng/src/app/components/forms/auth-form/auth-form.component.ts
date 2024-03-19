@@ -69,7 +69,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
           Validators.required,
           Validators.minLength(6),
           Validators.maxLength(16),
-          Validators.pattern('^[a-zA-Z_]+( [a-zA-Z_]+)*$')
+          Validators.pattern('^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$')
         ]),
         'email': new FormControl(null, [Validators.required, Validators.email]),
         'password': new FormControl(null, [

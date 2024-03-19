@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -141,4 +141,8 @@ import { FormatPipe } from './pipes/format.pipe';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private _injector: Injector) {
+    ReuseStrategy.injector = this._injector;
+  }
+}
