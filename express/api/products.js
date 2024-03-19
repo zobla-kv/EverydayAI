@@ -20,7 +20,7 @@ productsRouter.put('/ingest/:id?', elasticService.ingest, (req, res) => {
 
 productsRouter.get('/search/:text', elasticService.search, (req, res) => {
   if (res.error) {
-    return res.status(500).json(res.error.message);
+    return res.status(500).json(res.error);
   }
   res.status(200).json(res.ids);
 });

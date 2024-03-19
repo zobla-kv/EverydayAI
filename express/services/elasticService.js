@@ -100,6 +100,8 @@ async function ingestBulk(req, res, next) {
 async function search(req, res, next) {
   const searchText = req.params.text.toLowerCase().trim();
 
+  console.log('searching for: ', searchText)
+
   await client.search({
     index: indexName,
     query: {
@@ -111,10 +113,12 @@ async function search(req, res, next) {
   })
   .then(result => {
     const matchingProductIds = result.hits.hits.map(doc => doc._id);
+    console.log('result: ', result);
     res.ids = matchingProductIds;
     next();
   })
   .catch(err => {
+    console.log('err: ', err);
     res.error = err;
     next();
   })
