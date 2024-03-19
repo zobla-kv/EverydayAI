@@ -128,7 +128,7 @@ async function _getOrderDetails(order, cartItems) {
     id: product.id,
     title: product.title,
     img: product.watermarkImgPath,
-    price: product.price
+    price: calculatePrice(product)
   }));
   const totalAmount = +order.purchase_units[0].payments.captures[0].amount.value;
 
