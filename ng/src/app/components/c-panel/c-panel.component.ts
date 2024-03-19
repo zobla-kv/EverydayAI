@@ -423,8 +423,8 @@ export class CPanelComponent implements OnInit, AfterViewInit {
 
   // get image orientation based on resolution
   getImageOrientation(resolution: string): any {
-    const width = resolution.split('x')[0];
-    const height = resolution.split('x')[1];
+    const width = Number(resolution.split('x')[0]);
+    const height = Number(resolution.split('x')[1]);
     if (width > height) {
       return 'landscape';
     }
