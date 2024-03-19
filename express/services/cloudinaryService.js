@@ -65,11 +65,10 @@ async function upload(req, res, next) {
 async function get(req, res, next) {
 
   // block different host other than FE from accessing endpoint
-  // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
   if (ENV === 'production') {
+    // NOTE: req.protocol not reliable if reverse-proxy updates value
     const requestHost = `${req.protocol}://${req.headers.host}`;
-    console.log('requestHost: ', requestHost)
     if (requestHost !== NG_URL) {
       return res.sendStatus(403);
     }
@@ -83,7 +82,6 @@ async function get(req, res, next) {
 
   // if price is above 0 check wheather user owns product
   if (Number(product.price) > 0 && product.discount < 100) {
-    console.log('entered if')
     const userId = req.query.uid;
 
     if (!userId) {
@@ -96,8 +94,6 @@ async function get(req, res, next) {
       return res.sendStatus(403);
     }
   }
-
-  console.log('download started')
 
 
   const url = product.originalImgPath;
