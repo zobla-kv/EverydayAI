@@ -68,6 +68,7 @@ async function get(req, res, next) {
   // PRODUCTION: check what is host in production
   // TODO: can be made top level middleware for all
   if (ENV === 'production') {
+    console.log('req.headers.host: ', req.headers.host);
     if (req.headers.host !== NG_URL) {
       return res.sendStatus(403);
     }
@@ -81,6 +82,7 @@ async function get(req, res, next) {
 
   // if price is above 0 check wheather user owns product
   if (Number(product.price) > 0 && product.discount < 100) {
+    console.log('entered if')
     const userId = req.query.uid;
 
     if (!userId) {
@@ -93,6 +95,9 @@ async function get(req, res, next) {
       return res.sendStatus(403);
     }
   }
+
+  console.log('download started')
+
 
   const url = product.originalImgPath;
   const fileName = product.title + '.' + product.metadata.extension;

@@ -30,7 +30,6 @@ async function ingest(req, res, next) {
     };
 
     const result = await client.index(document);
-    console.log("created a new index", result);
     res.result = result;
     next();
 
@@ -76,7 +75,6 @@ async function ingestBulk(req, res, next) {
     }
   })
   .then(result => {
-    console.log('elastic then: ', result);
     // if single
     if (req.params.id) {
       result.successful === result.total ? res.result = result : res.error = result;
@@ -89,7 +87,6 @@ async function ingestBulk(req, res, next) {
     next();
   })
   .catch(err => {
-    console.log('elastic err: ', err);
     res.error = err;
     next();
   })
@@ -99,8 +96,6 @@ async function ingestBulk(req, res, next) {
 // search for products by title or description
 async function search(req, res, next) {
   const searchText = req.params.text.toLowerCase().trim();
-
-  console.log('searching for: ', searchText)
 
   await client.search({
     index: indexName,
@@ -114,14 +109,11 @@ async function search(req, res, next) {
     }
   })
   .then(result => {
-    console.log('result: ', result.body.hits.hits);
     const matchingProductIds = result.body.hits.hits.map(doc => doc._id);
-    console.log('matchingProductIds: ', matchingProductIds);
     res.ids = matchingProductIds;
     next();
   })
   .catch(err => {
-    console.log('err: ', err);
     res.error = err;
     next();
   })
