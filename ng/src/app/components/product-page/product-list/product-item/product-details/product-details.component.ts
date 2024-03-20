@@ -88,7 +88,6 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
       )
       .subscribe({
         next: (products: ProductResponse[]) => {
-          console.log('good response: ', products);
           // invalid id check
           if (products.length === 0) {
             // TODO: error handling (route protection) can be done using resolver
@@ -103,7 +102,6 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
           setTimeout(() => this._modalService.open(this.modalName), 100);
         },
         error: (e) => {
-          console.log('error response: ', e);
           this._toast.showErrorMessage(ToastMessages.PRODUCT_FAILED_TO_LOAD_DETAILS);
         }
       })

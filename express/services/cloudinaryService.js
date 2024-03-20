@@ -49,7 +49,7 @@ async function upload(req, res, next) {
       }
       // NOTE: cloudinary response contains image metadata (width, height, type, size)
       // res.cloudinary = response; // unused - this because calculated on FE
-      console.log('response: ', response) // response.eager contains img with fallback
+      // console.log('response: ', response) // response.eager contains img with fallback
 
       res.imgPaths = {
         watermarkImgPath: response.eager[0].secure_url,

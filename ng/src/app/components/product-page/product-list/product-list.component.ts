@@ -162,8 +162,6 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
   // handle products fetch
   handleProductsResponse(products: ProductResponse[]) {
-    console.log('response: ', products);
-
     if (products.length === 0) {
       this.showSpinner = false;
       this.showFilterNoResults = true;

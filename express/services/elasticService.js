@@ -34,7 +34,6 @@ async function ingest(req, res, next) {
     next();
 
   } catch (error) {
-    console.log('index err: ', error);
     res.error = error;
     next();
   }

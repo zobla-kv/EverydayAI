@@ -43,7 +43,6 @@ export class AppComponent {
   ) {
 
     this._utilService.screenSizeChange$.pipe(first()).subscribe(size => {
-      // console.log('size: ', size);
       // // TODO: delete when ready
       if (document.cookie.includes('admin')) {
         this.showLargePreloader = false;

@@ -74,7 +74,6 @@ export class UtilService {
   * @returns void
   */
   appLoaded(): void {
-    console.log('app loaded');
     document.cookie = 'new_session';
     this.appLoaded$.next();
   }
