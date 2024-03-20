@@ -8,7 +8,7 @@ import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
 
-import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map, concatMap } from 'rxjs';
+import { firstValueFrom, Observable, of, delay, from, first, mergeMap, Subject, map, concatMap, catchError } from 'rxjs';
 
 
 import {
@@ -436,18 +436,25 @@ export class FirebaseService {
 
   // add product like to user and product
   addProductLike(productId: string, user: CustomUser | null): Observable<void> {
+    console.log('fired product: ', productId);
+    console.log('fired user: ', user);
     return this._db.collection('Products', query => query.where('id', '==', productId)).get()
     .pipe(
       map(res => {
+        console.log('response: ', res);
         const productDoc = res.docs[0];
         let likes = (res.docs[0].data() as ProductResponse).likes;
         productDoc.ref.update({ likes: ++likes });
       }),
       mergeMap(() => {
         if (user) {
+          console.log('updating user')
           return from(this._db.collection('Users').doc(user.id).ref.update({ 'productLikes': arrayUnion(productId) }));
         }
         return of();
+      }),
+      catchError(async (err) => {
+        console.log('err: ', err)
       })
     )
   }
