@@ -176,7 +176,8 @@ export class ShoppingCartComponent implements OnDestroy {
         .catch(err => this._toast.showErrorMessage(ToastMessages.PAYMENT_FAILED_TO_PROCESS_PAYMENT));
       },
       onCancel: () => this._toast.showErrorMessage(ToastMessages.PAYMENT_PAYMENT_TERMINATED),
-      onError: (err: any) => this._toast.showErrorMessage(ToastMessages.PAYMENT_FAILED_TO_INITIALIZE_PAYMENT)
+      // onError: (err: any) => this._toast.showErrorMessage(ToastMessages.PAYMENT_FAILED_TO_INITIALIZE_PAYMENT)
+      onError: (err: any) => this._toast.showErrorMessage(err)
     })
     .render('#paypalButtonsContainer');
   }

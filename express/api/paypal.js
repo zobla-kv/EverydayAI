@@ -6,11 +6,16 @@ paypalRouter.post('/create-order', [validators.userId, validators.cartItems], as
   const userId = req.body.userId;
   const cartItems = req.body.cartItems;
 
+  console.log('create order endpoint')
+  console.log('userId: ', userId)
+  console.log('cartItems: ', cartItems)
+
   try {
     const orderId = await paymentService.createOrder(userId, cartItems);
     res.status(201).json({ orderId });
   }
   catch (err) {
+    console.log('endpoint err: ', err);
     res.status(500).json({ message: err.message });
   }
 });

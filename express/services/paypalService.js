@@ -48,7 +48,11 @@ function isTokenExpired() {
 async function createOrder(userId, cartItems) {
   const token = await getAccessToken();
 
+  console.log('token: ', token)
+
   const products = await firebaseService.getProductsById(cartItems);
+
+  console.log('products: ', products);
 
   return fetch(`${PAYPAL_REST_API_HOST}/v2/checkout/orders`, {
     method: 'POST',
@@ -98,6 +102,7 @@ async function createOrder(userId, cartItems) {
   })
   .then(response => response.json())
   .then(order => {
+    console.log('order response: ', order);
     if (order.name === 'INVALID_REQUEST' | order.name === 'UNPROCESSABLE_ENTITY') {
       throw new Error('Unable to create order due to: ' + order.message);
     }
