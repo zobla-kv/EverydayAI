@@ -85,7 +85,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     this.product.likes++;
     this.isLiked = true;
     this.likesTooltip.message = this._formatPipe.transform(this.product.likes);
-    this._firebaseService.addProductLike(this.product.id, this.user);
+    this._firebaseService.addProductLike(this.product.id, this.user).subscribe();
   }
 
   getLikeIcon() {
