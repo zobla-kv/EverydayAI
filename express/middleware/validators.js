@@ -31,10 +31,7 @@ const userId = (req, res, next) => {
   const userId = req.body.userId;
   const validCondition = typeof userId === 'string' && /^[a-zA-Z0-9]+$/.test(userId);
 
-  console.log('validator fired, userId: ', userId);
-
   if (!validCondition) {
-  console.log('validator invalid')
     res.sendStatus(400);
     return;
   }
@@ -46,10 +43,7 @@ const cartItems = (req, res, next) => {
   const cartItems = req.body.cartItems;
   const validCondition = Array.isArray(cartItems) && cartItems.every(item => typeof item === 'string');
 
-  console.log('validator fired, cartItems: ', cartItems);
-
   if (!validCondition) {
-  console.log('validator invalid')
     res.sendStatus(400);
     return;
   }
