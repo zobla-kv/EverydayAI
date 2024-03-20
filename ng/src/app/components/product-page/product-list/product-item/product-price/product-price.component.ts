@@ -1,10 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,  OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import {
+  CustomUser,
   ProductMapper
 } from '@app/models';
 
 import {
+  AuthService,
   UtilService
 } from '@app/services';
 
@@ -16,12 +19,27 @@ import {
   templateUrl: './product-price.component.html',
   styleUrls: ['./product-price.component.scss']
 })
-export class ProductPriceComponent {
+export class ProductPriceComponent implements OnInit, OnDestroy {
 
   @Input() product: ProductMapper;
 
+  // user sub
+  user$: Subscription
+
+  // user
+  user: CustomUser | null;
+
   constructor(
-    public utilService: UtilService
+    public utilService: UtilService,
+    private _authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.user$ = this._authService.userState$.subscribe(user => this.user = user);
+  }
+
+  ngOnDestroy() {
+    this.user$.unsubscribe();
+  }
 
 }

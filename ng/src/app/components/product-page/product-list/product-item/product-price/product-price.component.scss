@@ -1,3 +1,21 @@
 @import '../../../../../styles/variables.scss';
 
-.product-old-price { right: 0; }
+.product-price-wrapper {
+  font-family: $product-metadata-font;
+  font-weight: bold;
+
+  mat-icon {
+    transform: scale(3);
+    ::ng-deep svg path { transform: translate(75px, 60px); }
+  }
+
+  span { margin-left: 0.75rem; }
+}
+
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  .product-price-wrapper {
+    mat-icon { transform: scale(2.5); }
+    span { margin-left: 0.5rem; }
+  }
+}
