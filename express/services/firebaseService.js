@@ -43,7 +43,7 @@ async function getPriceAsync(productIds) {
     price = price.plus(calculatePrice(product))
   });
 
-  return price.toString();
+  return price.toDecimalPlaces(2, Decimal.ROUND_UP).toString();
 }
 
 // without fetch
@@ -52,16 +52,16 @@ function getPriceSync(products) {
   let price = new Decimal(0);
   products.forEach(product => (price = price.plus(calculatePrice(product))));
 
-  return price.toString();
+  return price.toDecimalPlaces(2, Decimal.ROUND_UP).toString();
 }
 
 // calculate price with included discount - intenal use only (private)
 // product - ProductResponse
 function calculatePrice(product) {
   if (product.discount > 0) {
-    return new Decimal(product.price * (100 - product.discount) / 100);
+    return new Decimal(product.price * (100 - product.discount) / 100).toDecimalPlaces(2, Decimal.ROUND_UP);
   }
-  return new Decimal(product.price);
+  return new Decimal(product.price).toDecimalPlaces(2, Decimal.ROUND_UP);
 }
 
 // get user by id
