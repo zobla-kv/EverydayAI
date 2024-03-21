@@ -66,7 +66,8 @@ async function getEmailData(email, type, orderDetails) {
             transaction_id: orderDetails.id,
             items: orderDetails.items,
             totalAmount: orderDetails.totalAmount
-          }
+          },
+          contact_email: HOST_EMAIL
         };
       default:
         throw new Error('Failed to get email data. There is no data key: ' + type);
