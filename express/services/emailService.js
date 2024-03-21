@@ -1,9 +1,8 @@
-const { CRYPT_PRIVATE_KEY, NG_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
+const { NG_URL, NODE_MAILER_USERNAME, NODE_MAILER_PASSWORD } = process.env;
 const path = require('path');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 const firebaseService = require('../services/firebaseService');
-const CryptoJS = require('crypto-js');
 
 // host email
 const HOST_EMAIL = 'everydayai.business@gmail.com'
@@ -103,6 +102,7 @@ async function getEmailData(email, type, orderDetails) {
 
 // TODO: move to firebase service
 // get action url
+// NOTE: don't add much params because email might end up in spam
 async function getActionUrl(email, type) {
   let verificationLink = await firebaseService.generateEmailLink(email, type);
 
@@ -112,18 +112,6 @@ async function getActionUrl(email, type) {
   modifiedUrl.searchParams.delete('apiKey');
   modifiedUrl.searchParams.delete('continueUrl');
   modifiedUrl.searchParams.delete('lang');
-
-  const encryptedEmail = CryptoJS.AES.encrypt(email, CRYPT_PRIVATE_KEY);
-
-  // modifiedUrl.searchParams.append('type', encryptedEmail.toString());
-
-  console.log('modifiedUrl: ', modifiedUrl.href);
-
-  // prevent email from getting in spam
-  // const shortenedUrlResponse = await fetch('https://ulvis.net/api.php?url=' + modifiedUrl.href);
-  // const shortenedUrl = await shortenedUrlResponse.text();
-
-  // console.log('shortenedUrl: ', shortenedUrl);
 
   return modifiedUrl;
 }

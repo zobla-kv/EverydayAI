@@ -61,19 +61,6 @@ export class HttpService {
     })
   }
 
-  // gets private key from BE
-  getPrivateKey(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this._http
-      .get<any>(`${environment.API_HOST}/api/crypt`, { headers: { 'Content-type': 'application/json' } })
-      .pipe(
-        map(data => data.response),
-        catchError(async () => reject(''))
-      )
-      .subscribe(key => resolve(key));
-    })
-  }
-
   // create order
   createOrder(userId: string, cartItems: string[]): Promise<string> {
     return new Promise((resolve, reject) => {

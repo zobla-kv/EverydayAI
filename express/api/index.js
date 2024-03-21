@@ -12,8 +12,6 @@ router.use('/user', userRouter);
 router.use('/products', productsRouter);
 router.use('/paypal', paypalRouter);
 
-router.get('/crypt', (req, res) => res.status(200).send({ response: process.env.CRYPT_PRIVATE_KEY }));
-
 // disabled
 // router.get('/news', async (req, res) => {
 //   const url =`https://newsapi.org/v2/everything?q=+ai&pageSize=2&sortBy=publishedAt&language=en&apiKey=${process.env.NEWS_API_KEY}`;

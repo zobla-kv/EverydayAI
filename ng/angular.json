@@ -40,9 +40,7 @@
               "src/app/styles/styles.scss"
             ],
             "scripts": [],
-            "allowedCommonJsDependencies": [
-              "crypto-js"
-            ]
+            "allowedCommonJsDependencies": []
           },
           "configurations": {
             "production": {

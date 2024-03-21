@@ -3,17 +3,13 @@ import { Router } from '@angular/router';
 
 import { getAuth, applyActionCode, verifyPasswordResetCode } from '@angular/fire/auth';
 
-import * as CryptoJS from 'crypto-js';
-
 import {
   HttpService,
   UtilService
 } from '@app/services';
 
 import {
-  EmailType,
-  FirebaseError,
-  Labels
+  FirebaseError
 } from '@app/models';
 
 /**
@@ -36,15 +32,6 @@ export class AuthVerify implements OnInit {
   // firebase validation code
   actionCode: string;
 
-  // enctypted email
-  encryptedEmail: string;
-
-  // user email
-  email: string;
-
-  // show resend button
-  showResendButton = false;
-
   // show button spinner
   showSpinner = false;
 
@@ -55,7 +42,6 @@ export class AuthVerify implements OnInit {
   ) {}
 
   async ngOnInit() {
-
     if (!this.validateUrlParams()) {
       // block route if params are missing
       this._router.navigate(['']);
@@ -65,33 +51,26 @@ export class AuthVerify implements OnInit {
     if (this.mode !== 'info') {
       this.message = 'Verifying...';
       this.showSpinner = true;
-      // const isDecrypted = await this.decryptEmail();
-      // if (!isDecrypted) {
-      //   this.message = Labels.SOMETHING_WENT_WRONG;
-      //   this.showSpinner = false;
-      //   return;
-      // }
     }
 
     await this.handleMode(this.mode);
     this.showSpinner = false;
   }
 
-  // validate existence of 'mode', 'code' and 'type'
+  // validate existence of 'mode' and 'code'
   validateUrlParams(): boolean {
     const mode = this._utilService.getParamFromUrl('mode');
     if (mode === 'info') {
       this.mode = mode;
       return true;
     }
-    // const encryptedEmail = this._utilService.getParamFromUrl('type');
+
     const code = this._utilService.getParamFromUrl('code');
-    // if (!mode || !encryptedEmail || !code) {
     if (!mode || !code) {
       return false;
     }
+
     this.mode = mode;
-    // this.encryptedEmail = encryptedEmail;
     this.actionCode = code;
     return true;
   }
@@ -121,7 +100,6 @@ export class AuthVerify implements OnInit {
     })
     .catch(err => {
       this.message = FirebaseError.getMessage(err.code);
-      this.showResendButton = true;
     });
   }
 
@@ -135,54 +113,7 @@ export class AuthVerify implements OnInit {
     .catch(err => {
       // auth/invalid-code
       this.message = FirebaseError.getMessage(err.code);
-      this.showResendButton = true;
     });
-  }
-
-  // sends new code to email
-  async handleResendCode() {
-    this.showSpinner = true;
-    this.message = 'Sending email...';
-
-    const isSent = await this._httpService.sendEmail({
-      email: this.email,
-      email_type: this.mode === 'verifyEmail' ? EmailType.ACTIVATION : EmailType.RESET_PASSWORD
-    });
-
-    if (!isSent) {
-      this.handleResendCodeFailed();
-      return;
-    };
-
-    this.handleResendCodeSucceded();
-  }
-
-  // actions after resend code was send succesfully to email
-  handleResendCodeSucceded() {
-    this.showResendButton = false;
-    this.showSpinner = false;
-    this.message = 'Email sent succesfully.'
-  }
-  // actions after resend code failed to be sent to email
-  handleResendCodeFailed() {
-    this.showSpinner = false;
-    this.message = 'Failed to send email. Please try again.'
-  }
-
-  // decrypt email and set as property
-  async decryptEmail(): Promise<boolean> {
-    return this._httpService.getPrivateKey()
-    .then(key => {
-      const bytes = CryptoJS.AES.decrypt(this.encryptedEmail, key);
-      const decryptedEmail = bytes.toString(CryptoJS.enc.Utf8);
-      if (!decryptedEmail) {
-        // if altered
-        throw new Error('');
-      }
-      this.email = decryptedEmail;
-      return true;
-    })
-    .catch(err => false);
   }
 
 }
