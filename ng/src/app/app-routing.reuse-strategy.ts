@@ -21,7 +21,8 @@ export class ReuseStrategy implements RouteReuseStrategy {
   // function determininy if component shouldAttach
   private _routeHandlerFnMap = new Map<string, (route: ActivatedRouteSnapshot) => boolean>([
     // if there is some specific check to decice wheather to reuse or not
-    ['images',        this.shouldProductPageAttach],
+    // ['images',        this.shouldProductPageAttach],
+    ['images',        this.attachImmediately],
     ['control-panel', this.attachImmediately],
     ['cart',          this.attachImmediately]
   ]);
@@ -75,24 +76,25 @@ export class ReuseStrategy implements RouteReuseStrategy {
     const paymentService = ReuseStrategy.injector.get(PaymentService);
     const newPaymentCount = paymentService.paymentOccuredCount;
 
-    console.log('previousPaymentCount: ', this.previousPaymentCount);
-    console.log('newPaymentCount: ', newPaymentCount);
-
-    // rerender if payment occured
-    if (this.previousPaymentCount < newPaymentCount) {
-      console.log('rerendering')
-      this.previousPaymentCount = newPaymentCount;
-      return false;
-    }
-
-    // onload
-    if (!this._storedRoutes.get(route.routeConfig?.path!)) {
-      console.log('initial render')
-      return false;
-    }
-
-    console.log('not rerendering')
     return true;
+    // console.log('previousPaymentCount: ', this.previousPaymentCount);
+    // console.log('newPaymentCount: ', newPaymentCount);
+
+    // // rerender if payment occured
+    // if (this.previousPaymentCount < newPaymentCount) {
+    //   console.log('rerendering')
+    //   this.previousPaymentCount = newPaymentCount;
+    //   return false;
+    // }
+
+    // // onload
+    // if (!this._storedRoutes.get(route.routeConfig?.path!)) {
+    //   console.log('initial render')
+    //   return false;
+    // }
+
+    // console.log('not rerendering')
+    // return true;
   }
 
 }

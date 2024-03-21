@@ -34,7 +34,7 @@ export class PaymentService {
   // handle payment approve
   async handlePaymentApprove(userId: string, orderId: string, cartItems: string[]): Promise<void> {
     return this._http.captureOrder(userId, orderId, cartItems)
-    .then(() => this.updatePaymentCount())
+    // .then(() => this.updatePaymentCount())
   }
 
 
