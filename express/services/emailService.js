@@ -49,19 +49,19 @@ async function getEmailData(email, type, orderDetails) {
     switch (type) {
       case ACTIVATION:
         return {
-          subject: 'Activation ✨',
+          subject: 'Activation',
           receivers: [email],
           action_url: await getActionUrl(email, ACTIVATION)
         };
       case RESET_PASSWORD:
         return {
-          subject: 'Reset password ✨',
+          subject: 'Reset password',
           receivers: [email],
           action_url: await getActionUrl(email, RESET_PASSWORD),
         };
       case TRANSACTION:
         return {
-          subject: 'Receipt ✨',
+          subject: 'Receipt',
           receivers: [email, `${HOST_EMAIL}`],
           order: {
             transaction_id: orderDetails.id,
