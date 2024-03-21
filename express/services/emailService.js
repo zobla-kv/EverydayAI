@@ -37,7 +37,7 @@ async function sendEmail(email, type, orderDetails = null) {
     to: emailData.receivers,
     subject: emailData.subject,
     html: emailHTML,
-    // attachments: emailData.attachments
+    attachments: emailData.attachments
   });
 
   return response;
