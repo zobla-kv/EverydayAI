@@ -49,7 +49,6 @@ html(lang="en")
 
           .text-center
             p Total Amount: $#{order.totalAmount}
-            p(style="margin-top: 12px") If you have any questions about your order, please contact our support team at support@example.com.
-            //- TODO: update email above (inject)
+            p(style="margin-top: 12px") If you have any questions about your order, please contact us at #{contact_email}.
 
       include partials/footer.pug
