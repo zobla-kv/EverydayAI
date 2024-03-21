@@ -51,10 +51,10 @@ export class AppComponent {
         if (this.isFirstVisit) {
           if (['xs', 'sm'].includes(size)) {
             this.showSmallPreloader = true;
-            this.preloaderDuration = 999999;
+            this.preloaderDuration = 2000;
           } else {
             this.showLargePreloader = true;
-            this.preloaderDuration = 999999;
+            this.preloaderDuration = 2000;
           }
         }
       }
