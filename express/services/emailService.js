@@ -111,20 +111,21 @@ async function getActionUrl(email, type) {
   const modifiedUrl = new URL(verificationLink);
   modifiedUrl.searchParams.delete('apiKey');
   modifiedUrl.searchParams.delete('continueUrl');
+  modifiedUrl.searchParams.delete('lang');
 
   const encryptedEmail = CryptoJS.AES.encrypt(email, CRYPT_PRIVATE_KEY);
 
-  modifiedUrl.searchParams.append('type', encryptedEmail.toString());
+  // modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
   console.log('modifiedUrl: ', modifiedUrl.href);
 
   // prevent email from getting in spam
-  const shortenedUrlResponse = await fetch('https://ulvis.net/api.php?url=' + modifiedUrl.href);
-  const shortenedUrl = await shortenedUrlResponse.text();
+  // const shortenedUrlResponse = await fetch('https://ulvis.net/api.php?url=' + modifiedUrl.href);
+  // const shortenedUrl = await shortenedUrlResponse.text();
 
-  console.log('shortenedUrl: ', shortenedUrl);
+  // console.log('shortenedUrl: ', shortenedUrl);
 
-  return shortenedUrl;
+  return modifiedUrl;
 }
 
 
