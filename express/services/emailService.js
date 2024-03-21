@@ -37,8 +37,7 @@ async function sendEmail(email, type, orderDetails = null) {
     to: emailData.receivers,
     subject: emailData.subject,
     html: emailHTML,
-    text: emailHTML,
-    attachments: emailData.attachments
+    // attachments: emailData.attachments
   });
 
   return response;
@@ -97,7 +96,6 @@ async function getEmailData(email, type, orderDetails) {
       path: path.join(__dirname, '..', '/email/img/instagram-logo.png'),
       cid: 'instagram'
     }
-
   ]
 
   return data;
