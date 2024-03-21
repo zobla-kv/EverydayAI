@@ -10,7 +10,7 @@ import {
   UtilService
 } from '@app/services';
 
-import { 
+import {
   EmailType,
   FirebaseError,
   Labels
@@ -55,7 +55,7 @@ export class AuthVerify implements OnInit {
   ) {}
 
   async ngOnInit() {
-    
+
     if (!this.validateUrlParams()) {
       // block route if params are missing
       this._router.navigate(['']);
@@ -65,18 +65,18 @@ export class AuthVerify implements OnInit {
     if (this.mode !== 'info') {
       this.message = 'Verifying...';
       this.showSpinner = true;
-      const isDecrypted = await this.decryptEmail();
-      if (!isDecrypted) {
-        this.message = Labels.SOMETHING_WENT_WRONG;
-        this.showSpinner = false;
-        return;
-      }
+      // const isDecrypted = await this.decryptEmail();
+      // if (!isDecrypted) {
+      //   this.message = Labels.SOMETHING_WENT_WRONG;
+      //   this.showSpinner = false;
+      //   return;
+      // }
     }
-  
+
     await this.handleMode(this.mode);
     this.showSpinner = false;
   }
-  
+
   // validate existence of 'mode', 'code' and 'type'
   validateUrlParams(): boolean {
     const mode = this._utilService.getParamFromUrl('mode');
@@ -84,13 +84,14 @@ export class AuthVerify implements OnInit {
       this.mode = mode;
       return true;
     }
-    const encryptedEmail = this._utilService.getParamFromUrl('type');
+    // const encryptedEmail = this._utilService.getParamFromUrl('type');
     const code = this._utilService.getParamFromUrl('code');
-    if (!mode || !encryptedEmail || !code) {
+    // if (!mode || !encryptedEmail || !code) {
+    if (!mode || !code) {
       return false;
     }
     this.mode = mode;
-    this.encryptedEmail = encryptedEmail;
+    // this.encryptedEmail = encryptedEmail;
     this.actionCode = code;
     return true;
   }
@@ -143,9 +144,9 @@ export class AuthVerify implements OnInit {
     this.showSpinner = true;
     this.message = 'Sending email...';
 
-    const isSent = await this._httpService.sendEmail({ 
-      email: this.email, 
-      email_type: this.mode === 'verifyEmail' ? EmailType.ACTIVATION : EmailType.RESET_PASSWORD 
+    const isSent = await this._httpService.sendEmail({
+      email: this.email,
+      email_type: this.mode === 'verifyEmail' ? EmailType.ACTIVATION : EmailType.RESET_PASSWORD
     });
 
     if (!isSent) {
