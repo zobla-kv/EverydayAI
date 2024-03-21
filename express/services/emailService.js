@@ -116,10 +116,10 @@ async function getActionUrl(email, type) {
 
   modifiedUrl.searchParams.append('type', encryptedEmail.toString());
 
-  console.log('modifiedUrl: ', modifiedUrl);
+  console.log('modifiedUrl: ', modifiedUrl.href);
 
   // prevent email from getting in spam
-  const shortenedUrlResponse = await fetch('https://ulvis.net/api.php?url=' + modifiedUrl);
+  const shortenedUrlResponse = await fetch('https://ulvis.net/api.php?url=' + modifiedUrl.href);
   const shortenedUrl = await shortenedUrlResponse.text();
 
   console.log('shortenedUrl: ', shortenedUrl);
