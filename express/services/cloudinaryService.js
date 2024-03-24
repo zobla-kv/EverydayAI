@@ -21,7 +21,6 @@ const watermarkImage = 'watermark';
 // upload image to
 // TODO: upload goes through if other things fail (firebase or elastic)
 async function upload(req, res, next) {
-  console.log('cloudinary upload started');
   Readable.from(req.file.buffer).pipe(
     cloudinary.v2.uploader.upload_stream({
       folder: imageFolder,
@@ -44,7 +43,6 @@ async function upload(req, res, next) {
       ]
     }, (error, response) => {
       if (error) {
-        console.log('cloudinary upload error: ', error);
         res.error = error;
         next();
         return;

@@ -5,7 +5,6 @@ const elasticService = require('../services/elasticService');
 
 productsRouter.post('/upload-image', multer().single('image'), cloudinaryService.upload, (req, res) => {
   if (res.error) {
-    console.log('upload endpoint return error: ', res.error);
     return res.status(res.error['http_code']).json(res.error.message);
   }
   res.status(200).json({ imgPaths: res.imgPaths });
