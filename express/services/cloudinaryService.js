@@ -32,8 +32,8 @@ async function upload(req, res, next) {
           flags: ['layer_apply', 'tiled'],
           angle: 30,
           opacity: 5,
-          width: 600,
-          crop: 'lpad',
+          width: 1000,
+          crop: 'scale',
           brightness: 200,
           overlay: {
             public_id: watermarkImage
