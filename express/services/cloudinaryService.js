@@ -32,8 +32,7 @@ async function upload(req, res, next) {
           flags: ['layer_apply', 'tiled'],
           angle: 30,
           opacity: 5,
-          width: 200,
-          height: 200,
+          width: 600,
           crop: 'lpad',
           brightness: 200,
           overlay: {
