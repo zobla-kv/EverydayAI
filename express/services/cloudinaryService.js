@@ -33,7 +33,7 @@ async function upload(req, res, next) {
           angle: 30,
           opacity: 5,
           width: 800,
-          crop: 'scale',
+          // crop: 'scale',
           brightness: 200,
           overlay: {
             public_id: watermarkImage
