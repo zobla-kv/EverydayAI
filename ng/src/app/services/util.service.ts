@@ -11,6 +11,7 @@ declare const moment: any;
 
 import {
   CustomUser,
+  ProductMapper,
   ProductResponse,
 } from '@app/models';
 
@@ -84,9 +85,7 @@ export class UtilService {
   *
   * @return boolean
   */
-  // TODO: DELETE WHEN READY
   isFirstVisit(): boolean {
-    return true;
     let isFirstVisit = true;
     if (document.cookie.includes('new_session')) {
       isFirstVisit = false;
@@ -427,6 +426,23 @@ loadScript(url: string, mode?: 'async' | 'defer'): Promise<void> {
   formatDate(date: Date, format: string): string {
     const timeZone = 'Europe/Belgrade';
     return moment(date).tz(timeZone).format(format);
+  }
+
+/**
+  * get orientation from metadata
+  *
+  * @return orientation - 'portait' | 'landscape'
+  */
+  getProductImageOrientation(product: ProductMapper): 'portrait' | 'landscape' {
+    const resolution = product.metadata['resolution'] as any;
+    const width = Number(resolution.split('x')[0]);
+    const height = Number(resolution.split('x')[1]);
+
+    if (width > height) {
+      return 'landscape';
+    }
+
+    return 'portrait';
   }
 
 }

@@ -1,8 +1,7 @@
 @import '../../../../styles/variables.scss';
 
 
-// disable show animation after reuse strategy
-.product-item-wrapper.enableAnimation {
+.product-item-wrapper {
   opacity: 0;
   transform: translateY(100px);
   &.show {
@@ -14,7 +13,6 @@
   }
 }
 
-// always run hide animation, regardless of reuse strategy
 .product-item-wrapper.hide {
   $delay: calc(var(--data-stagger) * 50ms);
   animation: hide 150ms ease $delay forwards;

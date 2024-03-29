@@ -55,6 +55,9 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // pagination size
   paginationSize = 30;
 
+  // how many times did pagination load new items?
+  paginationLoadedTimes = 0;
+
   // are all products loaded?
   allProductsLoaded = false;
 
@@ -133,6 +136,10 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
+  // get image orientation
+  getImageOrientation(product: ProductMapper): 'portrait' | 'landscape' {
+    return this._utilService.getProductImageOrientation(product);
+  }
 
   // on input (filter) change
   ngOnChanges(changes: SimpleChanges): void {
@@ -173,7 +180,6 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
       this.allProductsLoaded = true;
     }
 
-    // TODO: bug, initial set of images displayed before being fully rendered (big size?) - not a problem with later ones
     this.productList = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
 
     // wait for products to be in DOM
@@ -202,6 +208,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
         const mapped = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
         this.productList.push(...mapped);
         this.showPaginationLoadingSpinner = false;
+        this.paginationLoadedTimes += 1;
         setTimeout(() => {
           this.handleImagesLoaded();
         }, 500);
@@ -211,8 +218,9 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
   // animate show
   showProducts() {
-    // it sets on previous items on pagination again, can be improved but no issues atm.
-    this.masonry.masonryInstance.items.forEach((item: any) => {
+    // prevent show animation from running on already shown items
+    const startIndex = this.paginationLoadedTimes * this.paginationSize;
+    this.masonry.masonryInstance.items.slice(startIndex).forEach((item: any) => {
       const element: HTMLElement = item.element;
       const productItem = element.children[0].children[0];
       productItem.classList.remove('hide');

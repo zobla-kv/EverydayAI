@@ -43,31 +43,15 @@ export class AppComponent {
   ) {
 
     this._utilService.screenSizeChange$.pipe(first()).subscribe(size => {
-      // // TODO: delete when ready
-      if (document.cookie.includes('admin')) {
-        this.showLargePreloader = false;
-        this.preloaderDuration = 3500;
-      } else {
-        if (this.isFirstVisit) {
-          if (['xs', 'sm'].includes(size)) {
-            this.showSmallPreloader = true;
-            this.preloaderDuration = 999999;
-          } else {
-            this.showLargePreloader = true;
-            this.preloaderDuration = 999999;
-          }
+      if (this.isFirstVisit) {
+        if (['xs', 'sm'].includes(size)) {
+          this.showSmallPreloader = true;
+          this.preloaderDuration = 3500;
+        } else {
+          this.showLargePreloader = true;
+          this.preloaderDuration = 5000;
         }
       }
-      // TODO: take this durations when ready
-      // if (this.isFirstVisit) {
-      //   if (['xs', 'sm'].includes(size)) {
-      //     this.showSmallPreloader = true;
-      //     this.preloaderDuration = 3500;
-      //   } else {
-      //     this.showLargePreloader = true;
-      //     this.preloaderDuration = 5000;
-      //   }
-      // }
     });
 
     const preloadAnimationStartTime = Date.now();

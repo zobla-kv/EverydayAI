@@ -1,4 +1,3 @@
-import { ProductListComponent } from './product-list/product-list.component';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -6,6 +5,8 @@ import { HttpParams } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 
 import { Subscription, first } from 'rxjs';
+
+import { ProductListComponent } from '@app/components';
 
 import {
   FilterEvent,
@@ -143,6 +144,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.setPageTitle(this.title);
     this.ProductListComponent.fixMasonryLayout();
   }
+
   // for reuse strategy to set zoom out level on exit
   onDetach() {
     this.ProductListComponent.prevZoomLevel = this._utilService.getZoomLevel();

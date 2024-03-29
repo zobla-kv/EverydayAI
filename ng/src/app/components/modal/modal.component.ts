@@ -18,6 +18,8 @@ export class ModalComponent implements OnInit, OnDestroy {
   @Input() actionButtonText: string;
   // hide footer?
   @Input() hideFooter = false;
+  // product image orientation
+  @Input() orientation: any;
 
   // confirm
   @Output() confirm = new EventEmitter<void>();

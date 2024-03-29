@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
@@ -24,7 +24,7 @@ import {
   templateUrl: './product-item.component.html',
   styleUrls: ['./product-item.component.scss']
 })
-export class ProductItemComponent implements OnInit, OnDestroy {
+export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   // tooltip that shows number of likes on product
   @ViewChild('tooltip') likesTooltip: MatTooltip;
 
@@ -49,9 +49,6 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   // is product liked
   isLiked: boolean;
 
-  // disable animation after load to prevent show animation from running on reuse strategy
-  disableAnimation = false;
-
   constructor(
     private _authService: AuthService,
     public   productService: ProductService,
@@ -61,8 +58,6 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // NOTE: this solves 404 issue with items not displayed, displaying them but without animation
-    setTimeout(() => this.disableAnimation = true, 3000);
     this.isLiked = this.product.likes > 0 ? true : false;
     this.userStateSub$ = this._authService.userState$.subscribe(user => {
       this.user = user;
@@ -108,6 +103,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userStateSub$ && this.userStateSub$.unsubscribe();
   }
+
 
 }
 

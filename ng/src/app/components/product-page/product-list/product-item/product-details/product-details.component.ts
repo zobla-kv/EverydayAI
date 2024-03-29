@@ -21,7 +21,8 @@ import {
   ModalService,
   PreviousRouteService,
   ProductService,
-  ToastService
+  ToastService,
+  UtilService
 } from '@app/services';
 
 @Component({
@@ -62,7 +63,8 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
     private _authService: AuthService,
     private _titleService: Title,
     public   productService: ProductService,
-    private _previousRouteService: PreviousRouteService
+    private _previousRouteService: PreviousRouteService,
+    private _utilService: UtilService
   ) {
     // if opened from product page
     this.product = this._router.getCurrentNavigation()?.extras.state as ProductMapper;
@@ -137,5 +139,10 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
   // keep order of keyvalue pipe (not DRY)
   keepOrder() { return 0; }
+
+  // get image orientation
+  getImageOrientation(product: ProductMapper): 'portrait' | 'landscape' {
+    return this._utilService.getProductImageOrientation(product);
+  }
 
 }

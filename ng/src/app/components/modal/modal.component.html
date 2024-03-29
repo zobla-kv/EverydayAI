@@ -8,7 +8,7 @@
   aria-hidden="true"
   [ngStyle]="{ 'display': isOpen ? 'block' : 'none' }"
 >
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered" [ngClass]="orientation">
     <div class="modal-content">
       <app-gradient-container padding="0">
         <div class="modal-header">

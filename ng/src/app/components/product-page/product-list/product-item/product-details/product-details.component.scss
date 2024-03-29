@@ -4,9 +4,12 @@
 ::ng-deep .modal#product_details {
 
   .modal-dialog {
-    max-width: 800px;
-    // col-md-8 width
-    img { max-width: 520px; }
+    &.portrait {
+      max-width: 680px;
+      img { max-width: 350px; }
+    }
+
+    &.landscape { max-width: 90%; }
 
     .modal-content {
 
@@ -76,7 +79,6 @@ button {
 @media only screen and (max-width: 768px) {
   ::ng-deep .modal#product_details {
     .modal-dialog {
-      max-width: 500px;
       .modal-content .modal-body { padding-right: 1rem; }
     }
   }

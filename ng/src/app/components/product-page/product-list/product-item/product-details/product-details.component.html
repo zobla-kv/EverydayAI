@@ -1,12 +1,12 @@
 
-<app-modal id="{{modalName}}" [title]="product.title" [hideFooter]="true" (close)="handleClose()" *ngIf="product">
+<app-modal id="{{modalName}}" [title]="product.title" [hideFooter]="true" (close)="handleClose()" *ngIf="product" [orientation]="product.metadata['orientation']">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12 col-md-8 px-0">
-        <img src="{{ product.watermarkImgPath }}" alt="{{ product.description }}" class="d-block mx-auto pe-none">
+      <div class="col-12 px-0" [ngClass]="getImageOrientation(product) === 'portrait' ? 'col-md-7' : 'col-md-8'">
+        <img src="{{ product.watermarkImgPath }}" alt="{{ product.description }}" class="d-block mx-auto mx-md-none pe-none">
       </div>
 
-      <div class="col-12 col-md-4 px-0 d-flex flex-column justify-content-center">
+      <div class="col-12 px-0 d-flex flex-column justify-content-center" [ngClass]="getImageOrientation(product) === 'portrait' ? 'col-md-5' : 'col-md-4'">
         <div class="flex-center mt-3 mt-md-0 mb-2 mb-md-0">
           <app-product-price [product]="product"></app-product-price>
         </div>

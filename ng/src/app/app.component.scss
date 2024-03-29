@@ -25,18 +25,7 @@ $hide-delay: calc((var(--preloader-duration) - 1500) / 1000 * 1s);
 	  height: 100%;
 	  position: relative;
 
-
-    //  // TODO: DELETE WHEN READY
-     p {
-       font-size: 35px;
-       position: absolute;
-       top: 110px;
-       font-family: $space-font;
-       transform: scale(0) rotate(200deg);
-       animation: logoSmall 1.5s 4s forwards ease;
-       -webkit-animation: logoSmall 1.5s 4s forwards ease;
-     }
-     @-webkit-keyframes logoSmall {
+    @-webkit-keyframes logoSmall {
       100% { -webkit-transform: scale(0.5); }
     }
     @keyframes logoSmall {
@@ -148,16 +137,11 @@ $hide-delay: calc((var(--preloader-duration) - 1500) / 1000 * 1s);
         }
         @keyframes zoom {
           100% {
-            // -webkit-transform:scale(7);
-            // -moz-transform:scale(7); // TODO: UNCOMMENT WHEN READY
-            // -ms-transform:scale(7);
-            // -o-transform:scale(7);
-            // transform:scale(7);
-            -webkit-transform:scale(3);
-            -moz-transform:scale(3);
-            -ms-transform:scale(3);
-            -o-transform:scale(3);
-            transform:scale(3);
+            -webkit-transform:scale(7);
+            -moz-transform:scale(7);
+            -ms-transform:scale(7);
+            -o-transform:scale(7);
+            transform:scale(7);
           }
         }
 
@@ -309,17 +293,6 @@ $hide-delay: calc((var(--preloader-duration) - 1500) / 1000 * 1s);
     @keyframes logoSmall {
       100% { transform: scale(0.5);  -webkit-transform: scale(0.5); }
     }
-  }
-
-  // TODO: DELETE WHEN READY
-  p {
-    font-size: 35px;
-    position: absolute;
-    bottom: 26%;
-    font-family: $space-font;
-    transform: scale(0);
-    animation: logoSmall 1.5s 1s forwards ease;
-    -webkit-animation: logoSmall 1.5s 1s forwards ease;
   }
 
 }
