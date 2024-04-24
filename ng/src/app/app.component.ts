@@ -1,11 +1,15 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { first } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, first, pairwise } from 'rxjs';
 
 import {
   IconService,
   AuthService,
   UtilService,
-  FirebaseService
+  FirebaseService,
+  SpinnerService,
+  PreviousRouteService,
+  StorageService
 } from '@app/services';
 
 @Component({
@@ -36,11 +40,21 @@ export class AppComponent {
   preloaderAnimationDone = false;
 
   constructor(
+    private _router: Router,
     private _iconService: IconService,
     private _authService: AuthService,
     private _utilService: UtilService,
     private _firebaseService: FirebaseService,
+    public globalSpinner: SpinnerService,
+    private _previousRoute: PreviousRouteService,
+    private _storageService: StorageService
   ) {
+
+    // trigger spinner immediately if user came from google auth
+    if (this._storageService.getFromSessionStorage(this._storageService.storageKey.GOOGLE_AUTH)) {
+      this.globalSpinner.show();
+      this._storageService.deleteFromSessionStorage(this._storageService.storageKey.GOOGLE_AUTH);
+    }
 
     this._utilService.screenSizeChange$.pipe(first()).subscribe(size => {
       if (this.isFirstVisit) {
@@ -74,6 +88,16 @@ export class AppComponent {
     });
 
     this._iconService.addCustomIcons();
+
+    // for storing previous route
+    this._router.events
+    .pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      pairwise()
+    )
+    .subscribe(([prevEvent, currentEvent]) => {
+      this._previousRoute.setPreviousUrl(prevEvent.url);
+    });
   }
 
   // handle preload animation done

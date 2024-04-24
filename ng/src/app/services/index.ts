@@ -9,3 +9,4 @@ export * from './payment.service';
 export * from './previous-route.service';
 export * from './modal-service.service';
 export * from './product.service';
+export * from './global-spinner.service';

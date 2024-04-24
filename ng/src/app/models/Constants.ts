@@ -1,7 +1,4 @@
 export class AppConstants {
-  static STORAGE_USER_KEY = 'user_hash';
-  static STORAGE_USER_VALUE = 'cdf5a81aef0796bcb17d68d58436c4cc';
-  static STORAGE_NUM_OF_ITEMS_IN_CART_KEY = 'xAgketmaT';
 }
 
 export class Labels {
@@ -36,6 +33,9 @@ export class ToastMessages {
   // general
   static SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
   static PRODUCT_ADDED_TO_OWNED_ITEMS = 'Download started and image is now owned.';
+
+  // auth
+  static AUTH_FAILED = 'Failed to authenticate. Please try again.';
 
   // cart
   static CART_PRODUCT_ADDED = 'Image added to cart succesfuly.';

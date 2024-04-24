@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { UserCredential } from '@angular/fire/auth';
+import { UserCredential, GoogleAuthProvider, User } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
 import { arrayRemove, arrayUnion, query, and, collection, where, getDocs, Timestamp, DocumentData, OrderByDirection } from '@angular/fire/firestore';
 import { CollectionReference, Query } from '@angular/fire/compat/firestore';
@@ -134,6 +134,12 @@ export class FirebaseService {
       return false;
     }
 
+    // is logged in using google auth?
+    const isGoogleAuth = user.providerData[0].providerId === GoogleAuthProvider.PROVIDER_ID;
+    if (isGoogleAuth) {
+      return false;
+    }
+
     // check if user is logged by registration by checking if less than 10 seconds passed since registration
     const registrationTime = Date.parse(user.metadata.creationTime as string);
     const timeNow = Date.now();
@@ -196,10 +202,12 @@ export class FirebaseService {
   }
 
   // return value whether it succeeded
-  private async writeUserToDb(user: RegisterUser): Promise<boolean> {
+  async writeUserToDb(user: RegisterUser): Promise<boolean> {
     // desctucture user and omit password
-    const { password, ...customUser } = {
-      ...user,
+    const { password, ...userWithoutPassword } = user;
+
+    const customUser: CustomUser = {
+      ...userWithoutPassword,
       dob: this._utilService.formatDate(user.dob, 'DD/MM/YYYY'),
       role: 'basic',
       cart: [],
@@ -219,6 +227,36 @@ export class FirebaseService {
       successfulWrite = false;
     });
     return successfulWrite;
+  }
+
+  // write google user to db if he doesn't exist
+  async addGoogleUserToDb(user: User): Promise<CustomUser> {
+    const customUser: CustomUser = {
+      id: user.uid,
+      email: user.email as string,
+      name: (user.email as string).split('@')[0],
+      gender: 'male',
+      dob: this._utilService.formatDate(new Date(1900, 0, 1), 'DD/MM/YYYY HH:mm'),
+      role: 'basic',
+      cart: [],
+      registrationDate: this._utilService.formatDate(new Date(), 'DD/MM/YYYY HH:mm'),
+      lastActiveDate: this._utilService.formatDate(new Date(), 'DD/MM/YYYY HH:mm'),
+      payments: [],
+      totalSpent: 0,
+      ownedItems: [],
+      ownedItemsTimeMap: {},
+      productLikes: []
+    };
+
+
+    try {
+      await this._db.collection('Users').doc(user.uid).set(customUser);
+      return customUser;
+    }
+    catch (err) {
+      this._db.collection('FailedRegisterWrites').doc(customUser.email).set({ reason: err });
+      throw new Error('Failed to write user to database');
+    }
   }
 
   // from firebaseAuth get customUser

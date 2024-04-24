@@ -57,11 +57,6 @@ export class HeaderComponent implements OnDestroy {
     private _firebaseService: FirebaseService
   ) {
 
-    // *** avoid flickering ***
-    this._storageService.getUserFromLocalStorage() && (this.isAuthenticated = true);
-    this._storageService.getNumberOfItemsInCart() && (this.numberOfItemsInCart = this._storageService.getNumberOfItemsInCart());
-    // ************************
-
     this.customUserState$ = this._authService.userState$.subscribe(user => {
       this.numberOfItemsInCart = user ? user.cart.length : 0;
       this.isAuthenticated = !!user;

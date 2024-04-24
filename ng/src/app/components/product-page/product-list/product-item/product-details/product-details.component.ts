@@ -77,37 +77,9 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
 
       // if opened on load
       if (!this.product) {
-        fetchProduct();
+        this.fetchProduct();
       }
     });
-
-    const fetchProduct = () => {
-      const productId = this._route.snapshot.paramMap.get('id') as string;
-      this._firebaserService.getProductsById([productId])
-      .pipe(
-        first(),
-        catchError(err => throwError(() => new Error()))
-      )
-      .subscribe({
-        next: (products: ProductResponse[]) => {
-          // invalid id check
-          if (products.length === 0) {
-            // TODO: error handling (route protection) can be done using resolver
-            this._toast.showErrorMessage(ToastMessages.PRODUCT_NOT_FOUND);
-            this._router.navigate(['images']);
-            return;
-          }
-          // fetch is triggered after user only because of mapper
-          this.product = ProductMapper.getInstance(products[0], ProductListConfig.PRODUCT_LIST, this.user);
-          this._titleService.setTitle(this.product.title);
-          // wait for modal to load
-          setTimeout(() => this._modalService.open(this.modalName), 100);
-        },
-        error: (e) => {
-          this._toast.showErrorMessage(ToastMessages.PRODUCT_FAILED_TO_LOAD_DETAILS);
-        }
-      })
-    }
   }
 
   ngAfterViewInit() {
@@ -116,6 +88,35 @@ export class ProductDetailsComponent implements OnInit, AfterViewInit {
       // because of angular error (change after expression checked)
       setTimeout(() => this._modalService.open(this.modalName))
     }
+  }
+
+  // fetch product
+  fetchProduct() {
+    const productId = this._route.snapshot.paramMap.get('id') as string;
+    this._firebaserService.getProductsById([productId])
+    .pipe(
+      first(),
+      catchError(err => throwError(() => new Error()))
+    )
+    .subscribe({
+      next: (products: ProductResponse[]) => {
+        // invalid id check
+        if (products.length === 0) {
+          // TODO: error handling (route protection) can be done using resolver
+          this._toast.showErrorMessage(ToastMessages.PRODUCT_NOT_FOUND);
+          this._router.navigate(['images']);
+          return;
+        }
+        // fetch is triggered after user only because of mapper
+        this.product = ProductMapper.getInstance(products[0], ProductListConfig.PRODUCT_LIST, this.user);
+        this._titleService.setTitle(this.product.title);
+        // wait for modal to load
+        setTimeout(() => this._modalService.open(this.modalName), 100);
+      },
+      error: (e) => {
+        this._toast.showErrorMessage(ToastMessages.PRODUCT_FAILED_TO_LOAD_DETAILS);
+      }
+    })
   }
 
   // handle close event

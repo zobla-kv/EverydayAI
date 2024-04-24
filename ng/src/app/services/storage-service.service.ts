@@ -1,82 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
 
-import {
-  AppConstants
-} from '@app/models';
-
-import {
-  AuthService
-} from '@app/services';
-
+// storage keys
+export enum StorageKey {
+  STORED_ROUTE = 'stored_route',
+  GOOGLE_AUTH = 'g_a'
+}
 
 /**
- * Service for interacting with local/session storages.
- * used for persisting state on refresh. (avoid flickering)
+ * Service for interacting with browser storage.
  *
  */
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
+  // storage keys
+  public storageKey: typeof StorageKey = StorageKey;
 
-  // subscibe to user state (change to number of cart items etc.)
-  customUserState$: Subscription;
-
-  constructor(
-    private _authService: AuthService
-  ) {
-    this.customUserState$ = this._authService.userState$
-    .subscribe(user => {
-      if (user) {
-        this.setUserToLocalStorage()
-        this.setNumberOfItemsInCart(user.cart.length);
-      } else {
-        this.removeUserFromLocalStorage();
-        this.removeCartFromLocalStorage();
-      }
-    })
+  // store value to local storage
+  storeToLocalStorage(key: StorageKey, value: string) {
+    localStorage.setItem(key, value);
   }
 
-  // save mock user to session storage (should exist only if user is logged in)
-  setUserToLocalStorage(): void {
-    if (!localStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
-      localStorage.setItem(AppConstants.STORAGE_USER_KEY, AppConstants.STORAGE_USER_VALUE);
+  // get value from local storage
+  getFromLocalStorage(key: string): string | null {
+    return localStorage.getItem(key);
+  }
+
+  // delete value from local storage
+  deleteFromLocalStorage(key: string): void {
+    if (localStorage.getItem(key)) {
+      localStorage.removeItem(key);
     }
   }
 
-  // for immediately returning user logged in state (avoid flickering)
-  getUserFromLocalStorage(): string | null {
-    return localStorage.getItem(AppConstants.STORAGE_USER_KEY);
+  // store value to session storage
+  storeToSessionStorage(key: StorageKey, value: string) {
+    sessionStorage.setItem(key, value);
   }
 
-  // remove mock user from session storage
-  removeUserFromLocalStorage(): void {
-    if (localStorage.getItem(AppConstants.STORAGE_USER_KEY)) {
-      localStorage.removeItem(AppConstants.STORAGE_USER_KEY);
+  // get value from session storage
+  getFromSessionStorage(key: StorageKey): string | null {
+    return sessionStorage.getItem(key);
+  }
+
+  // delete value from session storage
+  deleteFromSessionStorage(key: StorageKey): void {
+    if (sessionStorage.getItem(key)) {
+      sessionStorage.removeItem(key);
     }
-  }
-
-  // save number of items in cart
-  setNumberOfItemsInCart(number: number): void {
-    localStorage.setItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY, `${number}`);
-  }
-
-  // save number of items in cart
-  getNumberOfItemsInCart(): number {
-    const numOfItems: any = localStorage.getItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY);
-    return numOfItems ? numOfItems : 0;
-  }
-
-  // remove cart from local storage
-  removeCartFromLocalStorage(): void {
-    if (localStorage.getItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY)) {
-      localStorage.removeItem(AppConstants.STORAGE_NUM_OF_ITEMS_IN_CART_KEY);
-    }
-  }
-
-  ngOnDestroy() {
-    this.customUserState$ && this.customUserState$.unsubscribe();
   }
 
 }

@@ -23,6 +23,12 @@
   </div>
 </div>
 
+<div class="overlay" *ngIf="globalSpinner.spinnerVisibility$ | async">
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+
 <div>
   <app-star-background></app-star-background>
 

@@ -14,6 +14,8 @@ import {
 
 import {
   AuthService,
+  PreviousRouteService,
+  StorageService,
   ToastService,
   UtilService
 } from '@app/services';
@@ -49,12 +51,16 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // show/hide password
   showPassword = false;
 
+  showGoogleButton = false;
+
   constructor(
     private _router: Router,
     private _utilService: UtilService,
     private _authService: AuthService,
     private _toast: ToastService,
-    private _titlService: Title
+    private _titleService: Title,
+    private _previousRoute: PreviousRouteService,
+    private _storageService: StorageService
   ) {
     // from outside (header)
     this.headerAuthButtonSub$ =
@@ -62,6 +68,12 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // store previous route to come back to it after login
+    const previousRoute = this._previousRoute.getPreviousUrl();
+    if (previousRoute) {
+      this._storageService.storeToSessionStorage(this._storageService.storageKey.STORED_ROUTE, previousRoute);
+    }
+
     // TODO: add confirm password field, also when resetting password
     this.registerForm = {
       form: new FormGroup({
@@ -99,6 +111,12 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // display right form when coming from outside route (w/o animation)
     this.displayProperForm();
+
+    console.log('localStorage.getItem(\'admin\'): ', localStorage.getItem('admin'));
+    if (localStorage.getItem('admin')) {
+      console.log('IS ADMIN');
+      this.showGoogleButton = true;
+    }
   }
 
   // show proper side of the form
@@ -113,7 +131,7 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // just change url without realod, easiest way to keep same instance alive
     window.history.pushState(null, '', `auth/${this.activeForm.type}`);
     this.displayProperForm();
-    this._titlService.setTitle(this._utilService.capitalizeText(this.activeForm.type!))
+    this._titleService.setTitle(this._utilService.capitalizeText(this.activeForm.type!))
   }
 
   // handle slider value change
@@ -196,6 +214,11 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.validateAllFormFields(control);
       }
     });
+  }
+
+  // trigger google login
+  async handleGoogleAuth() {
+    this._authService.loginWithGoogle();
   }
 
   ngOnDestroy(): void {

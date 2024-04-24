@@ -28,9 +28,9 @@ export interface CustomUser {
   dob: string;
   gender: string;
   cart: string[];
-  registrationDate: Date;
-  lastActiveDate: Date;
-  payments: Payments;
+  registrationDate: string;
+  lastActiveDate: string;
+  payments: Payments[];
   totalSpent: number;
   ownedItems: string[];
   // for firebase query limitations (map id -> ownedSince)

@@ -9,7 +9,7 @@
           <div class="card-3d-wrapper">
             <form [formGroup]="loginForm.form" (ngSubmit)="validateForm()" class="card-front">
               <app-gradient-container padding="0">
-                <div class="center-wrap">
+                <div class="center-wrap pb-3">
                   <div class="text-center">
                     <h4 class="mb-4 pb-3">Login</h4>
                     <div class="form-group">
@@ -74,6 +74,10 @@
                     <p class="mb-0 mt-3 text-center forgot-password">
                       <a routerLink="/reset-password" class="link">Forgot your password?</a>
                     </p>
+                    <hr>
+                    <button *ngIf="showGoogleButton" type="button" class="google-button" (click)="handleGoogleAuth()">
+                      Sign in with Google
+                    </button>
                   </div>
                 </div>
               </app-gradient-container>

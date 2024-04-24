@@ -34,6 +34,8 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   @Input() addClass: string = '';
   // run on mobile - disabled by default
   @Input() runOnMobile = false;
+  // appear after user loded
+  @Input() appearAfterUser = false;
 
   // emit event when element enters viewport
   @Output() intersection = new EventEmitter<ElementRef>();
@@ -82,7 +84,7 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
 
   // start observing
   startObserving() {
-    if (!this.isFirstVisit) {
+    if (!this.isFirstVisit && !this.appearAfterUser) {
       this._observer?.observe(this._element.nativeElement);
       return;
     }

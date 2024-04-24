@@ -303,3 +303,21 @@ $hide-delay: calc((var(--preloader-duration) - 1500) / 1000 * 1s);
 @keyframes hide {
   100% { opacity: 0; }
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999999999; // 9
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-container {
+  width: 100px;
+  height: 100px;
+}

@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { User } from '@angular/fire/auth';
+import { User, GoogleAuthProvider } from '@angular/fire/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { ReplaySubject, first, skip } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 import {
   CustomUser,
   RegisterUser,
   FirebaseError,
   FirebaseConstants,
-  LoginUser
+  LoginUser,
+  ToastMessages
 } from '@app/models';
 
 import {
-  FirebaseService,
-  UtilService,
-  PreviousRouteService
+   FirebaseService,
+   UtilService,
+   ToastService,
+   StorageService,
+   SpinnerService,
  } from '@app/services';
 
 /**
@@ -39,33 +42,75 @@ export class AuthService {
   // those for pipe(first()) will NOT react to .updateUser, just on login/logout
   public userState$ = new ReplaySubject<CustomUser | null>(1);
 
+  // did user trigger logout action
+  private _logoutTriggered = false;
+
+
   constructor(
     private _fireAuth: AngularFireAuth,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
     private _router: Router,
-    private _previousRouteService: PreviousRouteService
+    private _toast: ToastService,
+    private _storageService: StorageService,
+    private _globalSpinner: SpinnerService
   ) {
     // auth coming from firebase
-    this._fireAuth.onAuthStateChanged(async user => {
+    this._fireAuth.onAuthStateChanged(user => {
       // to counter firebase default auto login behaviour
       if (this._firebaseService.reverseFirebaseAutoLogin(user as User)) {
         this.logoutWithoutReload();
         return;
       }
-      user ? this.setUser(<User>user) : this.setUser(null);
+
+      // if user initiated logout to prevent header flick
+      if (!user && this._logoutTriggered) {
+        window.location.reload();
+        return;
+      }
+
+      // if user was not authenticated at all
+      if (!user) {
+        this._setUser(null);
+        // hide spinner that was set on app load
+        this._globalSpinner.hide();
+        return;
+      }
+
+      this._handleAuth(user as User);
     });
   }
 
-  // set custom user (transfer from firebase user to custom user)
-  async setUser(user: User | null): Promise<void> {
-    if (user) {
-      // TODO: no error handling
-      // could set user to null and cause problems
-      this._user = await this._firebaseService.getUserByUid(user.uid);
-    } else {
-      this._user = null;
+  // handle succesful authentication
+  private async _handleAuth(user: User): Promise<void> {
+    try {
+      const customUser = await this._firebaseService.getUserByUid(user.uid);
+
+      if (this._isGoogleAuth(user) && !customUser) {
+        // Google login and user not found in database
+        const newCustomUser = await this._firebaseService.addGoogleUserToDb(user as User);
+        this._setUser(newCustomUser);
+      } else {
+        // User found in database or non-Google authentication
+        this._setUser(customUser);
+      }
+
+      if (this._storageService.getFromSessionStorage(this._storageService.storageKey.STORED_ROUTE)) {
+        this._navigateAfterLogin();
+      }
+
+      // hide spinner that was set on app load
+      this._globalSpinner.hide();
     }
+    catch(err) {
+      this.logoutWithoutReload();
+      this._toast.showErrorMessage(ToastMessages.AUTH_FAILED);
+    }
+  }
+
+  // set custom user
+  private _setUser(user: CustomUser | null): void {
+    this._user = user;
     this.userState$.next(this._user);
   }
 
@@ -102,27 +147,47 @@ export class AuthService {
     if (response) {
       return response;
     }
-    // skip old value from replaySubject (act as Subject)
-    this.userState$.pipe(skip(1), first()).subscribe(() => {
-      const previousRoute = this._previousRouteService.getPreviousUrl();
-      // in case of email verification go back to home page and not previous route
-      if (!previousRoute || previousRoute.includes('auth/verify')) {
-        this._router.navigate(['/']);
-        return;
-      }
-      this._router.navigateByUrl(previousRoute)
-    });
+    window.location.reload();
   }
 
   // logout user and reload page
   async logoutWithReload(): Promise<FirebaseError | void> {
-    await this._firebaseService.logout();
-    window.location.reload();
+    this._logoutTriggered = true;
+    this._firebaseService.logout();
   }
 
   // logout user
   async logoutWithoutReload(): Promise<FirebaseError | void> {
-    await this._firebaseService.logout();
+    this._firebaseService.logout();
+  }
+
+  // is user logged in using google
+  private _isGoogleAuth(user: any): boolean {
+    return user?.providerData[0]?.providerId === GoogleAuthProvider.PROVIDER_ID;
+  }
+
+  // login using google auth
+  async loginWithGoogle(): Promise<any> {
+    const provider = new GoogleAuthProvider();
+    provider.addScope('email');
+    provider.addScope('profile');
+    provider.addScope('https://www.googleapis.com/auth/user.birthday.read');
+    this._storageService.storeToSessionStorage(this._storageService.storageKey.GOOGLE_AUTH, '1');
+    return this._fireAuth.signInWithRedirect(provider);
+  }
+
+  // navigate user after succesful login
+  private _navigateAfterLogin() {
+    let previousRoute = this._storageService.getFromSessionStorage(this._storageService.storageKey.STORED_ROUTE);
+
+    // in case of email verification go back to home page and not previous route
+    if (!previousRoute || previousRoute.includes('auth/verify')) {
+      this._router.navigate(['/']);
+      return;
+    }
+
+    this._storageService.deleteFromSessionStorage(this._storageService.storageKey.STORED_ROUTE);
+    this._router.navigateByUrl(previousRoute);
   }
 
   ngOnDestroy() {
