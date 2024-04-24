@@ -51,8 +51,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // show/hide password
   showPassword = false;
 
-  showGoogleButton = false;
-
   constructor(
     private _router: Router,
     private _utilService: UtilService,
@@ -111,12 +109,6 @@ export class AuthFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // display right form when coming from outside route (w/o animation)
     this.displayProperForm();
-
-    console.log('localStorage.getItem(\'admin\'): ', localStorage.getItem('admin'));
-    if (localStorage.getItem('admin')) {
-      console.log('IS ADMIN');
-      this.showGoogleButton = true;
-    }
   }
 
   // show proper side of the form

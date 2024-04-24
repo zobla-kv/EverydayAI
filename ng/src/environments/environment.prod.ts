@@ -3,7 +3,6 @@ export default {
   API_HOST: 'https://everyday-ai.io',
   firebaseConfig: {
     apiKey: "AIzaSyCQjI26RpW2K2mkcz_hC5mVL3CurUGxr-o",
-    // authDomain: "production-44720.firebaseapp.com",
     authDomain: "everyday-ai.io",
     projectId: "production-44720",
     storageBucket: "production-44720.appspot.com",
