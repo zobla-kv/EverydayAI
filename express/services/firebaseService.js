@@ -32,6 +32,24 @@ async function generateEmailLink(email, type) {
   return link;
 }
 
+// get all documents from a collection - collection - string
+async function getDocumentsFromCollection(collection) {
+  return db.collection(collection).get().then(documents => documents.docs.map(doc => doc.data()));
+}
+
+// add multiple documents to a collection
+// documents - ProductResponse[], collection - string
+async function addBulkDocumentsToCollection(documents, collection) {
+  const batch = admin.firestore().batch();
+
+  documents.forEach(doc => {
+    const docRef = db.collection(collection).doc();
+    batch.set(docRef, doc);
+  })
+
+  return batch.commit();
+}
+
 // recalculate prices of items on the BE to prevent making purchase with user modified price
 // with fetch
 async function getPriceAsync(productIds) {
@@ -187,6 +205,8 @@ async function _incrementProductSoldTimes(cartItems) {
 
 module.exports = {
   generateEmailLink,
+  getDocumentsFromCollection,
+  addBulkDocumentsToCollection,
   getPriceAsync,
   getPriceSync,
   getUserById,

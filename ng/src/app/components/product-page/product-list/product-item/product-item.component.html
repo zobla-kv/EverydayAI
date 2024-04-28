@@ -1,4 +1,4 @@
-<div class="product-item-wrapper" [style]="{'--data-stagger': stagger}">
+<div class="product-item-wrapper">
   <a class="product-link" [routerLink]="product.id" [state]="product"></a>
   <div *ngIf="product.discount && actions.includes(productActions.CART)" class="discount-ribbon">
     <span>- {{ product.discount }} %

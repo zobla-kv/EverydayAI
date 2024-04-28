@@ -32,8 +32,6 @@ export class ProductItemComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('product') product: ProductMapper;
   // actions a product can peform
   @Input('actions') actions: string[];
-  // animation stagger
-  @Input('stagger') stagger: number;
 
   // use in template
   readonly productActions = ProductActions;

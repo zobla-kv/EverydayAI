@@ -1,31 +1,11 @@
 @import '../../../../styles/variables.scss';
 
-
-.product-item-wrapper {
-  opacity: 0;
-  transform: translateY(100px);
-  &.show {
-    $delay: calc(var(--data-stagger) * 100ms);
-    animation: show 300ms ease $delay forwards;
-  }
-  @keyframes show {
-    to { opacity: 1; transform: translateY(0); }
-  }
-}
-
-.product-item-wrapper.hide {
-  $delay: calc(var(--data-stagger) * 50ms);
-  animation: hide 150ms ease $delay forwards;
-  @keyframes hide {
-    to { transform: scale(0); }
-  }
-}
-
 // separated for better visibility
 .product-item-wrapper {
   cursor: pointer;
   user-select: none;
   position: relative;
+  height: 100%;
 
   .product-link {
     position: absolute;

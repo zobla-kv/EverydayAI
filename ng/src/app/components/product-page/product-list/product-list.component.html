@@ -1,15 +1,15 @@
 <div class="product-list-wrapper" #listWrapper infinite-scroll [threshold]="120" (scrolled)="loadMore()">
   <app-loading *ngIf="showSpinner" variant="gooey"></app-loading>
-  <ngx-masonry [ordered]="true">
-    <div
-      ngxMasonryItem
-      class="masonry-item col-12 col-sm-6 col-md-4 col-lg-2 px-2"
-      [ngClass]="getImageOrientation(product) === 'landscape' ? 'col-lg-4' : 'col-lg-2'"
+  <div class="grid" #grid>
+    <!-- NOTE: Child rendered programaticaly, left for ref -->
+    <!-- <div
+      class="grid-item"
+      #gridItem
+      [ngClass]="getImageOrientation(product)"
       *ngFor="let product of productList; let i = index"
     >
-      <app-product-item [product]="product" [actions]="config.product.actions" [stagger]="i % paginationSize"></app-product-item>
-    </div>
-  </ngx-masonry>
+      <app-product-item [product]="product" [actions]="config.product.actions" [stagger]="i % paginationSize"></app-product-item> -->
+  </div>
   <app-loading variant="ellipsis" [ngClass]="{'invisible': !showPaginationLoadingSpinner}"></app-loading>
   <div *ngIf="showFilterNoResults" class="mt-5 text-center">Nothing found!</div>
 </div>

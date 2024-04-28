@@ -21,7 +21,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 // ****************************************** //
 
-import { NgxMasonryModule } from 'ngx-masonry';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -118,8 +117,6 @@ import { FormatPipe } from './pipes/format.pipe';
     MatDatepickerModule,
     MatNativeDateModule,
 
-    // masonry
-    NgxMasonryModule,
     // page scroll
     NgxPageScrollModule,
 

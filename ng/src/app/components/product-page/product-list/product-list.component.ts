@@ -1,8 +1,10 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, Renderer2, ViewContainerRef } from '@angular/core';
 import { Subscription, first } from 'rxjs'
-import { NgxMasonryComponent } from 'ngx-masonry';
+
+import { ProductItemComponent } from '@app/components';
 
 import * as ImagesLoaded from 'imagesloaded';
+declare const Packery: any;
 
 import {
   CustomUser,
@@ -28,8 +30,7 @@ import {
 export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // list wrapper
   @ViewChild('listWrapper') listWrapper: ElementRef;
-  // masonry ref
-  @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  @ViewChild('grid') grid: ElementRef;
 
   // active filters
   @Input() filters: ProductFilters;
@@ -46,6 +47,9 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   // product list
   productList: ProductMapper[] = [];
 
+  // packery grid
+  packery: any;
+
   // products initial loading spinner
   showSpinner = true;
 
@@ -53,7 +57,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   showPaginationLoadingSpinner = false;
 
   // pagination size
-  paginationSize = 30;
+  paginationSize = 40;
 
   // how many times did pagination load new items?
   paginationLoadedTimes = 0;
@@ -83,7 +87,9 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     private _authService: AuthService,
     private _firebaseService: FirebaseService,
     private _utilService: UtilService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _renderer: Renderer2,
+    private _viewContainerRef: ViewContainerRef
   ) {}
 
   // TODO: error handling
@@ -104,7 +110,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // handle product images loaded
-  handleImagesLoaded() {
+  handleImagesLoaded(appendToGrid: boolean) {
     this.failedImgLoadList = [];
     this.imgLoaded = ImagesLoaded(this.listWrapper.nativeElement);
 
@@ -112,12 +118,12 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     this.imgLoaded.on('always', (instance) => {
       // remove those that didn't load
       this.productList = this.productList.filter(product => !this.failedImgLoadList.includes(product.watermarkImgPath));
-      // 2 timeouts prevent spinner hide lag
-      setTimeout(() => this.showSpinner = false, 400);
+      // timeout prevents spinner hide lag
+      this.showSpinner = false;
       setTimeout(() => {
-        this.showProducts();
+        this.createGrid(appendToGrid);
         this._firebaseService.isProductListFetching$.next(false);
-      }, 410);
+      }, 10);
     });
 
     // singe image loaded
@@ -136,9 +142,21 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  // get image orientation
-  getImageOrientation(product: ProductMapper): 'portrait' | 'landscape' {
-    return this._utilService.getProductImageOrientation(product);
+  // get image orientation (includes square)
+  getImageOrientation(product: ProductMapper): 'square' | 'portrait' | 'landscape' {
+    const resolution = product.metadata['resolution'] as any;
+    const width = Number(resolution.split('x')[0]);
+    const height = Number(resolution.split('x')[1]);
+
+    if (width === height) {
+      return 'square';
+    }
+
+    if (width > height) {
+      return 'landscape';
+    }
+
+    return 'portrait';
   }
 
   // on input (filter) change
@@ -146,17 +164,15 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     // skip trigger on load
     if (changes['filters'].previousValue) {
       // TODO: prevent call on another filter if there are no items already
+      this.showSpinner = true;
       this._firebaseService.isProductListFetching$.next(true);
       this.resetInfiniteScrollFlags();
-      this.hideProducts();
-      setTimeout(() => {
-        this.productList = [];
-        this.showSpinner = true;
-        this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
-          // for load animation to show longer
-          setTimeout(() => this.handleProductsResponse(products), 600);
-        })
-      }, 1000)
+      this.productList = [];
+      this.resetGrid();
+      this._firebaseService.getProductsPaginated(this.filters, this.paginationSize).pipe(first()).subscribe(products => {
+        // for load animation to show longer
+        setTimeout(() => this.handleProductsResponse(products), 600);
+      })
     }
   }
 
@@ -165,6 +181,7 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
     this._firebaseService.resetPagination();
     this.allProductsLoaded = false;
     this.showFilterNoResults = false;
+    this.paginationLoadedTimes = 0;
   }
 
   // handle products fetch
@@ -182,10 +199,8 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.productList = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
 
-    // wait for products to be in DOM
-    setTimeout(() => {
-      this.handleImagesLoaded();
-    }, 500);
+    // NOTE: both use cases of this fn handler will have empty grid already, on load and on filter (that is why false)
+    this.handleImagesLoaded(false);
   }
 
   // trigger infinite scroll load
@@ -206,42 +221,89 @@ export class ProductListComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         const mapped = products.map(product => ProductMapper.getInstance(product, this.config, this.user));
+
         this.productList.push(...mapped);
         this.showPaginationLoadingSpinner = false;
         this.paginationLoadedTimes += 1;
-        setTimeout(() => {
-          this.handleImagesLoaded();
-        }, 500);
+
+        this.handleImagesLoaded(true);
       }, 500);
     })
   }
 
-  // animate show
-  showProducts() {
+  // programaticaly create .grid-item and ProductItem component, add elements to the DOM
+  getGridItem(product: ProductMapper, index: number): any {
+    // Create grid-item div
+    const gridItem = this._renderer.createElement('div');
+    this._renderer.addClass(gridItem, 'grid-item');
+    this._renderer.addClass(gridItem, this.getImageOrientation(product))
+
+    // Set the stagger as a style property
+    const stagger = index % this.paginationSize;
+    this._renderer.setStyle(gridItem, '--data-stagger', stagger.toString(), 2);
+
+    this._renderer.appendChild(this.grid.nativeElement, gridItem);
+
+    // Create product item component
+    const productComponentRef = this._viewContainerRef.createComponent(ProductItemComponent);
+    productComponentRef.instance.product = product;
+    productComponentRef.instance.actions = this.config.product.actions;
+
+    this._renderer.appendChild(gridItem, productComponentRef.location.nativeElement);
+
+    return gridItem;
+  }
+
+
+   // create grid
+   // append elements or create new instance
+   createGrid(append: boolean): void {
+     if (append) {
+        // prevent append from running on already appended items
+        const startIndex = this.paginationLoadedTimes * this.paginationSize;
+        this.packery.appended(this.productList.slice(startIndex).map((item, i) => this.getGridItem(item, i)));
+        setTimeout(() => this.showGridItems(), 400);
+        return;
+     }
+
+     this.packery = new Packery(this.grid.nativeElement, {
+       itemSelector: '.grid-item',
+       // css animation
+       transitionDuration: 0
+     });
+
+     this.packery.appended(this.productList.map((item, i) => this.getGridItem(item, i)));
+     setTimeout(() => this.showGridItems(), 400);
+   }
+
+   // show animation
+   showGridItems(): void {
     // prevent show animation from running on already shown items
     const startIndex = this.paginationLoadedTimes * this.paginationSize;
-    this.masonry.masonryInstance.items.slice(startIndex).forEach((item: any) => {
+
+    this.packery.items.slice(startIndex).forEach((item: any) => {
       const element: HTMLElement = item.element;
-      const productItem = element.children[0].children[0];
-      productItem.classList.remove('hide');
-      productItem.classList.add('show');
-    })
-  }
-  // animate hide
-  hideProducts() {
-    this.masonry.masonryInstance.items.forEach((item: any) => {
-      const element: HTMLElement = item.element;
-      const productItem = element.children[0].children[0];
-      productItem.classList.remove('show');
-      productItem.classList.add('hide');
-    })
+      // const productItem = element.children[0].children[0];
+      element.classList.add('show');
+    });
+   }
+
+  // reset grid
+  resetGrid(): void {
+    if (this.packery) {
+      this.packery.destroy();
+      this.packery = null;
+    }
+
+    // TODO: recheck this for remove elements from dom
+    this.grid.nativeElement.innerHTML = '';
   }
 
   // fix broken layout after zoom-in/out on other page then coming back
   public fixMasonryLayout() {
     const currentZoomLevel = this._utilService.getZoomLevel();
     if (this.prevZoomLevel !== currentZoomLevel) {
-      this.masonry.layout();
+      this.packery.layout();
     }
   }
 
