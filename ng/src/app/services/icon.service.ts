@@ -22,23 +22,30 @@ export class IconService {
     { name: 'tier-premium' },
     { name: 'double-arrow-left' },
     { name: 'double-arrow-right' },
-    { name: 'email' },
-    { name: 'instagram' }
+
+    // used by old home page component
+    // { name: 'email' },
+    // { name: 'instagram' }
   ]
 
   // name property needs to match file name
   gradientIcons: { name: string }[] = [
-    { name: 'everyday-life' },
-    { name: 'mona-lisa' },
-    { name: 'collaboration' }, // TODO: unused but really cool
-    { name: 'expectance' },
-    { name: 'lightbulb' }, // TODO: unused
-    { name: 'confetti' }, // TODO: unused, usage place is commented out
+    // used by old home page component
+    // { name: 'everyday-life' },
+    // { name: 'mona-lisa' },
+    // { name: 'expectance' },
+    // { name: 'photos' },
+    // { name: 'confetti' },
+    // { name: 'discussion' },
+    // { name: 'collaboration' },
+    // { name: 'lightbulb' }, // TODO: unused
+    // **
+
     { name: 'payment' },
     { name: 'image-resolution' },
     { name: 'file-type-img' },
-    { name: 'photos' },
-    { name: 'discussion' }
+    { name: 'click' },
+    { name: 'write' }
   ]
 
   // PRODUCTION: after deploy probably path will probably be just assets/icons/${icon.name}.svg

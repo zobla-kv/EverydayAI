@@ -21,5 +21,7 @@ export class GradientCheckboxComponent {
   @Input() type: 'checkbox' | 'radio' = 'checkbox';
   // value
   @Input() value: string;
+  // is checked
+  @Input() checked = false;
 
 }

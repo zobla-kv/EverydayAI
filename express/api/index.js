@@ -3,6 +3,7 @@ const emailRouter = require('./email');
 const userRouter = require('./user');
 const productsRouter = require('./products');
 const paypalRouter = require('./paypal');
+const aiRouter = require('./ai');
 const validators = require('../middleware/validators');
 const bodyParser = require('body-parser'); // TODO: unused dependency
 
@@ -11,6 +12,7 @@ router.use('/email', [validators.email, validators.emailExists], emailRouter);
 router.use('/user', userRouter);
 router.use('/products', productsRouter);
 router.use('/paypal', paypalRouter);
+router.use('/ai', aiRouter);
 
 // disabled
 // router.get('/news', async (req, res) => {

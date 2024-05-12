@@ -14,6 +14,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 // *************  firebase ******************* //
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -50,7 +52,9 @@ import {
   ProductPriceComponent,
   StarBackgroundComponent,
   GradientContainerComponent,
-  GradientCheckboxComponent
+  GradientCheckboxComponent,
+  HomePageNewComponent,
+  GenerateImageComponent
 } from '@app/components';
 
 import {
@@ -88,6 +92,8 @@ import { FormatPipe } from './pipes/format.pipe';
     StarBackgroundComponent,
     GradientContainerComponent,
     GradientCheckboxComponent,
+    HomePageNewComponent,
+    GenerateImageComponent,
 
     // Directives
     ObserveVisibilityDirective,
@@ -116,6 +122,8 @@ import { FormatPipe } from './pipes/format.pipe';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatExpansionModule,
+    ClipboardModule,
 
     // page scroll
     NgxPageScrollModule,

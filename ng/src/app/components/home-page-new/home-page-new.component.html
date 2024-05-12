@@ -1,0 +1,160 @@
+<section class="top-section">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-12 p-0">
+        <div class="landing-text-wrapper text-center overflow-hidden">
+          <h1 class="glow-text">
+            <span class="d-block" appear [hide]="{'opacity': 0, 'transform': 'scale(1.2)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}"
+                  [duration]="300" [runOnMobile]="true" [delay]="300"
+            >
+              Generate custom wallpaper images with AI,
+            </span>
+            <div class="instantly" appear [hide]="{'opacity': 0, 'transform': 'scale(1.2)'}" [show]="{'opacity': 1, 'transform': 'scale(1)'}"
+                 [duration]="100" [runOnMobile]="true" [delay]="600" (intersection)="highlightElement(instantly, 400)"
+            >
+              <span #instantly class="d-block">
+                Instantly!
+              </span>
+            </div>
+          </h1>
+          <p class="space-font mt-5" appear [delay]="1200" [runOnMobile]="true">Welcome to the future</p>
+          <div
+            class="d-flex flex-column"
+            appear
+            [duration]="500"
+            [runOnMobile]="true"
+            [delay]="1200"
+            (intersection)="highlightElement(cta, 1800)"
+          >
+            <a class="cta-button" routerLink="/generate" #cta>
+              <div class="inner-wrapper flex-center">Generate now</div>
+              <mat-icon svgIcon="double-arrow-right" class="white"></mat-icon>
+            </a>
+          </div>
+
+          <div
+            class="slider"
+            appear
+            [duration]="500"
+            [runOnMobile]="true"
+            [delay]="1200"
+          >
+            <div class="slide-track">
+              <div class="slide" *ngFor="let product of slides" [ngClass]="getImageOrientation(product)">
+                <a [routerLink]="'/images/' + product.id">
+                  <img src="{{ product.watermarkImgPath }}" alt="{{ product.description }}" class="pe-none">
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="poweredby" appear [delay]="2200" [runOnMobile]="true">
+            <span>Powered by openAI</span>
+            <img src="/assets/images/openAI.png" alt="openAI">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="table-of-contents-section" scrollSpy (sectionChange)="activeSection = $event">
+  <div class="container-fluid px-3 px-md-5">
+    <div class="row justify-content-center">
+      <div class="col-md-2 d-none d-lg-block">
+        <div class="table-of-contents-wrapper">
+          <div class="list-group" #toc>
+            <a class="list-group-item" [ngClass]="{'active': activeSection === 'Pricing'}" href="#Pricing"
+               pageScroll [pageScrollOffset]="150" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+            >Pricing</a>
+            <a class="list-group-item" [ngClass]="{'active': activeSection === 'FAQ'}" href="#FAQ"
+               pageScroll [pageScrollOffset]="80" [pageScrollAdjustHash]="true" [pageScrollDuration]="1000" [pageScrollEasing]="sectionScrollEasing"
+            >FAQ</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-10">
+        <section id="Pricing">
+          <h2 appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0)'}"
+              [duration]="200" [easing]="'ease-in'" [runOnMobile]="true"
+          >
+            Pricing
+          </h2>
+          <div class="container px-0 px-sm-4">
+            <div class="row gap-5 gap-md-0 gap-lg-3 gap-xl-5 justify-content-center">
+              <div
+                class="col-12 col-md-6 col-lg-5 col-xl-4 col-max-width"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0)'}"
+                [duration]="200" [easing]="'ease-in'" [delay]="300" [runOnMobile]="true"
+              >
+                <app-gradient-container [padding]="'1rem 1rem 0 1rem'">
+                  <div class="pricing-item custom card border-0">
+                    <img class="card-img-top pe-none" src="/assets/images/pricing-custom1.png" alt="custom ai image prompt">
+                    <img class="card-img-top pe-none" src="/assets/images/pricing-custom2.png" alt="custom ai image example">
+                    <div class="p-3">
+                      <p class="pricing-title mb-0">Custom</p>
+                      <p class="pricing-text mb-0">Made from you prompt.</p>
+                      <div class="pricing-value-wrapper">
+                        <mat-icon svgIcon="dollar"></mat-icon>
+                        <span class="space-font large-text">5</span>
+                      </div>
+                      <a class="btn rounded mx-auto w-80 text-white mt-2" routerLink="/generate">Generate</a>
+                    </div>
+                  </div>
+                </app-gradient-container>
+              </div>
+              <div
+                class="col-12 col-md-6 col-lg-5 col-xl-4 col-max-width"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0)'}"
+                [duration]="200" [easing]="'ease-in'" [delay]="300" [runOnMobile]="true"
+              >
+                <app-gradient-container [padding]="'1rem 1rem 0 1rem'">
+                  <div class="pricing-item card border-0">
+                    <img class="card-img-top pe-none" src="/assets/images/pricing-premade.png" alt="ai premade image">
+                    <div class="p-3">
+                      <p class="pricing-title mb-0">Pre-made</p>
+                      <p class="pricing-text mb-0">Ready to use.</p>
+                      <div class="pricing-value-wrapper">
+                        <mat-icon svgIcon="dollar"></mat-icon>
+                        <span class="space-font small-text">per image</span>
+                      </div>
+                      <a class="btn rounded mx-auto w-80 text-white mt-2" routerLink="/images">Explore</a>
+                    </div>
+                  </div>
+                </app-gradient-container>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="FAQ"
+                appear [hide]="{'opacity': 0, 'transform': 'translateY(20px)'}" [show]="{'opacity': 1, 'transform': 'translateY(0)'}"
+                [duration]="200" [easing]="'ease-in'" [delay]="300" [runOnMobile]="true"
+        >
+          <h2 class="mb-5">FAQ</h2>
+          <div class="row gap-5">
+            <div class="d-none d-lg-block col-lg-3">
+              <div class="questionmark-wrapper" #questionmark>
+                <span>?</span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-8">
+              <app-gradient-container [variant]="'transparent'" [padding]="'1rem'">
+                <mat-accordion>
+                  <mat-expansion-panel *ngFor="let item of FAQItems">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <span class="space-font">{{ item.question }}</span>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p>{{ item.answer }}</p>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </app-gradient-container>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</section>

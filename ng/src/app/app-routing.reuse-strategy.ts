@@ -20,7 +20,8 @@ export class ReuseStrategy implements RouteReuseStrategy {
     // if there is some specific check to decice wheather to reuse or not
     ['images',        this.attachImmediately],
     ['control-panel', this.attachImmediately],
-    ['cart',          this.attachImmediately]
+    ['cart',          this.attachImmediately],
+    ['generate',      this.attachImmediately]
   ]);
 
   // enable route reuse - this is called first
@@ -31,7 +32,7 @@ export class ReuseStrategy implements RouteReuseStrategy {
   // if component should be stored for later use (if true store is called)
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     // routes to reuse
-    const reuseRoutes = ['images', 'control-panel', 'cart'];
+    const reuseRoutes = ['images', 'control-panel', 'cart', 'generate'];
     const path = route.routeConfig?.path as string;
     return reuseRoutes.includes(path);
   }

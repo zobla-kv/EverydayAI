@@ -1,6 +1,7 @@
-const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL } = process.env;
+const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL, SERVER_PORT } = process.env;
 const admin = require('firebase-admin');
 const { Decimal } = require('decimal.js');
+const cloudinaryService = require('./cloudinaryService');
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -121,14 +122,32 @@ async function getAllProducts() {
 }
 
 // do all actions after succesful payment
-async function handlePaymentSucceded(userId, order, cartItems) {
+// if isGenerated, cartItems will have imageUrl instead
+async function handlePaymentSucceded(userId, order, cartItems, isGenerated) {
+  // if image bought from generated page
+  if (isGenerated) {
+    // Fetch the user concurrently with cloudinary upload
+    const [cloudinaryResponse, user] = await Promise.all([
+        cloudinaryService.uploadGenerated(cartItems[0]),
+        getUserById(userId)
+    ]);
+    const product = await addGeneratedProduct(cloudinaryResponse);
+    const updatedOwnedItemsTimeMap = _getUpdatedOwnedItemsTimeMap(user.ownedItemsTimeMap, [product.id]);
+    const orderDetails = _getOrderDetailsForGenerated(order, product);
+    return Promise.all([
+        _updateUserAfterPayment(user, order, [product.id], updatedOwnedItemsTimeMap, true),
+        _sendTransactionEmail(user.email, orderDetails)
+    ]);
+  };
+
+  // if bought from cart
   const user = await getUserById(userId);
   const updatedOwnedItemsTimeMap = _getUpdatedOwnedItemsTimeMap(user.ownedItemsTimeMap, cartItems);
   const orderDetails = await _getOrderDetails(order, cartItems);
 
   return Promise.all([
     _incrementProductSoldTimes(cartItems),
-    _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap),
+    _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap, false),
     _sendTransactionEmail(user.email, orderDetails)
   ]);
 }
@@ -138,7 +157,7 @@ function _getUpdatedOwnedItemsTimeMap(ownedItemsTimeMap, cartItems) {
   return cartItems.reduce((prev, curr) => ({ ...prev, [curr]: new Date() }), ownedItemsTimeMap);
 }
 
-// get concstruct order details object
+// get order details object
 // order - capture payment response object
 async function _getOrderDetails(order, cartItems) {
   const products = await getProductsById(cartItems);
@@ -153,9 +172,23 @@ async function _getOrderDetails(order, cartItems) {
   return { id: order.id, items, totalAmount };
 }
 
+// get order details object for generated
+// order - capture payment response object
+function _getOrderDetailsForGenerated(order, product) {
+  const items = [{
+    id: product.id,
+    title: product.title,
+    img: product.imgPath,
+    price: product.price
+  }];
+  const totalAmount = +order.purchase_units[0].payments.captures[0].amount.value;
+
+  return { id: order.id, items, totalAmount };
+}
+
 // send transaction email
 function _sendTransactionEmail(email, orderDetails) {
-  fetch(`${SERVER_URL}/api/email/transaction`, {
+  fetch(`${SERVER_URL}:${SERVER_PORT}/api/email/transaction`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
@@ -165,7 +198,7 @@ function _sendTransactionEmail(email, orderDetails) {
 }
 
 // update user with information about payment
-async function _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap) {
+async function _updateUserAfterPayment(user, order, cartItems, updatedOwnedItemsTimeMap, isGenerated) {
   const totalAmount = +order.purchase_units[0].payments.captures[0].amount.value;
   let totalSpent = new Decimal(user.totalSpent);
   totalSpent = totalSpent.plus(totalAmount);
@@ -178,12 +211,12 @@ async function _updateUserAfterPayment(user, order, cartItems, updatedOwnedItems
       date: new Date()
     }),
     totalSpent: totalSpent.toNumber(),
-    cart: [],
+    ...(!isGenerated && { cart: [] }),
     ownedItems: FieldValue.arrayUnion(...cartItems),
     ownedItemsTimeMap: updatedOwnedItemsTimeMap
   };
 
-  return await db.collection('Users').doc(user.id).update(updateData);
+  return db.collection('Users').doc(user.id).update(updateData);
 }
 
 // increment how many times a product was sold
@@ -202,6 +235,39 @@ async function _incrementProductSoldTimes(cartItems) {
   return batch.commit();
 }
 
+// add generated image product to db
+async function addGeneratedProduct(cloudinaryResponse) {
+  // TODO: add model to FE
+  const product = {
+    // set later
+    id: '',
+    imgPath: cloudinaryResponse.secure_url,
+    creationDate: new Date(),
+    title: 'AI generated',
+    description: 'Generated image',
+    price: 0.1,
+    metadata: {
+      fileSize: cloudinaryResponse.bytes,
+      fileSizeInMb: cloudinaryService.getFileSizeInMb(cloudinaryResponse.bytes),
+      resolution: `${cloudinaryResponse.width}x${cloudinaryResponse.height}`,
+      extension: cloudinaryResponse.format,
+      orientation: cloudinaryService.getImageOrientation(cloudinaryResponse.width, cloudinaryResponse.height)
+    },
+  };
+
+  const docRef = await db.collection('Products_gen').add(product);
+  const productId = docRef.id;
+
+  product.id = 'gen_' + productId;
+
+  await db.collection('Products_gen').doc(productId).update({
+    id: product.id,
+  });
+
+
+  return product;
+}
+
 
 module.exports = {
   generateEmailLink,
@@ -214,5 +280,6 @@ module.exports = {
   getProductById,
   getProductsById,
   getAllProducts,
-  handlePaymentSucceded
+  handlePaymentSucceded,
+  addGeneratedProduct
 };

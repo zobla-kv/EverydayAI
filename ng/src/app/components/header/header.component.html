@@ -24,6 +24,7 @@
       >
         {{ 'Home' }}
       </a>
+      <a routerLink="/generate" routerLinkActive="nav-active">{{ 'Generate' }}</a>
       <a routerLink="/images" routerLinkActive="nav-active">{{ 'Images' }}</a>
       <a routerLink="/control-panel" routerLinkActive="nav-active" *ngIf="isAdmin">
         {{ 'Admin' }}
@@ -83,6 +84,11 @@
             <li>
               <a routerLink="/" routerLinkActive="nav-active-mobile" [routerLinkActiveOptions]="{exact: true}">
                 <span>Home</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/generate" routerLinkActive="nav-active-mobile">
+                <span>Generate</span>
               </a>
             </li>
             <li>

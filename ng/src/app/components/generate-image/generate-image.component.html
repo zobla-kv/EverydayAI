@@ -1,0 +1,208 @@
+<h1 class="glow-text text-center">AI Wallpaper Generator</h1>
+<div class="form-section container-fluid mt-5">
+  <app-gradient-container [padding]="'2rem'">
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" enctype="multipart/form-data">
+      <div class="row justify-content-between">
+        <div class="col-12 col-lg-4">
+          <div class="form-group">
+            <label for="Select device" class="mb-1">Select your device:</label><br>
+            <ng-container *ngFor="let device of ['mobile', 'pc']; let i = index">
+              <span *ngIf="i !== 0" class="ms-4 d-block d-sm-inline mt-2 mt-sm-0"></span>
+              <app-gradient-checkbox
+                type="radio"
+                controlName="device"
+                [control]="form.get('device')"
+                [value]="device"
+                [checked]="device === form.get('device')?.value"
+              >
+              </app-gradient-checkbox>
+              <span class="ms-2">
+                {{ device === 'pc' ? 'PC / Laptop (16:9)' : 'Mobile (9:16)' }}
+              </span>
+            </ng-container>
+          </div>
+          <div class="form-group mt-4">
+            <label for="prompt" class="mb-1">Prompt:</label>
+            <textarea
+              class="form-control shadow-none"
+              name="prompt"
+              id="prompt"
+              formControlName="prompt"
+              rows="6"
+            >
+            </textarea>
+            <span
+              *ngIf="form.get('prompt')?.hasError('required') && form.get('prompt')?.touched"
+              class="input-validation-error-message">Prompt can not be empty
+            </span>
+          </div>
+          <div class="form-buttons-wrapper d-flex justify-content-center mt-4 mt-lg-5 gap-4">
+            <button type="button" class="btn rounded text-white" (click)="showPromptExample()">Prompt example</button>
+            <button type="submit" class="btn rounded text-white">
+              <mat-spinner
+                *ngIf="showSpinner; else noSpinner"
+                diameter="25"
+                strokeWidth="4"
+              ></mat-spinner>
+              <ng-template #noSpinner>Generate</ng-template>
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-7 mt-5 mt-lg-0">
+          <div class="generated-image-wrapper flex-center flex-column h-100">
+            <ng-container *ngIf="!imageUrl; else image">
+              <mat-icon>photo_library</mat-icon>
+              <p>Waiting for image.</p>
+            </ng-container>
+            <ng-template #image>
+              <img [src]="imageUrl" alt="generated image" [ngClass]="imageOrientation" class="pe-none">
+              <button *ngIf="!enableDownload" type="button" class="mx-auto btn rounded text-white mt-5" (click)="handleBuy()">Buy</button>
+              <button *ngIf="enableDownload" type="button" class="mx-auto btn rounded text-white mt-5" (click)="handleDownload()">Download</button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </form>
+  </app-gradient-container>
+</div>
+
+<section class="how-it-works-section">
+  <div class="container">
+    <h2 class="text-center">How it works?</h2>
+    <ol class="step-list">
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Choose your device</p>
+              <p>This will determine the image resolution.</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon>important_devices</mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Click prompt example button</p>
+              <p>See how to get best results.</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon svgIcon="click" [ngStyle]="{'height': '25px'}"></mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Write your prompt</p>
+              <p>Describe your perfect image.</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon svgIcon="write" [ngStyle]="{'height': '25px'}"></mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Buy the image</p>
+              <p>Make it yours.</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon svgIcon="payment" [ngStyle]="{'height': '25px'}"></mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Download the image</p>
+              <p>Download and use!</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon [style]="{'transform': 'scale(5)'}">download</mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">Follow us on
+                <a
+                  href="https://www.instagram.com/everydayai.io/"
+                  target="_blank"
+                  class="glow-text text-reset text-decoration-none"
+                >
+                  instagram
+                </a>
+              </p>
+              <p>Connect with us and stay up to date with latest news and events in the world of AI.</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon>favorite_border</mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="step-list__item">
+        <div class="step-list__item__inner">
+          <div class="content">
+            <div class="body">
+              <p class="step-item-title">To eternity and beyond</p>
+              <p>To be continued...</p>
+            </div>
+            <div class="icon-wrapper">
+              <div class="icon-shadow" appear [threshold]="1" [duration]="1200"></div>
+              <mat-icon>all_inclusive</mat-icon>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<app-modal id="auth" title="Not logged in!" [hideFooter]="true">
+  <p>Because you are not logged in you will not be able to keep the image for future use.</p>
+  <button class="btn rounded" (click)="handleLogin()">Login</button>
+</app-modal>
+
+<app-modal id="payment" title="Payment" [hideFooter]="true">
+  <p class="mb-0">Total: 5.00 $</p>
+  <div id="paypalButtonsContainer"></div>
+</app-modal>
+
+<app-modal id="prompt-example" title="Prompt example" actionButtonText="Copy" (confirm)="handleCopy()">
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <img src="/assets/images/prompt-example.png" alt="AI owl prompt example" class="pe-none">
+    </div>
+    <div class="col-12 col-md-8 mt-4 mt-md-0">
+      <div class="border rounded py-2 px-3">
+        <i class="prompt-text">{{ promptExample }}</i>
+      </div>
+      <ul class="mt-3 px-2">
+        <span class="list-header">Tips</span>
+        <li *ngFor="let tip of promptTips">{{ tip }}</li>
+      </ul>
+    </div>
+  </div>
+</app-modal>

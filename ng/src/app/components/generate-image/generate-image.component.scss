@@ -1,0 +1,371 @@
+@import '../../styles/variables';
+
+
+.form-section {
+  max-width: 1200px;
+
+  textarea {
+    background: transparent;
+    outline: none;
+    resize: none;
+    border-color: white;
+    color: white;
+  }
+
+  .form-buttons-wrapper {
+    padding: 0 1rem;
+
+    button {
+      width: 185px;
+      line-height: 0.9rem;
+    }
+  }
+
+  .generated-image-wrapper {
+    mat-icon { transform: scale(5); }
+    p {
+      position: relative;
+      top: 3.75rem;
+    }
+
+    img {
+      display: block;
+      margin: auto;
+      &.portrait {
+        width: 100%;
+        max-width: 300px;
+        height: 100%;
+      }
+
+      &.landscape {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+::ng-deep .modal#prompt-example {
+  .modal-title { margin: auto; }
+  .modal-dialog { max-width: 800px; }
+
+  .list-header { font-size: 1.25rem; }
+  ul li { margin-left: 1.1rem; }
+}
+
+// either here or in modal
+::ng-deep .modal#auth,
+::ng-deep .modal#payment {
+  .modal-title { margin: auto; }
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #paypalButtonsContainer {
+    width: 90%;
+    min-height: 200px;
+    display: flex;
+    align-items: center
+  }
+}
+
+::ng-deep .modal#payment .modal-title {
+  position: relative;
+  left: 0.75rem;
+}
+
+// NIJE 100% isti kao home page old
+.how-it-works-section {
+  margin-top: 8rem;
+
+  h2 { margin-bottom: 6rem; }
+
+  @mixin breakpoint($point) {
+    @if $point == big {
+      @media screen and (min-width: 601px) { @content; }
+    }
+    @else if $point == small {
+      @media screen and (max-width: 600px) { @content; }
+    }
+  }
+
+
+  $connectorHeight: 42px;
+  $connectorBorderWidth: 1px;
+  $connectorBorderColor: white;
+
+  $circleSizeSmall: 36px;
+  $circlePaddingSmall: 0px;
+
+  $circleSizeLarge: 174px;
+  $circlePaddingLarge: 48px;
+
+  .step-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .step-list__item {
+    counter-increment: step-counter;
+    position: relative;
+
+    &:before {
+      content: counter(step-counter);
+      background: -webkit-linear-gradient($gradient-start, $gradient-end);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 300;
+      color: $connectorBorderColor;
+      font-family: $space-font;
+    }
+
+    .step-item-title {
+      font-family: $space-font;
+      font-size: 24px;
+      line-height: 30px;
+    }
+
+    .icon-wrapper {
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $main-dark-bg-color;
+      position: relative;
+
+      .icon-shadow {
+        content: '';
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0px 20px white;
+        -webkit-box-shadow: 0 0px 20px white;
+        -moz-box-shadow: 0 0px 20px white;
+
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .mat-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: scale(4);
+      }
+
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 18px;
+    }
+
+    .body {
+      font-size: 12px;
+      line-height: 18px;
+      font-weight: 300;
+    }
+
+    &:nth-child(odd) .content { justify-content: flex-start; }
+    &:nth-child(even) .content { justify-content: flex-end; }
+
+    &:first-child > .step-list__item__inner::before,
+    &:last-child > .step-list__item__inner::after { content: none; }
+
+    & + li {
+      margin-top: $connectorHeight * 2;
+      & > div { margin-top: -$connectorBorderWidth; }
+    }
+
+    @include breakpoint(small) {
+      display: flex;
+      height: 125px;
+      padding-left: 1rem;
+
+      & + li { margin-top: $connectorHeight; }
+
+      &:first-child:before {
+        left: -2px;
+        margin-right: 1.5rem;
+      }
+
+      &:before {
+        content: counter(step-counter);
+        position: relative;
+        font-size: 36px;
+        line-height: 26px;
+        margin-right: 12px;
+        position: relative;
+        left: -8px;
+      }
+
+      .icon-wrapper {
+        order: 0;
+        width: $circleSizeSmall;
+        height: $circleSizeSmall;
+        padding: $circlePaddingSmall;
+        position: absolute;
+        left: 8px;
+        top: 42px;
+
+        .icon-shadow { display: none; }
+        .mat-icon { transform: scale(1) !important; }
+      }
+
+      .content {
+        align-items: flex-start;
+
+        &:before {
+          content: '';
+          position: absolute;
+          border-left: $connectorBorderColor;
+          height: 75px;
+          left: 26px;
+          bottom: 0;
+          display: block;
+          width: 1px;
+          background: $connectorBorderColor;
+          top: 84px;
+        }
+      }
+
+      .body {
+        order: 1;
+        margin-top: 8px;
+        margin-left: 12px;
+      }
+
+      &:last-child .content::before { content: none; }
+    }
+
+    @include breakpoint(big) {
+      &:before {
+        content: counter(step-counter);
+        position: absolute;
+        font-size: 90px;
+        line-height: 1;
+        font-weight: 300;
+        color: #d8d8d8;
+      }
+
+      .icon-wrapper {
+        width: $circleSizeLarge;
+        height: $circleSizeLarge;
+        padding: $circlePaddingLarge;
+      }
+
+      .body {
+        flex: 0 1 33.3333%;
+        margin-top: $connectorHeight * 2;
+      }
+
+      .content { align-items: flex-end; }
+
+      > .step-list__item__inner {
+        position: relative;
+          &:before,
+          &:after {
+            border-width: 0px;
+            border-style: solid;
+            border-color: $connectorBorderColor;
+            display: block;
+            content: '';
+            position: absolute;
+            height: $connectorHeight;
+            width: calc( 33.3333% - #{$connectorHeight} );
+          }
+
+
+      }
+
+      &:nth-child(odd) {
+        > .step-list__item__inner {
+          text-align: right;
+          &:before,
+          &:after {
+            border-left-width: $connectorBorderWidth;
+            left: calc( 33.3333% - #{calc($connectorHeight / 2)} );
+          }
+          &:before {
+            border-top-width: $connectorBorderWidth;
+            border-top-left-radius: $connectorHeight;
+            margin-top: -$connectorHeight;
+            z-index: -1;
+          }
+          &:after {
+            border-bottom-width: $connectorBorderWidth;
+            border-bottom-left-radius: $connectorHeight;
+            margin-bottom: -$connectorHeight;
+            z-index: -1;
+          }
+        }
+
+        &:before {
+          left: 0;
+          margin-left: 33.3333%;
+          transform: translateX(-100%);
+        }
+
+        .icon-wrapper { margin-left: 72px; }
+      }
+
+      &:nth-child(even) {
+        > .step-list__item__inner {
+          &:before,
+          &:after {
+            border-right-width: $connectorBorderWidth;
+            right: calc( 33.3333% - #{calc($connectorHeight / 2)} );
+          }
+          &:before {
+            border-top-width: $connectorBorderWidth;
+            border-top-right-radius: $connectorHeight;
+            margin-top: -$connectorHeight;
+            z-index: -1;
+          }
+          &:after {
+            border-bottom-width: $connectorBorderWidth;
+            border-bottom-right-radius: $connectorHeight;
+            margin-bottom: -$connectorHeight;
+            z-index: -1;
+          }
+        }
+
+        &:before {
+          right: 0;
+          margin-right: 33.3333%;
+          transform: translateX(100%);
+        }
+
+        .icon-wrapper { margin-right: 72px; }
+        .body { order: 1; }
+      }
+
+    }
+  }
+}
+
+/* MEDIA QUERIES */
+// smaller than 992px
+@media only screen and (max-width: 992px) {
+  .generated-image-wrapper:has(mat-icon) {
+    height: 200px !important;
+  }
+}
+// smaller than 768px
+@media only screen and (max-width: 768px) {
+  ::ng-deep .modal#prompt-example {
+    img {
+      max-width: 150px;
+      margin: auto;
+      display: block;
+    }
+
+    .prompt-text { font-size: 14px; }
+  }
+}

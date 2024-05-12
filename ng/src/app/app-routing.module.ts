@@ -9,7 +9,9 @@ import {
   XFormComponent,
   ShoppingCartComponent,
   CPanelComponent,
-  ProductDetailsComponent
+  ProductDetailsComponent,
+  HomePageNewComponent,
+  GenerateImageComponent
 } from '@app/components';
 
 import {
@@ -19,10 +21,20 @@ import {
 } from './app.guard';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   title: 'Best AI images',
+  //   component: HomePageComponent
+  // },
   {
     path: '',
-    title: 'Best AI images',
-    component: HomePageComponent
+    title: 'Generate custom wallpaper images with AI, instantly',
+    component: HomePageNewComponent
+  },
+  {
+    path: 'generate',
+    title: 'AI Wallpaper Generator',
+    component: GenerateImageComponent
   },
   {
     path: 'images',

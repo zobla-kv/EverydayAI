@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 // storage keys
 export enum StorageKey {
   STORED_ROUTE = 'stored_route',
-  GOOGLE_AUTH = 'g_a'
+  GOOGLE_AUTH = 'g_a',
+  GENERATED_IMAGE_DATA = 'gen_img_data'
 }
 
 /**

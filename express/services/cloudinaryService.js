@@ -17,6 +17,8 @@ cloudinary.config({
 const imageFolder = ENV.toLowerCase()[0];
 // upload watermark manually before everything else (nested syntax - hod:d:watermark.png)
 const watermarkImage = 'watermark';
+// where are generated image stored
+const generatedImagesFolder = `${ENV.toLowerCase()[0]}_gen`;
 
 // upload image to
 // TODO: upload goes through if other things fail (firebase or elastic)
@@ -112,8 +114,34 @@ async function get(req, res, next) {
 
 }
 
+// upload generated image
+function uploadGenerated(imageUrl) {
+  return cloudinary.v2.uploader.upload(imageUrl, {
+    folder: generatedImagesFolder,
+    resource_type: 'image',
+    type: 'private'
+  });
+}
+
+// convert file size from bytes to mb
+function getFileSizeInMb(bytes) {
+  let fileSize = (bytes / (1024 * 1024)).toFixed(1);
+  if (fileSize === '0.0') {
+    fileSize = '0.1';
+  }
+  return fileSize + ' mb';
+}
+
+// get image orientation
+function getImageOrientation(width, height) {
+  return width > height ? 'landscape' : 'portrait';
+}
+
 
 module.exports = {
   upload,
-  get
+  get,
+  uploadGenerated,
+  getFileSizeInMb,
+  getImageOrientation
 }

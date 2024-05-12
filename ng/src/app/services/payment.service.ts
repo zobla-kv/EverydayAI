@@ -14,13 +14,13 @@ export class PaymentService {
   ) {}
 
   // creates order
-  async createOrder(userId: string, cartItems: string[]): Promise<string> {
-    return this._http.createOrder(userId, cartItems);
+  async createOrder(userId: string, cartItems: string[], isGenerated: boolean): Promise<string> {
+    return this._http.createOrder(userId, cartItems, isGenerated);
   }
 
   // handle payment approve
-  async handlePaymentApprove(userId: string, orderId: string, cartItems: string[]): Promise<void> {
-    return this._http.captureOrder(userId, orderId, cartItems)
+  async handlePaymentApprove(userId: string, orderId: string, cartItems: string[], isGenerated: boolean): Promise<void> {
+    return this._http.captureOrder(userId, orderId, cartItems, isGenerated)
   }
 
 }

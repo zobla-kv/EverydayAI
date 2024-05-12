@@ -48,6 +48,8 @@ img {
   src: url('../../assets/fonts/SpaceColony-Bold.ttf') format('truetype');
 }
 
+.space-font { font-family: $space-font; }
+
 h1, h2, h3, h4, h5 { font-family: $space-font; }
 
 .viewport-height { min-height: $viewport-height-without-header; }

@@ -33,6 +33,8 @@ export class ToastMessages {
   // general
   static SOMETHING_WENT_WRONG = 'Something went wrong. Please try again.';
   static PRODUCT_ADDED_TO_OWNED_ITEMS = 'Download started and image is now owned.';
+  static COPY_PROMPT_CLIPBOARD_SUCCESSFUL = 'Prompt copied to clipboard.';
+  static COPY_PROMPT_CLIPBOARD_FAILED = 'Failed to copy prompt to clipboard.';
 
   // auth
   static AUTH_FAILED = 'Failed to authenticate. Please try again.';
@@ -47,6 +49,7 @@ export class ToastMessages {
   static PAYMENT_FAILED_TO_INITIALIZE_PAYMENT = 'Failed to initialize payment. Please try again.';
   static PAYMENT_FAILED_TO_PROCESS_PAYMENT = 'Failed to process payment. Please try again.';
   static PAYMENT_SUCCESSFUL = 'Payment sucessful. Enjoy your new image(s)!';
+  static PAYMENT_SUCCESSFUL_DOWNLOAD_ENABLED = 'Payment sucessful. You can now download the image.';
 
   // control panel
   static CPANEL_PRODUCT_ADDED = 'New product added successfuly.';

@@ -62,9 +62,9 @@ export class HttpService {
   }
 
   // create order
-  createOrder(userId: string, cartItems: string[]): Promise<string> {
+  createOrder(userId: string, cartItems: string[], isGenerated: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
-      this._http.post<createOrderApiResponse>(`${environment.API_HOST}/api/paypal/create-order`, { userId, cartItems })
+      this._http.post<createOrderApiResponse>(`${environment.API_HOST}/api/paypal/create-order`, { userId, cartItems, isGenerated })
       .subscribe({
         next: (response: createOrderApiResponse) => resolve(response.orderId),
         error: (err: HttpErrorResponse) => reject(err.error)
@@ -73,9 +73,9 @@ export class HttpService {
   }
 
   // capture order
-  captureOrder(userId: string, orderId: string, cartItems: string[]): Promise<void> {
+  captureOrder(userId: string, orderId: string, cartItems: string[], isGenerated: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._http.post(`${environment.API_HOST}/api/paypal/capture-order`, { userId, orderId, cartItems }, { responseType: 'text' })
+      this._http.post(`${environment.API_HOST}/api/paypal/capture-order`, { userId, orderId, cartItems, isGenerated }, { responseType: 'text' })
       .subscribe({
         next: () => resolve(),
         error: (err: HttpErrorResponse) => reject(err.error)
@@ -158,6 +158,12 @@ export class HttpService {
       .subscribe()
     })
   }
+
+  // get generated image from prompt
+  getImageFromPrompt(device: 'mobile' | 'pc', prompt: string): Observable<string> {
+    const endpoint = `${environment.API_HOST}/api/ai/generate-image?device=${device}&prompt=${prompt}`;
+    return this._http.get<string>(endpoint).pipe(first());
+  };
 
   // bypass circular dependency using injector
   // private _injector: Injector,

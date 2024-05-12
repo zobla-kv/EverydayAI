@@ -19,3 +19,5 @@ export * from './loading/loading.component';
 export * from './star-background/star-background.component';
 export * from './gradient-container/gradient-container.component';
 export * from './gradient-checkbox/gradient-checkbox.component';
+export * from './home-page-new/home-page-new.component';
+export * from './generate-image/generate-image.component';

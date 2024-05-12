@@ -166,9 +166,9 @@ export class ShoppingCartComponent implements OnDestroy {
         shape:  'rect',
         label:  'paypal'
       },
-      createOrder: (data: any, actions: any) => this._paymentService.createOrder(this.user.id, this.user.cart),
+      createOrder: (data: any, actions: any) => this._paymentService.createOrder(this.user.id, this.user.cart, false),
       onApprove: (data: any, actions: any) => {
-        this._paymentService.handlePaymentApprove(this.user.id, data.orderID, this.user.cart)
+        this._paymentService.handlePaymentApprove(this.user.id, data.orderID, this.user.cart, false)
         .then(() => {
           this._authService.updateUser();
           this._toast.showSuccessMessage(ToastMessages.PAYMENT_SUCCESSFUL);

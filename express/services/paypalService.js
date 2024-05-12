@@ -44,11 +44,24 @@ function isTokenExpired() {
   return false;
 }
 
-// userId - string, cartItems - string[]
-async function createOrder(userId, cartItems) {
+// userId - string, cartItems - string[], isGenerated - boolean, is payment coming from generated page or cart
+async function createOrder(userId, cartItems, isGenerated) {
   const token = await getAccessToken();
 
-  const products = await firebaseService.getProductsById(cartItems);
+  let products;
+
+  if (isGenerated) {
+    // generated product placeholder
+    products = [{
+      id: '1',
+      title: 'AI generated',
+      discount: 0,
+      price: 0.1 // price of AI generated (needs to match FE)
+    }];
+  } else {
+    products = await firebaseService.getProductsById(cartItems);
+  }
+
 
   return fetch(`${PAYPAL_REST_API_HOST}/v2/checkout/orders`, {
     method: 'POST',
@@ -106,7 +119,7 @@ async function createOrder(userId, cartItems) {
 }
 
 // orderId - string
-async function captureOrder(userId, orderId, cartItems) {
+async function captureOrder(userId, orderId, cartItems, isGenerated) {
   const token = await getAccessToken();
 
   return fetch(`${PAYPAL_REST_API_HOST}/v2/checkout/orders/${orderId}/capture`, {
@@ -120,7 +133,7 @@ async function captureOrder(userId, orderId, cartItems) {
   .then(async order => {
     // NOTE: payment succeeded at this point, if some of these fail ignore the error.
     // User will not own item if this fails. Same if user is disconnect from internet while processing payment.
-    return firebaseService.handlePaymentSucceded(userId, order, cartItems)
+    return firebaseService.handlePaymentSucceded(userId, order, cartItems, isGenerated)
     .catch(err => err);
   });
 
