@@ -245,7 +245,7 @@ async function addGeneratedProduct(cloudinaryResponse) {
     creationDate: new Date(),
     title: 'AI generated',
     description: 'Generated image',
-    price: 0.1,
+    price: 5,
     metadata: {
       fileSize: cloudinaryResponse.bytes,
       fileSizeInMb: cloudinaryService.getFileSizeInMb(cloudinaryResponse.bytes),

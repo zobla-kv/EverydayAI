@@ -56,7 +56,7 @@ async function createOrder(userId, cartItems, isGenerated) {
       id: '1',
       title: 'AI generated',
       discount: 0,
-      price: 0.1 // price of AI generated (needs to match FE)
+      price: 5 // price of AI generated (needs to match FE)
     }];
   } else {
     products = await firebaseService.getProductsById(cartItems);
