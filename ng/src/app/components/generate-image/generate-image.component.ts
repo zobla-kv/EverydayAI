@@ -58,7 +58,8 @@ export class GenerateImageComponent implements OnInit, OnDestroy {
   user: CustomUser | null;
 
   // enable download
-  enableDownload = true;
+  // TODO: add spinner
+  enableDownload = false;
 
   constructor(
     private _authService: AuthService,
