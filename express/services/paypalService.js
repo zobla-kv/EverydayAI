@@ -76,8 +76,8 @@ async function createOrder(userId, cartItems, isGenerated) {
           paypal: {
             experience_context: {
               brand_name: 'EverydayAI',
-              // shipping_preference: 'NO_SHIPPING',
-              shipping_preference: 'GET_FROM_FILE',
+              shipping_preference: 'NO_SHIPPING',
+              // shipping_preference: 'GET_FROM_FILE',
               payment_method_preference: 'IMMEDIATE_PAYMENT_REQUIRED'
             }
           }
