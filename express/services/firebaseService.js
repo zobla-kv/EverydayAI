@@ -1,7 +1,7 @@
 const { FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL, NG_URL, SERVER_URL, SERVER_PORT } = process.env;
 const admin = require('firebase-admin');
 const { Decimal } = require('decimal.js');
-const cloudinaryService = require('./cloudinaryService');
+const utilService = require('./utilService');
 
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -122,13 +122,15 @@ async function getAllProducts() {
 }
 
 // do all actions after succesful payment
-// if isGenerated, cartItems will have imageUrl instead
-async function handlePaymentSucceded(userId, order, cartItems, isGenerated) {
+// if isGenerated, cartItems will have imageUrl instead and cb will be available
+async function handlePaymentSucceded(userId, order, cartItems, isGenerated, cb) {
   // if image bought from generated page
   if (isGenerated) {
-    // Fetch the user concurrently with cloudinary upload
+    console.log('handlePaymentSucceded with isGenerated')
+    console.log('handlePaymentSucceded with isGenerated cb: ', cb)
+    // Fetch the user concurrently with cloudinary upload (cb)
     const [cloudinaryResponse, user] = await Promise.all([
-        cloudinaryService.uploadGenerated(cartItems[0]),
+        cb(cartItems[0]),
         getUserById(userId)
     ]);
     const product = await addGeneratedProduct(cloudinaryResponse);
@@ -245,13 +247,13 @@ async function addGeneratedProduct(cloudinaryResponse) {
     creationDate: new Date(),
     title: 'AI generated',
     description: 'Generated image',
-    price: 5,
+    price: 0.1,
     metadata: {
       fileSize: cloudinaryResponse.bytes,
-      fileSizeInMb: cloudinaryService.getFileSizeInMb(cloudinaryResponse.bytes),
+      fileSizeInMb: utilService.getFileSizeInMb(cloudinaryResponse.bytes),
       resolution: `${cloudinaryResponse.width}x${cloudinaryResponse.height}`,
       extension: cloudinaryResponse.format,
-      orientation: cloudinaryService.getImageOrientation(cloudinaryResponse.width, cloudinaryResponse.height)
+      orientation: utilService.getImageOrientation(cloudinaryResponse.width, cloudinaryResponse.height)
     },
   };
 

@@ -64,6 +64,9 @@ async function upload(req, res, next) {
 
 // get single image
 async function get(req, res, next) {
+  console.log('cloudinaryService get fired');
+  console.log('cloudinaryService get req.params.id: ', req.params.id);
+  console.log('cloudinaryService get req.query.uid: ', req.query.uid);
 
   // block different host other than FE from accessing endpoint
   // TODO: can be made top level middleware for all
@@ -123,25 +126,11 @@ function uploadGenerated(imageUrl) {
   });
 }
 
-// convert file size from bytes to mb
-function getFileSizeInMb(bytes) {
-  let fileSize = (bytes / (1024 * 1024)).toFixed(1);
-  if (fileSize === '0.0') {
-    fileSize = '0.1';
-  }
-  return fileSize + ' mb';
-}
 
-// get image orientation
-function getImageOrientation(width, height) {
-  return width > height ? 'landscape' : 'portrait';
-}
 
 
 module.exports = {
   upload,
   get,
-  uploadGenerated,
-  getFileSizeInMb,
-  getImageOrientation
+  uploadGenerated
 }

@@ -56,7 +56,7 @@ async function createOrder(userId, cartItems, isGenerated) {
       id: '1',
       title: 'AI generated',
       discount: 0,
-      price: 5 // price of AI generated (needs to match FE)
+      price: 0.1 // price of AI generated (needs to match FE)
     }];
   } else {
     products = await firebaseService.getProductsById(cartItems);
@@ -111,6 +111,7 @@ async function createOrder(userId, cartItems, isGenerated) {
   })
   .then(response => response.json())
   .then(order => {
+    console.log('create order response: ', order);
     if (order.name === 'INVALID_REQUEST' | order.name === 'UNPROCESSABLE_ENTITY') {
       throw new Error('Unable to create order due to: ' + order.message);
     }
@@ -131,9 +132,18 @@ async function captureOrder(userId, orderId, cartItems, isGenerated) {
   })
   .then(response => response.json())
   .then(async order => {
+    console.log('capture order response: ', order);
     // NOTE: payment succeeded at this point, if some of these fail ignore the error.
     // User will not own item if this fails. Same if user is disconnect from internet while processing payment.
-    return firebaseService.handlePaymentSucceded(userId, order, cartItems, isGenerated)
+    // basically this depends on god's will that it will work
+
+    // pass cloudinary method as callback to avoid circular dependency
+    let cb;
+    if (isGenerated) {
+      cb = cloudinaryService.uploadGenerated;
+    }
+
+    return firebaseService.handlePaymentSucceded(userId, order, cartItems, isGenerated, cb)
     .catch(err => err);
   });
 
