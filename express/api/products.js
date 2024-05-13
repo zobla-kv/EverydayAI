@@ -26,7 +26,8 @@ productsRouter.get('/search/:text', elasticService.search, (req, res) => {
   res.status(200).json(res.ids);
 });
 
-productsRouter.get('/download/:id', cloudinaryService.get);
+productsRouter.get('/download/:id', cloudinaryService.getProductListImage);
+productsRouter.get('/download-url', cloudinaryService.getByUrl);
 
 // // disable it when done because it is not needed for prod, or implement protection
 // productsRouter.get('/collection/:id', async (req, res) => {

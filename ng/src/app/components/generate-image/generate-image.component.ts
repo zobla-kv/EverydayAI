@@ -208,11 +208,10 @@ export class GenerateImageComponent implements OnInit, OnDestroy {
   // hanle download - this is FE download that differs from product list download
   async handleDownload() {
     try {
-      const response = await fetch(this.imageUrl);
-      const blob = await response.blob();
+      const chunks = await this._httpService.downloadImageByUrl(this.imageUrl);
+      const blob = new Blob(chunks);
 
-      const randomString = Math.random().toString(36).substring(2, 8); // lenght 6
-      const fileName = `everyday-ai.io_${randomString}.jpg`;
+      const fileName = this.getDownloadImageFileName();
 
       const a = document.createElement('a');
       const url = window.URL.createObjectURL(blob);
@@ -220,8 +219,8 @@ export class GenerateImageComponent implements OnInit, OnDestroy {
       a.download = fileName;
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
 
+      document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }
     catch (err) {
@@ -240,6 +239,26 @@ export class GenerateImageComponent implements OnInit, OnDestroy {
 
     this._toast.showSuccessMessage(ToastMessages.COPY_PROMPT_CLIPBOARD_SUCCESSFUL);
     this._modalService.actionComplete$.next(true);
+  }
+
+  // create name of the file to download
+  getDownloadImageFileName(): string {
+    let fileName = 'everyday-ai.io_';
+    const promptValue = this.form.get('prompt')?.value;
+
+    if (!promptValue || promptValue.split(' ').length < 3) {
+      const randomString = Math.random().toString(36).substring(2, 8); // lenght 6
+      return fileName + randomString + '.jpg';
+    }
+
+    // Split the string into an array of words
+    const wordsArray = this.form.get('prompt')?.value.split(' ');
+    // Get the first three words as an array
+    const firstThreeWords = wordsArray.slice(0, 3);
+    // Concatenate the first three words into a single string
+    const concatenatedString = firstThreeWords.join(' ');
+
+    return fileName + concatenatedString + '.jpg';
   }
 
   ngOnDestroy() {

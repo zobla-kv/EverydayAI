@@ -5,7 +5,7 @@ const { ENV, NG_URL, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_S
 const Https = require('https');
 const cloudinary = require('cloudinary');
 const { Readable } = require('stream');
-const { getUserById, getProductById } = require('./firebaseService');
+const { getUserById, getProductById, getProductByIdFromGenerated } = require('./firebaseService');
 
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -63,7 +63,7 @@ async function upload(req, res, next) {
 }
 
 // get single image
-async function get(req, res, next) {
+async function getProductListImage(req, res, next) {
   // block different host other than FE from accessing endpoint
   // TODO: can be made top level middleware for all
   if (ENV === 'production') {
@@ -122,11 +122,14 @@ function uploadGenerated(imageUrl) {
   });
 }
 
-
-
+// download the from url
+async function getByUrl(req, res, next) {
+  Https.get(req.query.url, (imgResponse) => imgResponse.pipe(res));
+}
 
 module.exports = {
   upload,
-  get,
-  uploadGenerated
+  getProductListImage,
+  uploadGenerated,
+  getByUrl
 }

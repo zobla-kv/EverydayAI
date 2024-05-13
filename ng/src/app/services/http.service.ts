@@ -165,6 +165,32 @@ export class HttpService {
     return this._http.get<string>(endpoint).pipe(first());
   };
 
+  // get product image from BE with percentage
+  // NOTE: WHY UNUSED: can't have percentage and avoid showing blob url (below file name) in download manager
+  // to download create blobUrl from returned chunks and a.href = blobUrl
+  async downloadImageByUrl(url: string): Promise<any> {
+    const encodedUrl = encodeURIComponent(url);
+    const response = await fetch(`${environment.API_HOST}/api/products/download-url?url=${encodedUrl}`);
+    if (response.body) {
+      let percentageDownloaded = 0;
+      const fileSize = response.headers.get('Content-Length');
+      const chunks = [];
+
+      const reader = response.body.getReader();
+      while (true) {
+        const { done, value: chunk } = await reader.read();
+        if (done) {
+          reader.releaseLock();
+          return chunks;
+        }
+
+        // NOTE: Formula to calculate percentage of something ((portion/total) * 100) + '%'
+        percentageDownloaded += (chunk.length/Number(fileSize)) * 100;
+        chunks.push(chunk);
+      }
+    }
+  }
+
   // bypass circular dependency using injector
   // private _injector: Injector,
   // this._injector.get<FirebaseService>(FirebaseService);
@@ -239,32 +265,6 @@ export class HttpService {
   //   .pipe(
   //     catchError(async err => [])
   //   )
-  // }
-
-
-  // // get product image from BE with percentage
-  // // NOTE: WHY UNUSED: can't have percentage and avoid showing blob url (below file name) in download manager
-  // // to download create blobUrl from returned chunks and a.href = blobUrl
-  // async getProductImage(id: string): Promise<any> {
-  //   const response = await fetch(`${environment.API_HOST}/api/download-product/${id}`);
-  //   if (response.body) {
-  //     let percentageDownloaded = 0;
-  //     const fileSize = response.headers.get('Content-Length');
-  //     const chunks = [];
-
-  //     const reader = response.body.getReader();
-  //     while (true) {
-  //       const { done, value: chunk } = await reader.read();
-  //       if (done) {
-  //         reader.releaseLock();
-  //         return chunks;
-  //       }
-
-  //       // NOTE: Formula to calculate percentage of something ((portion/total) * 100) + '%'
-  //       percentageDownloaded += (chunk.length/Number(fileSize)) * 100;
-  //       chunks.push(chunk);
-  //     }
-  //   }
   // }
 
 }
