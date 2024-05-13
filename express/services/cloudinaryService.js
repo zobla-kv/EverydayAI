@@ -64,10 +64,6 @@ async function upload(req, res, next) {
 
 // get single image
 async function get(req, res, next) {
-  console.log('cloudinaryService get fired');
-  console.log('cloudinaryService get req.params.id: ', req.params.id);
-  console.log('cloudinaryService get req.query.uid: ', req.query.uid);
-
   // block different host other than FE from accessing endpoint
   // TODO: can be made top level middleware for all
   if (ENV === 'production') {

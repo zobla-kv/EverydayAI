@@ -126,8 +126,6 @@ async function getAllProducts() {
 async function handlePaymentSucceded(userId, order, cartItems, isGenerated, cb) {
   // if image bought from generated page
   if (isGenerated) {
-    console.log('handlePaymentSucceded with isGenerated')
-    console.log('handlePaymentSucceded with isGenerated cb: ', cb)
     // Fetch the user concurrently with cloudinary upload (cb)
     const [cloudinaryResponse, user] = await Promise.all([
         cb(cartItems[0]),
@@ -247,7 +245,7 @@ async function addGeneratedProduct(cloudinaryResponse) {
     creationDate: new Date(),
     title: 'AI generated',
     description: 'Generated image',
-    price: 0.1,
+    price: 5,
     metadata: {
       fileSize: cloudinaryResponse.bytes,
       fileSizeInMb: utilService.getFileSizeInMb(cloudinaryResponse.bytes),

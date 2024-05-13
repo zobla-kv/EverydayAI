@@ -58,7 +58,7 @@ export class GenerateImageComponent implements OnInit, OnDestroy {
   user: CustomUser | null;
 
   // enable download
-  enableDownload = false;
+  enableDownload = true;
 
   constructor(
     private _authService: AuthService,
