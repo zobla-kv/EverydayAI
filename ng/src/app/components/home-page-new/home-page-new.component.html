@@ -40,11 +40,9 @@
             [delay]="1200"
           >
             <div class="slide-track">
-              <div class="slide" *ngFor="let product of slides" [ngClass]="getImageOrientation(product)">
-                <a [routerLink]="'/images/' + product.id">
-                  <img src="{{ product.watermarkImgPath }}" alt="{{ product.description }}" class="pe-none">
-                </a>
-              </div>
+              <a [routerLink]="'/images/' + product.id" class="slide" *ngFor="let product of slides" [ngClass]="getImageOrientation(product)">
+                <img src="{{ product.watermarkImgPath }}" alt="{{ product.description }}" class="pe-none">
+              </a>
             </div>
           </div>
           <div class="poweredby" appear [delay]="2200" [runOnMobile]="true">
