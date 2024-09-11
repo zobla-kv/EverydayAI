@@ -15,11 +15,6 @@ Run `npm run ng:dev` to run dev server.`http://localhost:4200/` should open auto
 ### Build
 Run `npm run build:dev` to build the project. The build artifacts will be stored in the `dist/` directory and command will also run postScript.js file that will move `dist/` in server folder.
 
-### Running unit tests
-Not implemented yet.
-
-### Running end-to-end tests
-Not implemented yet.
 <!-- Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities. -->
 
 ### Further help
