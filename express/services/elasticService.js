@@ -108,11 +108,13 @@ async function search(req, res, next) {
     }
   })
   .then(result => {
+    console.log('seach result: ', result.body.hits);
     const matchingProductIds = result.body.hits.hits.map(doc => doc._id);
     res.ids = matchingProductIds;
     next();
   })
   .catch(err => {
+    console.log('seach err: ', err);
     res.error = err;
     next();
   })
