@@ -3,6 +3,8 @@ const firebaseService = require('./firebaseService');
 const { Client } = require('@elastic/elasticsearch');
 const { ENV, ELASTIC_URL, ELASTIC_USERNAME, ELASTIC_PASSWORD } = process.env;
 
+console.log('ENV: ', ENV);
+
 // TODO: update to use api key. Check postman collection
 const client = new Client({
   node: ELASTIC_URL,
@@ -11,6 +13,9 @@ const client = new Client({
     password: ELASTIC_PASSWORD
   } : null
 });
+
+console.log('elastic client: ', client);
+
 
 const indexName = 'everyday-ai-images';
 
